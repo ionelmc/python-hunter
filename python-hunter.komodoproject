@@ -2,6 +2,10 @@
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="f3c34c1b-e0b3-4805-8d70-50535cf8cfbb" kpf_version="5" name="python-hunter.komodoproject">
 <preference-set idref="f3c34c1b-e0b3-4805-8d70-50535cf8cfbb" id="project" preftype="project">
+  <string relative="path" id="import_dirname"></string>
+  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__;.tox;.ve</string>
+  <string id="last_local_directory">None</string>
+  <string id="last_remote_directory">None</string>
   <long id="prefs_version">1</long>
 </preference-set>
 </project>

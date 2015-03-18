@@ -1,4 +1,13 @@
-def named(function=None, func=None, module=None, mod=None, filename=None):
+class Predicate(object):
+    def apply_trace(self, frame, kind, arg):
+        raise NotImplementedError()
+
+    def apply_name(self):
+        raise NotImplementedError()
+
+
+def Named(Predicate):
+def __init__(function=None, func=None, module=None, mod=None, filename=None):
     assert not function or not func, "Duplicate arguments, `func` is alias for `function`!"
     assert not module or not mod, "Duplicate arguments, `mod` is alias for `module`!"
     function = function or func
