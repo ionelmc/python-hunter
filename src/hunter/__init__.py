@@ -1,6 +1,10 @@
+import inspect
 import sys
 
-from hunter.actions import CodePrinter, VarsDumper
+from fields import Fields
+
+from hunter.actions import CodePrinter, VarsDumper, Action, Debugger
+
 
 __version__ = "0.1.0"
 
@@ -67,41 +71,38 @@ class Event(object):
     __getitem__ = object.__getattribute__
 
 
-class F(object):
-    # def __new__(cls, *predicates, **query):
-    #     if predicates
-
-    def __init__(self, *predicates, **query):
-        self.actions = query.pop("actions", [])
+class F(Fields.query):
+    def __new__(cls, *predicates, **query):
+        optional_actions = query.pop("actions", [])
         if "action" in query:
-            self.actions.append(query.pop("action"))
+            optional_actions.append(query.pop("action"))
+
+        if predicates:
+            predicates += F(**query),
+            result = Or(*predicates)
+        else:
+            result = F(**query) if optional_actions else super(F, cls).__new__(cls)
+
+        if optional_actions:
+            result = When(result, actions=optional_actions)
+
+        return result
+
+    def __init__(self, **query):
         for key in query:
             if key not in ('function', 'module', 'filename'):
-                raise TypeError("Unexpected argument %r. Must be one of 'function', 'module' or 'filename'.")
+                raise TypeError("Unexpected argument {!r}. Must be one of 'function', 'module' or 'filename'.".format(key))
         self.query = query
-        self.predicates = predicates
 
     def __str__(self):
-        return "F({}{}{}{}{})".format(
-            ', '.join(str(p) for p in self.predicates),
-            ', ' if self.predicates and self.query else '',
+        return "F({})".format(
             ', '.join("{}={}".format(*item) for item in self.query.items()),
-            ', ' if (self.predicates or self.query) and self.action else '',
-            'action={}'.format(self.action),
         )
 
     def __call__(self, event):
-        for predicate in self.predicates:
-            if not predicate(event):
-                return
-
         for key, value in self.query.items():
             if event[key] != value:
                 return
-
-        if self.actions:
-            for action in self.actions:
-                action(event)
 
         return True
 
@@ -112,7 +113,21 @@ class F(object):
         return And(self, other)
 
 
-class And(object):
+class When(Fields.condition.actions):
+    def __init__(self, condition, actions):
+        super(When, self).__init__(condition, [
+            action() if inspect.isclass(action) and issubclass(action, Action) else action
+            for action in actions
+        ])
+    def __call__(self, event):
+        if self.condition(event):
+            for action in self.actions:
+                action(event)
+
+            return True
+
+
+class And(Fields.predicates):
     def __init__(self, *predicates):
         self.predicates = predicates
 
@@ -126,7 +141,7 @@ class And(object):
         return True
 
 
-class Or(object):
+class Or(Fields.predicates):
     def __init__(self, *predicates):
         self.predicates = predicates
 
