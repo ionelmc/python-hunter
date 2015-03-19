@@ -12,9 +12,8 @@ class Action(object):
         raise NotImplementedError()
 
 
-class Debugger(Action):
-    def __call__(self, event):
-        pass
+def Debugger(event):
+    pass
 
 
 class CodePrinter(Fields.stream.filename_alignment, Action):
@@ -49,7 +48,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
             ))
 
 
-class VarsDumper(Action):
+class VarsDumper(Fields.names.globals.stream.filename_alignment, Action):
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment

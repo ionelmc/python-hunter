@@ -132,6 +132,7 @@ class When(Fields.condition.actions):
             action() if inspect.isclass(action) and issubclass(action, Action) else action
             for action in actions
         ])
+
     def __call__(self, event):
         if self.condition(event):
             for action in self.actions:
