@@ -9,24 +9,37 @@ from hunter.actions import CodePrinter, VarsDumper, Action, Debugger
 __version__ = "0.1.0"
 
 
-def trace(*predicates, **inlined):
-    if "action" not in inlined:
-        inlined["action"] = CodePrinter()
-    predicate = F(*predicates, **inlined)
+class Tracer(Fields.predicate):
+    def __init__(self):
+        self.predicate = self.not_started
 
-    def tracer(frame, kind, arg):
-        if predicate(Event(frame, kind, arg)):
-            return tracer
+    def not_started(self, _):
+        raise RuntimeError("Tracer is not started.")
 
-    sys.settrace(tracer)
+    def __call__(self, frame, kind, arg):
+        if self.predicate(Event(frame, kind, arg)):
+            return self
 
+    def trace(self, *predicates, **options):
+        if "action" not in options:
+            options["action"] = CodePrinter()
+        self.predicate = F(*predicates, **options)
 
-def stop():
-    sys.settrace(None)
+        sys.settrace(self)
+        return self
 
+    def stop(self):
+        sys.settrace(None)
 
-class Tracer(object):
-    pass
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.stop()
+
+_tracer = Tracer()
+trace = _tracer.trace
+stop = _tracer.stop
 
 
 class CachedProperty(object):
