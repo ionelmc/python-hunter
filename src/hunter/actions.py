@@ -2,20 +2,31 @@ import sys
 import os
 import linecache
 
+from fields import Fields
+
 DEFAULT_MIN_FILENAME_ALIGNMENT = 15
 
 
-def _safe_getline(filename, lineno, getline=linecache.getline):
-    try:
-        return getline(filename, lineno)
-    except Exception as exc:
-        return "??? no source: {} ???".format(exc)
+class Action(object):
+    def __call__(self, event):
+        raise NotImplementedError()
 
 
-class CodePrinter(object):
+class Debugger(Action):
+    def __call__(self, event):
+        pass
+
+
+class CodePrinter(Fields.stream.filename_alignment, Action):
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment
+
+    def _getline(filename, lineno, getline=linecache.getline):
+        try:
+            return getline(filename, lineno)
+        except Exception as exc:
+            return "??? no source: {} ???".format(exc)
 
     def __call__(self, event, basename=os.path.basename):
         filename = event.filename or "<???>"
@@ -25,7 +36,7 @@ class CodePrinter(object):
             basename(filename),
             event.lineno,
             event.kind,
-            _safe_getline(filename, event.lineno).rstrip(),
+            self._getline(filename, event.lineno).rstrip(),
             align=self.filename_alignment
         ))
         if event.kind in ('return', 'exception'):
@@ -38,7 +49,7 @@ class CodePrinter(object):
             ))
 
 
-class VarsDumper(object):
+class VarsDumper(Action):
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment
