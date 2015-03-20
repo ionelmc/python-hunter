@@ -44,7 +44,7 @@ class Tracer(Fields.predicate):
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing before ``__enter__`` is
         called).
         """
-        if "action" not in options:
+        if "action" not in options and "actions" not in options:
             options["action"] = CodePrinter()
         predicate = F(*predicates, **options)
 
