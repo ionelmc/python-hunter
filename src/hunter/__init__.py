@@ -17,8 +17,16 @@ class Tracer(Fields.predicate):
         raise RuntimeError("Tracer is not started.")
 
     def __call__(self, frame, kind, arg):
-        if self.predicate(Event(frame, kind, arg)):
-            return self
+        """
+        The settrace function.
+
+        .. note::
+
+            This always returns self (drills down) - as opposed to only drilling down when predicate(event) is True because it might
+            match further inside.
+        """
+        self.predicate(Event(frame, kind, arg))
+        return self
 
     def trace(self, *predicates, **options):
         if "action" not in options:
