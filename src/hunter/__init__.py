@@ -19,7 +19,8 @@ class Tracer(Fields.predicate):
     """
 
     def __init__(self):
-        self.predicate = self.not_started
+        self._current_predicate = self.not_started
+        self._previous_tracer = None
 
     def not_started(self, _):
         raise RuntimeError("Tracer is not started.")
@@ -34,6 +35,8 @@ class Tracer(Fields.predicate):
             match further inside.
         """
         self.predicate(Event(frame, kind, arg))
+        if self._previous_tracer:
+            self._previous_tracer(frame, kind, arg)
         return self
 
     def trace(self, *predicates, **options):
@@ -43,13 +46,19 @@ class Tracer(Fields.predicate):
         """
         if "action" not in options:
             options["action"] = CodePrinter()
-        self.predicate = F(*predicates, **options)
+        predicate = F(*predicates, **options)
 
-        sys.settrace(self)
+        previous_tracer = sys.gettrace()
+        if previous_tracer is self:
+            self._current_predicate |= predicate
+        else:
+            self._previous_tracer = previous_tracer
+            sys.settrace(self)
         return self
 
     def stop(self):
-        sys.settrace(None)
+        sys.settrace(self._previous_tracer)
+        self._previous_tracer = None
 
     def __enter__(self):
         return self
