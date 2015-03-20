@@ -2,7 +2,16 @@ from __future__ import print_function
 
 import pytest
 
-from hunter import F, And, Or, CodePrinter, When, trace, stop, VarsDumper, Debugger
+from hunter import And
+from hunter import CodePrinter
+from hunter import Debugger
+from hunter import F
+from hunter import Or
+from hunter import stop
+from hunter import trace
+from hunter import VarsDumper
+from hunter import When
+
 
 @pytest.yield_fixture(autouse=True, scope="function")
 def auto_stop():
@@ -12,12 +21,20 @@ def auto_stop():
         stop()
 
 
-def test_expand_F():
+def test_expansion():
     assert F(1, 2, module=3) == Or(1, 2, F(module=3))
     assert F(1, 2, module=3, action=4) == When(Or(1, 2, F(module=3)), actions=[4])
 
 
-def test_trace():
+def test_and():
+    assert F(module=1) & F(module=2) == And(F(module=1), F(module=2))
+
+
+def test_or():
+    assert F(module=1) | F(module=2) == Or(F(module=1), F(module=2))
+
+
+def test_trace_api_expansion():
     # simple use
     assert trace(function="foobar").predicate == When(F(function="foobar"), actions=[CodePrinter])
 
@@ -60,3 +77,4 @@ def test_trace():
                    function="foobar", actions=[VarsDumper(name="foobar"), Debugger]), module="foo",)
     assert trace(F(function="foobar", actions=[VarsDumper(name="foobar"),
                                                lambda event: print("some custom output")]), module="foo",)
+
