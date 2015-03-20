@@ -21,7 +21,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
         self.stream = stream
         self.filename_alignment = filename_alignment
 
-    def _getline(filename, lineno, getline=linecache.getline):
+    def _getline(self, filename, lineno, getline=linecache.getline):
         try:
             return getline(filename, lineno)
         except Exception as exc:
