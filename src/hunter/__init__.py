@@ -3,13 +3,21 @@ import sys
 
 from fields import Fields
 
-from hunter.actions import CodePrinter, VarsDumper, Action, Debugger
+from hunter.actions import Action
+from hunter.actions import CodePrinter
+from hunter.actions import Debugger
+from hunter.actions import VarsDumper
 
 
 __version__ = "0.1.0"
 
 
 class Tracer(Fields.predicate):
+    """
+    Trace object.
+
+    """
+
     def __init__(self):
         self.predicate = self.not_started
 
@@ -29,6 +37,10 @@ class Tracer(Fields.predicate):
         return self
 
     def trace(self, *predicates, **options):
+        """
+        Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing before ``__enter__`` is
+        called).
+        """
         if "action" not in options:
             options["action"] = CodePrinter()
         self.predicate = F(*predicates, **options)
@@ -60,6 +72,12 @@ class CachedProperty(object):
 
 
 class Event(object):
+    """
+    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+
+    Provides few convenience properties.
+    """
+
     def __init__(self, frame, kind, arg):
         self.frame = frame
         self.kind = kind
@@ -93,6 +111,11 @@ class Event(object):
 
 
 class F(Fields.query):
+    """
+    The ``F``(ilter) expression.
+
+    Allows inlined predicates (it will automatically expand to ``Or(...)``).
+    """
     def __new__(cls, *predicates, **query):
         optional_actions = query.pop("actions", [])
         if "action" in query:
@@ -135,6 +158,11 @@ class F(Fields.query):
 
 
 class When(Fields.condition.actions):
+    """
+    Runs ``actions`` when ``condition(event)`` is ``True``.
+
+    Actions take a single ``event`` argument.
+    """
     def __init__(self, condition, actions):
         super(When, self).__init__(condition, [
             action() if inspect.isclass(action) and issubclass(action, Action) else action
@@ -150,6 +178,9 @@ class When(Fields.condition.actions):
 
 
 class And(Fields.predicates):
+    """
+    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    """
     def __init__(self, *predicates):
         self.predicates = predicates
 
@@ -164,6 +195,9 @@ class And(Fields.predicates):
 
 
 class Or(Fields.predicates):
+    """
+    `Or` predicate. Exits at first sub-predicate that returns ``True``.
+    """
     def __init__(self, *predicates):
         self.predicates = predicates
 
