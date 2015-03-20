@@ -34,7 +34,7 @@ class Tracer(Fields.predicate):
             This always returns self (drills down) - as opposed to only drilling down when predicate(event) is True because it might
             match further inside.
         """
-        self.predicate(Event(frame, kind, arg))
+        self._current_predicate(Event(frame, kind, arg))
         if self._previous_tracer:
             self._previous_tracer(frame, kind, arg)
         return self
@@ -53,6 +53,7 @@ class Tracer(Fields.predicate):
             self._current_predicate |= predicate
         else:
             self._previous_tracer = previous_tracer
+            self._current_predicate = predicate
             sys.settrace(self)
         return self
 
