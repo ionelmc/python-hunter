@@ -253,7 +253,6 @@ if __name__ == '__main__':
     trace(actions=[CodePrinter(), VarsPrinter(names=['a', 'b'])])
 
     def foo(*x):
-        #print(x)
         a = 1 + 2
         b = 3
         try:
