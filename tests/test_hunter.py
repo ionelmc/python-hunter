@@ -1,8 +1,7 @@
 from __future__ import print_function
-from fnmatch import fnmatchcase
 
+from fnmatch import fnmatchcase
 from io import StringIO
-import re
 
 import pytest
 
