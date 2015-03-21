@@ -119,7 +119,14 @@ class Event(object):
 
     @CachedProperty
     def filename(self):
-        return self.frame.f_globals.get('__file__', None)
+        filename = self.frame.f_globals.get('__file__', '')
+
+        if filename.endswith(('.pyc', '.pyo')):
+            filename = filename[:-1]
+        elif filename.endswith('$py.class'):  # Jython
+            filename = filename[:-9] + ".py"
+
+        return filename
 
     @CachedProperty
     def lineno(self):
