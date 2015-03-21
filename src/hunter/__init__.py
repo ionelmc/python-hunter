@@ -1,4 +1,5 @@
 import inspect
+from itertools import chain
 import sys
 
 from fields import Fields
@@ -216,6 +217,12 @@ class And(Fields.predicates):
                 return
         return True
 
+    def __or__(self, other):
+        return Or(self, other)
+
+    def __and__(self, other):
+        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
+
 
 class Or(Fields.predicates):
     """
@@ -229,6 +236,11 @@ class Or(Fields.predicates):
             if predicate(event):
                 return True
 
+    def __or__(self, other):
+        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
+
+    def __and__(self, other):
+        return And(self, other)
 
 if __name__ == '__main__':
     trace(actions=[CodePrinter(), VarsPrinter(names=['a', 'b'])])

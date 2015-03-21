@@ -30,10 +30,12 @@ def test_expansion():
 
 def test_and():
     assert F(module=1) & F(module=2) == And(F(module=1), F(module=2))
+    assert F(module=1) & F(module=2) & F(module=3) == And(F(module=1), F(module=2), F(module=3))
 
 
 def test_or():
     assert F(module=1) | F(module=2) == Or(F(module=1), F(module=2))
+    assert F(module=1) | F(module=2) | F(module=3) == Or(F(module=1), F(module=2), F(module=3))
 
 
 def test_tracing():
