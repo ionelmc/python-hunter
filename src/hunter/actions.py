@@ -41,7 +41,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
         if event.kind in ('return', 'exception'):
             self.stream.write("{:>{align}}       {:9} {} value: {}\n".format(
                 "",
-                ".",
+                "...",
                 event.kind,
                 event.arg,
                 align=self.filename_alignment
@@ -63,7 +63,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
             if key in self.names:
                 self.stream.write("{:>{align}}       {:9} {} -> {}\n".format(
                     "",
-                    "vars" if first else ".",
+                    "vars" if first else "...",
                     key,
                     value,
                     align=self.filename_alignment
@@ -74,7 +74,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
                 if key in self.names:
                     self.stream.write("{:>{align}}       {:9} {} => {}\n".format(
                         "",
-                        "vars" if first else ".",
+                        "vars" if first else "...",
                         key,
                         value,
                         align=self.filename_alignment
