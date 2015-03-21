@@ -82,39 +82,47 @@ def test_trace_merge():
 
 def test_trace_api_expansion():
     # simple use
-    assert trace(function="foobar")._handler == When(F(function="foobar"), actions=[CodePrinter])
+    with trace(function="foobar") as t:
+        assert t._handler == When(F(function="foobar"), actions=[CodePrinter])
 
     # "or" by expression
-    assert trace(module="foo", function="foobar")._handler == When(F(module="foo", function="foobar"), actions=[CodePrinter])
+    with trace(module="foo", function="foobar") as t:
+        assert t._handler == When(F(module="foo", function="foobar"), actions=[CodePrinter])
 
     # pdb.set_trace
-    assert trace(function="foobar", action=Debugger)._handler == When(F(function="foobar"), actions=[Debugger])
+    with trace(function="foobar", action=Debugger) as t:
+        assert t._handler == When(F(function="foobar"), actions=[Debugger])
 
     # pdb.set_trace on any hits
-    assert trace(module="foo", function="foobar", action=Debugger)._handler == When(F(module="foo", function="foobar"), actions=[Debugger])
+    with trace(module="foo", function="foobar", action=Debugger) as t:
+        assert t._handler == When(F(module="foo", function="foobar"), actions=[Debugger])
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
-    assert trace(F(function="foobar", action=Debugger), module="foo")._handler == When(Or(
-        When(F(function="foobar"), actions=[Debugger]),
-        F(module="foo")
-    ), actions=[CodePrinter])
+    with trace(F(function="foobar", action=Debugger), module="foo") as t:
+        assert t._handler == When(Or(
+            When(F(function="foobar"), actions=[Debugger]),
+            F(module="foo")
+        ), actions=[CodePrinter])
 
     # dumping variables from stack
-    assert trace(F(function="foobar", action=VarsPrinter(name="foobar")), module="foo")._handler == When(Or(
-        When(F(function="foobar"), actions=[VarsPrinter(name="foobar")]),
-        F(module="foo"),
-    ), actions=[CodePrinter])
+    with trace(F(function="foobar", action=VarsPrinter(name="foobar")), module="foo") as t:
+        assert t._handler == When(Or(
+            When(F(function="foobar"), actions=[VarsPrinter(name="foobar")]),
+            F(module="foo"),
+        ), actions=[CodePrinter])
 
-    assert trace(F(function="foobar", action=VarsPrinter(names=["foobar", "mumbojumbo"])), module="foo")._handler == When(Or(
-        When(F(function="foobar"), actions=[VarsPrinter(names=["foobar", "mumbojumbo"])]),
-        F(module="foo"),
-    ), actions=[CodePrinter])
+    with trace(F(function="foobar", action=VarsPrinter(names=["foobar", "mumbojumbo"])), module="foo") as t:
+        assert t._handler == When(Or(
+            When(F(function="foobar"), actions=[VarsPrinter(names=["foobar", "mumbojumbo"])]),
+            F(module="foo"),
+        ), actions=[CodePrinter])
 
     # multiple actions
-    assert trace(F(function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo")._handler == When(Or(
-        When(F(function="foobar"), actions=[VarsPrinter(name="foobar"), Debugger]),
-        F(module="foo"),
-    ), actions=[CodePrinter])
+    with trace(F(function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo") as t:
+        assert t._handler == When(Or(
+            When(F(function="foobar"), actions=[VarsPrinter(name="foobar"), Debugger]),
+            F(module="foo"),
+        ), actions=[CodePrinter])
 
     # customization
     assert trace(lambda event: event.locals.get("node") == "Foobar",
