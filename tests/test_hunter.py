@@ -39,9 +39,9 @@ def test_or():
     assert F(module=1) | F(module=2) | F(module=3) == Or(F(module=1), F(module=2), F(module=3))
 
 
-def test_tracing():
+def test_tracing_bare():
     lines = StringIO()
-    with trace(actions=[VarsPrinter, CodePrinter(stream=lines)]):
+    with trace():
         def a():
             return 1
         b = a()
@@ -51,7 +51,7 @@ def test_tracing():
         except Exception:
             pass
     print(lines.getvalue())
-    fnmatchcase
+
     for line, expected in zip(lines.getvalue().splitlines(), [
         r"    __init__.py*    call          def __enter__(self):",
         r"    __init__.py*    line              return self",
@@ -65,6 +65,43 @@ def test_tracing():
         r"    __init__.py*    line              self.stop()",
         r"    __init__.py*    call          def stop(self):",
         r"    __init__.py:*    line              sys.settrace(self._previous_tracer)"
+    ]):
+        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+
+
+def test_tracing_vars():
+    lines = StringIO()
+    with trace(actions=[VarsPrinter(name='b', stream=lines), CodePrinter(stream=lines)]):
+        def a():
+            b = 1
+            b = 2
+            return 1
+        b = a()
+        b = 2
+        try:
+            raise Exception("BOOM!")
+        except Exception:
+            pass
+    print(lines.getvalue())
+
+    for line, expected in zip(lines.getvalue().splitlines(), [
+        "    __init__.py*    call          def __enter__(self):",
+        "    __init__.py*    line              return self",
+        "    __init__.py*    return            return self",
+        "               *    ...       return value: <hunter.Tracer *",
+        " test_hunter.py*    call              def a():",
+        " test_hunter.py*    line                  b = 1",
+        "               *    vars      b -> 1",
+        " test_hunter.py*    line                  b = 2",
+        "               *    vars      b -> 2",
+        " test_hunter.py*    line                  return 1",
+        "               *    vars      b -> 2",
+        " test_hunter.py*    return                return 1",
+        "               *    ...       return value: 1",
+        "    __init__.py*    call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "    __init__.py*    line              self.stop()",
+        "    __init__.py*    call          def stop(self):",
+        "    __init__.py*    line              sys.settrace(self._previous_tracer)",
     ]):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
