@@ -48,7 +48,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
             ))
 
 
-class VarsDumper(Fields.names.globals.stream.filename_alignment, Action):
+class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment

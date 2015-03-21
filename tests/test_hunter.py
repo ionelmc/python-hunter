@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+from io import StringIO
+
 import pytest
 
 from hunter import And
@@ -9,7 +11,7 @@ from hunter import F
 from hunter import Or
 from hunter import stop
 from hunter import trace
-from hunter import VarsDumper
+from hunter import VarsPrinter
 from hunter import When
 
 
@@ -34,39 +36,54 @@ def test_or():
     assert F(module=1) | F(module=2) == Or(F(module=1), F(module=2))
 
 
+def test_tracing():
+    lines = StringIO()
+    with trace(actions=[VarsPrinter, CodePrinter(stream=lines)]):
+        def a():
+            return 1
+        b = a()
+        b = 2
+        try:
+            raise Exception("BOOM!")
+        except Exception:
+            pass
+
+    assert lines.getvalue() == ""
+
+
 def test_trace_api_expansion():
     # simple use
-    assert trace(function="foobar").predicate == When(F(function="foobar"), actions=[CodePrinter])
+    assert trace(function="foobar")._handler == When(F(function="foobar"), actions=[CodePrinter])
 
     # "or" by expression
-    assert trace(module="foo", function="foobar").predicate == When(F(module="foo", function="foobar"), actions=[CodePrinter])
+    assert trace(module="foo", function="foobar")._handler == When(F(module="foo", function="foobar"), actions=[CodePrinter])
 
     # pdb.set_trace
-    assert trace(function="foobar", action=Debugger).predicate == When(F(function="foobar"), actions=[Debugger])
+    assert trace(function="foobar", action=Debugger)._handler == When(F(function="foobar"), actions=[Debugger])
 
     # pdb.set_trace on any hits
-    assert trace(module="foo", function="foobar", action=Debugger).predicate == When(F(module="foo", function="foobar"), actions=[Debugger])
+    assert trace(module="foo", function="foobar", action=Debugger)._handler == When(F(module="foo", function="foobar"), actions=[Debugger])
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
-    assert trace(F(function="foobar", action=Debugger), module="foo").predicate == When(Or(
+    assert trace(F(function="foobar", action=Debugger), module="foo")._handler == When(Or(
         When(F(function="foobar"), actions=[Debugger]),
         F(module="foo")
     ), actions=[CodePrinter])
 
     # dumping variables from stack
-    assert trace(F(function="foobar", action=VarsDumper(name="foobar")), module="foo").predicate == When(Or(
-        When(F(function="foobar"), actions=[VarsDumper(name="foobar")]),
+    assert trace(F(function="foobar", action=VarsPrinter(name="foobar")), module="foo")._handler == When(Or(
+        When(F(function="foobar"), actions=[VarsPrinter(name="foobar")]),
         F(module="foo"),
     ), actions=[CodePrinter])
 
-    assert trace(F(function="foobar", action=VarsDumper(names=["foobar", "mumbojumbo"])), module="foo").predicate == When(Or(
-        When(F(function="foobar"), actions=[VarsDumper(names=["foobar", "mumbojumbo"])]),
+    assert trace(F(function="foobar", action=VarsPrinter(names=["foobar", "mumbojumbo"])), module="foo")._handler == When(Or(
+        When(F(function="foobar"), actions=[VarsPrinter(names=["foobar", "mumbojumbo"])]),
         F(module="foo"),
     ), actions=[CodePrinter])
 
     # multiple actions
-    assert trace(F(function="foobar", actions=[VarsDumper(name="foobar"), Debugger]), module="foo").predicate == When(Or(
-        When(F(function="foobar"), actions=[VarsDumper(name="foobar"), Debugger]),
+    assert trace(F(function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo")._handler == When(Or(
+        When(F(function="foobar"), actions=[VarsPrinter(name="foobar"), Debugger]),
         F(module="foo"),
     ), actions=[CodePrinter])
 
@@ -74,7 +91,7 @@ def test_trace_api_expansion():
     assert trace(lambda event: event.locals.get("node") == "Foobar",
                  module="foo", function="foobar")
     assert trace(F(lambda event: event.locals.get("node") == "Foobar",
-                   function="foobar", actions=[VarsDumper(name="foobar"), Debugger]), module="foo",)
-    assert trace(F(function="foobar", actions=[VarsDumper(name="foobar"),
+                   function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo",)
+    assert trace(F(function="foobar", actions=[VarsPrinter(name="foobar"),
                                                lambda event: print("some custom output")]), module="foo",)
 

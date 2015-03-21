@@ -6,24 +6,27 @@ from fields import Fields
 from hunter.actions import Action
 from hunter.actions import CodePrinter
 from hunter.actions import Debugger
-from hunter.actions import VarsDumper
+from hunter.actions import VarsPrinter
 
 
 __version__ = "0.1.0"
 
 
-class Tracer(Fields.predicate):
+class Tracer(object):
     """
     Trace object.
 
     """
 
     def __init__(self):
-        self._current_predicate = self.not_started
+        self._handler = None
         self._previous_tracer = None
 
-    def not_started(self, _):
-        raise RuntimeError("Tracer is not started.")
+    def __str__(self):
+        return "Tracer(_handler={}, _previous_tracer={})".format(
+            "<not started>" if self._handler is None else self._handler,
+            self._previous_tracer,
+        )
 
     def __call__(self, frame, kind, arg):
         """
@@ -34,7 +37,11 @@ class Tracer(Fields.predicate):
             This always returns self (drills down) - as opposed to only drilling down when predicate(event) is True because it might
             match further inside.
         """
-        self._current_predicate(Event(frame, kind, arg))
+        if self._handler is None:
+            raise RuntimeError("Tracer is not started.")
+
+        self._handler(Event(frame, kind, arg))
+
         if self._previous_tracer:
             self._previous_tracer(frame, kind, arg)
         return self
@@ -50,10 +57,10 @@ class Tracer(Fields.predicate):
 
         previous_tracer = sys.gettrace()
         if previous_tracer is self:
-            self._current_predicate |= predicate
+            self._handler |= predicate
         else:
             self._previous_tracer = previous_tracer
-            self._current_predicate = predicate
+            self._handler = predicate
             sys.settrace(self)
         return self
 
@@ -186,6 +193,12 @@ class When(Fields.condition.actions):
 
             return True
 
+    def __or__(self, other):
+        return Or(self, other)
+
+    def __and__(self, other):
+        return And(self, other)
+
 
 class And(Fields.predicates):
     """
@@ -218,7 +231,7 @@ class Or(Fields.predicates):
 
 
 if __name__ == '__main__':
-    trace(actions=[CodePrinter(), VarsDumper(names=['a', 'b'])])
+    trace(actions=[CodePrinter(), VarsPrinter(names=['a', 'b'])])
 
     def foo(*x):
         #print(x)
