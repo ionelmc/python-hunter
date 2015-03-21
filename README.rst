@@ -49,7 +49,8 @@ Hunter
     :alt: Scrtinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
 
-Hunter is a flexible code tracing toolkit.
+Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
+nefarious purposes.
 
 * Free software: BSD license
 
@@ -64,6 +65,69 @@ Documentation
 =============
 
 https://python-hunter.readthedocs.org/
+
+
+Overview
+========
+
+The default action is to just print the code being executed. Example:
+
+.. sourcecode:: python
+
+    import hunter
+    hunter.trace(module='posixpath')
+
+    import os
+    os.path.join('a', 'b')
+
+Would result in::
+
+    posixpath.py:60    call      def join(a, *p):
+    posixpath.py:64    line          path = a
+    posixpath.py:65    line          for b in p:
+    posixpath.py:66    line              if b.startswith('/'):
+    posixpath.py:68    line              elif path == '' or path.endswith('/'):
+    posixpath.py:71    line                  path += '/' + b
+    posixpath.py:65    line          for b in p:
+    posixpath.py:72    line          return path
+    posixpath.py:72    return        return path
+                       ...       return value: 'a/b'
+
+You can have custom actions, like a variable printer - example:
+
+.. sourcecode:: python
+
+    import hunter
+    hunter.trace(hunter.F(module='posixpath', action=hunter.VarsPrinter(name='path')))
+
+    import os
+    os.path.join('a', 'b')
+
+Would result in::
+
+    posixpath.py:60    call      def join(a, *p):
+    posixpath.py:64    line          path = a
+                       vars      path -> 'a'
+    posixpath.py:65    line          for b in p:
+                       vars      path -> 'a'
+    posixpath.py:66    line              if b.startswith('/'):
+                       vars      path -> 'a'
+    posixpath.py:68    line              elif path == '' or path.endswith('/'):
+                       vars      path -> 'a'
+    posixpath.py:71    line                  path += '/' + b
+                       vars      path -> 'a/b'
+    posixpath.py:65    line          for b in p:
+                       vars      path -> 'a/b'
+    posixpath.py:72    line          return path
+                       vars      path -> 'a/b'
+    posixpath.py:72    return        return path
+                       ...       return value: 'a/b'
+
+You can give it a tree-like configuration where you can optionally configure specific actions for parts of the
+tree (like dumping variables or a pdb set_trace):
+
+    TODO: More examples.
+
 
 Development
 ===========
