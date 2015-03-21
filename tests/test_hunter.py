@@ -1,6 +1,8 @@
 from __future__ import print_function
+from fnmatch import fnmatchcase
 
 from io import StringIO
+import re
 
 import pytest
 
@@ -49,8 +51,33 @@ def test_tracing():
             raise Exception("BOOM!")
         except Exception:
             pass
+    print(lines.getvalue())
+    fnmatchcase
+    for line, expected in zip(lines.getvalue().splitlines(), [
+        r"    __init__.py*    call          def __enter__(self):",
+        r"    __init__.py*    line              return self",
+        r"    __init__.py*    return            return self",
+        r"               *    ...       return value: Tracer(_handler=When(condition=F(query={}), actions=*",
+        r" test_hunter.py*    call              def a():",
+        r" test_hunter.py*    line                  return 1",
+        r" test_hunter.py*    return                return 1",
+        r"               *    ...       return value: 1",
+        r"    __init__.py*    call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        r"    __init__.py*    line              self.stop()",
+        r"    __init__.py*    call          def stop(self):",
+        r"    __init__.py:*    line              sys.settrace(self._previous_tracer)"
+    ]):
+        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
-    assert lines.getvalue() == ""
+
+def test_trace_merge():
+    trace(function="a")
+    trace(function="b")
+    assert trace(function="c")._handler == Or(
+        When(F(function="a"), actions=[CodePrinter]),
+        When(F(function="b"), actions=[CodePrinter]),
+        When(F(function="c"), actions=[CodePrinter]),
+    )
 
 
 def test_trace_api_expansion():
