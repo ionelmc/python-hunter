@@ -1,20 +1,35 @@
 hunter
 =============================
 
-.. autosummary::
-    :nosignatures:
-
-    hunter.trace
-    hunter.stop
-    hunter.F
-    hunter.When
-    hunter.And
-    hunter.Or
-    hunter.actions.CodePrinter
-    hunter.actions.Debugger
-    hunter.actions.VarsPrinter
 
 .. automodule:: hunter
+
+    .. rubric:: Functions
+
+    .. autosummary::
+        :nosignatures:
+
+        hunter.trace
+        hunter.stop
+
+    .. rubric:: Predicates
+
+    .. autosummary::
+        :nosignatures:
+
+        hunter.F
+        hunter.When
+        hunter.And
+        hunter.Or
+
+    .. rubric:: Actions
+
+    .. autosummary::
+        :nosignatures:
+
+        hunter.CodePrinter
+        hunter.Debugger
+        hunter.VarsPrinter
 
 .. autofunction:: hunter.trace(*predicates, **options)
 
