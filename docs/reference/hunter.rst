@@ -42,22 +42,4 @@ hunter
     :special-members:
     :undoc-members:
 
-.. autoclass:: hunter.CodePrinter
-    :members:
-    :private-members:
-    :special-members:
-    :undoc-members:
-
-.. autoclass:: hunter.Debugger
-    :members:
-    :private-members:
-    :special-members:
-    :undoc-members:
-
-.. autoclass:: hunter.VarsPrinter
-    :members:
-    :private-members:
-    :special-members:
-    :undoc-members:
-
 
