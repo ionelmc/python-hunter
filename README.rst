@@ -128,6 +128,25 @@ tree (like dumping variables or a pdb set_trace):
 
     TODO: More examples.
 
+Environment variable activation
+-------------------------------
+
+For your convenience environment variable activation is available. Just run your app like this::
+
+
+    PYTHON_HUNTER="module='os.path'" python yourapp.py
+
+On Windows you'd do something like::
+
+    set PYTHON_HUNTER="module='os.path'"
+    python yourapp.py
+
+The activation works with a clever ``.pth`` file that checks for that env var presence and before your app runs does something like this::
+
+    import hunter
+    hunter.trace(<whatever-you-had-in-the-PYTHON_HUNTER-env-var>)
+
+That also means that it will do activation even if the env var is empty, eg: ``PYTHON_HUNTER=""``.
 
 Development
 ===========
