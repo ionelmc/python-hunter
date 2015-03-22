@@ -60,7 +60,7 @@ class Tracer(object):
             options: Keyword arguments that are passed to :class:`hunter.F`, for convenience.
         """
         if "action" not in options and "actions" not in options:
-            options["action"] = actions.CodePrinter()
+            options["action"] = CodePrinter()
         predicate = F(*predicates, **options)
 
         previous_tracer = sys.gettrace()
