@@ -11,6 +11,7 @@ from hunter.actions import VarsPrinter
 
 
 __version__ = "0.1.0"
+__all__ = 'F', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 
 class Tracer(object):
@@ -248,16 +249,3 @@ class Or(Fields.predicates):
 
     def __and__(self, other):
         return And(self, other)
-
-if __name__ == '__main__':
-    trace(actions=[CodePrinter(), VarsPrinter(names=['a', 'b'])])
-
-    def foo(*x):
-        a = 1 + 2
-        b = 3
-        try:
-            raise Exception('BOOM!')
-        finally:
-            return x
-
-    foo(1, 2, 3)
