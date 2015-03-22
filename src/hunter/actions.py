@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
-import sys
-import os
+
 import linecache
+import os
+import pdb
+import sys
 
 from fields import Fields
 
@@ -13,8 +15,19 @@ class Action(object):
         raise NotImplementedError()
 
 
-def Debugger(event):
-    pass
+class Debugger(Fields.klass.kwargs, Action):
+    """
+    An action that starts ``pdb``.
+    """
+    def __init__(self, klass=pdb.Pdb, **kwargs):
+        self.klass = klass
+        self.kwargs = kwargs
+
+    def __call__(self, event):
+        """
+        Runs a ``pdb.set_trace`` at the matching frame.
+        """
+        self.klass(**self.kwargs).set_trace(event.frame)
 
 
 class CodePrinter(Fields.stream.filename_alignment, Action):
