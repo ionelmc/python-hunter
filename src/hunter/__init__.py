@@ -1,13 +1,12 @@
+from __future__ import absolute_import
+
 import inspect
-from itertools import chain
 import sys
+from itertools import chain
 
 from fields import Fields
 
-from hunter.actions import Action
-from hunter.actions import CodePrinter
-from hunter.actions import Debugger
-from hunter.actions import VarsPrinter
+from . import actions
 
 
 __version__ = "0.1.0"
