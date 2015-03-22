@@ -13,9 +13,10 @@ from hunter import Or
 from hunter import stop
 from hunter import trace
 from hunter import When
-from hunter.actions import CodePrinter
-from hunter.actions import Debugger
-from hunter.actions import VarsPrinter
+
+from hunter import CodePrinter
+from hunter import Debugger
+from hunter import VarsPrinter
 
 
 @pytest.yield_fixture(autouse=True, scope="function")
