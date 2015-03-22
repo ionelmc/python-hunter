@@ -52,6 +52,8 @@ Hunter
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
 nefarious purposes.
 
+API is considered unstable until 1.0 is released.
+
 * Free software: BSD license
 
 Installation
