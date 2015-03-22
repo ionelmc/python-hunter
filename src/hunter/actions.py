@@ -18,17 +18,26 @@ def Debugger(event):
 
 
 class CodePrinter(Fields.stream.filename_alignment, Action):
+    """
+    An action that just prints the code being executed.
+    """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment
 
     def _getline(self, filename, lineno, getline=linecache.getline):
+        """
+        Get a line from ``linecache``. Ignores failures somewhat.
+        """
         try:
             return getline(filename, lineno)
         except Exception as exc:
             return "??? no source: {} ???".format(exc)
 
     def __call__(self, event, basename=os.path.basename):
+        """
+        Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also prints values.
+        """
         filename = event.filename or "<???>"
         # TODO: support auto-alignment, need a context object for this, eg:
         # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
@@ -50,6 +59,9 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
 
 
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
+    """
+    An action that prints local variables and optinally global variables visible from the current executing frame.
+    """
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
         self.filename_alignment = filename_alignment
@@ -59,6 +71,9 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
         self.globals = globals
 
     def __call__(self, event):
+        """
+        Handle event and print the specified variables.
+        """
         first = True
         for key, value in event.locals.items():
             if key in self.names or not self.names:

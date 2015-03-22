@@ -51,9 +51,13 @@ class Tracer(object):
         """
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing before ``__enter__`` is
         called).
+
+        Args:
+            predicates (:class:`hunter.F` instances): Runs actions if any of the given predicates match.
+            options: Keyword arguments that are passed to :class:`hunter.F`, for convenience.
         """
         if "action" not in options and "actions" not in options:
-            options["action"] = CodePrinter()
+            options["action"] = actions.CodePrinter()
         predicate = F(*predicates, **options)
 
         previous_tracer = sys.gettrace()
@@ -66,6 +70,9 @@ class Tracer(object):
         return self
 
     def stop(self):
+        """
+        Stop tracing. Restores previous tracer (if any).
+        """
         sys.settrace(self._previous_tracer)
         self._previous_tracer = None
 
@@ -137,11 +144,15 @@ class Event(object):
 
 class F(Fields.query):
     """
-    The ``F``(ilter) expression.
+    The ``F`` (ilter) expression.
 
     Allows inlined predicates (it will automatically expand to ``Or(...)``).
     """
     def __new__(cls, *predicates, **query):
+        """
+        Handles situations where :class:`hunter.F` objects (or other callables) are passed in as positional arguments. Conveniently converts
+        that to an :class:`hunter.Or` predicate,
+        """
         optional_actions = query.pop("actions", [])
         if "action" in query:
             optional_actions.append(query.pop("action"))
@@ -158,6 +169,10 @@ class F(Fields.query):
         return result
 
     def __init__(self, **query):
+        """
+        Args:
+            query: criteria to match on. Currently only 'function', 'module' or 'filename' are accepted.
+        """
         for key in query:
             if key not in ('function', 'module', 'filename'):
                 raise TypeError("Unexpected argument {!r}. Must be one of 'function', 'module' or 'filename'.".format(key))
@@ -169,6 +184,9 @@ class F(Fields.query):
         )
 
     def __call__(self, event):
+        """
+        Handles event. Returns True if all criteria matched.
+        """
         for key, value in self.query.items():
             if event[key] != value:
                 return
@@ -176,9 +194,15 @@ class F(Fields.query):
         return True
 
     def __or__(self, other):
+        """
+        Convenience API so you can do ``F() | F()``. It converts that to ``Or(F(), F())``.
+        """
         return Or(self, other)
 
     def __and__(self, other):
+        """
+        Convenience API so you can do ``F() & F()``. It converts that to ``And(F(), F())``.
+        """
         return And(self, other)
 
 
@@ -195,6 +219,9 @@ class When(Fields.condition.actions):
         ])
 
     def __call__(self, event):
+        """
+        Handles the event.
+        """
         if self.condition(event):
             for action in self.actions:
                 action(event)
@@ -219,6 +246,9 @@ class And(Fields.predicates):
         return "And({})".format(', '.join(str(p) for p in self.predicates))
 
     def __call__(self, event):
+        """
+        Handles the event.
+        """
         for predicate in self.predicates:
             if not predicate(event):
                 return
@@ -239,6 +269,9 @@ class Or(Fields.predicates):
         self.predicates = predicates
 
     def __call__(self, event):
+        """
+        Handles the event.
+        """
         for predicate in self.predicates:
             if predicate(event):
                 return True
