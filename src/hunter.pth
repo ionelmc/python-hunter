@@ -1,0 +1,2 @@
+import os; exec("if 'PYTHON_HUNTER' in os.environ:\n import hunter\n eval('hunter.trace({[PYTHON_HUNTER]})'.format(os.environ))")
+

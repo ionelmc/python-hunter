@@ -1,7 +1,9 @@
 from __future__ import print_function
 
-from fnmatch import fnmatchcase
+import os
+import subprocess
 from io import StringIO
+from fnmatch import fnmatchcase
 
 import pytest
 
@@ -22,6 +24,17 @@ def auto_stop():
         yield
     finally:
         stop()
+
+
+@pytest.mark.skipif('TESTS_EXPECT_PTH' not in os.environ, reason="hunter.pth file is not available in this env.")
+def test_pth_activation():
+    output = subprocess.check_output(
+        ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
+        env=dict(os.environ, PYTHON_HUNTER="module='posixpath',function=\"join\""),
+        stderr=subprocess.STDOUT,
+    )
+    assert b"posixpath.py" in output
+    assert b"call      def join(a, *p):" in output
 
 
 def test_expansion():

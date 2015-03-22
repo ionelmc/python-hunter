@@ -14,6 +14,8 @@ from os.path import splitext
 
 from setuptools import find_packages
 from setuptools import setup
+from distutils.command.build import build
+
 
 def read(*names, **kwargs):
     return io.open(
@@ -21,6 +23,12 @@ def read(*names, **kwargs):
         encoding=kwargs.get('encoding', 'utf8')
     ).read()
 
+
+class BuildWithPTH(build):
+    def run(self):
+        build.run(self)
+        for path in glob(join(dirname(__file__), 'src', '*.pth')):
+            self.copy_file(path, join(self.build_lib, basename(path)))
 
 setup(
     name='hunter',
@@ -67,5 +75,8 @@ setup(
         'console_scripts': [
             'hunter = hunter.__main__:main'
         ]
+    },
+    cmdclass={
+        'build': BuildWithPTH
     },
 )
