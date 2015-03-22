@@ -6,11 +6,13 @@ from itertools import chain
 
 from fields import Fields
 
-from . import actions
-
+from .actions import Action
+from .actions import CodePrinter
+from .actions import Debugger
+from .actions import VarsPrinter
 
 __version__ = "0.1.0"
-__all__ = 'F', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
+__all__ = 'F', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 
 class Tracer(object):
@@ -18,7 +20,6 @@ class Tracer(object):
     Trace object.
 
     """
-
     def __init__(self):
         self._handler = None
         self._previous_tracer = None
