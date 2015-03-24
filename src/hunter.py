@@ -61,10 +61,11 @@ class Tracer(object):
         """
         if "action" not in options and "actions" not in options:
             options["action"] = CodePrinter()
+        merge = options.pop("merge", True)
         predicate = Q(*predicates, **options)
 
         previous_tracer = sys.gettrace()
-        if previous_tracer is self:
+        if previous_tracer is self and merge:
             self._handler |= predicate
         else:
             self._previous_tracer = previous_tracer
