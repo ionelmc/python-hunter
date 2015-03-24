@@ -12,7 +12,7 @@ from fields import Fields
 
 
 __version__ = "0.1.0"
-__all__ = 'F', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
+__all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 15
 
@@ -56,12 +56,12 @@ class Tracer(object):
         called).
 
         Args:
-            predicates (:class:`hunter.F` instances): Runs actions if any of the given predicates match.
-            options: Keyword arguments that are passed to :class:`hunter.F`, for convenience.
+            predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
+            options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
         if "action" not in options and "actions" not in options:
             options["action"] = CodePrinter()
-        predicate = F(*predicates, **options)
+        predicate = Q(*predicates, **options)
 
         previous_tracer = sys.gettrace()
         if previous_tracer is self:
@@ -145,33 +145,36 @@ class Event(object):
     __getitem__ = object.__getattribute__
 
 
-class F(Fields.query):
+def Q(*predicates, **query):
     """
-    The ``F`` (ilter) expression.
-
-    Allows inlined predicates (it will automatically expand to ``Or(...)``).
+    Handles situations where :class:`hunter.Query` objects (or other callables) are passed in as positional arguments.
+    Conveniently converts that to an :class:`hunter.Or` predicate.
     """
-    def __new__(cls, *predicates, **query):
-        """
-        Handles situations where :class:`hunter.F` objects (or other callables) are passed in as positional arguments. Conveniently converts
-        that to an :class:`hunter.Or` predicate,
-        """
-        optional_actions = query.pop("actions", [])
-        if "action" in query:
-            optional_actions.append(query.pop("action"))
+    optional_actions = query.pop("actions", [])
+    if "action" in query:
+        optional_actions.append(query.pop("action"))
 
-        if predicates:
-            predicates += F(**query),
-            result = Or(*predicates)
-        else:
-            result = F(**query) if optional_actions else super(F, cls).__new__(cls)
+    if predicates:
+        if query:
+            predicates += Query(**query),
 
-        if optional_actions:
-            result = When(result, actions=optional_actions)
+        result = Or(*predicates)
+    else:
+        result = Query(**query)
 
-        return result
+    if optional_actions:
+        result = When(result, actions=optional_actions)
 
-    def __init__(self, **query):
+    return result
+
+
+class Query(Fields.query):
+    """
+    A query class.
+    """
+    query = ()
+
+    def __init__(self, *x, **query):
         """
         Args:
             query: criteria to match on. Currently only 'function', 'module' or 'filename' are accepted.
@@ -181,9 +184,9 @@ class F(Fields.query):
                 raise TypeError("Unexpected argument {!r}. Must be one of 'function', 'module' or 'filename'.".format(key))
         self.query = query
 
-    def __str__(self):
-        return "F({})".format(
-            ', '.join("{}={}".format(*item) for item in self.query.items()),
+    def __repr__(self):
+        return "Query({})".format(
+            ', '.join("{}={!r}".format(*item) for item in self.query.items()),
         )
 
     def __call__(self, event):
@@ -198,13 +201,13 @@ class F(Fields.query):
 
     def __or__(self, other):
         """
-        Convenience API so you can do ``F() | F()``. It converts that to ``Or(F(), F())``.
+        Convenience API so you can do ``Q() | Q()``. It converts that to ``Or(Q(), Q())``.
         """
         return Or(self, other)
 
     def __and__(self, other):
         """
-        Convenience API so you can do ``F() & F()``. It converts that to ``And(F(), F())``.
+        Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
         """
         return And(self, other)
 
@@ -242,6 +245,14 @@ class And(Fields.predicates):
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
+    def __new__(cls, *predicates):
+        if not predicates:
+            raise TypeError("Expected at least 2 predicates.")
+        elif len(predicates) == 1:
+            return predicates[0]
+        else:
+            return super(And, cls).__new__(cls)
+
     def __init__(self, *predicates):
         self.predicates = predicates
 
@@ -268,6 +279,14 @@ class Or(Fields.predicates):
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
+    def __new__(cls, *predicates):
+        if not predicates:
+            raise TypeError("Expected at least 2 predicates.")
+        elif len(predicates) == 1:
+            return predicates[0]
+        else:
+            return super(Or, cls).__new__(cls)
+
     def __init__(self, *predicates):
         self.predicates = predicates
 

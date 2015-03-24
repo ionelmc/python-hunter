@@ -17,7 +17,7 @@ hunter
     .. autosummary::
         :nosignatures:
 
-        hunter.F
+        hunter.Q
         hunter.When
         hunter.And
         hunter.Or
@@ -35,7 +35,7 @@ hunter
 
 .. autofunction:: hunter.stop()
 
-.. autoclass:: hunter.F
+.. autoclass:: hunter.Q
     :members:
     :private-members:
     :special-members:
