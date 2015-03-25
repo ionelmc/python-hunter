@@ -12,9 +12,11 @@ from os.path import join
 from os.path import relpath
 from os.path import splitext
 
+from distutils import log
+from distutils.command.build import build
 from setuptools import find_packages
 from setuptools import setup
-from distutils.command.build import build
+from setuptools.command.easy_install import easy_install
 
 
 def read(*names, **kwargs):
@@ -28,7 +30,19 @@ class BuildWithPTH(build):
     def run(self):
         build.run(self)
         for path in glob(join(dirname(__file__), 'src', '*.pth')):
-            self.copy_file(path, join(self.build_lib, basename(path)))
+            dest = join(self.build_lib, basename(path))
+            log.info("Copying %s to %s." % (path, dest))
+            self.copy_file(path, dest)
+
+
+class EasyInstallWithPTH(easy_install):
+    def run(self):
+        easy_install.run(self)
+        for path in glob(join(dirname(__file__), 'src', '*.pth')):
+            dest = join(self.install_dir, basename(path))
+            log.info("Copying %s to %s." % (path, dest))
+            self.copy_file(path, dest)
+
 
 setup(
     name='hunter',
@@ -78,6 +92,7 @@ setup(
         ]
     },
     cmdclass={
-        'build': BuildWithPTH
+        'build': BuildWithPTH,
+        'easy_install': EasyInstallWithPTH,
     },
 )
