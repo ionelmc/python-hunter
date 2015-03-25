@@ -2,8 +2,12 @@ from __future__ import print_function
 
 import os
 import subprocess
-from io import StringIO
 from fnmatch import fnmatchcase
+from io import StringIO
+try:
+    from itertools import izip_longest
+except ImportError:
+    from itertools import zip_longest as izip_longest
 
 import pytest
 
@@ -49,7 +53,8 @@ def test_nest_1():
 
 def test_expansion():
     assert Q(1, 2, module=3) == Or(1, 2, Q(module=3))
-    assert Q(1, 2, module=3, action=4) == When(Or(1, 2, Q(module=3)), actions=[4])
+    assert Q(1, 2, module=3, action=4) == When(Or(1, 2, Q(module=3)), 4)
+    assert Q(1, 2, module=3, actions=[4, 5]) == When(Or(1, 2, Q(module=3)), 4, 5)
 
 
 def test_and():
@@ -64,7 +69,7 @@ def test_or():
 
 def test_tracing_bare():
     lines = StringIO()
-    with trace():
+    with trace(CodePrinter(stream=lines)):
         def a():
             return 1
         b = a()
@@ -75,26 +80,26 @@ def test_tracing_bare():
             pass
     print(lines.getvalue())
 
-    for line, expected in zip(lines.getvalue().splitlines(), [
-        r"      hunter.py* call          def __enter__(self):",
-        r"      hunter.py* line              return self",
-        r"      hunter.py* return            return self",
-        r"               * ...       return value: Tracer(_handler=When(condition=Q(query={}), actions=*",
-        r" test_hunter.py* call              def a():",
-        r" test_hunter.py* line                  return 1",
-        r" test_hunter.py* return                return 1",
-        r"               * ...       return value: 1",
-        r"      hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        r"      hunter.py* line              self.stop()",
-        r"      hunter.py* call          def stop(self):",
-        r"      hunter.py* line              sys.settrace(self._previous_tracer)"
-    ]):
+    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+        "                 src/hunter.py* call          def __enter__(self):",
+        "                 src/hunter.py* line              return self",
+        "                 src/hunter.py* return            return self",
+        "                              * ...       return value: <hunter.Tracer *",
+        "          tests/test_hunter.py* call              def a():",
+        "          tests/test_hunter.py* line                  return 1",
+        "          tests/test_hunter.py* return                return 1",
+        "                              * ...       return value: 1",
+        "                 src/hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "                 src/hunter.py* line              self.stop()",
+        "                 src/hunter.py* call          def stop(self):",
+        "                 src/hunter.py* line              sys.settrace(self._previous_tracer)",
+    ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
 
 def test_tracing_vars():
     lines = StringIO()
-    with trace(actions=[VarsPrinter(name='b', stream=lines), CodePrinter(stream=lines)]):
+    with trace(actions=[VarsPrinter('b', stream=lines), CodePrinter(stream=lines)]):
         def a():
             b = 1
             b = 2
@@ -107,25 +112,25 @@ def test_tracing_vars():
             pass
     print(lines.getvalue())
 
-    for line, expected in zip(lines.getvalue().splitlines(), [
-        "      hunter.py* call          def __enter__(self):",
-        "      hunter.py* line              return self",
-        "      hunter.py* return            return self",
-        "               * ...       return value: <hunter.Tracer *",
-        " test_hunter.py* call              def a():",
-        " test_hunter.py* line                  b = 1",
-        "               * vars      b -> 1",
-        " test_hunter.py* line                  b = 2",
-        "               * vars      b -> 2",
-        " test_hunter.py* line                  return 1",
-        "               * vars      b -> 2",
-        " test_hunter.py* return                return 1",
-        "               * ...       return value: 1",
-        "      hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "      hunter.py* line              self.stop()",
-        "      hunter.py* call          def stop(self):",
-        "      hunter.py* line              sys.settrace(self._previous_tracer)",
-    ]):
+    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+        "                 src/hunter.py* call          def __enter__(self):",
+        "                 src/hunter.py* line              return self",
+        "                 src/hunter.py* return            return self",
+        "                              * ...       return value: <hunter.Tracer *",
+        "          tests/test_hunter.py* call              def a():",
+        "          tests/test_hunter.py* line                  b = 1",
+        "                              * vars      b => 1",
+        "          tests/test_hunter.py* line                  b = 2",
+        "                              * vars      b => 2",
+        "          tests/test_hunter.py* line                  return 1",
+        "                              * vars      b => 2",
+        "          tests/test_hunter.py* return                return 1",
+        "                              * ...       return value: 1",
+        "                 src/hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "                 src/hunter.py* line              self.stop()",
+        "                 src/hunter.py* call          def stop(self):",
+        "                 src/hunter.py* line              sys.settrace(self._previous_tracer)",
+    ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
 
@@ -133,60 +138,60 @@ def test_trace_merge():
     trace(function="a")
     trace(function="b")
     assert trace(function="c")._handler == Or(
-        When(Q(function="a"), actions=[CodePrinter]),
-        When(Q(function="b"), actions=[CodePrinter]),
-        When(Q(function="c"), actions=[CodePrinter]),
+        When(Q(function="a"), CodePrinter),
+        When(Q(function="b"), CodePrinter),
+        When(Q(function="c"), CodePrinter),
     )
 
 
 def test_trace_api_expansion():
     # simple use
     with trace(function="foobar") as t:
-        assert t._handler == When(Q(function="foobar"), actions=[CodePrinter])
+        assert t._handler == When(Q(function="foobar"), CodePrinter)
 
     # "or" by expression
     with trace(module="foo", function="foobar") as t:
-        assert t._handler == When(Q(module="foo", function="foobar"), actions=[CodePrinter])
+        assert t._handler == When(Q(module="foo", function="foobar"), CodePrinter)
 
     # pdb.set_trace
     with trace(function="foobar", action=Debugger) as t:
-        assert t._handler == When(Q(function="foobar"), actions=[Debugger])
+        assert t._handler == When(Q(function="foobar"), Debugger)
 
     # pdb.set_trace on any hits
     with trace(module="foo", function="foobar", action=Debugger) as t:
-        assert t._handler == When(Q(module="foo", function="foobar"), actions=[Debugger])
+        assert t._handler == When(Q(module="foo", function="foobar"), Debugger)
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
     with trace(Q(function="foobar", action=Debugger), module="foo") as t:
         assert t._handler == When(Or(
-            When(Q(function="foobar"), actions=[Debugger]),
+            When(Q(function="foobar"), Debugger),
             Q(module="foo")
-        ), actions=[CodePrinter])
+        ), CodePrinter)
 
     # dumping variables from stack
-    with trace(Q(function="foobar", action=VarsPrinter(name="foobar")), module="foo") as t:
+    with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
         assert t._handler == When(Or(
-            When(Q(function="foobar"), actions=[VarsPrinter(name="foobar")]),
+            When(Q(function="foobar"), VarsPrinter("foobar")),
             Q(module="foo"),
-        ), actions=[CodePrinter])
+        ), CodePrinter)
 
-    with trace(Q(function="foobar", action=VarsPrinter(names=["foobar", "mumbojumbo"])), module="foo") as t:
+    with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
         assert t._handler == When(Or(
-            When(Q(function="foobar"), actions=[VarsPrinter(names=["foobar", "mumbojumbo"])]),
+            When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
             Q(module="foo"),
-        ), actions=[CodePrinter])
+        ), CodePrinter)
 
     # multiple actions
-    with trace(Q(function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo") as t:
+    with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
         assert t._handler == When(Or(
-            When(Q(function="foobar"), actions=[VarsPrinter(name="foobar"), Debugger]),
+            When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
             Q(module="foo"),
-        ), actions=[CodePrinter])
+        ), CodePrinter)
 
     # customization
     assert trace(lambda event: event.locals.get("node") == "Foobar",
                  module="foo", function="foobar")
     assert trace(Q(lambda event: event.locals.get("node") == "Foobar",
-                   function="foobar", actions=[VarsPrinter(name="foobar"), Debugger]), module="foo",)
-    assert trace(Q(function="foobar", actions=[VarsPrinter(name="foobar"),
+                   function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo",)
+    assert trace(Q(function="foobar", actions=[VarsPrinter("foobar"),
                                                lambda event: print("some custom output")]), module="foo",)
