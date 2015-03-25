@@ -66,7 +66,8 @@ setup(
         # eg: 'keyword1', 'keyword2', 'keyword3',
     ],
     install_requires=[
-        'fields'
+        'fields',
+        'colorama',
     ],
     extras_require={
         # eg: 'rst': ['docutils>=0.11'],

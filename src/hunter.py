@@ -9,12 +9,28 @@ import sys
 from itertools import chain
 
 from fields import Fields
-
+from colorama import AnsiToWin32, Fore, Back, Style
 
 __version__ = "0.1.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 30
+EVENT_COLORS = {
+    'reset': Style.RESET_ALL,
+    'filename': '',
+    'colon': Fore.BLACK + Style.BRIGHT,
+    'lineno': Style.RESET_ALL + Fore.MAGENTA,
+    'kind': Fore.CYAN,
+    'continuation': Fore.BLUE,
+    'return': Style.BRIGHT + Fore.GREEN,
+    'exception': Style.BRIGHT + Fore.RED,
+    'detail': Style.NORMAL,
+}
+CODE_COLORS = {
+    'call': Fore.RESET + Style.BRIGHT,
+    'line': Fore.RESET,
+    'return': Fore.YELLOW,
+}
 
 
 class Tracer(object):
@@ -335,7 +351,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
     An action that just prints the code being executed.
     """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
-        self.stream = stream
+        self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
         self.filename_alignment = filename_alignment
 
     def _getline(self, filename, lineno, getline=linecache.getline):
@@ -354,20 +370,25 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
         filename = event.filename or "<???>"
         # TODO: support auto-alignment, need a context object for this, eg:
         # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
-        self.stream.write("{:>{align}}:{:<5} {:9} {}\n".format(
+        self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
             join(*filename.split(sep)[-2:]),
             event.lineno,
             event.kind,
             self._getline(filename, event.lineno).rstrip(),
-            align=self.filename_alignment
+            align=self.filename_alignment,
+            code=CODE_COLORS[event.kind],
+            **EVENT_COLORS
         ))
         if event.kind in ('return', 'exception'):
-            self.stream.write("{:>{align}}       {:9} {} value: {!r}\n".format(
+            self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{!r}{reset}\n".format(
                 "",
                 "...",
                 event.kind,
                 event.arg,
-                align=self.filename_alignment
+
+                align=self.filename_alignment,
+                color=EVENT_COLORS[event.kind],
+                **EVENT_COLORS
             ))
 
 
@@ -376,7 +397,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     An action that prints local variables and optionally global variables visible from the current executing frame.
     """
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
-        self.stream = stream
+        self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
         self.filename_alignment = filename_alignment
         self.names = list(names)
         if name:
