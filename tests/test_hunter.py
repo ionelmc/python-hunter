@@ -35,7 +35,7 @@ def auto_stop():
 def test_pth_activation():
     output = subprocess.check_output(
         ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
-        env=dict(os.environ, PYTHON_HUNTER="module='posixpath',function=\"join\""),
+        env=dict(os.environ, PYTHONHUNTER="module='posixpath',function=\"join\""),
         stderr=subprocess.STDOUT,
     )
     assert b"posixpath.py" in output
