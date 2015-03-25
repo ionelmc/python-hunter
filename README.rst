@@ -100,7 +100,7 @@ You can have custom actions, like a variable printer - example:
 .. sourcecode:: python
 
     import hunter
-    hunter.trace(hunter.Q(module='posixpath', action=hunter.VarsPrinter(name='path')))
+    hunter.trace(hunter.Q(module='posixpath', action=hunter.VarsPrinter('path')))
 
     import os
     os.path.join('a', 'b')
