@@ -145,7 +145,7 @@ class Event(object):
 
     @CachedProperty
     def module(self):
-        return self.frame.f_globals.get('__name__', None)
+        return self.frame.f_globals.get('__name__', '')
 
     @CachedProperty
     def filename(self):
