@@ -16,6 +16,20 @@ __version__ = "0.1.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 30
+NO_COLORS = {
+    'reset': '',
+    'filename': '',
+    'colon': '',
+    'lineno': '',
+    'kind': '',
+    'continuation': '',
+    'return': '',
+    'exception': '',
+    'detail': '',
+    'vars': '',
+    'call': '',
+    'line': '',
+}
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
     'filename': '',
@@ -349,17 +363,40 @@ class Debugger(Fields.klass.kwargs, Action):
         """
         self.klass(**self.kwargs).set_trace(event.frame)
 
+class ColorStreamAction(Action):
+    _stream = None
+    _tty = None
 
-class CodePrinter(Fields.stream.filename_alignment, Action):
+
+    @property
+    def stream(self):
+        return self._stream
+
+    @stream.setter
+    def stream(self, value):
+        isatty = getattr(value, 'isatty', None)
+        if isatty and isatty():
+            self._stream = AnsiToWin32(value)
+            self._tty = True
+            self.event_colors = EVENT_COLORS
+            self.code_colors = CODE_COLORS
+        else:
+            self._tty = False
+            self._stream = value
+            self.event_colors = NO_COLORS
+            self.code_colors = NO_COLORS
+
+
+class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
     """
     An action that just prints the code being executed.
 
     Args:
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
-        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``15``.
+        filename_alignment (int): Default size for the filaname column (files are right-aligned). Default: ``15``.
     """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
-        self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
+        self.stream = stream
         self.filename_alignment = filename_alignment
 
     def _getline(self, filename, lineno, getline=linecache.getline):
@@ -384,8 +421,8 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
             event.kind,
             self._getline(filename, event.lineno).rstrip(),
             align=self.filename_alignment,
-            code=CODE_COLORS[event.kind],
-            **EVENT_COLORS
+            code=self.code_colors[event.kind],
+            **self.event_colors
         ))
         if event.kind in ('return', 'exception'):
             self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{!r}{reset}\n".format(
@@ -393,14 +430,13 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
                 "...",
                 event.kind,
                 event.arg,
-
                 align=self.filename_alignment,
-                color=EVENT_COLORS[event.kind],
-                **EVENT_COLORS
+                color=self.event_colors[event.kind],
+                **self.event_colors
             ))
 
 
-class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
+class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
 
@@ -416,8 +452,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     def __init__(self, *names, **options):
         if not names:
             raise TypeError("Must give at least one name/expression.")
-        stream = options.pop('stream', self.default_stream)
-        self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
+        self.stream = options.pop('stream', self.default_stream)
         self.filename_alignment = options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT)
         self.names = {
             name: set(self._iter_symbols(name))
@@ -446,7 +481,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
         try:
             return eval(code, event.globals if self.globals else {}, event.locals)
         except Exception as exc:
-            return "{exception}FAILED EVAL: {}".format(exc, **EVENT_COLORS)
+            return "{exception}FAILED EVAL: {}".format(exc, **self.event_colors)
 
 
     def __call__(self, event):
@@ -466,6 +501,6 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
                     code,
                     self._safe_eval(code, event),
                     align=self.filename_alignment,
-                    **EVENT_COLORS
+                    **self.event_colors
                 ))
                 first = False
