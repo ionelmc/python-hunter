@@ -3,16 +3,13 @@
 from __future__ import absolute_import, print_function
 
 import io
-import os
 import re
 from glob import glob
 from os.path import basename
 from os.path import dirname
 from os.path import join
-from os.path import relpath
 from os.path import splitext
 
-from distutils import log
 from distutils.command.build import build
 from setuptools import find_packages
 from setuptools import setup
@@ -31,7 +28,6 @@ class BuildWithPTH(build):
         build.run(self)
         for path in glob(join(dirname(__file__), 'src', '*.pth')):
             dest = join(self.build_lib, basename(path))
-            log.info("Copying %s to %s." % (path, dest))
             self.copy_file(path, dest)
 
 
@@ -40,7 +36,6 @@ class EasyInstallWithPTH(easy_install):
         easy_install.run(self)
         for path in glob(join(dirname(__file__), 'src', '*.pth')):
             dest = join(self.install_dir, basename(path))
-            log.info("Copying %s to %s." % (path, dest))
             self.copy_file(path, dest)
 
 
