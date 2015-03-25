@@ -106,6 +106,9 @@ class Event(object):
 
     Provides few convenience properties.
     """
+    frame = None
+    kind = None
+    arg = None
 
     def __init__(self, frame, kind, arg):
         self.frame = frame
@@ -174,6 +177,7 @@ class Query(Fields.query):
     A query class.
     """
     query = ()
+    allowed = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
 
     def __init__(self, *x, **query):
         """
@@ -181,8 +185,8 @@ class Query(Fields.query):
             query: criteria to match on. Currently only 'function', 'module' or 'filename' are accepted.
         """
         for key in query:
-            if key not in ('function', 'module', 'filename'):
-                raise TypeError("Unexpected argument {!r}. Must be one of 'function', 'module' or 'filename'.".format(key))
+            if key not in self.allowed:
+                raise TypeError("Unexpected argument {!r}. Must be one of {}.".format(key, self.allowed))
         self.query = query
 
     def __repr__(self):
