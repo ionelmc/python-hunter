@@ -185,7 +185,7 @@ def Q(*predicates, **query):
         result = Query(**query)
 
     if optional_actions:
-        result = When(result, actions=optional_actions)
+        result = When(result, *optional_actions)
 
     return result
 
@@ -241,7 +241,9 @@ class When(Fields.condition.actions):
 
     Actions take a single ``event`` argument.
     """
-    def __init__(self, condition, actions):
+    def __init__(self, condition, *actions):
+        if not actions:
+            raise TypeError("Must give at least one action.")
         super(When, self).__init__(condition, [
             action() if inspect.isclass(action) and issubclass(action, Action) else action
             for action in actions
