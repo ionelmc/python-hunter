@@ -14,7 +14,7 @@ from fields import Fields
 __version__ = "0.1.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
-DEFAULT_MIN_FILENAME_ALIGNMENT = 15
+DEFAULT_MIN_FILENAME_ALIGNMENT = 30
 
 
 class Tracer(object):
@@ -347,7 +347,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
         except Exception as exc:
             return "??? no source: {} ???".format(exc)
 
-    def __call__(self, event, basename=os.path.basename):
+    def __call__(self, event, sep=os.path.sep, join=os.path.join):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also prints values.
         """
@@ -355,7 +355,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
         # TODO: support auto-alignment, need a context object for this, eg:
         # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
         self.stream.write("{:>{align}}:{:<5} {:9} {}\n".format(
-            basename(filename),
+            join(*filename.split(sep)[-2:]),
             event.lineno,
             event.kind,
             self._getline(filename, event.lineno).rstrip(),
