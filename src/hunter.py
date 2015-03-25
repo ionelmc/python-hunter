@@ -373,7 +373,7 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
 
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     """
-    An action that prints local variables and optinally global variables visible from the current executing frame.
+    An action that prints local variables and optionally global variables visible from the current executing frame.
     """
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
