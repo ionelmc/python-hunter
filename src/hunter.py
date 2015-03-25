@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
+import ast
 
 import inspect
 import linecache
@@ -19,12 +20,13 @@ EVENT_COLORS = {
     'reset': Style.RESET_ALL,
     'filename': '',
     'colon': Fore.BLACK + Style.BRIGHT,
-    'lineno': Style.RESET_ALL + Fore.MAGENTA,
+    'lineno': Style.RESET_ALL,
     'kind': Fore.CYAN,
     'continuation': Fore.BLUE,
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
     'detail': Style.NORMAL,
+    'vars': Fore.MAGENTA,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -391,7 +393,6 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
                 **EVENT_COLORS
             ))
 
-
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
@@ -399,34 +400,45 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
         self.filename_alignment = filename_alignment
-        self.names = list(names)
+        names = list(names)
         if name:
-            self.names.append(name)
+            names.append(name)
+        self.names = {
+            name: set(self._iter_symbols(name))
+            for name in names
+        }
         self.globals = globals
+
+    @staticmethod
+    def _iter_symbols(code):
+        for node in ast.walk(ast.parse(code)):
+            if isinstance(node, ast.Name):
+                yield node.id
+
+    def _safe_eval(self, code, event):
+        try:
+            return eval(code, event.globals if self.globals else {}, event.locals)
+        except Exception as exc:
+            return "{exception}FAILED EVAL: {}".format(exc, **EVENT_COLORS)
+
 
     def __call__(self, event):
         """
         Handle event and print the specified variables.
         """
         first = True
-        for key, value in event.locals.items():
-            if key in self.names or not self.names:
-                self.stream.write("{:>{align}}       {:9} {} -> {!r}\n".format(
+        frame_symbols = set(event.locals)
+        if self.globals:
+            frame_symbols |= set(event.globals)
+
+        for code, symbols in self.names.items():
+            if symbols >= frame_symbols:
+                self.stream.write("{:>{align}}       {vars}{:9} {reset}{} {vars}=> {reset}{!r}\n".format(
                     "",
                     "vars" if first else "...",
-                    key,
-                    value,
-                    align=self.filename_alignment
+                    code,
+                    self._safe_eval(code, event),
+                    align=self.filename_alignment,
+                    **EVENT_COLORS
                 ))
                 first = False
-        if self.globals:
-            for key, value in event.globals.items():
-                if key in self.names or not self.names:
-                    self.stream.write("{:>{align}}       {:9} {} => {!r}\n".format(
-                        "",
-                        "vars" if first else "...",
-                        key,
-                        value,
-                        align=self.filename_alignment
-                    ))
-                    first = False
