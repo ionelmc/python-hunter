@@ -353,6 +353,10 @@ class Debugger(Fields.klass.kwargs, Action):
 class CodePrinter(Fields.stream.filename_alignment, Action):
     """
     An action that just prints the code being executed.
+
+    Args:
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``15``.
     """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
@@ -395,12 +399,23 @@ class CodePrinter(Fields.stream.filename_alignment, Action):
                 **EVENT_COLORS
             ))
 
+
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
+
+    Args:
+        *names (strings):
+            Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are present on the frame.
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``15``.
+        globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
     """
     default_stream = sys.stderr
+
     def __init__(self, *names, **options):
+        if not names:
+            raise TypeError("Must give at least one name/expression.")
         stream = options.pop('stream', self.default_stream)
         self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
         self.filename_alignment = options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT)
@@ -412,11 +427,22 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
 
     @staticmethod
     def _iter_symbols(code):
+        """
+        Iterate all the variable names in the given expression.
+
+        Example:
+
+        * ``self.foobar`` yields ``self``
+        * ``self[foobar]`` yields `self`` and ``foobar``
+        """
         for node in ast.walk(ast.parse(code)):
             if isinstance(node, ast.Name):
                 yield node.id
 
     def _safe_eval(self, code, event):
+        """
+        Try to evaluate the given code on the given frame. If failure occurs, returns some ugly string with exception.
+        """
         try:
             return eval(code, event.globals if self.globals else {}, event.locals)
         except Exception as exc:
