@@ -81,18 +81,18 @@ def test_tracing_bare():
     print(lines.getvalue())
 
     for line, expected in izip_longest(lines.getvalue().splitlines(), [
-        "                 src/hunter.py* call          def __enter__(self):",
-        "                 src/hunter.py* line              return self",
-        "                 src/hunter.py* return            return self",
-        "                              * ...       return value: <hunter.Tracer *",
-        "          tests/test_hunter.py* call              def a():",
-        "          tests/test_hunter.py* line                  return 1",
-        "          tests/test_hunter.py* return                return 1",
-        "                              * ...       return value: 1",
-        "                 src/hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "                 src/hunter.py* line              self.stop()",
-        "                 src/hunter.py* call          def stop(self):",
-        "                 src/hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*      */hunter.py* call          def __enter__(self):",
+        "*      */hunter.py* line              return self",
+        "*      */hunter.py* return            return self",
+        "*                 * ...       return value: <hunter.Tracer *",
+        "* */test_hunter.py* call              def a():",
+        "* */test_hunter.py* line                  return 1",
+        "* */test_hunter.py* return                return 1",
+        "*                 * ...       return value: 1",
+        "*      */hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "*      */hunter.py* line              self.stop()",
+        "*      */hunter.py* call          def stop(self):",
+        "*      */hunter.py* line              sys.settrace(self._previous_tracer)",
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
@@ -113,23 +113,23 @@ def test_tracing_vars():
     print(lines.getvalue())
 
     for line, expected in izip_longest(lines.getvalue().splitlines(), [
-        "                 src/hunter.py* call          def __enter__(self):",
-        "                 src/hunter.py* line              return self",
-        "                 src/hunter.py* return            return self",
-        "                              * ...       return value: <hunter.Tracer *",
-        "          tests/test_hunter.py* call              def a():",
-        "          tests/test_hunter.py* line                  b = 1",
-        "                              * vars      b => 1",
-        "          tests/test_hunter.py* line                  b = 2",
-        "                              * vars      b => 2",
-        "          tests/test_hunter.py* line                  return 1",
-        "                              * vars      b => 2",
-        "          tests/test_hunter.py* return                return 1",
-        "                              * ...       return value: 1",
-        "                 src/hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "                 src/hunter.py* line              self.stop()",
-        "                 src/hunter.py* call          def stop(self):",
-        "                 src/hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*      */hunter.py* call          def __enter__(self):",
+        "*      */hunter.py* line              return self",
+        "*      */hunter.py* return            return self",
+        "*                 * ...       return value: <hunter.Tracer *",
+        "* */test_hunter.py* call              def a():",
+        "* */test_hunter.py* line                  b = 1",
+        "*                 * vars      b => 1",
+        "* */test_hunter.py* line                  b = 2",
+        "*                 * vars      b => 2",
+        "* */test_hunter.py* line                  return 1",
+        "*                 * vars      b => 2",
+        "* */test_hunter.py* return                return 1",
+        "*                 * ...       return value: 1",
+        "*      */hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "*      */hunter.py* line              self.stop()",
+        "*      */hunter.py* call          def stop(self):",
+        "*      */hunter.py* line              sys.settrace(self._previous_tracer)",
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
