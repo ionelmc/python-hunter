@@ -494,7 +494,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
             frame_symbols |= set(event.globals)
 
         for code, symbols in self.names.items():
-            if symbols >= frame_symbols:
+            if frame_symbols >= symbols:
                 self.stream.write("{:>{align}}       {vars}{:9} {reset}{} {vars}=> {reset}{!r}\n".format(
                     "",
                     "vars" if first else "...",
