@@ -397,17 +397,16 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, Action):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
     """
-    def __init__(self, name=None, names=(), globals=False, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
+    default_stream = sys.stderr
+    def __init__(self, *names, **options):
+        stream = options.pop('stream', self.default_stream)
         self.stream = AnsiToWin32(stream) if hasattr(stream, 'isatty') and stream.isatty() else stream
-        self.filename_alignment = filename_alignment
-        names = list(names)
-        if name:
-            names.append(name)
+        self.filename_alignment = options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT)
         self.names = {
             name: set(self._iter_symbols(name))
             for name in names
         }
-        self.globals = globals
+        self.globals = options.pop('globals', False)
 
     @staticmethod
     def _iter_symbols(code):
