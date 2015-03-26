@@ -44,7 +44,7 @@ setup(
     version='0.1.0',
     license='BSD',
     description='Hunter is a flexible code tracing toolkit.',
-    long_description='%s\n%s' % (read('README.rst'), re.sub(':obj:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))),
+    long_description='%s\n%s' % (read('README.rst'), re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))),
     author='Ionel Cristian M\xc4\x83rie\xc8\x99',
     author_email='contact@ionelmc.ro',
     url='https://github.com/ionelmc/python-hunter',
