@@ -11,7 +11,7 @@ import sys
 from itertools import chain
 
 from fields import Fields
-from colorama import AnsiToWin32, Fore, Back, Style
+from colorama import AnsiToWin32, Fore, Style
 
 
 __version__ = "0.1.0"
@@ -365,10 +365,10 @@ class Debugger(Fields.klass.kwargs, Action):
         """
         self.klass(**self.kwargs).set_trace(event.frame)
 
+
 class ColorStreamAction(Action):
     _stream = None
     _tty = None
-
 
     @property
     def stream(self):
@@ -484,7 +484,6 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
             return eval(code, event.globals if self.globals else {}, event.locals)
         except Exception as exc:
             return "{exception}FAILED EVAL: {}".format(exc, **self.event_colors)
-
 
     def __call__(self, event):
         """
