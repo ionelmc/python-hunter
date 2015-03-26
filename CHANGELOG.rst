@@ -9,7 +9,7 @@ Changelog
 * Added support for expressions in :class:`VarsPrinter`.
 * Breaking changes:
 
-  * Renamed ``F`` to :obj:`Q`. And :obj:`Q` is just a sugar function for :class:`Query`.
+  * Renamed ``F`` to :obj:`Q`. And :obj:`Q` is now just a convenience wrapper for :class:`Query`.
   * Renamed the ``PYTHON_HUNTER`` env variable to ``PYTHONHUNTER``.
   * Changed :class:`When` to take positional arguments.
   * Changed output to show 2 path components (still not configurable).
