@@ -84,16 +84,20 @@ The default action is to just print the code being executed. Example:
 
 Would result in::
 
-    posixpath.py:60    call      def join(a, *p):
-    posixpath.py:64    line          path = a
-    posixpath.py:65    line          for b in p:
-    posixpath.py:66    line              if b.startswith('/'):
-    posixpath.py:68    line              elif path == '' or path.endswith('/'):
-    posixpath.py:71    line                  path += '/' + b
-    posixpath.py:65    line          for b in p:
-    posixpath.py:72    line          return path
-    posixpath.py:72    return        return path
-                       ...       return value: 'a/b'
+    python2.7/posixpath.py:60    call      def join(a, *p):
+    python2.7/posixpath.py:64    line          path = a
+    python2.7/posixpath.py:65    line          for b in p:
+    python2.7/posixpath.py:66    line              if b.startswith('/'):
+    python2.7/posixpath.py:68    line              elif path == '' or path.endswith('/'):
+    python2.7/posixpath.py:71    line                  path += '/' + b
+    python2.7/posixpath.py:65    line          for b in p:
+    python2.7/posixpath.py:72    line          return path
+    python2.7/posixpath.py:72    return        return path
+                                 ...       return value: 'a/b'
+
+- or in a terminal:
+
+.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/simple-trace.png
 
 You can have custom actions, like a variable printer - example:
 
@@ -107,23 +111,27 @@ You can have custom actions, like a variable printer - example:
 
 Would result in::
 
-    posixpath.py:60    call      def join(a, *p):
-    posixpath.py:64    line          path = a
-                       vars      path -> 'a'
-    posixpath.py:65    line          for b in p:
-                       vars      path -> 'a'
-    posixpath.py:66    line              if b.startswith('/'):
-                       vars      path -> 'a'
-    posixpath.py:68    line              elif path == '' or path.endswith('/'):
-                       vars      path -> 'a'
-    posixpath.py:71    line                  path += '/' + b
-                       vars      path -> 'a/b'
-    posixpath.py:65    line          for b in p:
-                       vars      path -> 'a/b'
-    posixpath.py:72    line          return path
-                       vars      path -> 'a/b'
-    posixpath.py:72    return        return path
-                       ...       return value: 'a/b'
+    python2.7/posixpath.py:60    call      def join(a, *p):
+    python2.7/posixpath.py:64    line          path = a
+                                 vars      path => 'a'
+    python2.7/posixpath.py:65    line          for b in p:
+                                 vars      path => 'a'
+    python2.7/posixpath.py:66    line              if b.startswith('/'):
+                                 vars      path => 'a'
+    python2.7/posixpath.py:68    line              elif path == '' or path.endswith('/'):
+                                 vars      path => 'a'
+    python2.7/posixpath.py:71    line                  path += '/' + b
+                                 vars      path => 'a/b'
+    python2.7/posixpath.py:65    line          for b in p:
+                                 vars      path => 'a/b'
+    python2.7/posixpath.py:72    line          return path
+                                 vars      path => 'a/b'
+    python2.7/posixpath.py:72    return        return path
+                                 ...       return value: 'a/b'
+
+- or in a terminal:
+
+.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/vars-trace.png
 
 You can give it a tree-like configuration where you can optionally configure specific actions for parts of the
 tree (like dumping variables or a pdb set_trace):
