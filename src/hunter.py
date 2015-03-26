@@ -14,7 +14,7 @@ from fields import Fields
 from colorama import AnsiToWin32, Fore, Style
 
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 30
