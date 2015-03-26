@@ -2,7 +2,7 @@
 Changelog
 =========
 
-0.2.0 (2015-03-26)
+0.2.0 (2015-03-27)
 -----------------------------------------
 
 * Added color support (and ``colorama`` as dependency).
