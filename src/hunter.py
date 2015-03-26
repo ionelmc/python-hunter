@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
-import ast
 
+import ast
+import atexit
 import inspect
 import linecache
 import os
@@ -11,6 +12,7 @@ from itertools import chain
 
 from fields import Fields
 from colorama import AnsiToWin32, Fore, Back, Style
+
 
 __version__ = "0.1.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
@@ -120,7 +122,7 @@ class Tracer(object):
 
 _tracer = Tracer()
 trace = _tracer.trace
-stop = _tracer.stop
+stop = atexit.register(_tracer.stop)
 
 
 class CachedProperty(object):
