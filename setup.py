@@ -14,6 +14,7 @@ from distutils.command.build import build
 from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.easy_install import easy_install
+from setuptools.command.develop import develop
 
 
 def read(*names, **kwargs):
@@ -34,6 +35,14 @@ class BuildWithPTH(build):
 class EasyInstallWithPTH(easy_install):
     def run(self):
         easy_install.run(self)
+        for path in glob(join(dirname(__file__), 'src', '*.pth')):
+            dest = join(self.install_dir, basename(path))
+            self.copy_file(path, dest)
+
+
+class DevelopWithPTH(develop):
+    def run(self):
+        develop.run(self)
         for path in glob(join(dirname(__file__), 'src', '*.pth')):
             dest = join(self.install_dir, basename(path))
             self.copy_file(path, dest)
@@ -89,5 +98,6 @@ setup(
     cmdclass={
         'build': BuildWithPTH,
         'easy_install': EasyInstallWithPTH,
+        'develop': DevelopWithPTH,
     },
 )
