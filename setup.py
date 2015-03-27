@@ -79,9 +79,10 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Utilities',
+        'Topic :: Software Development :: Debuggers',
     ],
     keywords=[
-        # eg: 'keyword1', 'keyword2', 'keyword3',
+        'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
     ],
     install_requires=[
         'fields',
