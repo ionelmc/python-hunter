@@ -31,7 +31,6 @@ def auto_stop():
         stop()
 
 
-@pytest.mark.skipif('TESTS_EXPECT_PTH' not in os.environ, reason="hunter.pth file is not available in this env.")
 def test_pth_activation():
     output = subprocess.check_output(
         ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
