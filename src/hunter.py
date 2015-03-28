@@ -223,7 +223,7 @@ class Query(Fields.query):
     query = ()
     allowed = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
 
-    def __init__(self, *x, **query):
+    def __init__(self, **query):
         """
         Args:
             query: criteria to match on. Currently only 'function', 'module' or 'filename' are accepted.
