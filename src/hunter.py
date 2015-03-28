@@ -9,17 +9,15 @@ import pdb
 import re
 import sys
 import tokenize
-import types
 
 from functools import partial
 from itertools import chain
 
 from colorama import AnsiToWin32
+from colorama import Back
 from colorama import Fore
 from colorama import Style
 from fields import Fields
-
-
 
 __version__ = "0.2.1"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
@@ -36,8 +34,11 @@ NO_COLORS = {
     'exception': '',
     'detail': '',
     'vars': '',
+    'vars-name': '',
     'call': '',
     'line': '',
+    'internal-failure': '',
+    'internal-detail': '',
 }
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
@@ -49,7 +50,10 @@ EVENT_COLORS = {
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
     'detail': Style.NORMAL,
-    'vars': Fore.MAGENTA,
+    'vars': Style.RESET_ALL + Fore.MAGENTA,
+    'vars-name': Style.BRIGHT,
+    'internal-failure': Back.RED + Style.BRIGHT + Fore.RED,
+    'internal-detail': Fore.WHITE,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -439,6 +443,12 @@ class ColorStreamAction(Action):
             self.event_colors = NO_COLORS
             self.code_colors = NO_COLORS
 
+    def _safe_repr(self, obj):
+        try:
+            return repr(obj)
+        except Exception as exc:
+            return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}".format(exc, **self.event_colors)
+
 
 class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
     """
@@ -480,11 +490,11 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
             ))
 
         if event.kind in ('return', 'exception'):
-            self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{!r}{reset}\n".format(
+            self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{}{reset}\n".format(
                 "",
                 "...",
                 event.kind,
-                event.arg,
+                self._safe_repr(event.arg),
                 align=self.filename_alignment,
                 color=self.event_colors[event.kind],
                 **self.event_colors
@@ -536,7 +546,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         try:
             return eval(code, event.globals if self.globals else {}, event.locals)
         except Exception as exc:
-            return "{exception}FAILED EVAL: {}".format(exc, **self.event_colors)
+            return "{internal-failure}FAILED EVAL: {internal-detail}{!r}".format(exc, **self.event_colors)
 
     def __call__(self, event):
         """
@@ -549,11 +559,11 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
 
         for code, symbols in self.names.items():
             if frame_symbols >= symbols:
-                self.stream.write("{:>{align}}       {vars}{:9} {reset}{} {vars}=> {reset}{!r}\n".format(
+                self.stream.write("{:>{align}}       {vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
                     "",
                     "vars" if first else "...",
                     code,
-                    self._safe_eval(code, event),
+                    self._safe_repr(self._safe_eval(code, event)),
                     align=self.filename_alignment,
                     **self.event_colors
                 ))

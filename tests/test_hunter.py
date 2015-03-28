@@ -184,6 +184,64 @@ def test_tracing_bare():
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
+def test_tracing_printing_failures():
+    lines = StringIO()
+    with trace(CodePrinter(stream=lines),VarsPrinter("x", stream=lines)):
+        class Bad(Exception):
+            def __repr__(self):
+                raise RuntimeError("I'm a bad class!")
+
+
+        def a():
+            x = Bad()
+            return x
+
+        def b():
+            x = Bad()
+            raise x
+
+        a()
+        try:
+            b()
+        except Exception as exc:
+            pass
+    print(lines.getvalue())
+    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+        """*        src/hunter.py:* call          def __enter__(self):""",
+        """*        src/hunter.py:* line              return self""",
+        """*        src/hunter.py:* return            return self""",
+        """*                      * ...       return value: <hunter.Tracer *""",
+        """* tests/test_hunter.py:* call              class Bad(Exception):""",
+        """* tests/test_hunter.py:* line              class Bad(Exception):""",
+        """* tests/test_hunter.py:* line                  def __repr__(self):""",
+        """* tests/test_hunter.py:* return                def __repr__(self):""",
+        """*                      * ...       return value: *""",
+        """* tests/test_hunter.py:* call              def a():""",
+        """* tests/test_hunter.py:* line                  x = Bad()""",
+        """* tests/test_hunter.py:* line                  return x""",
+        """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """* tests/test_hunter.py:* return                return x""",
+        """*                      * ...       return value: !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """* tests/test_hunter.py:* call              def b():""",
+        """* tests/test_hunter.py:* line                  x = Bad()""",
+        """* tests/test_hunter.py:* line                  raise x""",
+        """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """* tests/test_hunter.py:* exception             raise x""",
+        """*                      * ...       exception value: !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """* tests/test_hunter.py:* return                raise x""",
+        """*                      * ...       return value: None""",
+        """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
+        """*        src/hunter.py:* call          def __exit__(self, exc_type, exc_val, exc_tb):""",
+        """*        src/hunter.py:* line              self.stop()""",
+        """*        src/hunter.py:* call          def stop(self):""",
+        """*        src/hunter.py:* line              sys.settrace(self._previous_tracer)""",
+
+    ], fillvalue="MISSING"):
+        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+
+
 
 def test_tracing_vars():
     lines = StringIO()
