@@ -7,11 +7,19 @@ import inspect
 import linecache
 import os
 import pdb
+import re
 import sys
+import tokenize
+import types
+
+from functools import partial
 from itertools import chain
 
+from colorama import AnsiToWin32
+from colorama import Fore
+from colorama import Style
 from fields import Fields
-from colorama import AnsiToWin32, Fore, Style
+
 
 
 __version__ = "0.2.1"
@@ -160,7 +168,7 @@ class Event(object):
 
     @CachedProperty
     def function(self):
-        return self.frame.f_code.co_name
+        return self.code.co_name
 
     @CachedProperty
     def module(self):
@@ -182,16 +190,50 @@ class Event(object):
         return self.frame.f_lineno
 
     @CachedProperty
-    def line(self, getline=linecache.getline):
+    def code(self):
+        return self.frame.f_code
+
+    @CachedProperty
+    def source(self, getlines=linecache.getlines):
         """
         Get a line from ``linecache``. Ignores failures somewhat.
         """
         try:
-            return getline(self.filename, self.lineno)
+            if self.kind == 'call' and not isinstance(self.code, types.ModuleType):
+                lines = []
+                try:
+                    for _, token, _, _, line in tokenize.generate_tokens(partial(
+                        next,
+                        yield_lines(self.filename, self.lineno - 1, lines.append)
+                    )):
+                        if token in ("def", "class", "lambda"):
+                            return ''.join(lines)
+                except tokenize.TokenError:
+                    pass
+
+            return getlines(self.filename)[self.lineno - 1]
         except Exception as exc:
-            return "??? no source: {} ???".format(exc)
+            return "??? no source: {!r} ???".format(exc)
 
     __getitem__ = object.__getattribute__
+
+
+def yield_lines(filename, start, collector,
+                limit=10,
+                getlines=linecache.getlines,
+                leading_whitespace_re=re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)):
+    dedent = None
+    amount = 0
+    for line in getlines(filename)[start:start + limit]:
+        if dedent is None:
+            dedent = leading_whitespace_re.findall(line)
+            dedent = dedent[0] if dedent else ""
+            amount = len(dedent)
+        elif not line.startswith(dedent):
+            break
+        # print(start, repr(line))
+        collector(line)
+        yield line[amount:]
 
 
 def Q(*predicates, **query):
@@ -419,15 +461,26 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         filename = event.filename or "<???>"
         # TODO: support auto-alignment, need a context object for this, eg:
         # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
+        lines = event.source.rstrip().splitlines()
         self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
             join(*filename.split(sep)[-2:]),
             event.lineno,
             event.kind,
-            event.line.rstrip(),
+            lines[0],
             align=self.filename_alignment,
             code=self.code_colors[event.kind],
             **self.event_colors
         ))
+        for line in lines[1:]:
+            self.stream.write("{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
+                "",
+                r"   |",
+                line,
+                align=self.filename_alignment,
+                code=self.code_colors[event.kind],
+                **self.event_colors
+            ))
+
         if event.kind in ('return', 'exception'):
             self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{!r}{reset}\n".format(
                 "",
