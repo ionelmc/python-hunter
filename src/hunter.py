@@ -48,6 +48,7 @@ CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
     'line': Fore.RESET,
     'return': Fore.YELLOW,
+    'exception': Fore.RED,
 }
 
 
