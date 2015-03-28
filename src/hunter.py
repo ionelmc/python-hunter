@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from __future__ import unicode_literals
 
 import ast
 import atexit
@@ -231,7 +230,6 @@ def yield_lines(filename, start, collector,
             amount = len(dedent)
         elif not line.startswith(dedent):
             break
-        # print(start, repr(line))
         collector(line)
         yield line[amount:]
 

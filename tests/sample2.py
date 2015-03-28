@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-if __name__ == "__main__":
+if __name__ == "__main__":  # ăăăă
     import functools
 
     def deco(opt):
@@ -17,13 +17,13 @@ if __name__ == "__main__":
         return args
 
     foo(
-        'a',
+        'aăă',
         'b'
     )
     try:
         None(
             'a',
             'b'
-        )  # doh!
+        )  # dăh!
     except:
         pass

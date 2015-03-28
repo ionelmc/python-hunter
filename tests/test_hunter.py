@@ -3,7 +3,10 @@ from __future__ import print_function
 import os
 import subprocess
 from fnmatch import fnmatchcase
-from io import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 try:
     from itertools import izip_longest
 except ImportError:
@@ -50,8 +53,8 @@ def test_pth_sample2():
         stderr=subprocess.STDOUT,
     )
     for line, expected in izip_longest(output.decode('utf8').splitlines(), [
-        '* tests/sample2.py:* call      if __name__ == "__main__":',
-        '* tests/sample2.py:* line      if __name__ == "__main__":',
+        '* tests/sample2.py:* call      if __name__ == "__main__":  #*',
+        '* tests/sample2.py:* line      if __name__ == "__main__":  #*',
         '* tests/sample2.py:* line          import functools',
         '* tests/sample2.py:* line          def deco(opt):',
         '* tests/sample2.py:* line          @deco(1)',
@@ -88,7 +91,7 @@ def test_pth_sample2():
         '* tests/sample2.py:* return                return wrapper',
         '*                  * ...       return value: <function foo *',
         '* tests/sample2.py:* line          foo(',
-        "* tests/sample2.py:* line              'a',",
+        "* tests/sample2.py:* line              'a*',",
         "* tests/sample2.py:* line              'b'",
         '* tests/sample2.py:* call                  @functools.wraps(func)',
         '*                  *    |                  def wrapper(*args):',
@@ -105,13 +108,13 @@ def test_pth_sample2():
         '*                  *    |          def foo(*args):',
         '* tests/sample2.py:* line              return args',
         '* tests/sample2.py:* return            return args',
-        "*                  * ...       return value: ('a', 'b')",
+        "*                  * ...       return value: ('a*', 'b')",
         "* tests/sample2.py:* return                    return func(*args)",
-        "*                  * ...       return value: ('a', 'b')",
+        "*                  * ...       return value: ('a*', 'b')",
         "* tests/sample2.py:* return                    return func(*args)",
-        "*                  * ...       return value: ('a', 'b')",
+        "*                  * ...       return value: ('a*', 'b')",
         "* tests/sample2.py:* return                    return func(*args)",
-        "*                  * ...       return value: ('a', 'b')",
+        "*                  * ...       return value: ('a*', 'b')",
         "* tests/sample2.py:* line          try:",
         "* tests/sample2.py:* line              None(",
         "* tests/sample2.py:* line                  'a',",
