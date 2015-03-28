@@ -2,8 +2,14 @@
 Changelog
 =========
 
+0.2.1 (2015-03-28)
+------------------
+
+* Add missing color entry for exception events.
+* Add :obj:`Event.line` property. It returns the source code for the line being run.
+
 0.2.0 (2015-03-27)
------------------------------------------
+------------------
 
 * Added color support (and ``colorama`` as dependency).
 * Added support for expressions in :class:`VarsPrinter`.
@@ -19,6 +25,6 @@ Changelog
   ``setup.py develop``/``pip install -e`` (the "egg links").
 
 0.1.0 (2015-03-22)
------------------------------------------
+------------------
 
 * First release on PyPI.
