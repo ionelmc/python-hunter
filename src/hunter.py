@@ -180,6 +180,16 @@ class Event(object):
     def lineno(self):
         return self.frame.f_lineno
 
+    @CachedProperty
+    def line(self, getline=linecache.getline):
+        """
+        Get a line from ``linecache``. Ignores failures somewhat.
+        """
+        try:
+            return getline(self.filename, self.lineno)
+        except Exception as exc:
+            return "??? no source: {} ???".format(exc)
+
     __getitem__ = object.__getattribute__
 
 
@@ -401,15 +411,6 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         self.stream = stream
         self.filename_alignment = filename_alignment
 
-    def _getline(self, filename, lineno, getline=linecache.getline):
-        """
-        Get a line from ``linecache``. Ignores failures somewhat.
-        """
-        try:
-            return getline(filename, lineno)
-        except Exception as exc:
-            return "??? no source: {} ???".format(exc)
-
     def __call__(self, event, sep=os.path.sep, join=os.path.join):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also prints values.
@@ -421,7 +422,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
             join(*filename.split(sep)[-2:]),
             event.lineno,
             event.kind,
-            self._getline(filename, event.lineno).rstrip(),
+            event.line.rstrip(),
             align=self.filename_alignment,
             code=self.code_colors[event.kind],
             **self.event_colors
