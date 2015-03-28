@@ -148,7 +148,7 @@ For your convenience environment variable activation is available. Just run your
 
 On Windows you'd do something like::
 
-    set PYTHONHUNTER="module='os.path'"
+    set PYTHONHUNTER=module='os.path'
     python yourapp.py
 
 The activation works with a clever ``.pth`` file that checks for that env var presence and before your app runs does something like this::
