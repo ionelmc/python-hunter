@@ -199,7 +199,7 @@ class Event(object):
         Get a line from ``linecache``. Ignores failures somewhat.
         """
         try:
-            if self.kind == 'call' and not isinstance(self.code, types.ModuleType):
+            if self.kind == 'call' and self.code.co_name != "<module>":
                 lines = []
                 try:
                     for _, token, _, _, line in tokenize.generate_tokens(partial(
