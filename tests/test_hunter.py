@@ -40,6 +40,92 @@ def test_pth_activation():
     assert b"posixpath.py" in output
     assert b"call      def join(a, *p):" in output
 
+def test_pth_sample2():
+    env = dict(os.environ, PYTHONHUNTER="module='__main__'")
+    env.pop('COVERAGE_PROCESS_START', None)
+    env.pop('COV_CORE_SOURCE', None)
+    output = subprocess.check_output(
+        ['python', os.path.join(os.path.dirname(__file__), 'sample2.py')],
+        env=env,
+        stderr=subprocess.STDOUT,
+    )
+    for line, expected in izip_longest(output.decode('utf8').splitlines(), [
+        '* tests/sample2.py:* call      if __name__ == "__main__":',
+        '* tests/sample2.py:* line      if __name__ == "__main__":',
+        '* tests/sample2.py:* line          import functools',
+        '* tests/sample2.py:* line          def deco(opt):',
+        '* tests/sample2.py:* line          @deco(1)',
+        '* tests/sample2.py:* call          def deco(opt):',
+        '* tests/sample2.py:* line              def decorator(func):',
+        '* tests/sample2.py:* line              return decorator',
+        '* tests/sample2.py:* return            return decorator',
+        '*                  * ...       return value: <function deco*',
+        '* tests/sample2.py:* line          @deco(2)',
+        '* tests/sample2.py:* call          def deco(opt):',
+        '* tests/sample2.py:* line              def decorator(func):',
+        '* tests/sample2.py:* line              return decorator',
+        '* tests/sample2.py:* return            return decorator',
+        '*                  * ...       return value: <function deco*',
+        '* tests/sample2.py:* line          @deco(3)',
+        '* tests/sample2.py:* call          def deco(opt):',
+        '* tests/sample2.py:* line              def decorator(func):',
+        '* tests/sample2.py:* line              return decorator',
+        '* tests/sample2.py:* return            return decorator',
+        '*                  * ...       return value: <function deco*',
+        '* tests/sample2.py:* call              def decorator(func):',
+        '* tests/sample2.py:* line                  @functools.wraps(func)',
+        '* tests/sample2.py:* line                  return wrapper',
+        '* tests/sample2.py:* return                return wrapper',
+        '*                  * ...       return value: <function foo *',
+        '* tests/sample2.py:* call              def decorator(func):',
+        '* tests/sample2.py:* line                  @functools.wraps(func)',
+        '* tests/sample2.py:* line                  return wrapper',
+        '* tests/sample2.py:* return                return wrapper',
+        '*                  * ...       return value: <function foo *',
+        '* tests/sample2.py:* call              def decorator(func):',
+        '* tests/sample2.py:* line                  @functools.wraps(func)',
+        '* tests/sample2.py:* line                  return wrapper',
+        '* tests/sample2.py:* return                return wrapper',
+        '*                  * ...       return value: <function foo *',
+        '* tests/sample2.py:* line          foo(',
+        "* tests/sample2.py:* line              'a',",
+        "* tests/sample2.py:* line              'b'",
+        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '*                  *    |                  def wrapper(*args):',
+        '* tests/sample2.py:* line                      return func(*args)',
+        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '*                  *    |                  def wrapper(*args):',
+        '* tests/sample2.py:* line                      return func(*args)',
+        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '*                  *    |                  def wrapper(*args):',
+        '* tests/sample2.py:* line                      return func(*args)',
+        '* tests/sample2.py:* call          @deco(1)',
+        '*                  *    |          @deco(2)',
+        '*                  *    |          @deco(3)',
+        '*                  *    |          def foo(*args):',
+        '* tests/sample2.py:* line              return args',
+        '* tests/sample2.py:* return            return args',
+        "*                  * ...       return value: ('a', 'b')",
+        "* tests/sample2.py:* return                    return func(*args)",
+        "*                  * ...       return value: ('a', 'b')",
+        "* tests/sample2.py:* return                    return func(*args)",
+        "*                  * ...       return value: ('a', 'b')",
+        "* tests/sample2.py:* return                    return func(*args)",
+        "*                  * ...       return value: ('a', 'b')",
+        "* tests/sample2.py:* line          try:",
+        "* tests/sample2.py:* line              None(",
+        "* tests/sample2.py:* line                  'a',",
+        "* tests/sample2.py:* line                  'b'",
+        "* tests/sample2.py:* exception             'b'",
+        "*                  * ...       exception value: *",
+        "* tests/sample2.py:* line          except:",
+        "* tests/sample2.py:* line              pass",
+        "* tests/sample2.py:* return            pass",
+        "*                    ...       return value: None",
+    ], fillvalue="MISSING"):
+        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+
+
 def test_repr():
     assert repr(Q(module='a')) == "Query(module='a')"
     assert str(Q(module='a')) == "Query(module='a')"
