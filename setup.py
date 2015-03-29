@@ -50,7 +50,7 @@ class DevelopWithPTH(develop):
 
 setup(
     name='hunter',
-    version='0.2.1',
+    version='0.3.0',
     license='BSD',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (read('README.rst'), re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))),
