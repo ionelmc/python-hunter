@@ -8,7 +8,8 @@ Contents:
 
    readme
    installation
-   usage
+   introduction
+   cookbook
    reference/index
    contributing
    authors

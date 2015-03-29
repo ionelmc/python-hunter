@@ -11,13 +11,14 @@ hunter
 
         hunter.trace
         hunter.stop
+        hunter.Q
 
     .. rubric:: Predicates
 
     .. autosummary::
         :nosignatures:
 
-        hunter.Q
+        hunter.Query
         hunter.When
         hunter.And
         hunter.Or
@@ -36,6 +37,11 @@ hunter
 .. autofunction:: hunter.stop()
 
 .. autoclass:: hunter.Q
+    :members:
+    :private-members:
+    :special-members:
+
+.. autoclass:: hunter.Query
     :members:
     :private-members:
     :special-members:
