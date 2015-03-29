@@ -39,6 +39,8 @@ NO_COLORS = {
     'line': '',
     'internal-failure': '',
     'internal-detail': '',
+    'source-failure': '',
+    'source-detail': '',
 }
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
@@ -54,6 +56,8 @@ EVENT_COLORS = {
     'vars-name': Style.BRIGHT,
     'internal-failure': Back.RED + Style.BRIGHT + Fore.RED,
     'internal-detail': Fore.WHITE,
+    'source-failure': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
+    'source-detail': Fore.WHITE,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -202,21 +206,26 @@ class Event(object):
         Get a line from ``linecache``. Ignores failures somewhat.
         """
         try:
-            if self.kind == 'call' and self.code.co_name != "<module>":
-                lines = []
-                try:
-                    for _, token, _, _, line in tokenize.generate_tokens(partial(
-                        next,
-                        yield_lines(self.filename, self.lineno - 1, lines.append)
-                    )):
-                        if token in ("def", "class", "lambda"):
-                            return ''.join(lines)
-                except tokenize.TokenError:
-                    pass
-
-            return getlines(self.filename)[self.lineno - 1]
+            return self._raw_source
         except Exception as exc:
-            return "??? no source: {!r} ???".format(exc)
+            return "??? NO SOURCE: {!r}".format(exc)
+
+
+    @CachedProperty
+    def _raw_source(self, getlines=linecache.getlines):
+        if self.kind == 'call' and self.code.co_name != "<module>":
+            lines = []
+            try:
+                for _, token, _, _, line in tokenize.generate_tokens(partial(
+                    next,
+                    yield_lines(self.filename, self.lineno - 1, lines.append)
+                )):
+                    if token in ("def", "class", "lambda"):
+                        return ''.join(lines)
+            except tokenize.TokenError:
+                pass
+
+        return getlines(self.filename)[self.lineno - 1]
 
     __getitem__ = object.__getattribute__
 
@@ -469,6 +478,15 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         self.stream = stream
         self.filename_alignment = filename_alignment
 
+    def _safe_source(self, event):
+        try:
+            lines = event._raw_source.rstrip().splitlines()
+            if not lines:
+                raise RuntimeError("Source code string is empty.")
+            return lines
+        except Exception as exc:
+            return "{source-failure}??? NO SOURCE: {source-detail}{!r}".format(exc, **self.event_colors),
+
     def __call__(self, event, sep=os.path.sep, join=os.path.join):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also prints values.
@@ -476,7 +494,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         filename = event.filename or "<???>"
         # TODO: support auto-alignment, need a context object for this, eg:
         # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
-        lines = event.source.rstrip().splitlines()
+        lines = self._safe_source(event)
         self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
             join(*filename.split(sep)[-2:]),
             event.lineno,
