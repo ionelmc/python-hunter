@@ -432,7 +432,7 @@ class ColorStreamAction(Action):
     @stream.setter
     def stream(self, value):
         isatty = getattr(value, 'isatty', None)
-        if isatty and isatty():
+        if isatty and isatty() and os.name != 'java':
             self._stream = AnsiToWin32(value)
             self._tty = True
             self.event_colors = EVENT_COLORS
