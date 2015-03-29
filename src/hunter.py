@@ -248,6 +248,10 @@ def Q(*predicates, **query):
         optional_actions.append(query.pop("action"))
 
     if predicates:
+        predicates = tuple(
+            p() if inspect.isclass(p) and issubclass(p, Action) else p
+            for p in predicates
+        )
         if query:
             predicates += Query(**query),
 
