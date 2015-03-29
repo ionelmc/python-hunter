@@ -210,7 +210,6 @@ class Event(object):
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
-
     @CachedProperty
     def _raw_source(self, getlines=linecache.getlines):
         if self.kind == 'call' and self.code.co_name != "<module>":
