@@ -57,6 +57,18 @@ def test_pth_activation():
     assert expected_call.encode() in output
 
 
+def test_pth_sample4():
+    env = dict(os.environ, PYTHONHUNTER="CodePrinter")
+    env.pop('COVERAGE_PROCESS_START', None)
+    env.pop('COV_CORE_SOURCE', None)
+    output = subprocess.check_output(
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample4.py')],
+        env=env,
+        stderr=subprocess.STDOUT,
+    )
+    assert output
+
+
 def test_pth_sample2():
     env = dict(os.environ, PYTHONHUNTER="module='__main__'")
     env.pop('COVERAGE_PROCESS_START', None)
@@ -66,7 +78,7 @@ def test_pth_sample2():
         env=env,
         stderr=subprocess.STDOUT,
     )
-    for line, expected in izip_longest(output.decode('utf8').splitlines(), [
+    for line, expected in izip_longest(output.decode('utf-8').splitlines(), [
         '* tests*sample2.py:* call      if __name__ == "__main__":  #*',
         '* tests*sample2.py:* line      if __name__ == "__main__":  #*',
         '* tests*sample2.py:* line          import functools',
@@ -198,13 +210,13 @@ def test_tracing_bare():
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
+
 def test_tracing_printing_failures():
     lines = StringIO()
-    with trace(CodePrinter(stream=lines),VarsPrinter("x", stream=lines)):
+    with trace(CodePrinter(stream=lines), VarsPrinter("x", stream=lines)):
         class Bad(Exception):
             def __repr__(self):
                 raise RuntimeError("I'm a bad class!")
-
 
         def a():
             x = Bad()
@@ -355,3 +367,12 @@ def test_trace_api_expansion():
                    function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo",)
     assert trace(Q(function="foobar", actions=[VarsPrinter("foobar"),
                                                lambda event: print("some custom output")]), module="foo",)
+
+
+def test_trace_with_class_actions():
+    with trace(CodePrinter):
+        def a():
+            pass
+
+        a()
+
