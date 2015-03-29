@@ -1,7 +1,9 @@
 from __future__ import print_function
 
+import inspect
 import os
 import subprocess
+import sys
 from fnmatch import fnmatchcase
 try:
     from StringIO import StringIO
@@ -34,96 +36,108 @@ def auto_stop():
         stop()
 
 
+def _get_func_spec(func):
+    spec = inspect.getargspec(func)
+    return inspect.formatargspec(spec.args, spec.varargs)
+
+
 def test_pth_activation():
+    module_name = os.path.__name__
+    expected_module = "{0}.py".format(module_name)
+    hunter_env = "module={!r},function=\"join\"".format(module_name)
+    func_spec = _get_func_spec(os.path.join)
+    expected_call = "call      def join{0}:".format(func_spec)
+
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
-        env=dict(os.environ, PYTHONHUNTER="module='posixpath',function=\"join\""),
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample.py')],
+        env=dict(os.environ, PYTHONHUNTER=hunter_env),
         stderr=subprocess.STDOUT,
     )
-    assert b"posixpath.py" in output
-    assert b"call      def join(a, *p):" in output
+    assert expected_module.encode() in output
+    assert expected_call.encode() in output
+
 
 def test_pth_sample2():
     env = dict(os.environ, PYTHONHUNTER="module='__main__'")
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample2.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample2.py')],
         env=env,
         stderr=subprocess.STDOUT,
     )
     for line, expected in izip_longest(output.decode('utf8').splitlines(), [
-        '* tests/sample2.py:* call      if __name__ == "__main__":  #*',
-        '* tests/sample2.py:* line      if __name__ == "__main__":  #*',
-        '* tests/sample2.py:* line          import functools',
-        '* tests/sample2.py:* line          def deco(opt):',
-        '* tests/sample2.py:* line          @deco(1)',
-        '* tests/sample2.py:* call          def deco(opt):',
-        '* tests/sample2.py:* line              def decorator(func):',
-        '* tests/sample2.py:* line              return decorator',
-        '* tests/sample2.py:* return            return decorator',
+        '* tests*sample2.py:* call      if __name__ == "__main__":  #*',
+        '* tests*sample2.py:* line      if __name__ == "__main__":  #*',
+        '* tests*sample2.py:* line          import functools',
+        '* tests*sample2.py:* line          def deco(opt):',
+        '* tests*sample2.py:* line          @deco(1)',
+        '* tests*sample2.py:* call          def deco(opt):',
+        '* tests*sample2.py:* line              def decorator(func):',
+        '* tests*sample2.py:* line              return decorator',
+        '* tests*sample2.py:* return            return decorator',
         '*                  * ...       return value: <function deco*',
-        '* tests/sample2.py:* line          @deco(2)',
-        '* tests/sample2.py:* call          def deco(opt):',
-        '* tests/sample2.py:* line              def decorator(func):',
-        '* tests/sample2.py:* line              return decorator',
-        '* tests/sample2.py:* return            return decorator',
+        '* tests*sample2.py:* line          @deco(2)',
+        '* tests*sample2.py:* call          def deco(opt):',
+        '* tests*sample2.py:* line              def decorator(func):',
+        '* tests*sample2.py:* line              return decorator',
+        '* tests*sample2.py:* return            return decorator',
         '*                  * ...       return value: <function deco*',
-        '* tests/sample2.py:* line          @deco(3)',
-        '* tests/sample2.py:* call          def deco(opt):',
-        '* tests/sample2.py:* line              def decorator(func):',
-        '* tests/sample2.py:* line              return decorator',
-        '* tests/sample2.py:* return            return decorator',
+        '* tests*sample2.py:* line          @deco(3)',
+        '* tests*sample2.py:* call          def deco(opt):',
+        '* tests*sample2.py:* line              def decorator(func):',
+        '* tests*sample2.py:* line              return decorator',
+        '* tests*sample2.py:* return            return decorator',
         '*                  * ...       return value: <function deco*',
-        '* tests/sample2.py:* call              def decorator(func):',
-        '* tests/sample2.py:* line                  @functools.wraps(func)',
-        '* tests/sample2.py:* line                  return wrapper',
-        '* tests/sample2.py:* return                return wrapper',
+        '* tests*sample2.py:* call              def decorator(func):',
+        '* tests*sample2.py:* line                  @functools.wraps(func)',
+        '* tests*sample2.py:* line                  return wrapper',
+        '* tests*sample2.py:* return                return wrapper',
         '*                  * ...       return value: <function foo *',
-        '* tests/sample2.py:* call              def decorator(func):',
-        '* tests/sample2.py:* line                  @functools.wraps(func)',
-        '* tests/sample2.py:* line                  return wrapper',
-        '* tests/sample2.py:* return                return wrapper',
+        '* tests*sample2.py:* call              def decorator(func):',
+        '* tests*sample2.py:* line                  @functools.wraps(func)',
+        '* tests*sample2.py:* line                  return wrapper',
+        '* tests*sample2.py:* return                return wrapper',
         '*                  * ...       return value: <function foo *',
-        '* tests/sample2.py:* call              def decorator(func):',
-        '* tests/sample2.py:* line                  @functools.wraps(func)',
-        '* tests/sample2.py:* line                  return wrapper',
-        '* tests/sample2.py:* return                return wrapper',
+        '* tests*sample2.py:* call              def decorator(func):',
+        '* tests*sample2.py:* line                  @functools.wraps(func)',
+        '* tests*sample2.py:* line                  return wrapper',
+        '* tests*sample2.py:* return                return wrapper',
         '*                  * ...       return value: <function foo *',
-        '* tests/sample2.py:* line          foo(',
-        "* tests/sample2.py:* line              'a*',",
-        "* tests/sample2.py:* line              'b'",
-        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '* tests*sample2.py:* line          foo(',
+        "* tests*sample2.py:* line              'a*',",
+        "* tests*sample2.py:* line              'b'",
+        '* tests*sample2.py:* call                  @functools.wraps(func)',
         '*                  *    |                  def wrapper(*args):',
-        '* tests/sample2.py:* line                      return func(*args)',
-        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '* tests*sample2.py:* line                      return func(*args)',
+        '* tests*sample2.py:* call                  @functools.wraps(func)',
         '*                  *    |                  def wrapper(*args):',
-        '* tests/sample2.py:* line                      return func(*args)',
-        '* tests/sample2.py:* call                  @functools.wraps(func)',
+        '* tests*sample2.py:* line                      return func(*args)',
+        '* tests*sample2.py:* call                  @functools.wraps(func)',
         '*                  *    |                  def wrapper(*args):',
-        '* tests/sample2.py:* line                      return func(*args)',
-        '* tests/sample2.py:* call          @deco(1)',
+        '* tests*sample2.py:* line                      return func(*args)',
+        '* tests*sample2.py:* call          @deco(1)',
         '*                  *    |          @deco(2)',
         '*                  *    |          @deco(3)',
         '*                  *    |          def foo(*args):',
-        '* tests/sample2.py:* line              return args',
-        '* tests/sample2.py:* return            return args',
+        '* tests*sample2.py:* line              return args',
+        '* tests*sample2.py:* return            return args',
         "*                  * ...       return value: ('a*', 'b')",
-        "* tests/sample2.py:* return                    return func(*args)",
+        "* tests*sample2.py:* return                    return func(*args)",
         "*                  * ...       return value: ('a*', 'b')",
-        "* tests/sample2.py:* return                    return func(*args)",
+        "* tests*sample2.py:* return                    return func(*args)",
         "*                  * ...       return value: ('a*', 'b')",
-        "* tests/sample2.py:* return                    return func(*args)",
+        "* tests*sample2.py:* return                    return func(*args)",
         "*                  * ...       return value: ('a*', 'b')",
-        "* tests/sample2.py:* line          try:",
-        "* tests/sample2.py:* line              None(",
-        "* tests/sample2.py:* line                  'a',",
-        "* tests/sample2.py:* line                  'b'",
-        "* tests/sample2.py:* exception             'b'",
+        "* tests*sample2.py:* line          try:",
+        "* tests*sample2.py:* line              None(",
+        "* tests*sample2.py:* line                  'a',",
+        "* tests*sample2.py:* line                  'b'",
+        "* tests*sample2.py:* exception             'b'",
         "*                  * ...       exception value: *",
-        "* tests/sample2.py:* line          except:",
-        "* tests/sample2.py:* line              pass",
-        "* tests/sample2.py:* return            pass",
+        "* tests*sample2.py:* line          except:",
+        "* tests*sample2.py:* line              pass",
+        "* tests*sample2.py:* return            pass",
         "*                    ...       return value: None",
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
@@ -169,18 +183,18 @@ def test_tracing_bare():
     print(lines.getvalue())
 
     for line, expected in izip_longest(lines.getvalue().splitlines(), [
-        "*      */hunter.py* call          def __enter__(self):",
-        "*      */hunter.py* line              return self",
-        "*      */hunter.py* return            return self",
+        "*      *hunter.py* call          def __enter__(self):",
+        "*      *hunter.py* line              return self",
+        "*      *hunter.py* return            return self",
         "*                 * ...       return value: <hunter.Tracer *",
-        "* */test_hunter.py* call              def a():",
-        "* */test_hunter.py* line                  return 1",
-        "* */test_hunter.py* return                return 1",
+        "* *test_hunter.py* call              def a():",
+        "* *test_hunter.py* line                  return 1",
+        "* *test_hunter.py* return                return 1",
         "*                 * ...       return value: 1",
-        "*      */hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "*      */hunter.py* line              self.stop()",
-        "*      */hunter.py* call          def stop(self):",
-        "*      */hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*      *hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "*      *hunter.py* line              self.stop()",
+        "*      *hunter.py* call          def stop(self):",
+        "*      *hunter.py* line              sys.settrace(self._previous_tracer)",
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
@@ -207,36 +221,36 @@ def test_tracing_printing_failures():
             pass
     print(lines.getvalue())
     for line, expected in izip_longest(lines.getvalue().splitlines(), [
-        """*       ****/hunter.py:* call          def __enter__(self):""",
-        """*       ****/hunter.py:* line              return self""",
-        """*       ****/hunter.py:* return            return self""",
+        """*       ****hunter.py:* call          def __enter__(self):""",
+        """*       ****hunter.py:* line              return self""",
+        """*       ****hunter.py:* return            return self""",
         """*                      * ...       return value: <hunter.Tracer *""",
-        """* tests/test_hunter.py:* call              class Bad(Exception):""",
-        """* tests/test_hunter.py:* line              class Bad(Exception):""",
-        """* tests/test_hunter.py:* line                  def __repr__(self):""",
-        """* tests/test_hunter.py:* return                def __repr__(self):""",
+        """* tests*test_hunter.py:* call              class Bad(Exception):""",
+        """* tests*test_hunter.py:* line              class Bad(Exception):""",
+        """* tests*test_hunter.py:* line                  def __repr__(self):""",
+        """* tests*test_hunter.py:* return                def __repr__(self):""",
         """*                      * ...       return value: *""",
-        """* tests/test_hunter.py:* call              def a():""",
-        """* tests/test_hunter.py:* line                  x = Bad()""",
-        """* tests/test_hunter.py:* line                  return x""",
+        """* tests*test_hunter.py:* call              def a():""",
+        """* tests*test_hunter.py:* line                  x = Bad()""",
+        """* tests*test_hunter.py:* line                  return x""",
         """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """* tests/test_hunter.py:* return                return x""",
+        """* tests*test_hunter.py:* return                return x""",
         """*                      * ...       return value: !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
         """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """* tests/test_hunter.py:* call              def b():""",
-        """* tests/test_hunter.py:* line                  x = Bad()""",
-        """* tests/test_hunter.py:* line                  raise x""",
+        """* tests*test_hunter.py:* call              def b():""",
+        """* tests*test_hunter.py:* line                  x = Bad()""",
+        """* tests*test_hunter.py:* line                  raise x""",
         """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """* tests/test_hunter.py:* exception             raise x""",
+        """* tests*test_hunter.py:* exception             raise x""",
         """*                      * ...       exception value: !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
         """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """* tests/test_hunter.py:* return                raise x""",
+        """* tests*test_hunter.py:* return                raise x""",
         """*                      * ...       return value: None""",
         """*                      * vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """*       ****/hunter.py:* call          def __exit__(self, exc_type, exc_val, exc_tb):""",
-        """*       ****/hunter.py:* line              self.stop()""",
-        """*       ****/hunter.py:* call          def stop(self):""",
-        """*       ****/hunter.py:* line              sys.settrace(self._previous_tracer)""",
+        """*       ****hunter.py:* call          def __exit__(self, exc_type, exc_val, exc_tb):""",
+        """*       ****hunter.py:* line              self.stop()""",
+        """*       ****hunter.py:* call          def stop(self):""",
+        """*       ****hunter.py:* line              sys.settrace(self._previous_tracer)""",
 
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
@@ -259,23 +273,23 @@ def test_tracing_vars():
     print(lines.getvalue())
 
     for line, expected in izip_longest(lines.getvalue().splitlines(), [
-        "*      */hunter.py* call          def __enter__(self):",
-        "*      */hunter.py* line              return self",
-        "*      */hunter.py* return            return self",
+        "*      *hunter.py* call          def __enter__(self):",
+        "*      *hunter.py* line              return self",
+        "*      *hunter.py* return            return self",
         "*                 * ...       return value: <hunter.Tracer *",
-        "* */test_hunter.py* call              def a():",
-        "* */test_hunter.py* line                  b = 1",
+        "* *test_hunter.py* call              def a():",
+        "* *test_hunter.py* line                  b = 1",
         "*                 * vars      b => 1",
-        "* */test_hunter.py* line                  b = 2",
+        "* *test_hunter.py* line                  b = 2",
         "*                 * vars      b => 2",
-        "* */test_hunter.py* line                  return 1",
+        "* *test_hunter.py* line                  return 1",
         "*                 * vars      b => 2",
-        "* */test_hunter.py* return                return 1",
+        "* *test_hunter.py* return                return 1",
         "*                 * ...       return value: 1",
-        "*      */hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "*      */hunter.py* line              self.stop()",
-        "*      */hunter.py* call          def stop(self):",
-        "*      */hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*      *hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
+        "*      *hunter.py* line              self.stop()",
+        "*      *hunter.py* call          def stop(self):",
+        "*      *hunter.py* line              sys.settrace(self._previous_tracer)",
     ], fillvalue="MISSING"):
         assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
 
