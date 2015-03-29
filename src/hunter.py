@@ -106,7 +106,7 @@ class Tracer(object):
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
         if "action" not in options and "actions" not in options:
-            options["action"] = CodePrinter()
+            options["action"] = CodePrinter
         merge = options.pop("merge", True)
         predicate = Q(*predicates, **options)
 
@@ -252,6 +252,9 @@ def Q(*predicates, **query):
             p() if inspect.isclass(p) and issubclass(p, Action) else p
             for p in predicates
         )
+        if any(isinstance(p, CodePrinter) for p in predicates):
+            if CodePrinter in optional_actions:
+                optional_actions.remove(CodePrinter)
         if query:
             predicates += Query(**query),
 
