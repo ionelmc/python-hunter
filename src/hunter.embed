@@ -3,4 +3,4 @@ if "PYTHONHUNTER" in os.environ:
         from hunter import *
         eval("trace({[PYTHONHUNTER]})".format(os.environ))
     except Exception as exc:
-        sys.stderr.write("Failed to load hunter conf {[PYTHONHUNTER]!r}: {}\n".format(os.environ, exc))
+        sys.stderr.write("Failed to load hunter conf {[PYTHONHUNTER]!r}: {!r}\n".format(os.environ, exc))
