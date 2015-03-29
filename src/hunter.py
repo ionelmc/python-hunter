@@ -419,7 +419,6 @@ class Debugger(Fields.klass.kwargs, Action):
         Runs a ``pdb.set_trace`` at the matching frame.
         """
         self.klass(**self.kwargs).set_trace(event.frame)
-        return True
 
 
 class ColorStreamAction(Action):
@@ -500,7 +499,6 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
                 color=self.event_colors[event.kind],
                 **self.event_colors
             ))
-        return True
 
 
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
@@ -570,4 +568,3 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
                     **self.event_colors
                 ))
                 first = False
-        return True
