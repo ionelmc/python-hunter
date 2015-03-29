@@ -24,7 +24,7 @@ project = u'Hunter'
 year = u'2015'
 author = u'Ionel Cristian M\u0103rie\u0219'
 copyright = '{0}, {1}'.format(year, author)
-version = release = u'0.2.1'
+version = release = u'0.3.0'
 
 import sphinx_py3doc_enhanced_theme
 html_theme = "sphinx_py3doc_enhanced_theme"
