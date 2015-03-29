@@ -2,6 +2,15 @@
 Changelog
 =========
 
+0.4.0 (2015-03-29)
+------------------
+
+* Disabled colors for Jython (contributed by Claudiu Popa in `#12 <https://github.com/ionelmc/python-hunter/pull/12>`_).
+* Test suite fixes for Windows (contributed by Claudiu Popa in `#11 <https://github.com/ionelmc/python-hunter/pull/11>`_).
+* Added an introduction section in the docs.
+* Implemented a prettier fallback for when no sources are available for that frame.
+* Implemented fixups in cases where you use action classes as a predicates.
+
 0.3.1 (2015-03-29)
 ------------------
 
