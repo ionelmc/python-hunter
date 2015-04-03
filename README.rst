@@ -50,7 +50,8 @@ Hunter
     :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
-nefarious purposes.
+nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation 
+<env-var-activation_>`_).
 
 API is considered unstable until 1.0 is released.
 
@@ -137,6 +138,8 @@ You can give it a tree-like configuration where you can optionally configure spe
 tree (like dumping variables or a pdb set_trace):
 
     TODO: More examples.
+
+.. _env-var-activation:
 
 Environment variable activation
 -------------------------------
