@@ -93,7 +93,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'hunter = hunter.__main__:main'
         ]
     },
     cmdclass={
