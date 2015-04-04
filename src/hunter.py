@@ -211,9 +211,10 @@ class Event(Fields.kind.function.module.filename):
             return "??? NO SOURCE: {!r}".format(exc)
 
     @_CachedProperty
-    def source(self, getlines=linecache.getlines):
         try:
-            return ''.join(getlines(self.filename)[self.lineno-2:self.lineno+2])
+    def source(self, getline=linecache.getline):
+        try:
+            return getline(self.filename, self.lineno)
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
