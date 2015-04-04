@@ -376,3 +376,12 @@ def test_trace_with_class_actions():
 
         a()
 
+def test_no_inf_recursion():
+    assert Or(And(1)) == 1
+    assert Or(Or(1)) == 1
+    assert And(Or(1)) == 1
+    assert And(And(1)) == 1
+    predicate = Q(Q(lambda ev: 1, module='wat'))
+    print('predicate:', predicate)
+    predicate('foo')
+

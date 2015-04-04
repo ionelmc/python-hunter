@@ -352,18 +352,30 @@ class When(Fields.condition.actions):
         return And(self, other)
 
 
-class And(Fields.predicates):
+def _with_metaclass(meta, *bases):
+    """Create a base class with a metaclass."""
+    # This requires a bit of explanation: the basic idea is to make a dummy
+    # metaclass for one level of class instantiation that replaces itself with
+    # the actual metaclass.
+    class metaclass(meta):
+
+        def __new__(cls, name, this_bases, d):
+            return meta(name, bases, d)
+    return type.__new__(metaclass, 'temporary_class', (), {})
+
+
+class _UnwrapSingleArgumentMetaclass(type):
+    def __call__(mcs, predicate, *predicates):
+        if not predicates:
+            return predicate
+        else:
+            return super(_UnwrapSingleArgumentMetaclass, mcs).__call__(predicate, *predicates)
+
+
+class And(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
-    def __new__(cls, *predicates):
-        if not predicates:
-            raise TypeError("Expected at least 2 predicates.")
-        elif len(predicates) == 1:
-            return predicates[0]
-        else:
-            return super(And, cls).__new__(cls)
-
     def __init__(self, *predicates):
         self.predicates = predicates
 
@@ -386,18 +398,10 @@ class And(Fields.predicates):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
 
-class Or(Fields.predicates):
+class Or(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
-    def __new__(cls, *predicates):
-        if not predicates:
-            raise TypeError("Expected at least 2 predicates.")
-        elif len(predicates) == 1:
-            return predicates[0]
-        else:
-            return super(Or, cls).__new__(cls)
-
     def __init__(self, *predicates):
         self.predicates = predicates
 
