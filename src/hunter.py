@@ -141,7 +141,7 @@ trace = _tracer.trace
 stop = atexit.register(_tracer.stop)
 
 
-class CachedProperty(object):
+class _CachedProperty(object):
     def __init__(self, func):
         self.func = func
 
@@ -165,23 +165,23 @@ class Event(Fields.kind.function.module.filename):
         self.kind = kind
         self.arg = arg
 
-    @CachedProperty
+    @_CachedProperty
     def locals(self):
         return self.frame.f_locals
 
-    @CachedProperty
+    @_CachedProperty
     def globals(self):
         return self.frame.f_locals
 
-    @CachedProperty
+    @_CachedProperty
     def function(self):
         return self.code.co_name
 
-    @CachedProperty
+    @_CachedProperty
     def module(self):
         return self.frame.f_globals.get('__name__', '')
 
-    @CachedProperty
+    @_CachedProperty
     def filename(self):
         filename = self.frame.f_globals.get('__file__', '')
 
@@ -192,33 +192,33 @@ class Event(Fields.kind.function.module.filename):
 
         return filename
 
-    @CachedProperty
+    @_CachedProperty
     def lineno(self):
         return self.frame.f_lineno
 
-    @CachedProperty
+    @_CachedProperty
     def code(self):
         return self.frame.f_code
 
-    @CachedProperty
-    def source(self, getlines=linecache.getlines):
+    @_CachedProperty
+    def fullsource(self, getlines=linecache.getlines):
         """
         Get a line from ``linecache``. Ignores failures somewhat.
         """
         try:
-            return self._raw_source
+            return self._raw_fullsource
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
-    @CachedProperty
-    def dumb_source(self, getlines=linecache.getlines):
+    @_CachedProperty
+    def source(self, getlines=linecache.getlines):
         try:
             return ''.join(getlines(self.filename)[self.lineno-2:self.lineno+2])
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
-    @CachedProperty
-    def _raw_source(self, getlines=linecache.getlines, getline=linecache.getline):
+    @_CachedProperty
+    def _raw_fullsource(self, getlines=linecache.getlines, getline=linecache.getline):
         if self.kind == 'call' and self.code.co_name != "<module>":
             lines = []
             try:
@@ -490,7 +490,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
 
     def _safe_source(self, event):
         try:
-            lines = event._raw_source.rstrip().splitlines()
+            lines = event._raw_fullsource.rstrip().splitlines()
             if not lines:
                 raise RuntimeError("Source code string is empty.")
             return lines

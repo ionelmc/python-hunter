@@ -6,10 +6,11 @@ Changelog
 ------------------
 
 * Fixed :class:`And` and :class:`Or` "single argument unwrapping".
-* Fixed :obj:`Event.source` return value for situations where the tokenizer would fail.
+* Renamed the :obj:`Event.source` to :obj:`Event.fullsource`.
+* Added :obj:`Event.source` that doesn't do any fancy sourcecode tokenization.
+* Fixed :obj:`Event.fullsource` return value for situations where the tokenizer would fail.
 * Made the print function available in the ``PYTHONHUNTER`` env var payload.
 * Added a __repr__ for :class:`Event`.
-* Added the :obj:`Event.dumb_source` (just in case you want something that doesn't do any sourcecode tokenization).
 
 0.4.0 (2015-03-29)
 ------------------
