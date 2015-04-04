@@ -211,6 +211,13 @@ class Event(Fields.kind.function.module.filename):
             return "??? NO SOURCE: {!r}".format(exc)
 
     @CachedProperty
+    def dumb_source(self, getlines=linecache.getlines):
+        try:
+            return ''.join(getlines(self.filename)[self.lineno-2:self.lineno+2])
+        except Exception as exc:
+            return "??? NO SOURCE: {!r}".format(exc)
+
+    @CachedProperty
     def _raw_source(self, getlines=linecache.getlines, getline=linecache.getline):
         if self.kind == 'call' and self.code.co_name != "<module>":
             lines = []
