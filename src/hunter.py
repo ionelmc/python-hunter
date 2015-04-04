@@ -211,7 +211,7 @@ class Event(object):
             return "??? NO SOURCE: {!r}".format(exc)
 
     @CachedProperty
-    def _raw_source(self, getlines=linecache.getlines):
+    def _raw_source(self, getlines=linecache.getlines, getline=linecache.getline):
         if self.kind == 'call' and self.code.co_name != "<module>":
             lines = []
             try:
@@ -224,7 +224,7 @@ class Event(object):
             except tokenize.TokenError:
                 pass
 
-        return getlines(self.filename)[self.lineno - 1]
+        return getline(self.filename, self.lineno)
 
     __getitem__ = object.__getattribute__
 

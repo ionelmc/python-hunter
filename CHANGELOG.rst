@@ -5,7 +5,8 @@ Changelog
 0.5.0 (2015-04-04)
 ------------------
 
-* Fix :class:`And` and :class:`Or` "single argument unwrapping".
+* Fixed :class:`And` and :class:`Or` "single argument unwrapping".
+* Fixed :obj:`Event.source` return value for situations where the tokenizer would fail.
 
 0.4.0 (2015-03-29)
 ------------------
