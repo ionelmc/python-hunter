@@ -150,7 +150,7 @@ class CachedProperty(object):
         return value
 
 
-class Event(object):
+class Event(Fields.kind.function.module.filename):
     """
     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
 

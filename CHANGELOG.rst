@@ -7,7 +7,8 @@ Changelog
 
 * Fixed :class:`And` and :class:`Or` "single argument unwrapping".
 * Fixed :obj:`Event.source` return value for situations where the tokenizer would fail.
-* Make the print function available in the ``PYTHONHUNTER`` env var payload.
+* Made the print function available in the ``PYTHONHUNTER`` env var payload.
+* Added a __repr__ for :class:`Event`.
 
 0.4.0 (2015-03-29)
 ------------------
