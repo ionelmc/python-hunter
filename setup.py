@@ -11,10 +11,11 @@ from os.path import join
 from os.path import splitext
 
 from distutils.command.build import build
+from setuptools import Command
 from setuptools import find_packages
 from setuptools import setup
-from setuptools.command.easy_install import easy_install
 from setuptools.command.develop import develop
+from setuptools.command.easy_install import easy_install
 
 
 def read(*names, **kwargs):
@@ -27,26 +28,43 @@ def read(*names, **kwargs):
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
-        for path in glob(join(dirname(__file__), 'src', '*.pth')):
-            dest = join(self.build_lib, basename(path))
-            self.copy_file(path, dest)
+        path = join(dirname(__file__), 'src', 'hunter.pth')
+        dest = join(self.build_lib, basename(path))
+        self.copy_file(path, dest)
 
 
 class EasyInstallWithPTH(easy_install):
     def run(self):
         easy_install.run(self)
-        for path in glob(join(dirname(__file__), 'src', '*.pth')):
-            dest = join(self.install_dir, basename(path))
-            self.copy_file(path, dest)
+        path = join(dirname(__file__), 'src', 'hunter.pth')
+        dest = join(self.install_dir, basename(path))
+        self.copy_file(path, dest)
 
 
 class DevelopWithPTH(develop):
     def run(self):
         develop.run(self)
-        for path in glob(join(dirname(__file__), 'src', '*.pth')):
-            dest = join(self.install_dir, basename(path))
-            self.copy_file(path, dest)
+        path = join(dirname(__file__), 'src', 'hunter.pth')
+        dest = join(self.install_dir, basename(path))
+        self.copy_file(path, dest)
 
+
+class GeneratePTH(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        with open(join(dirname(__file__), 'src', 'hunter.pth'), 'w') as fh:
+            with open(join(dirname(__file__), 'src', 'hunter.embed')) as sh:
+                fh.write(
+                    'import os, sys;'
+                    'exec(%r)' % sh.read().replace('    ', ' ')
+                )
 
 setup(
     name='hunter',
@@ -99,5 +117,6 @@ setup(
         'build': BuildWithPTH,
         'easy_install': EasyInstallWithPTH,
         'develop': DevelopWithPTH,
+        'genpth': GeneratePTH,
     },
 )
