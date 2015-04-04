@@ -211,7 +211,6 @@ class Event(Fields.kind.function.module.filename):
             return "??? NO SOURCE: {!r}".format(exc)
 
     @_CachedProperty
-        try:
     def source(self, getline=linecache.getline):
         try:
             return getline(self.filename, self.lineno)
