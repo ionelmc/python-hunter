@@ -19,7 +19,7 @@ from colorama import Fore
 from colorama import Style
 from fields import Fields
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 30
