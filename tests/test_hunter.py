@@ -385,3 +385,10 @@ def test_no_inf_recursion():
     print('predicate:', predicate)
     predicate('foo')
 
+
+def test_predicate_compression():
+    print(Or(Or(1, 2), And(3)))
+    assert Or(Or(1, 2), And(3)) == Or(1, 2, 3)
+    assert Or(Or(1, 2), 3) == Or(1, 2, 3)
+    assert Or(1, Or(2, 3), 4) == Or(1, 2, 3, 4)
+    assert And(1, 2, Or(3, 4)).predicates == (1, 2, Or(3, 4))

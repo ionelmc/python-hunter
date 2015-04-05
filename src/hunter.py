@@ -372,11 +372,18 @@ def _with_metaclass(meta, *bases):
 
 
 class _UnwrapSingleArgumentMetaclass(type):
-    def __call__(mcs, predicate, *predicates):
+    def __call__(cls, predicate, *predicates):
         if not predicates:
             return predicate
         else:
-            return super(_UnwrapSingleArgumentMetaclass, mcs).__call__(predicate, *predicates)
+            all_predicates = []
+
+            for p in chain((predicate,), predicates):
+                if isinstance(p, cls):
+                    all_predicates.extend(p.predicates)
+                else:
+                    all_predicates.append(p)
+            return super(_UnwrapSingleArgumentMetaclass, cls).__call__(*all_predicates)
 
 
 class And(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):

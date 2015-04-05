@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 * Fixed :class:`And` and :class:`Or` "single argument unwrapping".
+* Implemented predicate compression. Example: ``Or(Or(a, b), c)`` is converted to ``Or(a, b, c)``.
 * Renamed the :obj:`Event.source` to :obj:`Event.fullsource`.
 * Added :obj:`Event.source` that doesn't do any fancy sourcecode tokenization.
 * Fixed :obj:`Event.fullsource` return value for situations where the tokenizer would fail.
