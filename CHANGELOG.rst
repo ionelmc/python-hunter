@@ -2,7 +2,7 @@
 Changelog
 =========
 
-0.5.0 (2015-04-04)
+0.5.0 (2015-04-06)
 ------------------
 
 * Fixed :class:`And` and :class:`Or` "single argument unwrapping".
