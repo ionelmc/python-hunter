@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.5.1 (2015-04-15)
+------------------
+
+* Fixed :obj:`Event.globals` to actually be the dict of global vars (it was just the locals).
+
 0.5.0 (2015-04-06)
 ------------------
 

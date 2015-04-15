@@ -171,7 +171,7 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def globals(self):
-        return self.frame.f_locals
+        return self.frame.f_globals
 
     @_CachedProperty
     def function(self):
