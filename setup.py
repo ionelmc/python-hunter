@@ -3,18 +3,20 @@
 from __future__ import absolute_import, print_function
 
 import io
+from itertools import chain
 import re
 from glob import glob
 from os.path import basename
 from os.path import dirname
 from os.path import join
 from os.path import splitext
-
 from distutils.command.build import build
+
 from setuptools import Command
 from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.develop import develop
+from setuptools.command.install_lib import install_lib
 from setuptools.command.easy_install import easy_install
 
 
@@ -39,6 +41,18 @@ class EasyInstallWithPTH(easy_install):
         path = join(dirname(__file__), 'src', 'hunter.pth')
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
+
+
+class InstallLibWithPTH(install_lib):
+    def run(self):
+        install_lib.run(self)
+        path = join(dirname(__file__), 'src', 'hunter.pth')
+        dest = join(self.install_dir, basename(path))
+        self.copy_file(path, dest)
+        self.outputs = [dest]
+
+    def get_outputs(self):
+        return chain(install_lib.get_outputs(self), self.outputs)
 
 
 class DevelopWithPTH(develop):
@@ -116,6 +130,7 @@ setup(
     cmdclass={
         'build': BuildWithPTH,
         'easy_install': EasyInstallWithPTH,
+        'install_lib': InstallLibWithPTH,
         'develop': DevelopWithPTH,
         'genpth': GeneratePTH,
     },
