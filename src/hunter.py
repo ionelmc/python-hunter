@@ -66,22 +66,21 @@ CODE_COLORS = {
     'exception': Fore.RED,
 }
 SITE_PACKAGES_PATH = get_python_lib()
-SYS_PREFIX_PATHS = set([
+SYS_PREFIX_PATHS = (
     sys.prefix,
     sys.exec_prefix
-])
+)
 
 
 def tryadd(where, src, what):
     if hasattr(src, what):
-        where.add(getattr(src, what))
+        where += getattr(src, what),
 
 
 tryadd(SYS_PREFIX_PATHS, sys, 'real_prefix')
 tryadd(SYS_PREFIX_PATHS, sys, 'real_exec_prefix')
 tryadd(SYS_PREFIX_PATHS, sys, 'base_prefix')
 tryadd(SYS_PREFIX_PATHS, sys, 'base_exec_prefix')
-
 
 
 class Tracer(object):
