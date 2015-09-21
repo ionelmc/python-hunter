@@ -22,7 +22,7 @@ from fields import Fields
 __version__ = "0.5.1"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
-DEFAULT_MIN_FILENAME_ALIGNMENT = 30
+DEFAULT_MIN_FILENAME_ALIGNMENT = 40
 NO_COLORS = {
     'reset': '',
     'filename': '',
@@ -520,7 +520,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
 
     Args:
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
-        filename_alignment (int): Default size for the filaname column (files are right-aligned). Default: ``15``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
     """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
@@ -582,7 +582,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         *names (strings):
             Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are present on the frame.
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
-        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``15``.
+        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``40``.
         globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
     """
     default_stream = sys.stderr
