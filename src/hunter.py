@@ -88,6 +88,7 @@ class Tracer(object):
     Trace object.
 
     """
+
     def __init__(self):
         self._handler = None
         self._previous_tracer = None
@@ -110,7 +111,7 @@ class Tracer(object):
         if self._handler is None:
             raise RuntimeError("Tracer is not started.")
 
-        self._handler(Event(frame, kind, arg))
+        self._handler(Event(frame, kind, arg, self))
 
         if self._previous_tracer:
             self._previous_tracer(frame, kind, arg)
@@ -176,11 +177,13 @@ class Event(Fields.kind.function.module.filename):
     frame = None
     kind = None
     arg = None
+    tracer = None
 
-    def __init__(self, frame, kind, arg):
+    def __init__(self, frame, kind, arg, tracer):
         self.frame = frame
         self.kind = kind
         self.arg = arg
+        self.tracer = tracer
 
     @_CachedProperty
     def locals(self):
@@ -524,7 +527,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
     """
     def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
-        self.filename_alignment = filename_alignment
+        self.filename_alignment = max(5, filename_alignment)
 
     def _safe_source(self, event):
         try:
@@ -540,11 +543,17 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also prints values.
         """
         filename = event.filename or "<???>"
-        # TODO: support auto-alignment, need a context object for this, eg:
-        # alignment = context.filename_alignment = max(getattr(context, 'filename_alignment', self.filename_alignment), len(filename))
+        if len(filename) > self.filename_alignment:
+            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+
+        # context = event.tracer
+        # alignment = context.filename_alignment = max(
+        #     getattr(context, 'filename_alignment', 5),
+        #     len(filename)
+        # )
         lines = self._safe_source(event)
         self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
-            join(*filename.split(sep)[-2:]),
+            filename,
             event.lineno,
             event.kind,
             lines[0],
@@ -591,7 +600,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         if not names:
             raise TypeError("Must give at least one name/expression.")
         self.stream = options.pop('stream', self.default_stream)
-        self.filename_alignment = options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT)
+        self.filename_alignment = max(5, options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT))
         self.names = {
             name: set(self._iter_symbols(name))
             for name in names
