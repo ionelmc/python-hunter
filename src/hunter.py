@@ -179,11 +179,17 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def module(self):
-        return self.frame.f_globals.get('__name__', '')
+        module = self.frame.f_globals.get('__name__', '')
+        if module is None:
+            module = ''
+
+        return module
 
     @_CachedProperty
     def filename(self):
         filename = self.frame.f_globals.get('__file__', '')
+        if filename is None:
+            filename = ''
 
         if filename.endswith(('.pyc', '.pyo')):
             filename = filename[:-1]
