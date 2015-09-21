@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import ast
 import atexit
+from distutils.sysconfig import get_python_lib
 import inspect
 import linecache
 import os
@@ -9,7 +10,6 @@ import pdb
 import re
 import sys
 import tokenize
-
 from functools import partial
 from itertools import chain
 
@@ -65,6 +65,23 @@ CODE_COLORS = {
     'return': Fore.YELLOW,
     'exception': Fore.RED,
 }
+SITE_PACKAGES_PATH = get_python_lib()
+SYS_PREFIX_PATHS = set([
+    sys.prefix,
+    sys.exec_prefix
+])
+
+
+def tryadd(where, src, what):
+    if hasattr(src, what):
+        where.add(getattr(src, what))
+
+
+tryadd(SYS_PREFIX_PATHS, sys, 'real_prefix')
+tryadd(SYS_PREFIX_PATHS, sys, 'real_exec_prefix')
+tryadd(SYS_PREFIX_PATHS, sys, 'base_prefix')
+tryadd(SYS_PREFIX_PATHS, sys, 'base_exec_prefix')
+
 
 
 class Tracer(object):
@@ -205,6 +222,14 @@ class Event(Fields.kind.function.module.filename):
     @_CachedProperty
     def code(self):
         return self.frame.f_code
+
+    @_CachedProperty
+    def stdlib(self):
+        if self.filename.startswith(SITE_PACKAGES_PATH):
+            # if it's in site-packages then its definitely not stdlib
+            return False
+        if self.filename.startswith(SYS_PREFIX_PATHS):
+            return True
 
     @_CachedProperty
     def fullsource(self, getlines=linecache.getlines):
