@@ -131,8 +131,9 @@ class Tracer(object):
         predicate = Q(*predicates, **options)
 
         previous_tracer = sys.gettrace()
-        if previous_tracer is self and merge:
-            self._handler |= predicate
+        if previous_tracer is self:
+            if merge:
+                self._handler |= predicate
         else:
             self._previous_tracer = previous_tracer
             self._handler = predicate
