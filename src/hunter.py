@@ -631,12 +631,21 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
             frame_symbols |= set(event.globals)
 
         for code, symbols in self.names.items():
+            try:
+                obj = eval(code, event.globals if self.globals else {}, event.locals)
+            except AttributeError:
+                continue
+            except Exception as exc:
+                printout = "{internal-failure}FAILED EVAL: {internal-detail}{!r}".format(exc, **self.event_colors)
+            else:
+                printout = self._safe_repr(obj)
+
             if frame_symbols >= symbols:
                 self.stream.write("{:>{align}}       {vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
                     "",
                     "vars" if first else "...",
                     code,
-                    self._safe_repr(self._safe_eval(code, event)),
+                    printout,
                     align=self.filename_alignment,
                     **self.event_colors
                 ))
