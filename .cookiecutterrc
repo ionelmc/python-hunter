@@ -1,0 +1,34 @@
+# This file exists so you can easily regenerate your project.
+#
+# Unfortunately cookiecutter can't use this right away so
+# you have to copy this file to ~/.cookiecutterrc
+
+default_context:
+
+    appveyor:                  'yes'
+    c_extension_optional:      'yes'
+    c_extension_support:       'yes'
+    codacy:                    'yes'
+    codeclimate:               'yes'
+    codecov:                   'yes'
+    command_line_interface:    'no'
+    coveralls:                 'yes'
+    distribution_name:         'hunter'
+    email:                     'contact@ionelmc.ro'
+    full_name:                 'Ionel Cristian Mărieș'
+    github_username:           'ionelmc'
+    landscape:                 'yes'
+    package_name:              'hunter'
+    project_name:              'Hunter'
+    project_short_description: 'Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation <env-var-activation_>`_).'
+    release_date:              '2015-04-15'
+    repo_name:                 'python-hunter'
+    requiresio:                'yes'
+    scrutinizer:               'yes'
+    sphinx_theme:              'sphinx-py3doc-enhanced-theme'
+    test_matrix_configurator:  'no'
+    test_runner:               'pytest'
+    travis:                    'yes'
+    version:                   '0.5.1'
+    website:                   'http://blog.ionelmc.ro'
+    year:                      '2015'

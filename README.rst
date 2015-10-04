@@ -1,52 +1,76 @@
-===============================
+======
 Hunter
-===============================
+======
 
-| |docs| |travis| |appveyor| |coveralls| |landscape| |scrutinizer|
-| |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+.. list-table::
+    :stub-columns: 1
+
+    * - docs
+      - |docs|
+    * - tests
+      - | |travis| |appveyor| |requires|
+        | |coveralls| |codecov|
+        | |landscape| |scrutinizer| |codacy| |codeclimate|
+    * - package
+      - |version| |downloads| |wheel| |supported-versions| |supported-implementations|
 
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
     :target: https://readthedocs.org/projects/python-hunter
     :alt: Documentation Status
 
-.. |travis| image:: http://img.shields.io/travis/ionelmc/python-hunter/master.png?style=flat
+.. |travis| image:: https://travis-ci.org/ionelmc/python-hunter.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/python-hunter
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/python-hunter?branch=master
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/python-hunter?branch=master&svg=true
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/ionelmc/python-hunter
 
-.. |coveralls| image:: http://img.shields.io/coveralls/ionelmc/python-hunter/master.png?style=flat
+.. |requires| image:: https://requires.io/github/ionelmc/python-hunter/requirements.svg?branch=master
+    :alt: Requirements Status
+    :target: https://requires.io/github/ionelmc/python-hunter/requirements/?branch=master
+
+.. |coveralls| image:: https://coveralls.io/repos/ionelmc/python-hunter/badge.svg?branch=master&service=github
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/python-hunter
+
+.. |codecov| image:: https://codecov.io/github/ionelmc/python-hunter/coverage.svg?branch=master
+    :alt: Coverage Status
+    :target: https://codecov.io/github/ionelmc/python-hunter
 
 .. |landscape| image:: https://landscape.io/github/ionelmc/python-hunter/master/landscape.svg?style=flat
     :target: https://landscape.io/github/ionelmc/python-hunter/master
     :alt: Code Quality Status
 
-.. |version| image:: http://img.shields.io/pypi/v/hunter.png?style=flat
+.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg?style=flat
+    :target: https://www.codacy.com/app/ionelmc/python-hunter
+    :alt: Codacy Code Quality Status
+
+.. |codeclimate| image:: https://codeclimate.com/github/ionelmc/python-hunter/badges/gpa.svg
+   :target: https://codeclimate.com/github/ionelmc/python-hunter
+   :alt: CodeClimate Quality Status
+.. |version| image:: https://img.shields.io/pypi/v/hunter.svg?style=flat
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/hunter
 
-.. |downloads| image:: http://img.shields.io/pypi/dm/hunter.png?style=flat
+.. |downloads| image:: https://img.shields.io/pypi/dm/hunter.svg?style=flat
     :alt: PyPI Package monthly downloads
     :target: https://pypi.python.org/pypi/hunter
 
-.. |wheel| image:: https://pypip.in/wheel/hunter/badge.png?style=flat
+.. |wheel| image:: https://img.shields.io/pypi/wheel/hunter.svg?style=flat
     :alt: PyPI Wheel
     :target: https://pypi.python.org/pypi/hunter
 
-.. |supported-versions| image:: https://pypip.in/py_versions/hunter/badge.png?style=flat
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/hunter.svg?style=flat
     :alt: Supported versions
     :target: https://pypi.python.org/pypi/hunter
 
-.. |supported-implementations| image:: https://pypip.in/implementation/hunter/badge.png?style=flat
-    :alt: Supported imlementations
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/hunter.svg?style=flat
+    :alt: Supported implementations
     :target: https://pypi.python.org/pypi/hunter
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/python-hunter/master.png?style=flat
-    :alt: Scrtinizer Status
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/python-hunter/master.svg?style=flat
+    :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other

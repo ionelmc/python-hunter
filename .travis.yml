@@ -1,29 +1,45 @@
 language: python
-python: 2.7
+python: '3.5'
 sudo: false
 env:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
   matrix:
     - TOXENV=check
-    - TOXENV=2.7,coveralls
-    - TOXENV=2.7-nocover
-    - TOXENV=3.3,coveralls
-    - TOXENV=3.3-nocover
-    - TOXENV=3.4,coveralls
-    - TOXENV=3.4-nocover
-    - TOXENV=pypy,coveralls
-    - TOXENV=pypy-nocover
+
+    - TOXENV=2.6-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=2.6-nocov
+
+    - TOXENV=2.7-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=2.7-nocov
+
+    - TOXENV=3.3-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=3.3-nocov
+
+    - TOXENV=3.4-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=3.4-nocov
+
+    - TOXENV=3.5-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=3.5-nocov
+
+    - TOXENV=pypy-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=pypy-nocov
+
 before_install:
   - python --version
-  - virtualenv --version
-  - pip --version
   - uname -a
   - lsb_release -a
 install:
   - pip install tox
+  - virtualenv --version
+  - easy_install --version
+  - pip --version
+  - tox --version
 script:
   - tox -v
+after_failure:
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
 notifications:
   email:
     on_success: never
