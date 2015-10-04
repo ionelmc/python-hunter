@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import ast
 import atexit
 import inspect
-import io
 import linecache
 import os
 import pdb
