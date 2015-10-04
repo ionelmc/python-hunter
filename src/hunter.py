@@ -2,14 +2,15 @@ from __future__ import absolute_import
 
 import ast
 import atexit
-from distutils.sysconfig import get_python_lib
 import inspect
+import io
 import linecache
 import os
 import pdb
 import re
 import sys
 import tokenize
+from distutils.sysconfig import get_python_lib
 from functools import partial
 from itertools import chain
 
@@ -130,7 +131,11 @@ class Tracer(object):
         if "action" not in options and "actions" not in options:
             options["action"] = CodePrinter
         merge = options.pop("merge", True)
+        clear_env_var = options.pop("clear_env_var", False)
         predicate = Q(*predicates, **options)
+
+        if clear_env_var:
+            os.environ.pop("PYTHONHUNTER", None)
 
         previous_tracer = sys.gettrace()
         if previous_tracer is self:
