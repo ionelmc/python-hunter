@@ -18,6 +18,7 @@ from colorama import Back
 from colorama import Fore
 from colorama import Style
 from fields import Fields
+from six import string_types
 
 __version__ = "0.5.1"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
@@ -489,6 +490,7 @@ class Debugger(Fields.klass.kwargs, Action):
 
 
 class ColorStreamAction(Action):
+    _stream_cache = {}
     _stream = None
     _tty = None
 
@@ -498,6 +500,12 @@ class ColorStreamAction(Action):
 
     @stream.setter
     def stream(self, value):
+        if isinstance(value, string_types):
+            if value in self._stream_cache:
+                value = self._stream_cache[value]
+            else:
+                value = self._stream_cache[value] = open(value, 'a', buffering=0)
+
         isatty = getattr(value, 'isatty', None)
         if isatty and isatty() and os.name != 'java':
             self._stream = AnsiToWin32(value)
