@@ -7,9 +7,6 @@ env:
   matrix:
     - TOXENV=check
 
-    - TOXENV=2.6-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=2.6-nocov
-
     - TOXENV=2.7-cover,extension-coveralls,coveralls,codecov
     - TOXENV=2.7-nocov
 
