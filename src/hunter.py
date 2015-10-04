@@ -493,6 +493,8 @@ class ColorStreamAction(Action):
     _stream_cache = {}
     _stream = None
     _tty = None
+    default_stream = sys.stderr
+    force_colors = False
 
     @property
     def stream(self):
@@ -507,7 +509,7 @@ class ColorStreamAction(Action):
                 value = self._stream_cache[value] = open(value, 'a', buffering=0)
 
         isatty = getattr(value, 'isatty', None)
-        if isatty and isatty() and os.name != 'java':
+        if self.force_colors or (isatty and isatty() and os.name != 'java'):
             self._stream = AnsiToWin32(value)
             self._tty = True
             self.event_colors = EVENT_COLORS
@@ -533,8 +535,11 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
     """
-    def __init__(self, stream=sys.stderr, filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
+    def __init__(self,
+                 stream=ColorStreamAction.default_stream, force_colors=False,
+                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
         self.stream = stream
+        self.force_colors = force_colors
         self.filename_alignment = max(5, filename_alignment)
 
     def _safe_source(self, event):
@@ -602,12 +607,12 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``40``.
         globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
     """
-    default_stream = sys.stderr
 
     def __init__(self, *names, **options):
         if not names:
             raise TypeError("Must give at least one name/expression.")
         self.stream = options.pop('stream', self.default_stream)
+        self.force_colors = options.pop('force_colors', False)
         self.filename_alignment = max(5, options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT))
         self.names = {
             name: set(self._iter_symbols(name))
