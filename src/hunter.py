@@ -167,8 +167,11 @@ stop = atexit.register(_tracer.stop)
 class _CachedProperty(object):
     def __init__(self, func):
         self.func = func
+        self.__doc__ = func.__doc__
 
     def __get__(self, obj, cls):
+        if obj is None:
+            return self
         value = obj.__dict__[self.func.__name__] = self.func(obj)
         return value
 
@@ -192,18 +195,30 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def locals(self):
+        """
+        A dict with local variables.
+        """
         return self.frame.f_locals
 
     @_CachedProperty
     def globals(self):
+        """
+        A dict with global variables.
+        """
         return self.frame.f_globals
 
     @_CachedProperty
     def function(self):
+        """
+        A string with function name.
+        """
         return self.code.co_name
 
     @_CachedProperty
     def module(self):
+        """
+        A string with module name (eg: ``"foo.bar"``).
+        """
         module = self.frame.f_globals.get('__name__', '')
         if module is None:
             module = ''
@@ -212,6 +227,9 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def filename(self):
+        """
+        A string with absolute path to file.
+        """
         filename = self.frame.f_globals.get('__file__', '')
         if filename is None:
             filename = ''
@@ -225,14 +243,23 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def lineno(self):
+        """
+        An integer with line number in file.
+        """
         return self.frame.f_lineno
 
     @_CachedProperty
     def code(self):
+        """
+        A code object (not a string).
+        """
         return self.frame.f_code
 
     @_CachedProperty
     def stdlib(self):
+        """
+        A boolean flag. ``True`` if frame is in stdlib.
+        """
         if self.filename.startswith(SITE_PACKAGES_PATH):
             # if it's in site-packages then its definitely not stdlib
             return False
@@ -242,7 +269,9 @@ class Event(Fields.kind.function.module.filename):
     @_CachedProperty
     def fullsource(self, getlines=linecache.getlines):
         """
-        Get a line from ``linecache``. Ignores failures somewhat.
+        A string with the sourcecode for the current statement (from ``linecache`` - failures are ignored).
+
+        May include multiple lines if it's a class/function definition (will include decorators).
         """
         try:
             return self._raw_fullsource
@@ -251,6 +280,11 @@ class Event(Fields.kind.function.module.filename):
 
     @_CachedProperty
     def source(self, getline=linecache.getline):
+        """
+        A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
+
+        Fast but sometimes incomplete.
+        """
         try:
             return getline(self.filename, self.lineno)
         except Exception as exc:
@@ -325,6 +359,8 @@ def Q(*predicates, **query):
 class Query(Fields.query):
     """
     A query class.
+
+    See :class:`hunter.Event` for fields that can be filtered on.
     """
     query = ()
     allowed = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
@@ -332,7 +368,10 @@ class Query(Fields.query):
     def __init__(self, **query):
         """
         Args:
-            query: criteria to match on. Currently only 'function', 'module' or 'filename' are accepted.
+            query: criteria to match on.
+
+                Accepted arguments: ``arg``, ``code``, ``filename``, ``frame``, ``fullsource``, ``function``,
+                ``globals``, ``kind``, ``lineno``, ``locals``, ``module``, ``source``, ``stdlib``, ``tracer``.
         """
         for key in query:
             if key not in self.allowed:

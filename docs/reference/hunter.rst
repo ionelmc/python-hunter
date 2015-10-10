@@ -31,6 +31,13 @@ hunter
         hunter.Debugger
         hunter.VarsPrinter
 
+    .. rubric:: Objects
+
+    .. autosummary::
+        :nosignatures:
+
+        hunter.Event
+
 .. autofunction:: hunter.trace(*predicates, **options)
 
 .. autofunction:: hunter.stop()
@@ -75,5 +82,7 @@ hunter
     :private-members:
     :special-members:
 
+.. autoclass:: hunter.Event
+    :members:
 
 
