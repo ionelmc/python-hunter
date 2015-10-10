@@ -2,6 +2,24 @@
 Changelog
 =========
 
+0.6.0 (2015-10-10)
+------------------
+
+* Added a ``clear_env_var`` option on the tracer (disables tracing in subprocess).
+* Added ``force_colors`` option on :class:`VarsPrinter` and :class:`CodePrinter`.
+* Allowed setting the `stream` to a file name (option on :class:`VarsPrinter` and :class:`CodePrinter`).
+* Bumped up the filename alignment to 40 cols.
+* If not merging then `self` is not kept as a previous tracer anymore.
+  Closes `#16 <https://github.com/ionelmc/python-hunter/issues/16>`_.
+* Fixed handling in VarsPrinter: properly print eval errors and don't try to show anything if there's an AttributeError.
+  Closes `#18 <https://github.com/ionelmc/python-hunter/issues/18>`_.
+* Added a ``stdlib`` boolean flag (for filtering purposes).
+  Closes `#15 <https://github.com/ionelmc/python-hunter/issues/15>`_.
+* Fixed broken frames that have "None" for filename or module (so they can still be treated as strings).
+* Corrected output files in the ``install_lib`` command so that pip can uninstall the pth file.
+  This only works when it's installed with pip (sadly, ``setup.py install/develop`` and ``pip install -e`` will still
+  leave pth garbage on ``pip uninstall hunter``).
+
 0.5.1 (2015-04-15)
 ------------------
 
