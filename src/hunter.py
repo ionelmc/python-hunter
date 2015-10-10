@@ -20,7 +20,7 @@ from colorama import Style
 from fields import Fields
 from six import string_types
 
-__version__ = "0.5.1"
+__version__ = "0.6.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 40
