@@ -26,7 +26,10 @@ from distutils.errors import DistutilsPlatformError
 from setuptools.command.develop import develop
 from setuptools.command.install_lib import install_lib
 from setuptools.command.easy_install import easy_install
-
+try:
+    import Cython
+except ImportError:
+    Cython = None
 
 def read(*names, **kwargs):
     return io.open(
@@ -93,6 +96,36 @@ class GeneratePTH(Command):
                     'exec(%r)' % sh.read().replace('    ', ' ')
                 )
 
+class OptionalBuildExt(build_ext):
+    """Allow the building of C extensions to fail."""
+    def run(self):
+        try:
+            build_ext.run(self)
+        except DistutilsPlatformError as e:
+            self._unavailable(e)
+            self.extensions = []  # avoid copying missing files (it would fail).
+
+    def build_extension(self, ext):
+        try:
+            build_ext.build_extension(self, ext)
+        except Exception as e:
+            self._unavailable(e)
+            self.extensions = []  # avoid copying missing files (it would fail).
+
+    def _unavailable(self, e):
+        print('*' * 80)
+        print('''WARNING:
+
+    An optional code optimization (C extension) could not be compiled.
+
+    Optimizations for this package will not be available!
+        ''')
+
+        print('CAUSE:')
+        print('')
+        print('    ' + repr(e))
+        print('*' * 80)
+
 setup(
     name='hunter',
     version='0.6.0',
@@ -151,11 +184,11 @@ setup(
         'install_lib': InstallLibWithPTH,
         'develop': DevelopWithPTH,
         'genpth': GeneratePTH,
+        'build_ext': OptionalBuildExt,
     },
     setup_requires=[
-        # eg: 'cython',
-    ],
-    cmdclass={'build_ext': optional_build_ext},
+        'cython',
+    ] if Cython else [],
     ext_modules=[
         Extension(
             splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
@@ -163,6 +196,6 @@ setup(
             include_dirs=[dirname(path)]
         )
         for root, _, _ in os.walk('src')
-        for path in glob(join(root, '*.c'))  # if you want to use cython, just replace "c" with "pyx"
+        for path in glob(join(root, '*.pyx' if Cython else '*.c'))
     ],
 )
