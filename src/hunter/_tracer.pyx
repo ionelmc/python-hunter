@@ -8,12 +8,10 @@ from .actions import CodePrinter
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -1:
-    frame.f_trace = <PyObject*> self;
+    frame.f_trace = self
 
     if self._handler is None:
         raise RuntimeError("Tracer is not started.")
-
-    print('self._handler(Event', (frame, kind_names[kind], arg, self))
 
     if self._previous_tracer:
         self._previous_tracer(frame, kind, arg)
@@ -71,7 +69,7 @@ cdef class Tracer:
             # if merge:
             #     self._handler |= predicate
         else:
-            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
+            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, self)
 
             self._previous_tracer = previous_tracer
             self._handler = True  #predicate

@@ -1,5 +1,3 @@
-cimport cython
-
 import re
 from functools import partial
 from linecache import getline
@@ -14,48 +12,49 @@ from ._tracer cimport *
 
 cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
-@cython.final
 cdef class Event:
     """
     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
 
     Provides few convenience properties.
     """
-    cdef:
-        FrameType frame
-        public str kind
-        public object arg
-        public Tracer tracer
-        object _module
-        object _filename
-
     def __cinit__(self, FrameType frame, str kind, object arg, Tracer tracer):
+        self.arg = arg
         self.frame = frame
         self.kind = kind
-        self.arg = arg
         self.tracer = tracer
+
+        self._filename = None
+        self._fullsource = None
         self._module = None
+        self._source = None
 
     property locals:
         def __get__(self):
             """
             A dict with local variables.
             """
-            return self.frame.f_locals
+            return self._get_locals()
+
+    cdef object _get_locals(self):
+        return self.frame.f_locals
 
     property globals:
         def __get__(self):
             """
             A dict with global variables.
             """
-            return self.frame.f_globals
+            return self._get_globals()
+
+    cdef object _get_globals(self):
+        return self.frame.f_globals
 
     property function:
         def __get__(self):
             """
             A string with function name.
             """
-            return self.code.co_name
+            return self.frame.f_code.co_name
 
     property module:
         """
