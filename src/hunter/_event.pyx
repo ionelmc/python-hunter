@@ -1,3 +1,20 @@
+cimport cython
+
+import re
+from functools import partial
+from linecache import getline
+from linecache import getlines
+from tokenize import TokenError
+from tokenize import generate_tokens
+
+from .env import SITE_PACKAGES_PATH
+from .env import SYS_PREFIX_PATHS
+from ._tracer cimport *
+
+
+cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+
+@cython.final
 cdef class Event:
     """
     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
@@ -93,6 +110,7 @@ cdef class Event:
                 return False
             if self.filename.startswith(SYS_PREFIX_PATHS):
                 return True
+
     property fullsource:
         def __get__(self):
             """
@@ -100,35 +118,61 @@ cdef class Event:
 
             May include multiple lines if it's a class/function definition (will include decorators).
             """
-            try:
-                return self._raw_fullsource
-            except Exception as exc:
-                return "??? NO SOURCE: {!r}".format(exc)
+            if self._fullsource is None:
+                try:
+                    self._fullsource = self._raw_fullsource
+                except Exception as exc:
+                    self._fullsource = "??? NO SOURCE: {!r}".format(exc)
 
-    def source(self, getline=linecache.getline):
-        """
-        A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
+            return self._fullsource
 
-        Fast but sometimes incomplete.
-        """
-        try:
+    property source:
+        def __get__(self):
+            """
+            A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
+
+            Fast but sometimes incomplete.
+            """
+            if self._source is None:
+                try:
+                    self._source = getline(self.filename, self.lineno)
+                except Exception as exc:
+                    self._source = "??? NO SOURCE: {!r}".format(exc)
+
+            return self._source
+
+    property _raw_fullsource:
+        def __get__(self):
+            cdef list lines
+
+            if self.kind == 'call' and self.code.co_name != "<module>":
+                lines = []
+                try:
+                    for _, token, _, _, line in generate_tokens(partial(
+                        next,
+                        yield_lines(self.filename, self.lineno - 1, lines)
+                    )):
+                        if token in ("def", "class", "lambda"):
+                            return ''.join(lines)
+                except TokenError:
+                    pass
+
             return getline(self.filename, self.lineno)
-        except Exception as exc:
-            return "??? NO SOURCE: {!r}".format(exc)
 
-    def _raw_fullsource(self, getlines=linecache.getlines, getline=linecache.getline):
-        if self.kind == 'call' and self.code.co_name != "<module>":
-            lines = []
-            try:
-                for _, token, _, _, line in tokenize.generate_tokens(partial(
-                    next,
-                    yield_lines(self.filename, self.lineno - 1, lines.append)
-                )):
-                    if token in ("def", "class", "lambda"):
-                        return ''.join(lines)
-            except tokenize.TokenError:
-                pass
+    def __getitem__(self, item):
+        return getattr(self, item)
 
-        return getline(self.filename, self.lineno)
 
-    __getitem__ = object.__getattribute__
+def yield_lines(filename, start, list collector,
+                limit=10):
+    dedent = None
+    amount = 0
+    for line in getlines(filename)[start:start + limit]:
+        if dedent is None:
+            dedent = LEADING_WHITESPACE_RE.findall(line)
+            dedent = dedent[0] if dedent else ""
+            amount = len(dedent)
+        elif not line.startswith(dedent):
+            break
+        collector.append(line)
+        yield line[amount:]

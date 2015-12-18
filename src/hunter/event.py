@@ -9,8 +9,9 @@ from fields import Fields
 
 from .env import SITE_PACKAGES_PATH
 from .env import SYS_PREFIX_PATHS
+from .util import cached_property
 
-STARTSWITH_TYPES = (list, tuple, set)
+STARTSWITH_TYPES = list, tuple, set
 
 
 class Event(Fields.kind.function.module.filename):
@@ -30,28 +31,28 @@ class Event(Fields.kind.function.module.filename):
         self.arg = arg
         self.tracer = tracer
 
-    @_CachedProperty
+    @cached_property
     def locals(self):
         """
         A dict with local variables.
         """
         return self.frame.f_locals
 
-    @_CachedProperty
+    @cached_property
     def globals(self):
         """
         A dict with global variables.
         """
         return self.frame.f_globals
 
-    @_CachedProperty
+    @cached_property
     def function(self):
         """
         A string with function name.
         """
         return self.code.co_name
 
-    @_CachedProperty
+    @cached_property
     def module(self):
         """
         A string with module name (eg: ``"foo.bar"``).
@@ -62,7 +63,7 @@ class Event(Fields.kind.function.module.filename):
 
         return module
 
-    @_CachedProperty
+    @cached_property
     def filename(self):
         """
         A string with absolute path to file.
@@ -78,21 +79,21 @@ class Event(Fields.kind.function.module.filename):
 
         return filename
 
-    @_CachedProperty
+    @cached_property
     def lineno(self):
         """
         An integer with line number in file.
         """
         return self.frame.f_lineno
 
-    @_CachedProperty
+    @cached_property
     def code(self):
         """
         A code object (not a string).
         """
         return self.frame.f_code
 
-    @_CachedProperty
+    @cached_property
     def stdlib(self):
         """
         A boolean flag. ``True`` if frame is in stdlib.
@@ -103,7 +104,7 @@ class Event(Fields.kind.function.module.filename):
         if self.filename.startswith(SYS_PREFIX_PATHS):
             return True
 
-    @_CachedProperty
+    @cached_property
     def fullsource(self):
         """
         A string with the sourcecode for the current statement (from ``linecache`` - failures are ignored).
@@ -115,7 +116,7 @@ class Event(Fields.kind.function.module.filename):
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
-    @_CachedProperty
+    @cached_property
     def source(self, getline=linecache.getline):
         """
         A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
@@ -127,12 +128,15 @@ class Event(Fields.kind.function.module.filename):
         except Exception as exc:
             return "??? NO SOURCE: {!r}".format(exc)
 
-    @_CachedProperty
-    def _raw_fullsource(self, getlines=linecache.getlines, getline=linecache.getline):
+    @cached_property
+    def _raw_fullsource(self,
+                        getlines=linecache.getlines,
+                        getline=linecache.getline,
+                        generate_tokens=tokenize.generate_tokens):
         if self.kind == 'call' and self.code.co_name != "<module>":
             lines = []
             try:
-                for _, token, _, _, line in tokenize.generate_tokens(partial(
+                for _, token, _, _, line in generate_tokens(partial(
                     next,
                     yield_lines(self.filename, self.lineno - 1, lines.append)
                 )):

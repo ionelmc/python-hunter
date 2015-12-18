@@ -1,32 +1,9 @@
 import os
-from _csv import field_size_limit
-from distutils.sysconfig import get_python_lib
 
-cimport cython
 import sys
 from cpython cimport pystate
 
 from .actions import CodePrinter
-from .env import SITE_PACKAGES_PATH
-from .env import SYS_PREFIX_PATHS
-
-
-cdef extern from "frameobject.h":
-    ctypedef struct PyObject
-
-    ctypedef class types.CodeType[object PyCodeObject]:
-        cdef object co_filename
-        cdef int co_firstlineno
-
-    ctypedef class types.FrameType[object PyFrameObject]:
-        cdef CodeType f_code
-        cdef PyObject *f_back
-        cdef PyObject *f_trace
-        cdef int f_lineno
-
-    void PyEval_SetTrace(pystate.Py_tracefunc func, PyObject*obj)
-
-
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
@@ -41,16 +18,11 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -
     if self._previous_tracer:
         self._previous_tracer(frame, kind, arg)
 
-@cython.final
 cdef class Tracer:
     """
     Tracer object.
 
     """
-    cdef:
-        public object _handler
-        public object _previous_tracer
-
     def __cinit__(self):
         self._handler = None
         self._previous_tracer = None
@@ -117,4 +89,3 @@ cdef class Tracer:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
-
