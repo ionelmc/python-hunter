@@ -23,6 +23,7 @@ from six import string_types
 __version__ = "0.6.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
+STARTSWITH_TYPES = (list, tuple, set)
 DEFAULT_MIN_FILENAME_ALIGNMENT = 40
 NO_COLORS = {
     'reset': '',
@@ -388,8 +389,12 @@ class Query(Fields.query):
         Handles event. Returns True if all criteria matched.
         """
         for key, value in self.query.items():
-            if event[key] != value:
-                return
+            evalue = event[key]
+            if isinstance(evalue, string_types) and isinstance(value, STARTSWITH_TYPES):
+                if not evalue.startswith(tuple(value)):
+                    return False
+            elif evalue != value:
+                return False
 
         return True
 
@@ -480,7 +485,7 @@ class And(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
         """
         for predicate in self.predicates:
             if not predicate(event):
-                return
+                return False
         return True
 
     def __or__(self, other):
@@ -504,6 +509,7 @@ class Or(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
         for predicate in self.predicates:
             if predicate(event):
                 return True
+        return False
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))

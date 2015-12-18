@@ -16,16 +16,19 @@ except ImportError:
 
 import pytest
 
-from hunter import And
 from hunter import Q
+from hunter import And
 from hunter import Or
+from hunter import Query
+from hunter import When
 from hunter import stop
 from hunter import trace
-from hunter import When
 
 from hunter import CodePrinter
 from hunter import Debugger
 from hunter import VarsPrinter
+
+pytest_plugins = 'pytester',
 
 
 @pytest.yield_fixture(autouse=True, scope="function")
@@ -69,7 +72,7 @@ def test_pth_sample4():
     assert output
 
 
-def test_pth_sample2():
+def test_pth_sample2(LineMatcher):
     env = dict(os.environ, PYTHONHUNTER="module='__main__'")
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
@@ -78,7 +81,8 @@ def test_pth_sample2():
         env=env,
         stderr=subprocess.STDOUT,
     )
-    for line, expected in izip_longest(output.decode('utf-8').splitlines(), [
+    lm = LineMatcher(output.decode('utf-8').splitlines())
+    lm.fnmatch_lines([
         '*tests*sample2.py:* call      if __name__ == "__main__":  #*',
         '*tests*sample2.py:* line      if __name__ == "__main__":  #*',
         '*tests*sample2.py:* line          import functools',
@@ -151,8 +155,7 @@ def test_pth_sample2():
         "*tests*sample2.py:* line              pass",
         "*tests*sample2.py:* return            pass",
         "*                   ...       return value: None",
-    ], fillvalue="MISSING"):
-        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+    ])
 
 
 def test_repr():
@@ -181,7 +184,12 @@ def test_or():
     assert Q(module=1) | Q(module=2) | Q(module=3) == Or(Q(module=1), Q(module=2), Q(module=3))
 
 
-def test_tracing_bare():
+def test_or():
+    assert Q(module=1) | Q(module=2) == Or(Q(module=1), Q(module=2))
+    assert Q(module=1) | Q(module=2) | Q(module=3) == Or(Q(module=1), Q(module=2), Q(module=3))
+
+
+def test_tracing_bare(LineMatcher):
     lines = StringIO()
     with trace(CodePrinter(stream=lines)):
         def a():
@@ -193,8 +201,8 @@ def test_tracing_bare():
         except Exception:
             pass
     print(lines.getvalue())
-
-    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
         "*hunter.py* call          def __enter__(self):",
         "*hunter.py* line              return self",
         "*hunter.py* return            return self",
@@ -207,11 +215,10 @@ def test_tracing_bare():
         "*hunter.py* line              self.stop()",
         "*hunter.py* call          def stop(self):",
         "*hunter.py* line              sys.settrace(self._previous_tracer)",
-    ], fillvalue="MISSING"):
-        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+    ])
 
 
-def test_tracing_printing_failures():
+def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
     with trace(CodePrinter(stream=lines), VarsPrinter("x", stream=lines)):
         class Bad(Exception):
@@ -231,8 +238,8 @@ def test_tracing_printing_failures():
             b()
         except Exception as exc:
             pass
-    print(lines.getvalue())
-    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
         """*hunter.py:* call          def __enter__(self):""",
         """*hunter.py:* line              return self""",
         """*hunter.py:* return            return self""",
@@ -264,12 +271,11 @@ def test_tracing_printing_failures():
         """*hunter.py:* call          def stop(self):""",
         """*hunter.py:* line              sys.settrace(self._previous_tracer)""",
 
-    ], fillvalue="MISSING"):
-        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+    ])
 
 
 
-def test_tracing_vars():
+def test_tracing_vars(LineMatcher):
     lines = StringIO()
     with trace(actions=[VarsPrinter('b', stream=lines), CodePrinter(stream=lines)]):
         def a():
@@ -283,8 +289,8 @@ def test_tracing_vars():
         except Exception:
             pass
     print(lines.getvalue())
-
-    for line, expected in izip_longest(lines.getvalue().splitlines(), [
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
         "*hunter.py* call          def __enter__(self):",
         "*hunter.py* line              return self",
         "*hunter.py* return            return self",
@@ -302,8 +308,7 @@ def test_tracing_vars():
         "*hunter.py* line              self.stop()",
         "*hunter.py* call          def stop(self):",
         "*hunter.py* line              sys.settrace(self._previous_tracer)",
-    ], fillvalue="MISSING"):
-        assert fnmatchcase(line, expected), "%r didn't match %r" % (line, expected)
+    ])
 
 
 def test_trace_merge():
@@ -392,3 +397,32 @@ def test_predicate_compression():
     assert Or(Or(1, 2), 3) == Or(1, 2, 3)
     assert Or(1, Or(2, 3), 4) == Or(1, 2, 3, 4)
     assert And(1, 2, Or(3, 4)).predicates == (1, 2, Or(3, 4))
+
+
+@pytest.mark.parametrize('expr,inp,expected', [
+    ({'module': "abc"},          {'module': "abc"},    True),
+    ({'module': "abcd"},         {'module': "abc"},    False),
+    ({'module': "abcd"},         {'module': "abce"},   False),
+    ({'module': "abc"},          {'module': "abcd"},   False),
+    ({'module': ("abc", "xyz")}, {'module': "abc"},    True),
+    ({'module': ("abc", "xyz")}, {'module': "abcd"},   True),
+    ({'module': ("abc", "xyz")}, {'module': "xyzw"},   True),
+    ({'module': ("abc", "xyz")}, {'module': "fooabc"}, False),
+    ({'module': ("abc", "xyz")}, {'module': 1},        False),
+
+    ({'module': ["abc", "xyz"]}, {'module': "abc"},    True),
+    ({'module': ["abc", "xyz"]}, {'module': "abcd"},   True),
+    ({'module': ["abc", "xyz"]}, {'module': "xyzw"},   True),
+    ({'module': ["abc", "xyz"]}, {'module': "fooabc"}, False),
+    ({'module': ["abc", "xyz"]}, {'module': 1},        False),
+
+    ({'module': {"abc", "xyz"}}, {'module': "abc"},    True),
+    ({'module': {"abc", "xyz"}}, {'module': "abcd"},   True),
+    ({'module': {"abc", "xyz"}}, {'module': "xyzw"},   True),
+    ({'module': {"abc", "xyz"}}, {'module': "fooabc"}, False),
+    ({'module': {"abc", "xyz"}}, {'module': 1},        False),
+
+    ({'module': "abc"},          {'module': 1},        False),
+])
+def test_matching(expr, inp, expected):
+    assert Query(**expr)(inp) == expected
