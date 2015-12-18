@@ -1,7 +1,6 @@
-Welcome to Hunter's documentation!
-====================================
-
-Contents:
+========
+Contents
+========
 
 .. toctree::
    :maxdepth: 2

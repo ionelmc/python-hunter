@@ -7,21 +7,9 @@ env:
     - SEGFAULT_SIGNALS=all
   matrix:
     - TOXENV=check
-
-    - TOXENV=2.7-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=2.7-nocov
-
-    - TOXENV=3.3-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=3.3-nocov
-
-    - TOXENV=3.4-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=3.4-nocov
-
-    - TOXENV=3.5-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=3.5-nocov
-
-    - TOXENV=pypy-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=pypy-nocov
+{% for env in tox_environments %}{{ '' }}
+    - TOXENV={{ env }}{% if 'cover' in env %},extension-coveralls,coveralls,codecov{% endif -%}
+{% endfor %}
 
 before_install:
   - python --version

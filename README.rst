@@ -1,6 +1,8 @@
-======
-Hunter
-======
+========
+Overview
+========
+
+.. start-badges
 
 .. list-table::
     :stub-columns: 1
@@ -49,6 +51,7 @@ Hunter
 .. |codeclimate| image:: https://codeclimate.com/github/ionelmc/python-hunter/badges/gpa.svg
    :target: https://codeclimate.com/github/ionelmc/python-hunter
    :alt: CodeClimate Quality Status
+
 .. |version| image:: https://img.shields.io/pypi/v/hunter.svg?style=flat
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/hunter
@@ -73,8 +76,11 @@ Hunter
     :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
 
+
+.. end-badges
+
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
-nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation 
+nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation
 <env-var-activation_>`_).
 
 API is considered unstable until 1.0 is released.
