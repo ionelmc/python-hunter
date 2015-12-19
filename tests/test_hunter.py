@@ -175,6 +175,7 @@ def test_expansion():
 
 
 def test_and():
+    assert And(1, 2) == And(1, 2)
     assert Q(module=1) & Q(module=2) == And(Q(module=1), Q(module=2))
     assert Q(module=1) & Q(module=2) & Q(module=3) == And(Q(module=1), Q(module=2), Q(module=3))
 

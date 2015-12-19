@@ -1,9 +1,5 @@
-import os
-
 import sys
 from cpython cimport pystate
-
-from .actions import CodePrinter
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
@@ -44,7 +40,7 @@ cdef class Tracer:
         trace_func(self, frame, kind_names.index(kind), arg)
         return self
 
-    def trace(self, *predicates, **options):
+    def trace(self, predicate, merge=False):
         """
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
         before ``__enter__`` is
@@ -54,25 +50,15 @@ cdef class Tracer:
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        if "action" not in options and "actions" not in options:
-            options["action"] = CodePrinter
-        merge = options.pop("merge", True)
-        clear_env_var = options.pop("clear_env_var", False)
-        # predicate = Q(*predicates, **options)
-
-        if clear_env_var:
-            os.environ.pop("PYTHONHUNTER", None)
-
         previous_tracer = sys.gettrace()
         if previous_tracer is self:
-            pass
-            # if merge:
-            #     self._handler |= predicate
+            if merge:
+                self._handler |= predicate
         else:
             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, self)
 
             self._previous_tracer = previous_tracer
-            self._handler = True  #predicate
+            self._handler = predicate
         return self
 
     def stop(self):

@@ -1,9 +1,7 @@
 from __future__ import absolute_import
 
-import os
 import sys
 
-from .actions import CodePrinter
 from .event import Event
 
 
@@ -42,7 +40,7 @@ class Tracer(object):
             self._previous_tracer(frame, kind, arg)
         return self
 
-    def trace(self, *predicates, **options):
+    def trace(self, predicate, merge=False):
         """
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
         before ``__enter__`` is
@@ -52,15 +50,6 @@ class Tracer(object):
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        if "action" not in options and "actions" not in options:
-            options["action"] = CodePrinter
-        merge = options.pop("merge", True)
-        clear_env_var = options.pop("clear_env_var", False)
-        predicate = Q(*predicates, **options)
-
-        if clear_env_var:
-            os.environ.pop("PYTHONHUNTER", None)
-
         previous_tracer = sys.gettrace()
         if previous_tracer is self:
             if merge:

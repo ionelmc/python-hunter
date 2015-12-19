@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import atexit
 import inspect
+import os
 from functools import partial
 
 from .actions import Action
@@ -84,6 +85,18 @@ Or = partial(_flatten, cls=_Or)
 
 _tracer = Tracer()
 
-trace = _tracer.trace
+def trace(self, *predicates, **options):
+    if "action" not in options and "actions" not in options:
+        options["action"] = CodePrinter
+
+    merge = options.pop("merge", True)
+    clear_env_var = options.pop("clear_env_var", False)
+    predicate = Q(*predicates, **options)
+
+    if clear_env_var:
+        os.environ.pop("PYTHONHUNTER", None)
+
+    _tracer.trace(predicate, merge)
+
 stop = atexit.register(_tracer.stop)
 
