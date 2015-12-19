@@ -23,8 +23,6 @@ except ImportError:
     from .predicates import Query
     from .tracer import Tracer
 
-
-
 __version__ = "0.6.0"
 __all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
 
@@ -80,10 +78,12 @@ def _flatten(predicate, *predicates, **kwargs):
                 all_predicates.append(p)
         return cls(*all_predicates)
 
+
 And = partial(_flatten, cls=_And)
 Or = partial(_flatten, cls=_Or)
 
 _tracer = Tracer()
+stop = atexit.register(_tracer.stop)
 
 def trace(*predicates, **options):
     if "action" not in options and "actions" not in options:
@@ -98,5 +98,5 @@ def trace(*predicates, **options):
 
     _tracer.trace(predicate, merge)
 
-stop = atexit.register(_tracer.stop)
+
 
