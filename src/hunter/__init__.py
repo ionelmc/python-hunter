@@ -85,7 +85,7 @@ Or = partial(_flatten, cls=_Or)
 
 _tracer = Tracer()
 
-def trace(self, *predicates, **options):
+def trace(*predicates, **options):
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
 
