@@ -85,6 +85,7 @@ Or = partial(_flatten, cls=_Or)
 _tracer = Tracer()
 stop = atexit.register(_tracer.stop)
 
+
 def trace(*predicates, **options):
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
@@ -95,7 +96,4 @@ def trace(*predicates, **options):
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
 
-    _tracer.trace(predicate)
-
-
-
+    return _tracer.trace(predicate)

@@ -58,6 +58,7 @@ cdef class Tracer:
         """
         self._handler = predicate
         PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
+        return self
 
     def stop(self):
         """

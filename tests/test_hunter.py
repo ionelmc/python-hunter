@@ -4,7 +4,7 @@ import inspect
 import os
 import subprocess
 import sys
-from fnmatch import fnmatchcase
+
 try:
     from StringIO import StringIO
 except ImportError:
@@ -195,6 +195,7 @@ def test_tracing_bare(LineMatcher):
     with trace(CodePrinter(stream=lines)):
         def a():
             return 1
+
         b = a()
         b = 2
         try:
@@ -204,18 +205,11 @@ def test_tracing_bare(LineMatcher):
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        "*hunter.py* call          def __enter__(self):",
-        "*hunter.py* line              return self",
-        "*hunter.py* return            return self",
-        "* ...       return value: <hunter.Tracer *",
+        "* ...       return value: <hunter.*tracer.Tracer *",
         "*test_hunter.py* call              def a():",
         "*test_hunter.py* line                  return 1",
         "*test_hunter.py* return                return 1",
         "* ...       return value: 1",
-        "*hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "*hunter.py* line              self.stop()",
-        "*hunter.py* call          def stop(self):",
-        "*hunter.py* line              sys.settrace(None)",
     ])
 
 
@@ -241,10 +235,7 @@ def test_tracing_printing_failures(LineMatcher):
             pass
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        """*hunter.py:* call          def __enter__(self):""",
-        """*hunter.py:* line              return self""",
-        """*hunter.py:* return            return self""",
-        """* ...       return value: <hunter.Tracer *""",
+        """* ...       return value: <hunter.*tracer.Tracer *""",
         """*tests*test_hunter.py:* call              class Bad(Exception):""",
         """*tests*test_hunter.py:* line              class Bad(Exception):""",
         """*tests*test_hunter.py:* line                  def __repr__(self):""",
@@ -267,13 +258,7 @@ def test_tracing_printing_failures(LineMatcher):
         """*tests*test_hunter.py:* return                raise x""",
         """* ...       return value: None""",
         """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!",)""",
-        """*hunter.py:* call          def __exit__(self, exc_type, exc_val, exc_tb):""",
-        """*hunter.py:* line              self.stop()""",
-        """*hunter.py:* call          def stop(self):""",
-        """*hunter.py:* line              sys.settrace(None)""",
-
     ])
-
 
 
 def test_tracing_vars(LineMatcher):
@@ -283,6 +268,7 @@ def test_tracing_vars(LineMatcher):
             b = 1
             b = 2
             return 1
+
         b = a()
         b = 2
         try:
@@ -292,10 +278,7 @@ def test_tracing_vars(LineMatcher):
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        "*hunter.py* call          def __enter__(self):",
-        "*hunter.py* line              return self",
-        "*hunter.py* return            return self",
-        "* ...       return value: <hunter.Tracer *",
+        "* ...       return value: <hunter.*tracer.Tracer *",
         "*test_hunter.py* call              def a():",
         "*test_hunter.py* line                  b = 1",
         "* vars      b => 1",
@@ -305,10 +288,6 @@ def test_tracing_vars(LineMatcher):
         "* vars      b => 2",
         "*test_hunter.py* return                return 1",
         "* ...       return value: 1",
-        "*hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
-        "*hunter.py* line              self.stop()",
-        "*hunter.py* call          def stop(self):",
-        "*hunter.py* line              sys.settrace(None)",
     ])
 
 
@@ -366,9 +345,9 @@ def test_trace_api_expansion():
     assert trace(lambda event: event.locals.get("node") == "Foobar",
                  module="foo", function="foobar")
     assert trace(Q(lambda event: event.locals.get("node") == "Foobar",
-                   function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo",)
+                   function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo", )
     assert trace(Q(function="foobar", actions=[VarsPrinter("foobar"),
-                                               lambda event: print("some custom output")]), module="foo",)
+                                               lambda event: print("some custom output")]), module="foo", )
 
 
 def test_trace_with_class_actions():
@@ -377,6 +356,7 @@ def test_trace_with_class_actions():
             pass
 
         a()
+
 
 def test_no_inf_recursion():
     assert Or(And(1)) == 1
@@ -397,29 +377,29 @@ def test_predicate_compression():
 
 
 @pytest.mark.parametrize('expr,inp,expected', [
-    ({'module': "abc"},          {'module': "abc"},    True),
-    ({'module': "abcd"},         {'module': "abc"},    False),
-    ({'module': "abcd"},         {'module': "abce"},   False),
-    ({'module': "abc"},          {'module': "abcd"},   False),
-    ({'module': ("abc", "xyz")}, {'module': "abc"},    True),
-    ({'module': ("abc", "xyz")}, {'module': "abcd"},   True),
-    ({'module': ("abc", "xyz")}, {'module': "xyzw"},   True),
+    ({'module': "abc"}, {'module': "abc"}, True),
+    ({'module': "abcd"}, {'module': "abc"}, False),
+    ({'module': "abcd"}, {'module': "abce"}, False),
+    ({'module': "abc"}, {'module': "abcd"}, False),
+    ({'module': ("abc", "xyz")}, {'module': "abc"}, True),
+    ({'module': ("abc", "xyz")}, {'module': "abcd"}, True),
+    ({'module': ("abc", "xyz")}, {'module': "xyzw"}, True),
     ({'module': ("abc", "xyz")}, {'module': "fooabc"}, False),
-    ({'module': ("abc", "xyz")}, {'module': 1},        False),
+    ({'module': ("abc", "xyz")}, {'module': 1}, False),
 
-    ({'module': ["abc", "xyz"]}, {'module': "abc"},    True),
-    ({'module': ["abc", "xyz"]}, {'module': "abcd"},   True),
-    ({'module': ["abc", "xyz"]}, {'module': "xyzw"},   True),
+    ({'module': ["abc", "xyz"]}, {'module': "abc"}, True),
+    ({'module': ["abc", "xyz"]}, {'module': "abcd"}, True),
+    ({'module': ["abc", "xyz"]}, {'module': "xyzw"}, True),
     ({'module': ["abc", "xyz"]}, {'module': "fooabc"}, False),
-    ({'module': ["abc", "xyz"]}, {'module': 1},        False),
+    ({'module': ["abc", "xyz"]}, {'module': 1}, False),
 
-    ({'module': {"abc", "xyz"}}, {'module': "abc"},    True),
-    ({'module': {"abc", "xyz"}}, {'module': "abcd"},   True),
-    ({'module': {"abc", "xyz"}}, {'module': "xyzw"},   True),
+    ({'module': {"abc", "xyz"}}, {'module': "abc"}, True),
+    ({'module': {"abc", "xyz"}}, {'module': "abcd"}, True),
+    ({'module': {"abc", "xyz"}}, {'module': "xyzw"}, True),
     ({'module': {"abc", "xyz"}}, {'module': "fooabc"}, False),
-    ({'module': {"abc", "xyz"}}, {'module': 1},        False),
+    ({'module': {"abc", "xyz"}}, {'module': 1}, False),
 
-    ({'module': "abc"},          {'module': 1},        False),
+    ({'module': "abc"}, {'module': 1}, False),
 ])
 def test_matching(expr, inp, expected):
     assert Query(**expr)(inp) == expected

@@ -47,6 +47,7 @@ class Tracer(object):
         """
         self._handler = predicate
         sys.settrace(self)
+        return self
 
     def stop(self):
         """
