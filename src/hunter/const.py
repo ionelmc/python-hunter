@@ -11,3 +11,5 @@ SYS_PREFIX_PATHS = (
 for prop in 'real_prefix', 'real_exec_prefix', 'base_prefix', 'base_exec_prefix':
     if hasattr(sys, prop):
         SYS_PREFIX_PATHS += getattr(sys, prop),
+
+

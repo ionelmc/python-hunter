@@ -7,8 +7,8 @@ from functools import partial
 
 from fields import Fields
 
-from .env import SITE_PACKAGES_PATH
-from .env import SYS_PREFIX_PATHS
+from .const import SITE_PACKAGES_PATH
+from .const import SYS_PREFIX_PATHS
 from .util import cached_property
 
 STARTSWITH_TYPES = list, tuple, set

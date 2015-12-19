@@ -1,11 +1,10 @@
 from __future__ import absolute_import
 
-import atexit
 import os
 import sys
 
 from .actions import CodePrinter
-
+from .event import Event
 
 class Tracer(object):
     """
@@ -84,10 +83,3 @@ class Tracer(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
-
-
-_tracer = Tracer()
-trace = _tracer.trace
-stop = atexit.register(_tracer.stop)
-
-

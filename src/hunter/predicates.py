@@ -6,39 +6,8 @@ from itertools import chain
 from fields import Fields
 from six import string_types
 
-from .actions import CodePrinter
-
-STARTSWITH_TYPES = (list, tuple, set)
-
-
-def Q(*predicates, **query):
-    """
-    Handles situations where :class:`hunter.Query` objects (or other callables) are passed in as positional arguments.
-    Conveniently converts that to an :class:`hunter.Or` predicate.
-    """
-    optional_actions = query.pop("actions", [])
-    if "action" in query:
-        optional_actions.append(query.pop("action"))
-
-    if predicates:
-        predicates = tuple(
-            p() if inspect.isclass(p) and issubclass(p, Action) else p
-            for p in predicates
-        )
-        if any(isinstance(p, CodePrinter) for p in predicates):
-            if CodePrinter in optional_actions:
-                optional_actions.remove(CodePrinter)
-        if query:
-            predicates += Query(**query),
-
-        result = Or(*predicates)
-    else:
-        result = Query(**query)
-
-    if optional_actions:
-        result = When(result, *optional_actions)
-
-    return result
+from .actions import Action
+from .event import Event
 
 
 class Query(Fields.query):
@@ -74,7 +43,7 @@ class Query(Fields.query):
         """
         for key, value in self.query.items():
             evalue = event[key]
-            if isinstance(evalue, string_types) and isinstance(value, STARTSWITH_TYPES):
+            if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
                 if not evalue.startswith(tuple(value)):
                     return False
             elif evalue != value:
@@ -140,22 +109,7 @@ def _with_metaclass(meta, *bases):
     return type.__new__(metaclass, 'temporary_class', (), {})
 
 
-class _UnwrapSingleArgumentMetaclass(type):
-    def __call__(cls, predicate, *predicates):
-        if not predicates:
-            return predicate
-        else:
-            all_predicates = []
-
-            for p in chain((predicate,), predicates):
-                if isinstance(p, cls):
-                    all_predicates.extend(p.predicates)
-                else:
-                    all_predicates.append(p)
-            return super(_UnwrapSingleArgumentMetaclass, cls).__call__(*all_predicates)
-
-
-class And(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
+class And(Fields.predicates):
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
@@ -182,13 +136,16 @@ class And(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
 
-class Or(_with_metaclass(_UnwrapSingleArgumentMetaclass, ~Fields.predicates)):
+class Or(Fields.predicates):
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
 
     def __init__(self, *predicates):
         self.predicates = predicates
+
+    def __str__(self):
+        return "Or({})".format(', '.join(str(p) for p in self.predicates))
 
     def __call__(self, event):
         """
