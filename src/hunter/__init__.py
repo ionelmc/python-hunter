@@ -11,6 +11,9 @@ from .actions import Debugger
 from .actions import VarsPrinter
 
 try:
+    if os.environ.get("PUREPYTHONHUNTER"):
+        raise ImportError("Skipped")
+
     from ._predicates import And as _And
     from ._predicates import Or as _Or
     from ._predicates import When
