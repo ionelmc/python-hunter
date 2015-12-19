@@ -6,6 +6,7 @@ import sys
 from .actions import CodePrinter
 from .event import Event
 
+
 class Tracer(object):
     """
     Trace object.

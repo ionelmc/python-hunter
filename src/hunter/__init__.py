@@ -10,14 +10,16 @@ from .actions import Debugger
 from .actions import VarsPrinter
 
 try:
-    from ._tracer import Tracer
     from ._predicates import And as _And
     from ._predicates import Or as _Or
     from ._predicates import When
+    from ._predicates import Query
+    from ._tracer import Tracer
 except ImportError:
     from .predicates import And as _And
     from .predicates import Or as _Or
     from .predicates import When
+    from .predicates import Query
     from .tracer import Tracer
 
 
@@ -75,7 +77,7 @@ def _flatten(predicate, *predicates, **kwargs):
                 all_predicates.extend(p.predicates)
             else:
                 all_predicates.append(p)
-        cls(*all_predicates)
+        return cls(*all_predicates)
 
 And = partial(_flatten, cls=_And)
 Or = partial(_flatten, cls=_Or)

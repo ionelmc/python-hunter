@@ -4,8 +4,8 @@ cimport cython
 
 import inspect
 from itertools import chain
+from cpython.object cimport PyObject_RichCompare, Py_EQ, Py_NE
 
-from fields import Fields
 from six import string_types
 
 from .actions import Action
@@ -87,8 +87,7 @@ cdef class When:
         self.condition = condition
         self.actions = [
             action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions
-        ]
+            for action in actions]
 
     def __call__(self, event):
         """
@@ -111,9 +110,9 @@ cdef class And:
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
-    cdef tuple predicates
+    cdef readonly tuple predicates
 
-    def __cinit__(self, *predicates):
+    def __init__(self, *predicates):
         self.predicates = predicates
 
     def __str__(self):
@@ -134,12 +133,21 @@ cdef class And:
     def __and__(self, other):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
+    def __richcmp__(self, other, int op):
+        is_equal = isinstance(other, And) and self.predicates == (<And>other).predicates
+
+        if op == Py_EQ:
+            return is_equal
+        if op == Py_NE:
+            return not is_equal
+        return PyObject_RichCompare(id(self), id(other), op)
+
 @cython.final
 cdef class Or:
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
-    cdef tuple predicates
+    cdef readonly tuple predicates
 
     def __init__(self, *predicates):
         self.predicates = predicates
@@ -161,3 +169,12 @@ cdef class Or:
 
     def __and__(self, other):
         return And(self, other)
+
+    def __richcmp__(self, other, int op):
+        is_equal = isinstance(other, Or) and self.predicates == (<Or>other).predicates
+
+        if op == Py_EQ:
+            return is_equal
+        if op == Py_NE:
+            return not is_equal
+        return PyObject_RichCompare(id(self), id(other), op)
