@@ -8,10 +8,6 @@ env:
   matrix:
     - TOXENV=check
 
-    - TOXENV=py26-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py26-pure-nocov
-    - TOXENV=py26-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py26-cython-nocov
     - TOXENV=py27-pure-cover,extension-coveralls,coveralls,codecov
     - TOXENV=py27-pure-nocov
     - TOXENV=py27-cython-cover,extension-coveralls,coveralls,codecov
