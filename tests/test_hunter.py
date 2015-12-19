@@ -215,7 +215,7 @@ def test_tracing_bare(LineMatcher):
         "*hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
         "*hunter.py* line              self.stop()",
         "*hunter.py* call          def stop(self):",
-        "*hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*hunter.py* line              sys.settrace(None)",
     ])
 
 
@@ -270,7 +270,7 @@ def test_tracing_printing_failures(LineMatcher):
         """*hunter.py:* call          def __exit__(self, exc_type, exc_val, exc_tb):""",
         """*hunter.py:* line              self.stop()""",
         """*hunter.py:* call          def stop(self):""",
-        """*hunter.py:* line              sys.settrace(self._previous_tracer)""",
+        """*hunter.py:* line              sys.settrace(None)""",
 
     ])
 
@@ -308,18 +308,14 @@ def test_tracing_vars(LineMatcher):
         "*hunter.py* call          def __exit__(self, exc_type, exc_val, exc_tb):",
         "*hunter.py* line              self.stop()",
         "*hunter.py* call          def stop(self):",
-        "*hunter.py* line              sys.settrace(self._previous_tracer)",
+        "*hunter.py* line              sys.settrace(None)",
     ])
 
 
 def test_trace_merge():
     trace(function="a")
     trace(function="b")
-    assert trace(function="c")._handler == Or(
-        When(Q(function="a"), CodePrinter),
-        When(Q(function="b"), CodePrinter),
-        When(Q(function="c"), CodePrinter),
-    )
+    assert trace(function="c")._handler == When(Q(function="c"), CodePrinter)
 
 
 def test_trace_api_expansion():

@@ -35,7 +35,7 @@ class Tracer(object):
         self._handler(Event(frame, kind, arg, self))
         return self
 
-    def trace(self, predicate, merge=False):
+    def trace(self, predicate):
         """
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
         before ``__enter__`` is
@@ -45,16 +45,12 @@ class Tracer(object):
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        if merge and self._handler is not None:
-            self._handler |= predicate
-        else:
-            self._handler = predicate
-
+        self._handler = predicate
         sys.settrace(self)
 
     def stop(self):
         """
-        Stop tracing. Restores previous tracer (if any).
+        Stop tracing.
         """
         sys.settrace(None)
         self._handler = None

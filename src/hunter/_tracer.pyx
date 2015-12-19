@@ -27,7 +27,7 @@ cdef class Tracer:
         self._handler = None
 
     def __str__(self):
-        return "Tracer(_handler={}, _previous_tracer={})".format(
+        return "Tracer(_handler={})".format(
             "<stopped>" if self._handler is None else self._handler,
         )
 
@@ -46,7 +46,7 @@ cdef class Tracer:
             PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
         return self
 
-    def trace(self, predicate, merge=False):
+    def trace(self, predicate):
         """
         Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
         before ``__enter__`` is
@@ -56,15 +56,12 @@ cdef class Tracer:
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        if merge and self._handler is not None:
-            self._handler |= predicate
-        else:
-            self._handler = predicate
+        self._handler = predicate
         PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
 
     def stop(self):
         """
-        Stop tracing. Restores previous tracer (if any).
+        Stop tracing.
         """
         PyEval_SetTrace(NULL, NULL)
         self._handler = None

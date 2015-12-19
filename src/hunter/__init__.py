@@ -89,14 +89,13 @@ def trace(*predicates, **options):
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
 
-    merge = options.pop("merge", True)
     clear_env_var = options.pop("clear_env_var", False)
     predicate = Q(*predicates, **options)
 
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
 
-    _tracer.trace(predicate, merge)
+    _tracer.trace(predicate)
 
 
 
