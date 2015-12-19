@@ -22,8 +22,7 @@ cdef class Query:
 
     See :class:`hunter.Event` for fields that can be filtered on.
     """
-    cdef:
-        dict query
+    cdef readonly dict query
 
 
     def __init__(self, **query):
@@ -69,6 +68,15 @@ cdef class Query:
         Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
         """
         return And(self, other)
+
+    def __richcmp__(self, other, int op):
+        is_equal = isinstance(other, Query) and self.query == (<Query>other).query
+
+        if op == Py_EQ:
+            return is_equal
+        if op == Py_NE:
+            return not is_equal
+        return PyObject_RichCompare(id(self), id(other), op)
 
 @cython.final
 cdef class When:
