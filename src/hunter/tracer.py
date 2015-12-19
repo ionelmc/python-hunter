@@ -45,7 +45,7 @@ class Tracer(object):
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        if merge:
+        if merge and self._handler is not None:
             self._handler |= predicate
         else:
             self._handler = predicate

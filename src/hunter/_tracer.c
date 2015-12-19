@@ -1489,7 +1489,9 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6trace(struct __pyx_obj_6hunt
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1498,32 +1500,41 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6trace(struct __pyx_obj_6hunt
   /* "hunter/_tracer.pyx":59
  *             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
  *         """
- *         if merge:             # <<<<<<<<<<<<<<
+ *         if merge and self._handler is not None:             # <<<<<<<<<<<<<<
  *             self._handler |= predicate
  *         else:
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_merge); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_merge); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__pyx_t_2) {
+  } else {
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = (__pyx_v_self->_handler != Py_None);
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  __pyx_t_1 = __pyx_t_3;
+  __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
     /* "hunter/_tracer.pyx":60
  *         """
- *         if merge:
+ *         if merge and self._handler is not None:
  *             self._handler |= predicate             # <<<<<<<<<<<<<<
  *         else:
  *             self._handler = predicate
  */
-    __pyx_t_2 = PyNumber_InPlaceOr(__pyx_v_self->_handler, __pyx_v_predicate); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_GIVEREF(__pyx_t_2);
+    __pyx_t_4 = PyNumber_InPlaceOr(__pyx_v_self->_handler, __pyx_v_predicate); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_4);
     __Pyx_GOTREF(__pyx_v_self->_handler);
     __Pyx_DECREF(__pyx_v_self->_handler);
-    __pyx_v_self->_handler = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __pyx_v_self->_handler = __pyx_t_4;
+    __pyx_t_4 = 0;
 
     /* "hunter/_tracer.pyx":59
  *             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
  *         """
- *         if merge:             # <<<<<<<<<<<<<<
+ *         if merge and self._handler is not None:             # <<<<<<<<<<<<<<
  *             self._handler |= predicate
  *         else:
  */
@@ -1567,7 +1578,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6trace(struct __pyx_obj_6hunt
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("hunter._tracer.Tracer.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
