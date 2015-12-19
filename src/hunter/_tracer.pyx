@@ -1,16 +1,24 @@
-import sys
 from cpython cimport pystate
+from cpython.ref cimport Py_INCREF
+from cpython.ref cimport Py_XDECREF
+
+from ._event cimport Event
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -1:
-    frame.f_trace = self
+    cdef junk
+
+    if frame.f_trace is not self:
+        junk = <PyObject*>frame.f_trace
+        Py_INCREF(self)
+        frame.f_trace = self
+        Py_XDECREF(junk)
 
     if self._handler is None:
-        raise RuntimeError("Tracer is not started.")
-
-    if self._previous_tracer:
-        self._previous_tracer(frame, kind, arg)
+        raise RuntimeError("Tracer is stopped.")
+    else:
+        self._handler(Event(frame, kind, arg, self))
 
 cdef class Tracer:
     """
@@ -19,12 +27,10 @@ cdef class Tracer:
     """
     def __cinit__(self):
         self._handler = None
-        self._previous_tracer = None
 
     def __str__(self):
         return "Tracer(_handler={}, _previous_tracer={})".format(
-            "<not started>" if self._handler is None else self._handler,
-            self._previous_tracer,
+            "<stopped>" if self._handler is None else self._handler,
         )
 
     def __call__(self, frame, kind, arg):
@@ -38,6 +44,8 @@ cdef class Tracer:
             match further inside.
         """
         trace_func(self, frame, kind_names.index(kind), arg)
+        if kind == "call":
+            PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
         return self
 
     def trace(self, predicate, merge=False):
@@ -50,23 +58,18 @@ cdef class Tracer:
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        previous_tracer = sys.gettrace()
-        if previous_tracer is self:
-            if merge:
-                self._handler |= predicate
+        if merge:
+            self._handler |= predicate
         else:
-            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, self)
-
-            self._previous_tracer = previous_tracer
             self._handler = predicate
-        return self
+        PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
 
     def stop(self):
         """
         Stop tracing. Restores previous tracer (if any).
         """
-        sys.settrace(self._previous_tracer)
-        self._previous_tracer = None
+        PyEval_SetTrace(NULL, NULL)
+        self._handler = None
 
     def __enter__(self):
         return self

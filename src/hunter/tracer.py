@@ -13,12 +13,10 @@ class Tracer(object):
 
     def __init__(self):
         self._handler = None
-        self._previous_tracer = None
 
     def __str__(self):
-        return "Tracer(_handler={}, _previous_tracer={})".format(
-            "<not started>" if self._handler is None else self._handler,
-            self._previous_tracer,
+        return "Tracer(_handler={})".format(
+            "<stopped>" if self._handler is None else self._handler,
         )
 
     def __call__(self, frame, kind, arg):
@@ -32,12 +30,9 @@ class Tracer(object):
             match further inside.
         """
         if self._handler is None:
-            raise RuntimeError("Tracer is not started.")
+            raise RuntimeError("Tracer is stopped.")
 
         self._handler(Event(frame, kind, arg, self))
-
-        if self._previous_tracer:
-            self._previous_tracer(frame, kind, arg)
         return self
 
     def trace(self, predicate, merge=False):
@@ -50,23 +45,19 @@ class Tracer(object):
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        previous_tracer = sys.gettrace()
-        if previous_tracer is self:
-            if merge:
-                self._handler |= predicate
+        if merge:
+            self._handler |= predicate
         else:
-            sys.settrace(self)
-
-            self._previous_tracer = previous_tracer
             self._handler = predicate
-        return self
+
+        sys.settrace(self)
 
     def stop(self):
         """
         Stop tracing. Restores previous tracer (if any).
         """
-        sys.settrace(self._previous_tracer)
-        self._previous_tracer = None
+        sys.settrace(None)
+        self._handler = None
 
     def __enter__(self):
         return self

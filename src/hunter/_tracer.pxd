@@ -2,6 +2,8 @@ cimport cython
 from cpython cimport pystate
 
 cdef extern from "frameobject.h":
+    ctypedef struct PyObject
+
     ctypedef class types.CodeType[object PyCodeObject]:
         cdef object co_filename
         cdef int co_firstlineno
@@ -14,10 +16,9 @@ cdef extern from "frameobject.h":
         cdef object f_locals
         cdef int f_lineno
 
-    void PyEval_SetTrace(pystate.Py_tracefunc func, object obj)
+    void PyEval_SetTrace(pystate.Py_tracefunc func, PyObject* obj)
 
 @cython.final
 cdef class Tracer:
     cdef:
         public object _handler
-        public object _previous_tracer
