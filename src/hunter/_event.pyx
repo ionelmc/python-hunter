@@ -5,8 +5,8 @@ from linecache import getlines
 from tokenize import TokenError
 from tokenize import generate_tokens
 
-from .env import SITE_PACKAGES_PATH
-from .env import SYS_PREFIX_PATHS
+from .const import SITE_PACKAGES_PATH
+from .const import SYS_PREFIX_PATHS
 from ._tracer cimport *
 
 
