@@ -12,15 +12,17 @@ class Tracer(object):
     """
 
     def __init__(self):
-        self.__handler = None
-        self.__previous = None
+        self._handler = None
+        self._previous = None
 
-    def __str__(self):
-        return "Tracer(handler={}, previous={})".format(
-            "<stopped>" if self._handler is None else self.__handler,
-            self.__previous,
+    def __repr__(self):
+        return '<hunter.tracer.Tracer at 0x%x: %s%s%s%s>' % (
+            id(self),
+            '<stopped>' if self._handler is None else 'handler=',
+            '' if self._handler is None else repr(self._handler),
+            '' if self._previous is None else ', previous=',
+            '' if self._previous is None else repr(self._previous),
         )
-
     def __call__(self, frame, kind, arg):
         """
         The settrace function.
@@ -31,8 +33,8 @@ class Tracer(object):
             because it might
             match further inside.
         """
-        if self.__handler is not None:
-            self.__handler(Event(frame, kind, arg, self))
+        if self._handler is not None:
+            self._handler(Event(frame, kind, arg, self))
             return self
 
     def trace(self, predicate):
@@ -45,8 +47,8 @@ class Tracer(object):
             predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
-        self.__handler = predicate
-        self.__previous = sys.gettrace()
+        self._handler = predicate
+        self._previous = sys.gettrace()
         sys.settrace(self)
         return self
 
@@ -54,9 +56,9 @@ class Tracer(object):
         """
         Stop tracing.
         """
-        if self.__handler is not None:
-            sys.settrace(self.__previous)
-            self.__handler = self.__previous = None
+        if self._handler is not None:
+            sys.settrace(self._previous)
+            self._handler = self._previous = None
 
     def __enter__(self):
         return self
