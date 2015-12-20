@@ -375,6 +375,10 @@ def test_predicate_compression():
     assert Or(1, Or(2, 3), 4) == Or(1, 2, 3, 4)
     assert And(1, 2, Or(3, 4)).predicates == (1, 2, Or(3, 4))
 
+    assert repr(Or(Or(1, 2), And(3))) == repr(Or(1, 2, 3))
+    assert repr(Or(Or(1, 2), 3)) == repr(Or(1, 2, 3))
+    assert repr(Or(1, Or(2, 3), 4)) == repr(Or(1, 2, 3, 4))
+
 
 def test_predicate_not():
     assert Not(1).predicate == 1
@@ -389,9 +393,19 @@ def test_predicate_not():
     assert ~(Query(module=1) & Query(module=2)) == Not(And(Query(module=1), Query(module=2)))
     assert ~(Query(module=1) | Query(module=2)) == Not(Or(Query(module=1), Query(module=2)))
 
+    assert repr(~Or(1, 2)) == repr(Not(Or(1, 2)))
+    assert repr(~And(1, 2)) == repr(Not(And(1, 2)))
+
+    assert repr(~Query(module=1) | ~Query(module=2)) == repr(Not(And(Query(module=1), Query(module=2))))
+    assert repr(~Query(module=1) & ~Query(module=2)) == repr(Not(Or(Query(module=1), Query(module=2))))
+
+    assert repr(~(Query(module=1) & Query(module=2))) == repr(Not(And(Query(module=1), Query(module=2))))
+    assert repr(~(Query(module=1) | Query(module=2))) == repr(Not(Or(Query(module=1), Query(module=2))))
+
 
 def test_predicate_query_allowed():
     pytest.raises(TypeError, Query, 1)
+    Query(a=1)
     pytest.raises(TypeError, Query, a=1)
 
 
