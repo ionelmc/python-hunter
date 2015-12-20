@@ -236,11 +236,11 @@ cdef class Not:
     def __init__(self, predicate):
         self.predicate = predicate
 
-        def __str__(self):
-            return "Not(%s)" % self.predicate
+    def __str__(self):
+        return "Not(%s)" % self.predicate
 
-        def __repr__(self):
-            return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+    def __repr__(self):
+        return "<hunter._predicates.Not: predicate=%r>" % self.predicate
 
     def __call__(self, event):
         """
