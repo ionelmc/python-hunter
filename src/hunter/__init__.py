@@ -37,7 +37,7 @@ __all__ = (
     'Or',
     'Q',
     'Query',
-    'stop'
+    'stop',
     'trace',
     'VarsPrinter',
     'When',
