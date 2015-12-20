@@ -505,7 +505,7 @@ def test_predicate_when():
 
 
 def test_proper_backend():
-    if os.environ.get('PUREPYTHONTRACER'):
+    if os.environ.get('PUREPYTHONHUNTER'):
         assert repr(hunter._TRACER).startswith('<hunter.tracer.Tracer')
     else:
         assert repr(hunter._TRACER).startswith('<hunter._tracer.Tracer')
