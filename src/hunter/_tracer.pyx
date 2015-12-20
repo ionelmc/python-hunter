@@ -1,3 +1,5 @@
+from sys import gettrace, settrace
+
 from cpython cimport pystate
 from cpython.ref cimport Py_INCREF
 from cpython.ref cimport Py_XDECREF
@@ -25,6 +27,7 @@ cdef class Tracer:
     """
     def __cinit__(self):
         self._handler = None
+        self._previous = None
 
     def __str__(self):
         return "Tracer(_handler={})".format(
@@ -57,6 +60,7 @@ cdef class Tracer:
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
         self._handler = predicate
+        self._previous = gettrace()
         PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
         return self
 
@@ -65,8 +69,11 @@ cdef class Tracer:
         Stop tracing.
         """
         if self._handler is not None:
-            PyEval_SetTrace(NULL, NULL)
-            self._handler = None
+            if self._previous is None:
+                PyEval_SetTrace(NULL, NULL)
+            else:
+                settrace(self._previous)
+            self._handler = self._previous = None
 
     def __enter__(self):
         return self

@@ -20,4 +20,5 @@ cdef extern from "frameobject.h":
 @cython.final
 cdef class Tracer:
     cdef:
-        public object _handler
+        object _handler
+        object _previous
