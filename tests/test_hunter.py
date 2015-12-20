@@ -16,6 +16,7 @@ except ImportError:
 
 import pytest
 
+import hunter
 from hunter import And
 from hunter import Not
 from hunter import Or
@@ -493,3 +494,9 @@ def test_predicate_when():
     assert predicate({'module': 1, 'function': 2}) == True
     assert called == [[{'module': 1, 'function': 2}], [{'module': 1, 'function': 2}]]
 
+
+def test_proper_backend():
+    if os.environ.get('PUREPYTHONTRACER'):
+        assert repr(hunter._TRACER).startswith('<hunter.tracer.Tracer')
+    else:
+        assert repr(hunter._TRACER).startswith('<hunter._tracer.Tracer')
