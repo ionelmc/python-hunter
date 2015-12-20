@@ -56,8 +56,8 @@ cdef class Query:
                     return False
             elif evalue != value:
                 return False
-
-        return True
+        else:
+            return True
 
     def __or__(self, other):
         """
@@ -79,9 +79,10 @@ cdef class Query:
 
         if op == Py_EQ:
             return is_equal
-        if op == Py_NE:
+        elif op == Py_NE:
             return not is_equal
-        return PyObject_RichCompare(id(self), id(other), op)
+        else:
+            return PyObject_RichCompare(id(self), id(other), op)
 
 @cython.final
 cdef class When:
@@ -118,8 +119,9 @@ cdef class When:
         if self.condition(event):
             for action in self.actions:
                 action(event)
-
             return True
+        else:
+            return False
 
     def __or__(self, other):
         return Or(self, other)
@@ -136,9 +138,10 @@ cdef class When:
 
         if op == Py_EQ:
             return is_equal
-        if op == Py_NE:
+        elif op == Py_NE:
             return not is_equal
-        return PyObject_RichCompare(id(self), id(other), op)
+        else:
+            return PyObject_RichCompare(id(self), id(other), op)
 
 
 @cython.final
@@ -164,7 +167,8 @@ cdef class And:
         for predicate in self.predicates:
             if not predicate(event):
                 return False
-        return True
+        else:
+            return True
 
     def __or__(self, other):
         return Or(self, other)
@@ -180,9 +184,10 @@ cdef class And:
 
         if op == Py_EQ:
             return is_equal
-        if op == Py_NE:
+        elif op == Py_NE:
             return not is_equal
-        return PyObject_RichCompare(id(self), id(other), op)
+        else:
+            return PyObject_RichCompare(id(self), id(other), op)
 
 @cython.final
 cdef class Or:
@@ -207,7 +212,8 @@ cdef class Or:
         for predicate in self.predicates:
             if predicate(event):
                 return True
-        return False
+        else:
+            return False
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
@@ -223,9 +229,10 @@ cdef class Or:
 
         if op == Py_EQ:
             return is_equal
-        if op == Py_NE:
+        elif op == Py_NE:
             return not is_equal
-        return PyObject_RichCompare(id(self), id(other), op)
+        else:
+            return PyObject_RichCompare(id(self), id(other), op)
 
 cdef class Not:
     """
@@ -251,12 +258,14 @@ cdef class Not:
     def __or__(self, other):
         if isinstance(other, Not):
             return Not(And(self.predicate, other.predicate))
-        return Or(self, other)
+        else:
+            return Or(self, other)
 
     def __and__(self, other):
         if isinstance(other, Not):
             return Not(Or(self.predicate, other.predicate))
-        return And(self, other)
+        else:
+            return And(self, other)
 
     def __invert__(self):
         return self.predicate
@@ -266,6 +275,7 @@ cdef class Not:
 
         if op == Py_EQ:
             return is_equal
-        if op == Py_NE:
+        elif op == Py_NE:
             return not is_equal
-        return PyObject_RichCompare(id(self), id(other), op)
+        else:
+            return PyObject_RichCompare(id(self), id(other), op)

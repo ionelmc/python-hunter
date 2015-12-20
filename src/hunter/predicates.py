@@ -51,8 +51,8 @@ class Query(Fields.query):
                     return False
             elif evalue != value:
                 return False
-
-        return True
+        else:
+            return True
 
     def __or__(self, other):
         """
@@ -101,9 +101,9 @@ class When(Fields.condition.actions):
         if self.condition(event):
             for action in self.actions:
                 action(event)
-
             return True
-        return False
+        else:
+            return False
 
     def __or__(self, other):
         return Or(self, other)
@@ -133,7 +133,8 @@ class And(Fields.predicates):
         for predicate in self.predicates:
             if not predicate(event):
                 return False
-        return True
+        else:
+            return True
 
     def __or__(self, other):
         return Or(self, other)
@@ -166,7 +167,8 @@ class Or(Fields.predicates):
         for predicate in self.predicates:
             if predicate(event):
                 return True
-        return False
+        else:
+            return False
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
@@ -198,12 +200,14 @@ class Not(Fields.predicate):
     def __or__(self, other):
         if isinstance(other, Not):
             return Not(And(self.predicate, other.predicate))
-        return Or(self, other)
+        else:
+            return Or(self, other)
 
     def __and__(self, other):
         if isinstance(other, Not):
             return Not(Or(self.predicate, other.predicate))
-        return And(self, other)
+        else:
+            return And(self, other)
 
     def __invert__(self):
         return self.predicate
