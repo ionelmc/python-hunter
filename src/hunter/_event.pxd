@@ -2,6 +2,10 @@ cimport cython
 
 from ._tracer cimport *
 
+
+cdef extern from "frameobject.h":
+    void PyFrame_FastToLocals(FrameType)
+
 @cython.final
 cdef class Event:
     """

@@ -1,3 +1,5 @@
+from cpython.ref cimport Py_INCREF
+
 import re
 from functools import partial
 from linecache import getline
@@ -37,6 +39,7 @@ cdef class Event:
             return self._get_locals()
 
     cdef object _get_locals(self):
+        PyFrame_FastToLocals(self.frame)
         return self.frame.f_locals
 
     property globals:

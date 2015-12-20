@@ -460,7 +460,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_6hunter_6_event_Event;
 struct __pyx_obj_6hunter_7_tracer_Tracer;
 
-/* "_event.pxd":6
+/* "_event.pxd":10
  * 
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
@@ -496,7 +496,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
 
 
 
-/* "_event.pxd":6
+/* "_event.pxd":10
  * 
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
@@ -2361,8 +2361,8 @@ PyMODINIT_FUNC PyInit__tracer(void)
   0); if (unlikely(!__pyx_ptype_7cpython_4type_type)) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), 0); if (unlikely(!__pyx_ptype_7cpython_4bool_bool)) {__pyx_filename = __pyx_f[3]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), 0); if (unlikely(!__pyx_ptype_7cpython_7complex_complex)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_6hunter_6_event_Event = __Pyx_ImportType("hunter._event", "Event", sizeof(struct __pyx_obj_6hunter_6_event_Event), 1); if (unlikely(!__pyx_ptype_6hunter_6_event_Event)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_6hunter_6_event_Event = __Pyx_ImportType("hunter._event", "Event", sizeof(struct __pyx_obj_6hunter_6_event_Event), 1); if (unlikely(!__pyx_ptype_6hunter_6_event_Event)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/
