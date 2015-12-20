@@ -486,7 +486,7 @@ struct __pyx_obj_6hunter_6_event_Event {
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
  *     cdef:
- *         object _handler
+ *         readonly object _handler
  */
 struct __pyx_obj_6hunter_7_tracer_Tracer {
   PyObject_HEAD
@@ -868,6 +868,8 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6trace(struct __pyx_obj_6hunt
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8stop(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10__enter__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_12__exit__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_exc_type, CYTHON_UNUSED PyObject *__pyx_v_exc_val, CYTHON_UNUSED PyObject *__pyx_v_exc_tb); /* proto */
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8_handler___get__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_9_previous___get__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
 static PyObject *__pyx_tp_new_6hunter_7_tracer_Tracer(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple__2;
 
@@ -2007,6 +2009,77 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_12__exit__(struct __pyx_obj_6
   return __pyx_r;
 }
 
+/* "hunter/_tracer.pxd":23
+ * cdef class Tracer:
+ *     cdef:
+ *         readonly object _handler             # <<<<<<<<<<<<<<
+ *         readonly object _previous
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_8_handler_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_8_handler_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6hunter_7_tracer_6Tracer_8_handler___get__(((struct __pyx_obj_6hunter_7_tracer_Tracer *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8_handler___get__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->_handler);
+  __pyx_r = __pyx_v_self->_handler;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hunter/_tracer.pxd":24
+ *     cdef:
+ *         readonly object _handler
+ *         readonly object _previous             # <<<<<<<<<<<<<<
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_9_previous_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_9_previous_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6hunter_7_tracer_6Tracer_9_previous___get__(((struct __pyx_obj_6hunter_7_tracer_Tracer *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_9_previous___get__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->_previous);
+  __pyx_r = __pyx_v_self->_previous;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 static PyObject *__pyx_tp_new_6hunter_7_tracer_Tracer(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   struct __pyx_obj_6hunter_7_tracer_Tracer *p;
   PyObject *o;
@@ -2053,12 +2126,26 @@ static int __pyx_tp_clear_6hunter_7_tracer_Tracer(PyObject *o) {
   return 0;
 }
 
+static PyObject *__pyx_getprop_6hunter_7_tracer_6Tracer__handler(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6hunter_7_tracer_6Tracer_8_handler_1__get__(o);
+}
+
+static PyObject *__pyx_getprop_6hunter_7_tracer_6Tracer__previous(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6hunter_7_tracer_6Tracer_9_previous_1__get__(o);
+}
+
 static PyMethodDef __pyx_methods_6hunter_7_tracer_Tracer[] = {
   {"trace", (PyCFunction)__pyx_pw_6hunter_7_tracer_6Tracer_7trace, METH_O, __pyx_doc_6hunter_7_tracer_6Tracer_6trace},
   {"stop", (PyCFunction)__pyx_pw_6hunter_7_tracer_6Tracer_9stop, METH_NOARGS, __pyx_doc_6hunter_7_tracer_6Tracer_8stop},
   {"__enter__", (PyCFunction)__pyx_pw_6hunter_7_tracer_6Tracer_11__enter__, METH_NOARGS, 0},
   {"__exit__", (PyCFunction)__pyx_pw_6hunter_7_tracer_6Tracer_13__exit__, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_6hunter_7_tracer_Tracer[] = {
+  {(char *)"_handler", __pyx_getprop_6hunter_7_tracer_6Tracer__handler, 0, 0, 0},
+  {(char *)"_previous", __pyx_getprop_6hunter_7_tracer_6Tracer__previous, 0, 0, 0},
+  {0, 0, 0, 0, 0}
 };
 
 static PyTypeObject __pyx_type_6hunter_7_tracer_Tracer = {
@@ -2096,7 +2183,7 @@ static PyTypeObject __pyx_type_6hunter_7_tracer_Tracer = {
   0, /*tp_iternext*/
   __pyx_methods_6hunter_7_tracer_Tracer, /*tp_methods*/
   0, /*tp_members*/
-  0, /*tp_getset*/
+  __pyx_getsets_6hunter_7_tracer_Tracer, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/

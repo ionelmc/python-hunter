@@ -466,7 +466,7 @@ struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
  *     cdef:
- *         object _handler
+ *         readonly object _handler
  */
 struct __pyx_obj_6hunter_7_tracer_Tracer {
   PyObject_HEAD
