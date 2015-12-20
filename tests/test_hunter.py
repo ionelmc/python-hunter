@@ -161,21 +161,30 @@ def test_pth_sample2(LineMatcher):
 
 
 def test_predicate_str_repr():
-    assert repr(Q(module='a')) == "Query(module='a')"
+    assert repr(Q(module='a')).endswith("predicates.Query: query={'module': 'a'}>")
     assert str(Q(module='a')) == "Query(module='a')"
-    assert repr(Q(module='a', action='foo')) == "When(condition=Query(module='a'), actions=['foo'])"
-    assert str(Q(module='a', action='foo')) == "When(condition=Query(module='a'), actions=['foo'])"
-    assert repr(~Q(module='a')) == "Not(predicate=Query(module='a'))"
+
+    assert "predicates.When: condition=<hunter." in repr(Q(module='a', action='foo'))
+    assert "predicates.Query: query={'module': 'a'}>, actions=['foo']>" in repr(Q(module='a', action='foo'))
+    assert str(Q(module='a', action='foo')) == "When(Query(module='a'), 'foo')"
+
+    assert "predicates.Not: predicate=<hunter." in repr(~Q(module='a'))
+    assert "predicates.Query: query={'module': 'a'}>>" in repr(~Q(module='a'))
     assert str(~Q(module='a')) == "Not(Query(module='a'))"
 
-    assert repr(Q(module='a') | Q(module='b')) == "Or(predicates=(Query(module='a'), Query(module='b')))"
+    assert "predicates.Or: predicates=(<hunter." in repr(Q(module='a') | Q(module='b'))
+    assert "predicates.Query: query={'module': 'a'}>, " in repr(Q(module='a') | Q(module='b'))
+    assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query={'module': 'b'}>)>")
     assert str(Q(module='a') | Q(module='b')) == "Or(Query(module='a'), Query(module='b'))"
-    assert repr(Q(module='a') & Q(module='b')) == "And(predicates=(Query(module='a'), Query(module='b')))"
+
+    assert "predicates.And: predicates=(<hunter." in repr(Q(module='a') & Q(module='b'))
+    assert "predicates.Query: query={'module': 'a'}>," in repr(Q(module='a') & Q(module='b'))
+    assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query={'module': 'b'}>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
 
 
 def test_predicate_q_nest_1():
-    assert repr(Q(Q(module='a'))) == "Query(module='a')"
+    assert repr(Q(Q(module='a'))).endswith("predicates.Query: query={'module': 'a'}>")
 
 
 def test_predicate_q_expansion():

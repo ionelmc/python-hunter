@@ -37,10 +37,13 @@ cdef class Query:
                 raise TypeError("Unexpected argument {!r}. Must be one of {}.".format(key, ALLOWED))
         self.query = query
 
-    def __repr__(self):
-        return "Query({})".format(
-            ', '.join("{}={!r}".format(*item) for item in self.query.items()),
+    def __str__(self):
+        return "Query(%s)" % (
+            ', '.join("%s=%r" % item for item in self.query.items()),
         )
+
+    def __repr__(self):
+        return "<hunter._predicates.Query: query=%r>" % self.query
 
     def __call__(self, event):
         """
@@ -88,8 +91,8 @@ cdef class When:
     Actions take a single ``event`` argument.
     """
     cdef:
-        object condition
-        list actions
+        readonly object condition
+        readonly list actions
 
     def __init__(self, condition, *actions):
         if not actions:
@@ -98,6 +101,15 @@ cdef class When:
         self.actions = [
             action() if inspect.isclass(action) and issubclass(action, Action) else action
             for action in actions]
+
+    def __str__(self):
+        return "When(%s, %s)" % (
+            self.condition,
+            ', '.join(repr(p) for p in self.actions)
+        )
+
+    def __repr__(self):
+        return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
 
     def __call__(self, event):
         """
@@ -115,6 +127,20 @@ cdef class When:
     def __and__(self, other):
         return And(self, other)
 
+    def __richcmp__(self, other, int op):
+        is_equal = (
+            isinstance(other, When) and
+            self.condition == (<When> other).condition and
+            self.actions == (<When> other).actions
+        )
+
+        if op == Py_EQ:
+            return is_equal
+        if op == Py_NE:
+            return not is_equal
+        return PyObject_RichCompare(id(self), id(other), op)
+
+
 @cython.final
 cdef class And:
     """
@@ -126,7 +152,10 @@ cdef class And:
         self.predicates = predicates
 
     def __str__(self):
-        return "And({})".format(', '.join(str(p) for p in self.predicates))
+        return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+
+    def __repr__(self):
+        return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -166,7 +195,10 @@ cdef class Or:
         self.predicates = predicates
 
     def __str__(self):
-        return "Or({})".format(', '.join(str(p) for p in self.predicates))
+        return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+
+    def __repr__(self):
+        return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -199,13 +231,16 @@ cdef class Not:
     """
     `Not` predicate.
     """
-    cdef readonly tuple predicate
+    cdef readonly object predicate
 
     def __init__(self, predicate):
         self.predicate = predicate
 
-    def __str__(self):
-        return "Not({})".format(self.predicate)
+        def __str__(self):
+            return "Not(%s)" % self.predicate
+
+        def __repr__(self):
+            return "<hunter._predicates.Not: predicate=%r>" % self.predicate
 
     def __call__(self, event):
         """

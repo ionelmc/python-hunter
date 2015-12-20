@@ -32,10 +32,13 @@ class Query(Fields.query):
                 raise TypeError("Unexpected argument {!r}. Must be one of {}.".format(key, self.allowed))
         self.query = query
 
-    def __repr__(self):
-        return "Query({})".format(
-            ', '.join("{}={!r}".format(*item) for item in self.query.items()),
+    def __str__(self):
+        return "Query(%s)" % (
+            ', '.join("%s=%r" % item for item in self.query.items()),
         )
+
+    def __repr__(self):
+        return "<hunter._predicates.Query: query=%r>" % self.query
 
     def __call__(self, event):
         """
@@ -82,6 +85,15 @@ class When(Fields.condition.actions):
             for action in actions
             ])
 
+    def __str__(self):
+        return "When(%s, %s)" % (
+            self.condition,
+            ', '.join(repr(p) for p in self.actions)
+        )
+
+    def __repr__(self):
+        return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+
     def __call__(self, event):
         """
         Handles the event.
@@ -109,7 +121,10 @@ class And(Fields.predicates):
         self.predicates = predicates
 
     def __str__(self):
-        return "And({})".format(', '.join(str(p) for p in self.predicates))
+        return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+
+    def __repr__(self):
+        return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -139,7 +154,10 @@ class Or(Fields.predicates):
         self.predicates = predicates
 
     def __str__(self):
-        return "Or({})".format(', '.join(str(p) for p in self.predicates))
+        return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+
+    def __repr__(self):
+        return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -166,7 +184,10 @@ class Not(Fields.predicate):
     """
 
     def __str__(self):
-        return "Not({})".format(self.predicate)
+        return "Not(%s)" % self.predicate
+
+    def __repr__(self):
+        return "<hunter._predicates.Not: predicate=%r>" % self.predicate
 
     def __call__(self, event):
         """
