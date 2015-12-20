@@ -10,8 +10,7 @@ cdef extern from "frameobject.h":
 
     ctypedef class types.FrameType[object PyFrameObject]:
         cdef CodeType f_code
-        cdef object f_back
-        cdef object f_trace
+        cdef PyObject *f_trace
         cdef object f_globals
         cdef object f_locals
         cdef int f_lineno

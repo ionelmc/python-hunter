@@ -7,10 +7,10 @@ from ._event cimport Event
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -1:
-    if frame.f_trace is not self:
-        junk = <PyObject*>frame.f_trace
+    if frame.f_trace is not <PyObject*>self:
+        junk = frame.f_trace
         Py_INCREF(self)
-        frame.f_trace = self
+        frame.f_trace = <PyObject*>self
         Py_XDECREF(junk)
 
     if self._handler is None:
