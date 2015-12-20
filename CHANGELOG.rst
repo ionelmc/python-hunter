@@ -2,6 +2,23 @@
 Changelog
 =========
 
+1.0.0 (unreleased)
+------------------
+
+* Implemented fast tracer and query objects in Cython. **MAY BE BACKWARDS INCOMPATIBLE**
+
+  To force using the old pure-python implementation set the ``PUREPYTHONHUNTER`` environment variable to non-empty value.
+* Changed filtering so strings are "prefix matched". Example:
+
+  * ``Q(module='foo'`` will match events from ``foo``, ``foo.bar`` and ``foobar``.
+  * ``Q(module=['foo', 'bar']`` will match events from ``foo``, ``foo.bar``, ``foobar``, ``bar``, ``bar.foo`` and ``baroo`` .
+
+* Removed the ``merge`` option. Now when you call ``hunter.trace(...)`` multiple times only the last one is applied.
+  **BACKWARDS INCOMPATIBLE**
+* Remove the `previous_tracer handling`. Now when you call ``hunter.trace(...)`` the previous tracer (whatever was in
+  ``sys.gettrace()``) is completely removed. **BACKWARDS INCOMPATIBLE**
+
+
 0.6.0 (2015-10-10)
 ------------------
 
