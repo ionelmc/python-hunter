@@ -9,10 +9,10 @@ from ._event cimport Event
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -1:
-    if frame.f_trace is not <PyObject*>self:
+    if frame.f_trace is not <PyObject*> self:
         junk = frame.f_trace
         Py_INCREF(self)
-        frame.f_trace = <PyObject*>self
+        frame.f_trace = <PyObject*> self
         Py_XDECREF(junk)
 
     if self._handler is None:
@@ -29,10 +29,13 @@ cdef class Tracer:
         self._handler = None
         self._previous = None
 
-    def __str__(self):
-        return "Tracer(handler={}, previous={})".format(
-            "<stopped>" if self._handler is None else self.__handler,
-            self.__previous,
+    def __repr__(self):
+        return '<hunter._tracer.Tracer at 0x%x: %s%s%s%s>' % (
+            id(self),
+            '<stopped>' if self._handler is None else 'handler=',
+            '' if self._handler is None else repr(self._handler),
+            '' if self._previous is None else ', previous=',
+            '' if self._previous is None else repr(self._previous),
         )
 
     def __call__(self, frame, kind, arg):
@@ -47,7 +50,7 @@ cdef class Tracer:
         """
         trace_func(self, frame, kind_names.index(kind), arg)
         if kind == "call":
-            PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
+            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 
     def trace(self, predicate):
@@ -62,7 +65,7 @@ cdef class Tracer:
         """
         self._handler = predicate
         self._previous = gettrace()
-        PyEval_SetTrace(<pystate.Py_tracefunc>trace_func, <PyObject *>self)
+        PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 
     def stop(self):
