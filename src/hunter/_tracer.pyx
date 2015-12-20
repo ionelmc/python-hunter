@@ -18,7 +18,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     if self._handler is None:
         raise RuntimeError("Tracer is stopped.")
     else:
-        self._handler(Event(frame, kind, arg, self))
+        self._handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
 
 cdef class Tracer:
     """
