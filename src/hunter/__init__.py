@@ -29,7 +29,19 @@ except ImportError:
     from .tracer import Tracer
 
 __version__ = "0.6.0"
-__all__ = 'Q', 'When', 'And', 'Or', 'CodePrinter', 'Debugger', 'VarsPrinter', 'trace', 'stop'
+__all__ = (
+    'And',
+    'CodePrinter',
+    'Debugger',
+    'Not',
+    'Or',
+    'Q',
+    'Query',
+    'stop'
+    'trace',
+    'VarsPrinter',
+    'When',
+)
 
 
 def Q(*predicates, **query):

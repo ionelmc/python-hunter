@@ -23,6 +23,7 @@ class Tracer(object):
             '' if self._previous is None else ', previous=',
             '' if self._previous is None else repr(self._previous),
         )
+
     def __call__(self, frame, kind, arg):
         """
         The settrace function.
