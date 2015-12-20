@@ -8,7 +8,7 @@ from ._event cimport Event
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
-cdef int trace_func(Tracer self, FrameType frame, int kind, object arg) except -1:
+cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
     if frame.f_trace is not <PyObject*> self:
         junk = frame.f_trace
         Py_INCREF(self)
@@ -48,7 +48,7 @@ cdef class Tracer:
             because it might
             match further inside.
         """
-        trace_func(self, frame, kind_names.index(kind), arg)
+        trace_func(self, frame, kind_names.index(kind), <PyObject *> arg)
         if kind == "call":
             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
