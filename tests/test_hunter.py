@@ -159,36 +159,49 @@ def test_pth_sample2(LineMatcher):
     ])
 
 
-def test_repr():
+def test_predicate_str_repr():
     assert repr(Q(module='a')) == "Query(module='a')"
     assert str(Q(module='a')) == "Query(module='a')"
     assert repr(Q(module='a', action='foo')) == "When(condition=Query(module='a'), actions=['foo'])"
+    assert str(Q(module='a', action='foo')) == "When(condition=Query(module='a'), actions=['foo'])"
+    assert repr(~Q(module='a')) == "Not(predicate=Query(module='a'))"
+    assert str(~Q(module='a')) == "Not(Query(module='a'))"
+
+    assert repr(Q(module='a') | Q(module='b')) == "Or(predicates=(Query(module='a'), Query(module='b')))"
+    assert str(Q(module='a') | Q(module='b')) == "Or(Query(module='a'), Query(module='b'))"
+    assert repr(Q(module='a') & Q(module='b')) == "And(predicates=(Query(module='a'), Query(module='b')))"
+    assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
 
 
-def test_nest_1():
+def test_predicate_q_nest_1():
     assert repr(Q(Q(module='a'))) == "Query(module='a')"
 
 
-def test_expansion():
+def test_predicate_q_expansion():
     assert Q(1, 2, module=3) == Or(1, 2, Q(module=3))
     assert Q(1, 2, module=3, action=4) == When(Or(1, 2, Q(module=3)), 4)
     assert Q(1, 2, module=3, actions=[4, 5]) == When(Or(1, 2, Q(module=3)), 4, 5)
 
 
-def test_and():
+def test_predicate_and():
     assert And(1, 2) == And(1, 2)
     assert Q(module=1) & Q(module=2) == And(Q(module=1), Q(module=2))
     assert Q(module=1) & Q(module=2) & Q(module=3) == And(Q(module=1), Q(module=2), Q(module=3))
 
+    assert (Q(module=1) & Q(module=2))({'module': 3}) == False
+    assert (Q(module=1) & Q(function=2))({'module': 1, 'function': 2}) == True
 
-def test_or():
+    assert And(1, 2) | 3 == Or(And(1, 2), 3)
+
+
+def test_predicate_or():
     assert Q(module=1) | Q(module=2) == Or(Q(module=1), Q(module=2))
     assert Q(module=1) | Q(module=2) | Q(module=3) == Or(Q(module=1), Q(module=2), Q(module=3))
 
+    assert (Q(module=1) | Q(module=2))({'module': 3}) == False
+    assert (Q(module=1) | Q(module=2))({'module': 2}) == True
 
-def test_or():
-    assert Q(module=1) | Q(module=2) == Or(Q(module=1), Q(module=2))
-    assert Q(module=1) | Q(module=2) | Q(module=3) == Or(Q(module=1), Q(module=2), Q(module=3))
+    assert Or(1, 2) & 3 == And(Or(1, 2), 3)
 
 
 def test_tracing_bare(LineMatcher):
@@ -359,7 +372,7 @@ def test_trace_with_class_actions():
         a()
 
 
-def test_no_inf_recursion():
+def test_predicate_no_inf_recursion():
     assert Or(And(1)) == 1
     assert Or(Or(1)) == 1
     assert And(Or(1)) == 1
@@ -390,6 +403,9 @@ def test_predicate_not():
     assert ~Query(module=1) | ~Query(module=2) == Not(And(Query(module=1), Query(module=2)))
     assert ~Query(module=1) & ~Query(module=2) == Not(Or(Query(module=1), Query(module=2)))
 
+    assert ~Query(module=1) | Query(module=2) == Or(Not(Query(module=1)), Query(module=2))
+    assert ~Query(module=1) & Query(module=2) == And(Not(Query(module=1)), Query(module=2))
+
     assert ~(Query(module=1) & Query(module=2)) == Not(And(Query(module=1), Query(module=2)))
     assert ~(Query(module=1) | Query(module=2)) == Not(Or(Query(module=1), Query(module=2)))
 
@@ -402,10 +418,11 @@ def test_predicate_not():
     assert repr(~(Query(module=1) & Query(module=2))) == repr(Not(And(Query(module=1), Query(module=2))))
     assert repr(~(Query(module=1) | Query(module=2))) == repr(Not(Or(Query(module=1), Query(module=2))))
 
+    assert Not(Q(module=1))({'module': 1}) == False
+
 
 def test_predicate_query_allowed():
     pytest.raises(TypeError, Query, 1)
-    Query(a=1)
     pytest.raises(TypeError, Query, a=1)
 
 
@@ -438,5 +455,41 @@ def test_predicate_when_allowed():
 
     ({'module': "abc"}, {'module': 1}, False),
 ])
-def test_matching(expr, inp, expected):
+def test_predicate_matching(expr, inp, expected):
     assert Query(**expr)(inp) == expected
+
+
+def test_predicate_when():
+    called = []
+    assert When(Q(module=1), lambda ev: called.append(ev))({'module': 2}) == False
+    assert called == []
+
+    assert When(Q(module=1), lambda ev: called.append(ev))({'module': 1}) == True
+    assert called == [{'module': 1}]
+
+    called = []
+    assert Q(module=1, action=lambda ev: called.append(ev))({'module': 1}) == True
+    assert called == [{'module': 1}]
+
+    called = [[], []]
+    predicate = (
+        Q(module=1, action=lambda ev: called[0].append(ev)) |
+        Q(module=2, action=lambda ev: called[1].append(ev))
+    )
+    assert predicate({'module': 1}) == True
+    assert called == [[{'module': 1}], []]
+
+    assert predicate({'module': 2}) == True
+    assert called == [[{'module': 1}], [{'module': 2}]]
+
+    called = [[], []]
+    predicate = (
+        Q(module=1, action=lambda ev: called[0].append(ev)) &
+        Q(function=2, action=lambda ev: called[1].append(ev))
+    )
+    assert predicate({'module': 2}) == False
+    assert called == [[], []]
+
+    assert predicate({'module': 1, 'function': 2}) == True
+    assert called == [[{'module': 1, 'function': 2}], [{'module': 1, 'function': 2}]]
+
