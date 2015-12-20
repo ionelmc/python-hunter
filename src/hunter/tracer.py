@@ -13,10 +13,12 @@ class Tracer(object):
 
     def __init__(self):
         self._handler = None
+        self._previous = None
 
     def __str__(self):
-        return "Tracer(_handler={})".format(
+        return "Tracer(_handler={}, _previous={})".format(
             "<stopped>" if self._handler is None else self._handler,
+            self._previous,
         )
 
     def __call__(self, frame, kind, arg):
@@ -29,11 +31,9 @@ class Tracer(object):
             because it might
             match further inside.
         """
-        if self._handler is None:
-            raise RuntimeError("Tracer is stopped.")
-
-        self._handler(Event(frame, kind, arg, self))
-        return self
+        if self._handler is not None:
+            self._handler(Event(frame, kind, arg, self))
+            return self
 
     def trace(self, predicate):
         """
@@ -46,6 +46,7 @@ class Tracer(object):
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
         self._handler = predicate
+        self._previous = sys.gettrace()
         sys.settrace(self)
         return self
 
@@ -54,8 +55,8 @@ class Tracer(object):
         Stop tracing.
         """
         if self._handler is not None:
-            sys.settrace(None)
-            self._handler = None
+            sys.settrace(self._previous)
+            self._handler = self._previous = None
 
     def __enter__(self):
         return self
