@@ -99,11 +99,20 @@ def _flatten(predicate, *predicates, **kwargs):
 And = partial(_flatten, cls=_And)
 Or = partial(_flatten, cls=_Or)
 
-_TRACER = Tracer()
-stop = _TRACER.stop
+_current_tracer = None
+
+
+def stop():
+    global _current_tracer
+
+    if _current_tracer is not None:
+        _current_tracer.stop()
+        _current_tracer = None
 
 
 def trace(*predicates, **options):
+    global _current_tracer
+
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
 
@@ -113,6 +122,7 @@ def trace(*predicates, **options):
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
     try:
-        return _TRACER.trace(predicate)
+        _current_tracer = Tracer()
+        return _current_tracer.trace(predicate)
     finally:
-        atexit.register(_TRACER.stop)
+        atexit.register(_current_tracer.stop)
