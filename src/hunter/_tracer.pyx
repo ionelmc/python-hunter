@@ -1,4 +1,4 @@
-from sys import gettrace, settrace
+from sys import settrace
 
 from cpython cimport pystate
 from cpython.ref cimport Py_INCREF
@@ -62,7 +62,11 @@ cdef class Tracer:
             options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
         """
         self._handler = predicate
-        self._previous = gettrace()
+        previous = PyThreadState_Get()
+        if previous.c_traceobj is NULL:
+            self._previous = None
+        else:
+            self._previous = <object>previous.c_traceobj
         PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 

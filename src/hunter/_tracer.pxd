@@ -15,7 +15,13 @@ cdef extern from "frameobject.h":
         cdef object f_locals
         cdef int f_lineno
 
-    void PyEval_SetTrace(pystate.Py_tracefunc func, PyObject* obj)
+    void PyEval_SetTrace(pystate.Py_tracefunc func, PyObject *obj)
+
+cdef extern from "pystate.h":
+    ctypedef struct PyThreadState:
+        PyObject *c_traceobj
+
+    PyThreadState* PyThreadState_Get()
 
 @cython.final
 cdef class Tracer:
