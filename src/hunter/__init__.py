@@ -88,7 +88,7 @@ And = partial(_flatten, cls=_And)
 Or = partial(_flatten, cls=_Or)
 
 _tracer = Tracer()
-stop = atexit.register(_tracer.stop)
+stop = _tracer.stop
 
 
 def trace(*predicates, **options):
@@ -100,5 +100,7 @@ def trace(*predicates, **options):
 
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
-
-    return _tracer.trace(predicate)
+    try:
+        return _tracer.trace(predicate)
+    finally:
+        atexit.register(_tracer.stop)

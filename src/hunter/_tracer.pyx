@@ -64,8 +64,9 @@ cdef class Tracer:
         """
         Stop tracing.
         """
-        PyEval_SetTrace(NULL, NULL)
-        self._handler = None
+        if self._handler is not None:
+            PyEval_SetTrace(NULL, NULL)
+            self._handler = None
 
     def __enter__(self):
         return self

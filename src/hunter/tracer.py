@@ -53,8 +53,9 @@ class Tracer(object):
         """
         Stop tracing.
         """
-        sys.settrace(None)
-        self._handler = None
+        if self._handler is not None:
+            sys.settrace(None)
+            self._handler = None
 
     def __enter__(self):
         return self
