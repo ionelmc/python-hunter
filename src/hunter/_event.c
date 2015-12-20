@@ -461,16 +461,17 @@ struct __pyx_obj_6hunter_7_tracer_Tracer;
 struct __pyx_obj_6hunter_6_event_Event;
 struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
 
-/* "_tracer.pxd":22
+/* "_tracer.pxd":21
  * 
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
  *     cdef:
- *         public object _handler
+ *         object _handler
  */
 struct __pyx_obj_6hunter_7_tracer_Tracer {
   PyObject_HEAD
   PyObject *_handler;
+  PyObject *_previous;
 };
 
 
@@ -942,7 +943,6 @@ static char __pyx_k__7[] = "(^[ \t]*)(?:[^ \t\n])";
 static char __pyx_k_re[] = "re";
 static char __pyx_k_arg[] = "arg";
 static char __pyx_k_def[] = "def";
-static char __pyx_k_env[] = "env";
 static char __pyx_k_get[] = "get";
 static char __pyx_k_pyc[] = ".pyc";
 static char __pyx_k_pyo[] = ".pyo";
@@ -960,6 +960,7 @@ static char __pyx_k_send[] = "send";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_class[] = "class";
 static char __pyx_k_close[] = "close";
+static char __pyx_k_const[] = "const";
 static char __pyx_k_frame[] = "frame";
 static char __pyx_k_limit[] = "limit";
 static char __pyx_k_start[] = "start";
@@ -1016,10 +1017,10 @@ static PyObject *__pyx_n_s_co_name;
 static PyObject *__pyx_n_s_code;
 static PyObject *__pyx_n_s_collector;
 static PyObject *__pyx_n_s_compile;
+static PyObject *__pyx_n_s_const;
 static PyObject *__pyx_n_s_dedent;
 static PyObject *__pyx_n_s_def;
 static PyObject *__pyx_n_s_endswith;
-static PyObject *__pyx_n_s_env;
 static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_filename;
 static PyObject *__pyx_n_s_findall;
@@ -4617,10 +4618,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_code, __pyx_k_code, sizeof(__pyx_k_code), 0, 0, 1, 1},
   {&__pyx_n_s_collector, __pyx_k_collector, sizeof(__pyx_k_collector), 0, 0, 1, 1},
   {&__pyx_n_s_compile, __pyx_k_compile, sizeof(__pyx_k_compile), 0, 0, 1, 1},
+  {&__pyx_n_s_const, __pyx_k_const, sizeof(__pyx_k_const), 0, 0, 1, 1},
   {&__pyx_n_s_dedent, __pyx_k_dedent, sizeof(__pyx_k_dedent), 0, 0, 1, 1},
   {&__pyx_n_s_def, __pyx_k_def, sizeof(__pyx_k_def), 0, 0, 1, 1},
   {&__pyx_n_s_endswith, __pyx_k_endswith, sizeof(__pyx_k_endswith), 0, 0, 1, 1},
-  {&__pyx_n_s_env, __pyx_k_env, sizeof(__pyx_k_env), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_filename, __pyx_k_filename, sizeof(__pyx_k_filename), 0, 0, 1, 1},
   {&__pyx_n_s_findall, __pyx_k_findall, sizeof(__pyx_k_findall), 0, 0, 1, 1},
@@ -4862,7 +4863,7 @@ PyMODINIT_FUNC PyInit__event(void)
   __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), 0); if (unlikely(!__pyx_ptype_7cpython_7complex_complex)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType("types", "CodeType", sizeof(PyCodeObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_CodeType)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType("types", "FrameType", sizeof(PyFrameObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_FrameType)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType("hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), 1); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType("hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), 1); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/
@@ -4968,7 +4969,7 @@ PyMODINIT_FUNC PyInit__event(void)
  * from tokenize import TokenError
  * from tokenize import generate_tokens             # <<<<<<<<<<<<<<
  * 
- * from .env import SITE_PACKAGES_PATH
+ * from .const import SITE_PACKAGES_PATH
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -4987,8 +4988,8 @@ PyMODINIT_FUNC PyInit__event(void)
   /* "hunter/_event.pyx":8
  * from tokenize import generate_tokens
  * 
- * from .env import SITE_PACKAGES_PATH             # <<<<<<<<<<<<<<
- * from .env import SYS_PREFIX_PATHS
+ * from .const import SITE_PACKAGES_PATH             # <<<<<<<<<<<<<<
+ * from .const import SYS_PREFIX_PATHS
  * from ._tracer cimport *
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -4996,7 +4997,7 @@ PyMODINIT_FUNC PyInit__event(void)
   __Pyx_INCREF(__pyx_n_s_SITE_PACKAGES_PATH);
   __Pyx_GIVEREF(__pyx_n_s_SITE_PACKAGES_PATH);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_SITE_PACKAGES_PATH);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_env, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_const, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_SITE_PACKAGES_PATH); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -5007,8 +5008,8 @@ PyMODINIT_FUNC PyInit__event(void)
 
   /* "hunter/_event.pyx":9
  * 
- * from .env import SITE_PACKAGES_PATH
- * from .env import SYS_PREFIX_PATHS             # <<<<<<<<<<<<<<
+ * from .const import SITE_PACKAGES_PATH
+ * from .const import SYS_PREFIX_PATHS             # <<<<<<<<<<<<<<
  * from ._tracer cimport *
  * 
  */
@@ -5017,7 +5018,7 @@ PyMODINIT_FUNC PyInit__event(void)
   __Pyx_INCREF(__pyx_n_s_SYS_PREFIX_PATHS);
   __Pyx_GIVEREF(__pyx_n_s_SYS_PREFIX_PATHS);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_SYS_PREFIX_PATHS);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_env, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_const, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_SYS_PREFIX_PATHS); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
