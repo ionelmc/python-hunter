@@ -63,6 +63,9 @@ class Query(Fields.query):
         """
         return And(self, other)
 
+    def __invert__(self):
+        return Not(self)
+
 
 class When(Fields.condition.actions):
     """
@@ -135,6 +138,9 @@ class And(Fields.predicates):
     def __and__(self, other):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
+    def __invert__(self):
+        return Not(self)
+
 
 class Or(Fields.predicates):
     """
@@ -161,3 +167,34 @@ class Or(Fields.predicates):
 
     def __and__(self, other):
         return And(self, other)
+
+    def __invert__(self):
+        return Not(self)
+
+
+class Not(Fields.predicate):
+    """
+    `Not` predicate.
+    """
+
+    def __str__(self):
+        return "Not({})".format(self.predicate)
+
+    def __call__(self, event):
+        """
+        Handles the event.
+        """
+        return not self.predicate(event)
+
+    def __or__(self, other):
+        if isinstance(other, Not):
+            return Not(And(self.predicate, other.predicate))
+        return Or(self, other)
+
+    def __and__(self, other):
+        if isinstance(other, Not):
+            return Not(Or(self.predicate, other.predicate))
+        return And(self, other)
+
+    def __invert__(self):
+        return self.predicate

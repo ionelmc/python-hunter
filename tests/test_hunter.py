@@ -16,13 +16,14 @@ except ImportError:
 
 import pytest
 
-from hunter import Q
 from hunter import And
+from hunter import Not
 from hunter import Or
+from hunter import Q
 from hunter import Query
-from hunter import When
 from hunter import stop
 from hunter import trace
+from hunter import When
 
 from hunter import CodePrinter
 from hunter import Debugger
@@ -369,11 +370,33 @@ def test_no_inf_recursion():
 
 
 def test_predicate_compression():
-    print(Or(Or(1, 2), And(3)))
     assert Or(Or(1, 2), And(3)) == Or(1, 2, 3)
     assert Or(Or(1, 2), 3) == Or(1, 2, 3)
     assert Or(1, Or(2, 3), 4) == Or(1, 2, 3, 4)
     assert And(1, 2, Or(3, 4)).predicates == (1, 2, Or(3, 4))
+
+
+def test_predicate_not():
+    assert Not(1).predicate == 1
+    assert ~Or(1, 2) == Not(Or(1, 2))
+    assert ~And(1, 2) == Not(And(1, 2))
+
+    assert ~Not(1) == 1
+
+    assert ~Query(module=1) | ~Query(module=2) == Not(And(Query(module=1), Query(module=2)))
+    assert ~Query(module=1) & ~Query(module=2) == Not(Or(Query(module=1), Query(module=2)))
+
+    assert ~(Query(module=1) & Query(module=2)) == Not(And(Query(module=1), Query(module=2)))
+    assert ~(Query(module=1) | Query(module=2)) == Not(Or(Query(module=1), Query(module=2)))
+
+
+def test_predicate_query_allowed():
+    pytest.raises(TypeError, Query, 1)
+    pytest.raises(TypeError, Query, a=1)
+
+
+def test_predicate_when_allowed():
+    pytest.raises(TypeError, When, 1)
 
 
 @pytest.mark.parametrize('expr,inp,expected', [

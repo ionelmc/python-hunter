@@ -15,12 +15,14 @@ try:
         raise ImportError("Skipped")
 
     from ._predicates import And as _And
+    from ._predicates import Not
     from ._predicates import Or as _Or
     from ._predicates import When
     from ._predicates import Query
     from ._tracer import Tracer
 except ImportError:
     from .predicates import And as _And
+    from .predicates import Not
     from .predicates import Or as _Or
     from .predicates import When
     from .predicates import Query

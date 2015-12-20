@@ -24,7 +24,6 @@ cdef class Query:
     """
     cdef readonly dict query
 
-
     def __init__(self, **query):
         """
         Args:
@@ -69,8 +68,11 @@ cdef class Query:
         """
         return And(self, other)
 
+    def __invert__(self):
+        return Not(self)
+
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, Query) and self.query == (<Query>other).query
+        is_equal = isinstance(other, Query) and self.query == (<Query> other).query
 
         if op == Py_EQ:
             return is_equal
@@ -141,8 +143,11 @@ cdef class And:
     def __and__(self, other):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
+    def __invert__(self):
+        return Not(self)
+
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, And) and self.predicates == (<And>other).predicates
+        is_equal = isinstance(other, And) and self.predicates == (<And> other).predicates
 
         if op == Py_EQ:
             return is_equal
@@ -178,8 +183,51 @@ cdef class Or:
     def __and__(self, other):
         return And(self, other)
 
+    def __invert__(self):
+        return Not(self)
+
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, Or) and self.predicates == (<Or>other).predicates
+        is_equal = isinstance(other, Or) and self.predicates == (<Or> other).predicates
+
+        if op == Py_EQ:
+            return is_equal
+        if op == Py_NE:
+            return not is_equal
+        return PyObject_RichCompare(id(self), id(other), op)
+
+cdef class Not:
+    """
+    `Not` predicate.
+    """
+    cdef readonly tuple predicate
+
+    def __init__(self, predicate):
+        self.predicate = predicate
+
+    def __str__(self):
+        return "Not({})".format(self.predicate)
+
+    def __call__(self, event):
+        """
+        Handles the event.
+        """
+        return not self.predicate(event)
+
+    def __or__(self, other):
+        if isinstance(other, Not):
+            return Not(And(self.predicate, other.predicate))
+        return Or(self, other)
+
+    def __and__(self, other):
+        if isinstance(other, Not):
+            return Not(Or(self.predicate, other.predicate))
+        return And(self, other)
+
+    def __invert__(self):
+        return self.predicate
+
+    def __richcmp__(self, other, int op):
+        is_equal = isinstance(other, Not) and self.predicate == (<Not> other).predicate
 
         if op == Py_EQ:
             return is_equal
