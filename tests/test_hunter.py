@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import inspect
 import os
+import platform
 import subprocess
 import sys
 
@@ -505,7 +506,7 @@ def test_predicate_when():
 
 
 def test_proper_backend():
-    if os.environ.get('PUREPYTHONHUNTER'):
+    if os.environ.get('PUREPYTHONHUNTER') or platform.python_implementation() == 'PyPy':
         assert 'hunter.tracer.Tracer' in repr(hunter.Tracer)
     else:
         assert 'hunter._tracer.Tracer' in repr(hunter.Tracer)
