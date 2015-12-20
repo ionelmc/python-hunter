@@ -30,8 +30,9 @@ cdef class Tracer:
         self._previous = None
 
     def __str__(self):
-        return "Tracer(_handler={})".format(
-            "<stopped>" if self._handler is None else self._handler,
+        return "Tracer(handler={}, previous={})".format(
+            "<stopped>" if self._handler is None else self.__handler,
+            self.__previous,
         )
 
     def __call__(self, frame, kind, arg):
