@@ -49,18 +49,7 @@ cdef class Query:
         """
         Handles event. Returns True if all criteria matched.
         """
-        return self.fast_call(event)
-
-    cdef inline fast_call(self, event):
-        for key, value in self.query.items():
-            evalue = event[key]
-            if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
-                if not evalue.startswith(tuple(value)):
-                    return False
-            elif evalue != value:
-                return False
-        else:
-            return True
+        return fast_Query_call(self, event)
 
     def __or__(self, other):
         """
@@ -86,6 +75,18 @@ cdef class Query:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+cdef inline fast_Query_call(Query self, event):
+    for key, value in self.query.items():
+        evalue = event[key]
+        if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+            if not evalue.startswith(tuple(value)):
+                return False
+        elif evalue != value:
+            return False
+    else:
+        return True
+
 
 @cython.final
 cdef class When:
@@ -223,7 +224,7 @@ cdef class Or:
     cdef inline fast_call(self, event):
         for predicate in self.predicates:
             if type(predicate) is Query:
-                if (<Query>predicate).fast_call(event):
+                if fast_Query_call(<Query>predicate, event):
                     return True
             else:
                 if predicate(event):
