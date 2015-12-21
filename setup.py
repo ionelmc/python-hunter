@@ -46,10 +46,16 @@ if 'TOXENV' in os.environ and 'SETUPPY_CFLAGS' in os.environ:
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
+        src = join(dirname(__file__), 'src', 'hunter.embed')
         path = join(dirname(__file__), 'src', 'hunter.pth')
+        with open(src) as sh:
+            with open(path, 'w') as fh:
+                fh.write(
+                    'import os, sys;'
+                    'exec(%r)' % sh.read().replace('    ', ' ')
+                )
         dest = join(self.build_lib, basename(path))
         self.copy_file(path, dest)
-
 
 class EasyInstallWithPTH(easy_install):
     def run(self):
@@ -78,23 +84,6 @@ class DevelopWithPTH(develop):
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
 
-
-class GeneratePTH(Command):
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        with open(join(dirname(__file__), 'src', 'hunter.pth'), 'w') as fh:
-            with open(join(dirname(__file__), 'src', 'hunter.embed')) as sh:
-                fh.write(
-                    'import os, sys;'
-                    'exec(%r)' % sh.read().replace('    ', ' ')
-                )
 
 class OptionalBuildExt(build_ext):
     """Allow the building of C extensions to fail."""
@@ -125,7 +114,6 @@ class OptionalBuildExt(build_ext):
         print('')
         print('    ' + repr(e))
         print('*' * 80)
-
 setup(
     name='hunter',
     version='0.6.0',
@@ -183,7 +171,6 @@ setup(
         'easy_install': EasyInstallWithPTH,
         'install_lib': InstallLibWithPTH,
         'develop': DevelopWithPTH,
-        'genpth': GeneratePTH,
         'build_ext': OptionalBuildExt,
     },
     setup_requires=[
