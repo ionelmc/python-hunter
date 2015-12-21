@@ -157,9 +157,9 @@ cdef inline fast_When_call(When self, event):
     if result:
         for action in self.actions:
             action(event)
-        return True
-    else:
-        return False
+
+    return result
+
 
 @cython.final
 cdef class And:

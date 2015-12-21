@@ -3960,7 +3960,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(stru
  *     if result:
  *         for action in self.actions:             # <<<<<<<<<<<<<<
  *             action(event)
- *         return True
+ * 
  */
     if (unlikely(__pyx_v_self->actions == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
@@ -3982,8 +3982,8 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(stru
  *     if result:
  *         for action in self.actions:
  *             action(event)             # <<<<<<<<<<<<<<
- *         return True
- *     else:
+ * 
+ *     return result
  */
       __Pyx_INCREF(__pyx_v_action);
       __pyx_t_6 = __pyx_v_action; __pyx_t_5 = NULL;
@@ -4018,22 +4018,10 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(stru
  *     if result:
  *         for action in self.actions:             # <<<<<<<<<<<<<<
  *             action(event)
- *         return True
+ * 
  */
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "hunter/_predicates.pyx":160
- *         for action in self.actions:
- *             action(event)
- *         return True             # <<<<<<<<<<<<<<
- *     else:
- *         return False
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_True);
-    __pyx_r = Py_True;
-    goto __pyx_L0;
 
     /* "hunter/_predicates.pyx":157
  *         result = condition(event)
@@ -4044,19 +4032,17 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(stru
  */
   }
 
-  /* "hunter/_predicates.pyx":162
- *         return True
- *     else:
- *         return False             # <<<<<<<<<<<<<<
+  /* "hunter/_predicates.pyx":161
+ *             action(event)
  * 
- * @cython.final
+ *     return result             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
-  /*else*/ {
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(Py_False);
-    __pyx_r = Py_False;
-    goto __pyx_L0;
-  }
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_result);
+  __pyx_r = __pyx_v_result;
+  goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":142
  *             return PyObject_RichCompare(id(self), id(other), op)
