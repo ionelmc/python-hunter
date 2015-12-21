@@ -5,6 +5,8 @@ from cpython.ref cimport Py_INCREF
 from cpython.ref cimport Py_XDECREF
 
 from ._event cimport Event
+from ._predicates cimport When
+from ._predicates cimport fast_When_call
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
@@ -15,8 +17,11 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         frame.f_trace = <PyObject*> self
         Py_XDECREF(junk)
 
-    if self._handler is not None:
-        self._handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    handler = self._handler
+    if type(handler) is When:
+        fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    elif handler is not None:
+        handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
 
 cdef class Tracer:
     """
