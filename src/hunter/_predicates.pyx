@@ -79,7 +79,7 @@ cdef class Query:
 cdef inline fast_Query_call(Query self, event):
     for key, value in self.query.items():
         evalue = event[key]
-        if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+        if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
             if not evalue.startswith(tuple(value)):
                 return False
         elif evalue != value:

@@ -830,8 +830,6 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
 
-static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
-
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
     PyListObject* L = (PyListObject*) list;
@@ -847,6 +845,8 @@ static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
 #else
 #define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
 #endif
+
+static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
 
 #include <string.h>
 
@@ -2247,8 +2247,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
-  int __pyx_t_12;
-  PyObject *__pyx_t_13 = NULL;
+  PyObject *__pyx_t_12 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2259,7 +2258,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
  * cdef inline fast_Query_call(Query self, event):
  *     for key, value in self.query.items():             # <<<<<<<<<<<<<<
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  */
   if (unlikely(__pyx_v_self->query == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "items");
@@ -2366,7 +2365,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
  * cdef inline fast_Query_call(Query self, event):
  *     for key, value in self.query.items():
  *         evalue = event[key]             # <<<<<<<<<<<<<<
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  *             if not evalue.startswith(tuple(value)):
  */
     __pyx_t_1 = PyObject_GetItem(__pyx_v_event, __pyx_v_key); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
@@ -2377,46 +2376,40 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
     /* "hunter/_predicates.pyx":82
  *     for key, value in self.query.items():
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):             # <<<<<<<<<<<<<<
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):             # <<<<<<<<<<<<<<
  *             if not evalue.startswith(tuple(value)):
  *                 return False
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_string_types); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = PyObject_IsInstance(__pyx_v_evalue, __pyx_t_1); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_10 = (((PyObject *)Py_TYPE(__pyx_v_evalue)) == ((PyObject *)(&PyString_Type)));
     __pyx_t_11 = (__pyx_t_10 != 0);
     if (__pyx_t_11) {
     } else {
       __pyx_t_9 = __pyx_t_11;
       goto __pyx_L8_bool_binop_done;
     }
-    __pyx_t_10 = PyList_Check(__pyx_v_value); 
-    __pyx_t_12 = (__pyx_t_10 != 0);
-    if (!__pyx_t_12) {
-    } else {
-      __pyx_t_11 = __pyx_t_12;
-      goto __pyx_L10_bool_binop_done;
-    }
-    __pyx_t_12 = PyTuple_Check(__pyx_v_value); 
-    __pyx_t_10 = (__pyx_t_12 != 0);
+    __pyx_t_11 = (((PyObject *)Py_TYPE(__pyx_v_value)) == ((PyObject *)(&PyList_Type)));
+    __pyx_t_10 = (__pyx_t_11 != 0);
     if (!__pyx_t_10) {
     } else {
-      __pyx_t_11 = __pyx_t_10;
-      goto __pyx_L10_bool_binop_done;
+      __pyx_t_9 = __pyx_t_10;
+      goto __pyx_L8_bool_binop_done;
     }
-    __pyx_t_10 = PySet_Check(__pyx_v_value); 
-    __pyx_t_12 = (__pyx_t_10 != 0);
-    __pyx_t_11 = __pyx_t_12;
-    __pyx_L10_bool_binop_done:;
-    __pyx_t_12 = (__pyx_t_11 != 0);
-    __pyx_t_9 = __pyx_t_12;
+    __pyx_t_10 = (((PyObject *)Py_TYPE(__pyx_v_value)) == ((PyObject *)(&PyTuple_Type)));
+    __pyx_t_11 = (__pyx_t_10 != 0);
+    if (!__pyx_t_11) {
+    } else {
+      __pyx_t_9 = __pyx_t_11;
+      goto __pyx_L8_bool_binop_done;
+    }
+    __pyx_t_11 = (((PyObject *)Py_TYPE(__pyx_v_value)) == ((PyObject *)(&PySet_Type)));
+    __pyx_t_10 = (__pyx_t_11 != 0);
+    __pyx_t_9 = __pyx_t_10;
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_9) {
 
       /* "hunter/_predicates.pyx":83
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  *             if not evalue.startswith(tuple(value)):             # <<<<<<<<<<<<<<
  *                 return False
  *         elif evalue != value:
@@ -2440,24 +2433,24 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else {
-        __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_13);
-        __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_7); __pyx_t_7 = NULL;
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_12);
+        __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_GIVEREF(__pyx_t_5);
-        PyTuple_SET_ITEM(__pyx_t_13, 0+1, __pyx_t_5);
+        PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_5);
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_13, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_12, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_12 = ((!__pyx_t_9) != 0);
-      if (__pyx_t_12) {
+      __pyx_t_10 = ((!__pyx_t_9) != 0);
+      if (__pyx_t_10) {
 
         /* "hunter/_predicates.pyx":84
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  *             if not evalue.startswith(tuple(value)):
  *                 return False             # <<<<<<<<<<<<<<
  *         elif evalue != value:
@@ -2471,7 +2464,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
 
         /* "hunter/_predicates.pyx":83
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  *             if not evalue.startswith(tuple(value)):             # <<<<<<<<<<<<<<
  *                 return False
  *         elif evalue != value:
@@ -2481,7 +2474,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
       /* "hunter/_predicates.pyx":82
  *     for key, value in self.query.items():
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):             # <<<<<<<<<<<<<<
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):             # <<<<<<<<<<<<<<
  *             if not evalue.startswith(tuple(value)):
  *                 return False
  */
@@ -2496,9 +2489,9 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
  *     else:
  */
     __pyx_t_1 = PyObject_RichCompare(__pyx_v_evalue, __pyx_v_value, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (__pyx_t_12) {
+    if (__pyx_t_10) {
 
       /* "hunter/_predicates.pyx":86
  *                 return False
@@ -2528,7 +2521,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
  * cdef inline fast_Query_call(Query self, event):
  *     for key, value in self.query.items():             # <<<<<<<<<<<<<<
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  */
   }
   /*else*/ {
@@ -2552,7 +2545,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
  * cdef inline fast_Query_call(Query self, event):
  *     for key, value in self.query.items():             # <<<<<<<<<<<<<<
  *         evalue = event[key]
- *         if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
+ *         if type(evalue) is str and (type(value) is list or type(value) is tuple or type(value) is set):
  */
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -2571,7 +2564,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_AddTraceback("hunter._predicates.fast_Query_call", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
