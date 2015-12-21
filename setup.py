@@ -4,7 +4,6 @@ from __future__ import absolute_import, print_function
 
 import io
 import os
-from itertools import chain
 import re
 from glob import glob
 from os.path import basename
@@ -22,9 +21,12 @@ from setuptools.command.develop import develop
 from setuptools.command.install_lib import install_lib
 from setuptools.command.easy_install import easy_install
 try:
+    # Allow installing package without any Cython available. This
+    # assumes you are going to include the .c files in your sdist.
     import Cython
 except ImportError:
     Cython = None
+
 
 def read(*names, **kwargs):
     return io.open(
