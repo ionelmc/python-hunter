@@ -95,9 +95,6 @@ cdef class When:
 
     Actions take a single ``event`` argument.
     """
-    cdef:
-        readonly object condition
-        readonly list actions
 
     def __init__(self, condition, *actions):
         if not actions:
@@ -120,15 +117,7 @@ cdef class When:
         """
         Handles the event.
         """
-        return self.fast_call(event)
-
-    cdef inline fast_call(self, event):
-        if self.condition(event):
-            for action in self.actions:
-                action(event)
-            return True
-        else:
-            return False
+        return fast_When_call(self, event)
 
     def __or__(self, other):
         return Or(self, other)
@@ -150,6 +139,27 @@ cdef class When:
         else:
             return PyObject_RichCompare(id(self), id(other), op)
 
+cdef inline fast_When_call(When self, event):
+    cdef object result
+    condition = self.condition
+
+    if type(condition) is Query:
+        result = fast_Query_call(<Query> condition, event)
+    elif type(condition) is Or:
+        result = fast_Or_call(<Or> condition, event)
+    elif type(condition) is And:
+        result = fast_And_call(<And> condition, event)
+    elif type(condition) is Not:
+        result = fast_Not_call(<Not> condition, event)
+    else:
+        result = condition(event)
+
+    if result:
+        for action in self.actions:
+            action(event)
+        return True
+    else:
+        return False
 
 @cython.final
 cdef class And:
@@ -171,14 +181,7 @@ cdef class And:
         """
         Handles the event.
         """
-        return self.fast_call(event)
-
-    cdef inline fast_call(self, event):
-        for predicate in self.predicates:
-            if not predicate(event):
-                return False
-        else:
-            return True
+        return fast_And_call(self, event)
 
     def __or__(self, other):
         return Or(self, other)
@@ -198,6 +201,27 @@ cdef class And:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+cdef inline fast_And_call(And self, event):
+    for predicate in self.predicates:
+        if type(predicate) is Query:
+            if not fast_Query_call(<Query> predicate, event):
+                return False
+        elif type(predicate) is Or:
+            if not fast_Or_call(<Or> predicate, event):
+                return False
+        elif type(predicate) is And:
+            if not fast_And_call(<And> predicate, event):
+                return False
+        elif type(predicate) is Not:
+            if not fast_Not_call(<Not> predicate, event):
+                return False
+        else:
+            if not predicate(event):
+                return False
+    else:
+        return True
+
 
 @cython.final
 cdef class Or:
@@ -219,18 +243,7 @@ cdef class Or:
         """
         Handles the event.
         """
-        return self.fast_call(event)
-
-    cdef inline fast_call(self, event):
-        for predicate in self.predicates:
-            if type(predicate) is Query:
-                if fast_Query_call(<Query>predicate, event):
-                    return True
-            else:
-                if predicate(event):
-                    return True
-        else:
-            return False
+        return fast_Or_call(self, event)
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
@@ -251,6 +264,27 @@ cdef class Or:
         else:
             return PyObject_RichCompare(id(self), id(other), op)
 
+cdef inline fast_Or_call(Or self, event):
+    for predicate in self.predicates:
+        if type(predicate) is Query:
+            if fast_Query_call(<Query> predicate, event):
+                return True
+        elif type(predicate) is Or:
+            if fast_Or_call(<Or> predicate, event):
+                return True
+        elif type(predicate) is And:
+            if fast_And_call(<And> predicate, event):
+                return True
+        elif type(predicate) is Not:
+            if fast_Not_call(<Not> predicate, event):
+                return True
+        else:
+            if predicate(event):
+                return True
+    else:
+        return False
+
+
 cdef class Not:
     """
     `Not` predicate.
@@ -270,10 +304,7 @@ cdef class Not:
         """
         Handles the event.
         """
-        return self.fast_call(event)
-
-    cdef inline fast_call(self, event):
-        return not self.predicate(event)
+        return fast_Not_call(self, event)
 
     def __or__(self, other):
         if isinstance(other, Not):
@@ -299,3 +330,17 @@ cdef class Not:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+cdef inline fast_Not_call(Not self, event):
+    predicate = self.predicate
+
+    if type(predicate) is Query:
+        return not fast_Query_call(<Query> predicate, event)
+    elif type(predicate) is Or:
+        return not fast_Or_call(<Or> predicate, event)
+    elif type(predicate) is And:
+        return not fast_And_call(<And> predicate, event)
+    elif type(predicate) is Not:
+        return not fast_Not_call(<Not> predicate, event)
+    else:
+        return not predicate(event)
