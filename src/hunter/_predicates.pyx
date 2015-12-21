@@ -151,6 +151,8 @@ cdef inline fast_When_call(When self, event):
         result = fast_And_call(<And> condition, event)
     elif type(condition) is Not:
         result = fast_Not_call(<Not> condition, event)
+    elif type(condition) is When:
+        result = fast_When_call(<When> condition, event)
     else:
         result = condition(event)
 
@@ -216,6 +218,9 @@ cdef inline fast_And_call(And self, event):
         elif type(predicate) is Not:
             if not fast_Not_call(<Not> predicate, event):
                 return False
+        elif type(predicate) is When:
+            if not fast_When_call(<When> predicate, event):
+                return False
         else:
             if not predicate(event):
                 return False
@@ -277,6 +282,9 @@ cdef inline fast_Or_call(Or self, event):
                 return True
         elif type(predicate) is Not:
             if fast_Not_call(<Not> predicate, event):
+                return True
+        elif type(predicate) is When:
+            if fast_When_call(<When> predicate, event):
                 return True
         else:
             if predicate(event):
@@ -342,5 +350,7 @@ cdef inline fast_Not_call(Not self, event):
         return not fast_And_call(<And> predicate, event)
     elif type(predicate) is Not:
         return not fast_Not_call(<Not> predicate, event)
+    elif type(predicate) is When:
+        return not fast_When_call(<When> predicate, event)
     else:
         return not predicate(event)
