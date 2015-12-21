@@ -14,15 +14,10 @@ from os.path import relpath
 from os.path import splitext
 from distutils.command.build import build
 
-from setuptools import Command
 from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.build_ext import build_ext
 from setuptools import Extension
-from distutils.errors import CCompilerError
-from distutils.errors import CompileError
-from distutils.errors import DistutilsExecError
-from distutils.errors import DistutilsPlatformError
 from setuptools.command.develop import develop
 from setuptools.command.install_lib import install_lib
 from setuptools.command.easy_install import easy_install
@@ -90,13 +85,6 @@ class OptionalBuildExt(build_ext):
     def run(self):
         try:
             build_ext.run(self)
-        except DistutilsPlatformError as e:
-            self._unavailable(e)
-            self.extensions = []  # avoid copying missing files (it would fail).
-
-    def build_extension(self, ext):
-        try:
-            build_ext.build_extension(self, ext)
         except Exception as e:
             self._unavailable(e)
             self.extensions = []  # avoid copying missing files (it would fail).
