@@ -49,6 +49,9 @@ cdef class Query:
         """
         Handles event. Returns True if all criteria matched.
         """
+        return self.fast_call(event)
+
+    cdef inline fast_call(self, event):
         for key, value in self.query.items():
             evalue = event[key]
             if isinstance(evalue, string_types) and isinstance(value, (list, tuple, set)):
@@ -116,6 +119,9 @@ cdef class When:
         """
         Handles the event.
         """
+        return self.fast_call(event)
+
+    cdef inline fast_call(self, event):
         if self.condition(event):
             for action in self.actions:
                 action(event)
@@ -164,6 +170,9 @@ cdef class And:
         """
         Handles the event.
         """
+        return self.fast_call(event)
+
+    cdef inline fast_call(self, event):
         for predicate in self.predicates:
             if not predicate(event):
                 return False
@@ -209,9 +218,16 @@ cdef class Or:
         """
         Handles the event.
         """
+        return self.fast_call(event)
+
+    cdef inline fast_call(self, event):
         for predicate in self.predicates:
-            if predicate(event):
-                return True
+            if type(predicate) is Query:
+                if (<Query>predicate).fast_call(event):
+                    return True
+            else:
+                if predicate(event):
+                    return True
         else:
             return False
 
@@ -253,6 +269,9 @@ cdef class Not:
         """
         Handles the event.
         """
+        return self.fast_call(event)
+
+    cdef inline fast_call(self, event):
         return not self.predicate(event)
 
     def __or__(self, other):
