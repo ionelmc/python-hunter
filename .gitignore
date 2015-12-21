@@ -10,6 +10,7 @@ dist
 build
 eggs
 .eggs
+.benchmarks
 parts
 bin
 var

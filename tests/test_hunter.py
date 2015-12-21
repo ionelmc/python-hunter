@@ -510,3 +510,27 @@ def test_proper_backend():
         assert 'hunter.tracer.Tracer' in repr(hunter.Tracer)
     else:
         assert 'hunter._tracer.Tracer' in repr(hunter.Tracer)
+
+
+@pytest.fixture(scope="session", params=['pure', 'cython'])
+def tracer_impl(request):
+    if request.param == 'pure':
+        return pytest.importorskip('hunter.tracer').Tracer
+    elif request.param == 'cython':
+        return pytest.importorskip('hunter._tracer').Tracer
+
+
+def test_perf_filter(tracer_impl, benchmark):
+    t = tracer_impl()
+    import tokenize
+
+    @benchmark
+    def run():
+        with t.trace(Q(module="does-not-exist") | Q(module="does not exist".split())):
+            with open(tokenize.__file__, 'rb') as fh:
+                toks = []
+                try:
+                    for tok in tokenize.tokenize(fh.readline):
+                        toks.append(tok)
+                except tokenize.TokenError as exc:
+                    toks.append(exc)
