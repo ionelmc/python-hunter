@@ -13,10 +13,10 @@ Changelog
   * ``Q(module='foo'`` will match events from ``foo``, ``foo.bar`` and ``foobar``.
   * ``Q(module=['foo', 'bar']`` will match events from ``foo``, ``foo.bar``, ``foobar``, ``bar``, ``bar.foo`` and ``baroo`` .
 
-* Removed the ``merge`` option. Now when you call ``hunter.trace(...)`` multiple times only the last one is applied.
+* Removed the ``merge`` option. Now when you call ``hunter.trace(...)`` multiple times only the last one is active.
   **BACKWARDS INCOMPATIBLE**
 * Remove the `previous_tracer handling`. Now when you call ``hunter.trace(...)`` the previous tracer (whatever was in
-  ``sys.gettrace()``) is completely removed. **BACKWARDS INCOMPATIBLE**
+  ``sys.gettrace()``) is disabled and restored when ``hunter.stop()`` is called. **BACKWARDS INCOMPATIBLE**
 
 
 0.6.0 (2015-10-10)
