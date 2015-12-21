@@ -480,8 +480,8 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  * 
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
- *     """
- *     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+ *     cdef:
+ *         FrameType frame
  */
 struct __pyx_obj_6hunter_6_event_Event {
   PyObject_HEAD
@@ -3355,7 +3355,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2__getitem__(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pxd":18
+/* "hunter/_event.pxd":13
  *     cdef:
  *         FrameType frame
  *         public str kind             # <<<<<<<<<<<<<<
@@ -3413,7 +3413,7 @@ static int __pyx_pf_6hunter_6_event_5Event_4kind_2__set__(struct __pyx_obj_6hunt
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -3463,7 +3463,7 @@ static int __pyx_pf_6hunter_6_event_5Event_4kind_4__del__(struct __pyx_obj_6hunt
   return __pyx_r;
 }
 
-/* "hunter/_event.pxd":19
+/* "hunter/_event.pxd":14
  *         FrameType frame
  *         public str kind
  *         public object arg             # <<<<<<<<<<<<<<
@@ -3558,7 +3558,7 @@ static int __pyx_pf_6hunter_6_event_5Event_3arg_4__del__(struct __pyx_obj_6hunte
   return __pyx_r;
 }
 
-/* "hunter/_event.pxd":20
+/* "hunter/_event.pxd":15
  *         public str kind
  *         public object arg
  *         public Tracer tracer             # <<<<<<<<<<<<<<
@@ -3616,7 +3616,7 @@ static int __pyx_pf_6hunter_6_event_5Event_6tracer_2__set__(struct __pyx_obj_6hu
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_6hunter_7_tracer_Tracer))))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_6hunter_7_tracer_Tracer))))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);

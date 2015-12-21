@@ -8,11 +8,6 @@ cdef extern from "frameobject.h":
 
 @cython.final
 cdef class Event:
-    """
-    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
-
-    Provides few convenience properties.
-    """
     cdef:
         FrameType frame
         public str kind

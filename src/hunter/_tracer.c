@@ -467,8 +467,8 @@ struct __pyx_obj_6hunter_7_tracer_Tracer;
  * 
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
- *     """
- *     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+ *     cdef:
+ *         FrameType frame
  */
 struct __pyx_obj_6hunter_6_event_Event {
   PyObject_HEAD
@@ -517,8 +517,8 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  * 
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
- *     """
- *     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+ *     cdef:
+ *         FrameType frame
  */
 
 struct __pyx_vtabstruct_6hunter_6_event_Event {
