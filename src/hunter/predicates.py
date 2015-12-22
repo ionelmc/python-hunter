@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 
 import inspect
+import re
+
 from fields import Fields
 from itertools import chain
 from six import string_types
@@ -9,7 +11,7 @@ from .actions import Action
 from .event import Event
 
 ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
-ALLOWED_OPERATORS = 'startswith', 'endswith', 'in', 'contains'
+ALLOWED_OPERATORS = 'startswith', 'endswith', 'in', 'contains', 'regex'
 
 
 class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_contains):
@@ -31,6 +33,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
         self.query_endswith = {}
         self.query_in = {}
         self.query_contains = {}
+        self.query_regex = {}
 
         for key, value in query.items():
             parts = [p for p in key.split('_') if p]
@@ -59,6 +62,9 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                     mapping = self.query_in
                 elif operator == 'contains':
                     mapping = self.query_contains
+                elif operator == 'regex':
+                    value = re.compile(value)
+                    mapping = self.query_regex
             else:
                 mapping = self.query_eq
                 prefix = key
@@ -78,6 +84,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                     ('_contains', self.query_contains),
                     ('_startswith', self.query_startswith),
                     ('_endswith', self.query_endswith),
+                    ('_regex', self.query_regex),
                 ] if mapping
             )
         )
@@ -90,6 +97,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                 ('query_contains=%r', self.query_contains),
                 ('query_startswith=%r', self.query_startswith),
                 ('query_endswith=%r', self.query_endswith),
+                ('query_regex=%r', self.query_regex),
             ] if mapping
         )
 
@@ -116,6 +124,10 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
         for key, value in self.query_endswith.items():
             evalue = event[key]
             if not evalue.endswith(value):
+                return False
+        for key, value in self.query_regex.items():
+            evalue = event[key]
+            if not value.match(evalue):
                 return False
 
         return True

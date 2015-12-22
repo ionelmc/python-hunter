@@ -470,6 +470,11 @@ def test_predicate_when_allowed():
     ({'module_startswith': ("abc", "xyz")}, {'module': "fooabc"}, False),
 
     ({'module': "abc"}, {'module': 1}, False),
+
+    ({'module_regex': r"(re|sre.*)\b"}, {'module': "regex"}, False),
+    ({'module_regex': r"(re|sre.*)\b"}, {'module': "re.gex"}, True),
+    ({'module_regex': r"(re|sre.*)\b"}, {'module': "sregex"}, True),
+    ({'module_regex': r"(re|sre.*)\b"}, {'module': "re"}, True),
 ])
 def test_predicate_matching(expr, inp, expected):
     assert Query(**expr)(inp) == expected

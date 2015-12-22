@@ -15,6 +15,7 @@ Changelog
   * ``Q(module_endswith='bar'`` will match events from ``foo.bar`` and ``foobar``.
   * ``Q(module_contains='ip'`` will match events from ``lipsum``.
   * ``Q(module_in=['foo', 'bar']`` will match events from ``foo`` and ``bar``.
+  * ``Q(module_regex=r"(re|sre.*)\b") will match events from ``re``, ``re.foobar``, ``srefoobar`` but not from ``repr``.
 
 * Removed the ``merge`` option. Now when you call ``hunter.trace(...)`` multiple times only the last one is active.
   **BACKWARDS INCOMPATIBLE**
