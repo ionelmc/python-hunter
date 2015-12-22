@@ -450,7 +450,6 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "src/hunter/_event.pyx",
-  "src/hunter/_event.pxd",
   "type.pxd",
   "bool.pxd",
   "complex.pxd",
@@ -481,7 +480,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  * @cython.final
  * cdef class Event:             # <<<<<<<<<<<<<<
  *     cdef:
- *         FrameType frame
+ *         readonly FrameType frame
  */
 struct __pyx_obj_6hunter_6_event_Event {
   PyObject_HEAD
@@ -697,8 +696,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* value
 #endif
 
 static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *, PyObject *);
-
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
     (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
@@ -1073,15 +1070,10 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __p
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6source___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_15_raw_fullsource___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_2__getitem__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_item); /* proto */
+static PyObject *__pyx_pf_6hunter_6_event_5Event_5frame___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_4kind___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_4kind_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_4kind_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_3arg___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_3arg_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_3arg_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6tracer___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_6tracer_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_6hunter_6_event_5Event_6tracer_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_yield_lines(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_filename, PyObject *__pyx_v_start, PyObject *__pyx_v_collector, PyObject *__pyx_v_limit); /* proto */
 static PyObject *__pyx_tp_new_6hunter_6_event_Event(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6hunter_6_event___pyx_scope_struct__yield_lines(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3355,12 +3347,49 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2__getitem__(struct __pyx_obj_6
   return __pyx_r;
 }
 
+/* "hunter/_event.pxd":12
+ * cdef class Event:
+ *     cdef:
+ *         readonly FrameType frame             # <<<<<<<<<<<<<<
+ *         readonly str kind
+ *         readonly object arg
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6hunter_6_event_5Event_5frame_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6hunter_6_event_5Event_5frame_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6hunter_6_event_5Event_5frame___get__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6hunter_6_event_5Event_5frame___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_self->frame));
+  __pyx_r = ((PyObject *)__pyx_v_self->frame);
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* "hunter/_event.pxd":13
  *     cdef:
- *         FrameType frame
- *         public str kind             # <<<<<<<<<<<<<<
- *         public object arg
- *         public Tracer tracer
+ *         readonly FrameType frame
+ *         readonly str kind             # <<<<<<<<<<<<<<
+ *         readonly object arg
+ *         readonly Tracer tracer
  */
 
 /* Python wrapper */
@@ -3392,83 +3421,12 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4kind___get__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_4kind_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_4kind_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_4kind_2__set__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v_value));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_4kind_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(PyString_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_value)->tp_name), 0))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_1 = __pyx_v_value;
-  __Pyx_INCREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->kind);
-  __Pyx_DECREF(__pyx_v_self->kind);
-  __pyx_v_self->kind = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("hunter._event.Event.kind.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_4kind_5__del__(PyObject *__pyx_v_self); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_4kind_5__del__(PyObject *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_4kind_4__del__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_4kind_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__", 0);
-  __Pyx_INCREF(Py_None);
-  __Pyx_GIVEREF(Py_None);
-  __Pyx_GOTREF(__pyx_v_self->kind);
-  __Pyx_DECREF(__pyx_v_self->kind);
-  __pyx_v_self->kind = ((PyObject*)Py_None);
-
-  /* function exit code */
-  __pyx_r = 0;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
 /* "hunter/_event.pxd":14
- *         FrameType frame
- *         public str kind
- *         public object arg             # <<<<<<<<<<<<<<
- *         public Tracer tracer
- *         object _module
+ *         readonly FrameType frame
+ *         readonly str kind
+ *         readonly object arg             # <<<<<<<<<<<<<<
+ *         readonly Tracer tracer
+ * 
  */
 
 /* Python wrapper */
@@ -3500,70 +3458,12 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_3arg___get__(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_3arg_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_3arg_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_3arg_2__set__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v_value));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_3arg_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__set__", 0);
-  __Pyx_INCREF(__pyx_v_value);
-  __Pyx_GIVEREF(__pyx_v_value);
-  __Pyx_GOTREF(__pyx_v_self->arg);
-  __Pyx_DECREF(__pyx_v_self->arg);
-  __pyx_v_self->arg = __pyx_v_value;
-
-  /* function exit code */
-  __pyx_r = 0;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_3arg_5__del__(PyObject *__pyx_v_self); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_3arg_5__del__(PyObject *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_3arg_4__del__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_3arg_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__", 0);
-  __Pyx_INCREF(Py_None);
-  __Pyx_GIVEREF(Py_None);
-  __Pyx_GOTREF(__pyx_v_self->arg);
-  __Pyx_DECREF(__pyx_v_self->arg);
-  __pyx_v_self->arg = Py_None;
-
-  /* function exit code */
-  __pyx_r = 0;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
 /* "hunter/_event.pxd":15
- *         public str kind
- *         public object arg
- *         public Tracer tracer             # <<<<<<<<<<<<<<
+ *         readonly str kind
+ *         readonly object arg
+ *         readonly Tracer tracer             # <<<<<<<<<<<<<<
+ * 
  *         object _module
- *         object _filename
  */
 
 /* Python wrapper */
@@ -3591,77 +3491,6 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6tracer___get__(struct __pyx_ob
   /* function exit code */
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_6tracer_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_6tracer_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_6tracer_2__set__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v_value));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_6tracer_2__set__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_6hunter_7_tracer_Tracer))))) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_1 = __pyx_v_value;
-  __Pyx_INCREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->tracer);
-  __Pyx_DECREF(((PyObject *)__pyx_v_self->tracer));
-  __pyx_v_self->tracer = ((struct __pyx_obj_6hunter_7_tracer_Tracer *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("hunter._event.Event.tracer.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_6hunter_6_event_5Event_6tracer_5__del__(PyObject *__pyx_v_self); /*proto*/
-static int __pyx_pw_6hunter_6_event_5Event_6tracer_5__del__(PyObject *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_6tracer_4__del__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_6hunter_6_event_5Event_6tracer_4__del__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__", 0);
-  __Pyx_INCREF(Py_None);
-  __Pyx_GIVEREF(Py_None);
-  __Pyx_GOTREF(__pyx_v_self->tracer);
-  __Pyx_DECREF(((PyObject *)__pyx_v_self->tracer));
-  __pyx_v_self->tracer = ((struct __pyx_obj_6hunter_7_tracer_Tracer *)Py_None);
-
-  /* function exit code */
-  __pyx_r = 0;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -4307,43 +4136,20 @@ static PyObject *__pyx_getprop_6hunter_6_event_5Event__raw_fullsource(PyObject *
   return __pyx_pw_6hunter_6_event_5Event_15_raw_fullsource_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_6hunter_6_event_5Event_kind(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_6hunter_6_event_5Event_4kind_1__get__(o);
+static PyObject *__pyx_getprop_6hunter_6_event_5Event_frame(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6hunter_6_event_5Event_5frame_1__get__(o);
 }
 
-static int __pyx_setprop_6hunter_6_event_5Event_kind(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
-  if (v) {
-    return __pyx_pw_6hunter_6_event_5Event_4kind_3__set__(o, v);
-  }
-  else {
-    return __pyx_pw_6hunter_6_event_5Event_4kind_5__del__(o);
-  }
+static PyObject *__pyx_getprop_6hunter_6_event_5Event_kind(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6hunter_6_event_5Event_4kind_1__get__(o);
 }
 
 static PyObject *__pyx_getprop_6hunter_6_event_5Event_arg(PyObject *o, CYTHON_UNUSED void *x) {
   return __pyx_pw_6hunter_6_event_5Event_3arg_1__get__(o);
 }
 
-static int __pyx_setprop_6hunter_6_event_5Event_arg(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
-  if (v) {
-    return __pyx_pw_6hunter_6_event_5Event_3arg_3__set__(o, v);
-  }
-  else {
-    return __pyx_pw_6hunter_6_event_5Event_3arg_5__del__(o);
-  }
-}
-
 static PyObject *__pyx_getprop_6hunter_6_event_5Event_tracer(PyObject *o, CYTHON_UNUSED void *x) {
   return __pyx_pw_6hunter_6_event_5Event_6tracer_1__get__(o);
-}
-
-static int __pyx_setprop_6hunter_6_event_5Event_tracer(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
-  if (v) {
-    return __pyx_pw_6hunter_6_event_5Event_6tracer_3__set__(o, v);
-  }
-  else {
-    return __pyx_pw_6hunter_6_event_5Event_6tracer_5__del__(o);
-  }
 }
 
 static PyMethodDef __pyx_methods_6hunter_6_event_Event[] = {
@@ -4362,9 +4168,10 @@ static struct PyGetSetDef __pyx_getsets_6hunter_6_event_Event[] = {
   {(char *)"fullsource", __pyx_getprop_6hunter_6_event_5Event_fullsource, 0, 0, 0},
   {(char *)"source", __pyx_getprop_6hunter_6_event_5Event_source, 0, 0, 0},
   {(char *)"_raw_fullsource", __pyx_getprop_6hunter_6_event_5Event__raw_fullsource, 0, 0, 0},
-  {(char *)"kind", __pyx_getprop_6hunter_6_event_5Event_kind, __pyx_setprop_6hunter_6_event_5Event_kind, 0, 0},
-  {(char *)"arg", __pyx_getprop_6hunter_6_event_5Event_arg, __pyx_setprop_6hunter_6_event_5Event_arg, 0, 0},
-  {(char *)"tracer", __pyx_getprop_6hunter_6_event_5Event_tracer, __pyx_setprop_6hunter_6_event_5Event_tracer, 0, 0},
+  {(char *)"frame", __pyx_getprop_6hunter_6_event_5Event_frame, 0, 0, 0},
+  {(char *)"kind", __pyx_getprop_6hunter_6_event_5Event_kind, 0, 0, 0},
+  {(char *)"arg", __pyx_getprop_6hunter_6_event_5Event_arg, 0, 0, 0},
+  {(char *)"tracer", __pyx_getprop_6hunter_6_event_5Event_tracer, 0, 0, 0},
   {0, 0, 0, 0, 0}
 };
 
@@ -4872,12 +4679,12 @@ PyMODINIT_FUNC PyInit__event(void)
   #else
   sizeof(PyHeapTypeObject),
   #endif
-  0); if (unlikely(!__pyx_ptype_7cpython_4type_type)) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), 0); if (unlikely(!__pyx_ptype_7cpython_4bool_bool)) {__pyx_filename = __pyx_f[3]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), 0); if (unlikely(!__pyx_ptype_7cpython_7complex_complex)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType("types", "CodeType", sizeof(PyCodeObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_CodeType)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType("types", "FrameType", sizeof(PyFrameObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_FrameType)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType("hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), 1); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) {__pyx_filename = __pyx_f[5]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  0); if (unlikely(!__pyx_ptype_7cpython_4type_type)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), 0); if (unlikely(!__pyx_ptype_7cpython_4bool_bool)) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), 0); if (unlikely(!__pyx_ptype_7cpython_7complex_complex)) {__pyx_filename = __pyx_f[3]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType("types", "CodeType", sizeof(PyCodeObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_CodeType)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 7; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType("types", "FrameType", sizeof(PyFrameObject), 0); if (unlikely(!__pyx_ptype_6hunter_7_tracer_FrameType)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType("hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), 1); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/
@@ -5903,18 +5710,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *o, PyObject *n) {
         return __Pyx_PyObject_GetAttrStr(o, n);
 #endif
     return PyObject_GetAttr(o, n);
-}
-
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (likely(PyObject_TypeCheck(obj, type)))
-        return 1;
-    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
-                 Py_TYPE(obj)->tp_name, type->tp_name);
-    return 0;
 }
 
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {

@@ -9,10 +9,11 @@ cdef extern from "frameobject.h":
 @cython.final
 cdef class Event:
     cdef:
-        FrameType frame
-        public str kind
-        public object arg
-        public Tracer tracer
+        readonly FrameType frame
+        readonly str kind
+        readonly object arg
+        readonly Tracer tracer
+
         object _module
         object _filename
         object _fullsource
