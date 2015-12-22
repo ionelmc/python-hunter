@@ -58,9 +58,7 @@ cdef class Query:
                 ))
             elif count == 2:
                 prefix, operator = parts
-                if operator not in ALLOWED_OPERATORS:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
-                elif operator == 'startswith':
+                if operator == 'startswith':
                     if not isinstance(value, string_types):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
@@ -79,6 +77,8 @@ cdef class Query:
                 elif operator == 'regex':
                     value = re.compile(value)
                     mapping = self.query_regex
+                else:
+                    raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
             else:
                 mapping = self.query_eq
                 prefix = key

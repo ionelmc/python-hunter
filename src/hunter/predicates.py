@@ -44,9 +44,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                 ))
             elif count == 2:
                 prefix, operator = parts
-                if operator not in ALLOWED_OPERATORS:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
-                elif operator == 'startswith':
+                if operator == 'startswith':
                     if not isinstance(value, string_types):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
@@ -65,6 +63,8 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                 elif operator == 'regex':
                     value = re.compile(value)
                     mapping = self.query_regex
+                else:
+                    raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
             else:
                 mapping = self.query_eq
                 prefix = key

@@ -839,11 +839,6 @@ static CYTHON_INLINE void __Pyx_ErrFetch(PyObject **type, PyObject **value, PyOb
 
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
-    int result = PySequence_Contains(seq, item);
-    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
-}
-
 #include <string.h>
 
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
@@ -864,7 +859,10 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
+static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
+    int result = PySequence_Contains(seq, item);
+    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
+}
 
 static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname);
 
@@ -1687,7 +1685,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  *                 ))
  *             elif count == 2:             # <<<<<<<<<<<<<<
  *                 prefix, operator = parts
- *                 if operator not in ALLOWED_OPERATORS:
+ *                 if operator == 'startswith':
  */
     __pyx_t_11 = ((__pyx_v_count == 2) != 0);
     if (__pyx_t_11) {
@@ -1696,8 +1694,8 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  *                 ))
  *             elif count == 2:
  *                 prefix, operator = parts             # <<<<<<<<<<<<<<
- *                 if operator not in ALLOWED_OPERATORS:
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
+ *                 if operator == 'startswith':
+ *                     if not isinstance(value, string_types):
  */
       if (1) {
         PyObject* sequence = __pyx_v_parts;
@@ -1731,131 +1729,63 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
       /* "hunter/_predicates.pyx":61
  *             elif count == 2:
  *                 prefix, operator = parts
- *                 if operator not in ALLOWED_OPERATORS:             # <<<<<<<<<<<<<<
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':
- */
-      __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_v_operator, __pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS, Py_NE)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_12 = (__pyx_t_11 != 0);
-      if (__pyx_t_12) {
-
-        /* "hunter/_predicates.pyx":62
- *                 prefix, operator = parts
- *                 if operator not in ALLOWED_OPERATORS:
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))             # <<<<<<<<<<<<<<
- *                 elif operator == 'startswith':
- *                     if not isinstance(value, string_types):
- */
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unexpected_operator_r_Must_be_on, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_5 = NULL;
-        __pyx_t_9 = 0;
-        if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_6))) {
-          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
-          if (likely(__pyx_t_5)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-            __Pyx_INCREF(__pyx_t_5);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_6, function);
-            __pyx_t_9 = 1;
-          }
-        }
-        __pyx_t_7 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_7);
-        if (__pyx_t_5) {
-          __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
-        }
-        __Pyx_INCREF(__pyx_v_operator);
-        __Pyx_GIVEREF(__pyx_v_operator);
-        PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_9, __pyx_v_operator);
-        __Pyx_INCREF(__pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
-        __Pyx_GIVEREF(__pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
-        PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_9, __pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_6);
-        __Pyx_GIVEREF(__pyx_t_1);
-        PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
-        __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-
-        /* "hunter/_predicates.pyx":61
- *             elif count == 2:
- *                 prefix, operator = parts
- *                 if operator not in ALLOWED_OPERATORS:             # <<<<<<<<<<<<<<
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':
- */
-      }
-
-      /* "hunter/_predicates.pyx":63
- *                 if operator not in ALLOWED_OPERATORS:
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':             # <<<<<<<<<<<<<<
+ *                 if operator == 'startswith':             # <<<<<<<<<<<<<<
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):
  */
-      __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_startswith, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (__pyx_t_12) {
+      __pyx_t_11 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_startswith, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__pyx_t_11) {
 
-        /* "hunter/_predicates.pyx":64
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':
+        /* "hunter/_predicates.pyx":62
+ *                 prefix, operator = parts
+ *                 if operator == 'startswith':
  *                     if not isinstance(value, string_types):             # <<<<<<<<<<<<<<
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  */
-        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_string_types); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_string_types); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_12 = PyObject_IsInstance(__pyx_v_value, __pyx_t_1); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_11 = PyObject_IsInstance(__pyx_v_value, __pyx_t_1); if (unlikely(__pyx_t_11 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_11 = ((!(__pyx_t_12 != 0)) != 0);
-        if (__pyx_t_11) {
+        __pyx_t_12 = ((!(__pyx_t_11 != 0)) != 0);
+        if (__pyx_t_12) {
 
-          /* "hunter/_predicates.pyx":65
- *                 elif operator == 'startswith':
+          /* "hunter/_predicates.pyx":63
+ *                 if operator == 'startswith':
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):             # <<<<<<<<<<<<<<
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  *                         value = tuple(value)
  */
-          __pyx_t_12 = PyList_Check(__pyx_v_value); 
-          __pyx_t_13 = (__pyx_t_12 != 0);
+          __pyx_t_11 = PyList_Check(__pyx_v_value); 
+          __pyx_t_13 = (__pyx_t_11 != 0);
           if (!__pyx_t_13) {
           } else {
-            __pyx_t_11 = __pyx_t_13;
+            __pyx_t_12 = __pyx_t_13;
             goto __pyx_L14_bool_binop_done;
           }
           __pyx_t_13 = PySet_Check(__pyx_v_value); 
-          __pyx_t_12 = (__pyx_t_13 != 0);
-          if (!__pyx_t_12) {
+          __pyx_t_11 = (__pyx_t_13 != 0);
+          if (!__pyx_t_11) {
           } else {
-            __pyx_t_11 = __pyx_t_12;
+            __pyx_t_12 = __pyx_t_11;
             goto __pyx_L14_bool_binop_done;
           }
-          __pyx_t_12 = PyTuple_Check(__pyx_v_value); 
-          __pyx_t_13 = (__pyx_t_12 != 0);
-          __pyx_t_11 = __pyx_t_13;
+          __pyx_t_11 = PyTuple_Check(__pyx_v_value); 
+          __pyx_t_13 = (__pyx_t_11 != 0);
+          __pyx_t_12 = __pyx_t_13;
           __pyx_L14_bool_binop_done:;
-          __pyx_t_13 = ((!(__pyx_t_11 != 0)) != 0);
+          __pyx_t_13 = ((!(__pyx_t_12 != 0)) != 0);
           if (__pyx_t_13) {
 
-            /* "hunter/_predicates.pyx":66
+            /* "hunter/_predicates.pyx":64
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))             # <<<<<<<<<<<<<<
  *                         value = tuple(value)
  *                     mapping = self.query_startswith
  */
-            __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_INCREF(__pyx_v_value);
             __Pyx_GIVEREF(__pyx_v_value);
@@ -1863,23 +1793,23 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
             __Pyx_INCREF(__pyx_v_key);
             __Pyx_GIVEREF(__pyx_v_key);
             PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_key);
-            __pyx_t_6 = __Pyx_PyString_Format(__pyx_kp_s_Value_r_for_r_is_invalid_Must_be, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_6 = __Pyx_PyString_Format(__pyx_kp_s_Value_r_for_r_is_invalid_Must_be, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_GIVEREF(__pyx_t_6);
             PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_6);
             __pyx_t_6 = 0;
-            __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __Pyx_Raise(__pyx_t_6, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-            /* "hunter/_predicates.pyx":65
- *                 elif operator == 'startswith':
+            /* "hunter/_predicates.pyx":63
+ *                 if operator == 'startswith':
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):             # <<<<<<<<<<<<<<
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
@@ -1887,28 +1817,28 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  */
           }
 
-          /* "hunter/_predicates.pyx":67
+          /* "hunter/_predicates.pyx":65
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  *                         value = tuple(value)             # <<<<<<<<<<<<<<
  *                     mapping = self.query_startswith
  *                 elif operator == 'endswith':
  */
-          __pyx_t_6 = PySequence_Tuple(__pyx_v_value); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = PySequence_Tuple(__pyx_v_value); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF_SET(__pyx_v_value, __pyx_t_6);
           __pyx_t_6 = 0;
 
-          /* "hunter/_predicates.pyx":64
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':
+          /* "hunter/_predicates.pyx":62
+ *                 prefix, operator = parts
+ *                 if operator == 'startswith':
  *                     if not isinstance(value, string_types):             # <<<<<<<<<<<<<<
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  */
         }
 
-        /* "hunter/_predicates.pyx":68
+        /* "hunter/_predicates.pyx":66
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  *                         value = tuple(value)
  *                     mapping = self.query_startswith             # <<<<<<<<<<<<<<
@@ -1920,41 +1850,41 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         __Pyx_XDECREF_SET(__pyx_v_mapping, ((PyObject*)__pyx_t_6));
         __pyx_t_6 = 0;
 
-        /* "hunter/_predicates.pyx":63
- *                 if operator not in ALLOWED_OPERATORS:
- *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
- *                 elif operator == 'startswith':             # <<<<<<<<<<<<<<
+        /* "hunter/_predicates.pyx":61
+ *             elif count == 2:
+ *                 prefix, operator = parts
+ *                 if operator == 'startswith':             # <<<<<<<<<<<<<<
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):
  */
         goto __pyx_L11;
       }
 
-      /* "hunter/_predicates.pyx":69
+      /* "hunter/_predicates.pyx":67
  *                         value = tuple(value)
  *                     mapping = self.query_startswith
  *                 elif operator == 'endswith':             # <<<<<<<<<<<<<<
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):
  */
-      __pyx_t_13 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_endswith, Py_EQ)); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_endswith, Py_EQ)); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       if (__pyx_t_13) {
 
-        /* "hunter/_predicates.pyx":70
+        /* "hunter/_predicates.pyx":68
  *                     mapping = self.query_startswith
  *                 elif operator == 'endswith':
  *                     if not isinstance(value, string_types):             # <<<<<<<<<<<<<<
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  */
-        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_string_types); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_string_types); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_13 = PyObject_IsInstance(__pyx_v_value, __pyx_t_6); if (unlikely(__pyx_t_13 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_13 = PyObject_IsInstance(__pyx_v_value, __pyx_t_6); if (unlikely(__pyx_t_13 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_11 = ((!(__pyx_t_13 != 0)) != 0);
-        if (__pyx_t_11) {
+        __pyx_t_12 = ((!(__pyx_t_13 != 0)) != 0);
+        if (__pyx_t_12) {
 
-          /* "hunter/_predicates.pyx":71
+          /* "hunter/_predicates.pyx":69
  *                 elif operator == 'endswith':
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):             # <<<<<<<<<<<<<<
@@ -1962,34 +1892,34 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  *                         value = tuple(value)
  */
           __pyx_t_13 = PyList_Check(__pyx_v_value); 
-          __pyx_t_12 = (__pyx_t_13 != 0);
-          if (!__pyx_t_12) {
+          __pyx_t_11 = (__pyx_t_13 != 0);
+          if (!__pyx_t_11) {
           } else {
-            __pyx_t_11 = __pyx_t_12;
+            __pyx_t_12 = __pyx_t_11;
             goto __pyx_L19_bool_binop_done;
           }
-          __pyx_t_12 = PySet_Check(__pyx_v_value); 
-          __pyx_t_13 = (__pyx_t_12 != 0);
+          __pyx_t_11 = PySet_Check(__pyx_v_value); 
+          __pyx_t_13 = (__pyx_t_11 != 0);
           if (!__pyx_t_13) {
           } else {
-            __pyx_t_11 = __pyx_t_13;
+            __pyx_t_12 = __pyx_t_13;
             goto __pyx_L19_bool_binop_done;
           }
           __pyx_t_13 = PyTuple_Check(__pyx_v_value); 
-          __pyx_t_12 = (__pyx_t_13 != 0);
-          __pyx_t_11 = __pyx_t_12;
+          __pyx_t_11 = (__pyx_t_13 != 0);
+          __pyx_t_12 = __pyx_t_11;
           __pyx_L19_bool_binop_done:;
-          __pyx_t_12 = ((!(__pyx_t_11 != 0)) != 0);
-          if (__pyx_t_12) {
+          __pyx_t_11 = ((!(__pyx_t_12 != 0)) != 0);
+          if (__pyx_t_11) {
 
-            /* "hunter/_predicates.pyx":72
+            /* "hunter/_predicates.pyx":70
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))             # <<<<<<<<<<<<<<
  *                         value = tuple(value)
  *                     mapping = self.query_endswith
  */
-            __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_INCREF(__pyx_v_value);
             __Pyx_GIVEREF(__pyx_v_value);
@@ -1997,22 +1927,22 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
             __Pyx_INCREF(__pyx_v_key);
             __Pyx_GIVEREF(__pyx_v_key);
             PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_v_key);
-            __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Value_r_for_r_is_invalid_Must_be, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Value_r_for_r_is_invalid_Must_be, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_GIVEREF(__pyx_t_1);
             PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
             __pyx_t_1 = 0;
-            __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
             __Pyx_Raise(__pyx_t_1, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-            /* "hunter/_predicates.pyx":71
+            /* "hunter/_predicates.pyx":69
  *                 elif operator == 'endswith':
  *                     if not isinstance(value, string_types):
  *                         if not isinstance(value, (list, set, tuple)):             # <<<<<<<<<<<<<<
@@ -2021,19 +1951,19 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  */
           }
 
-          /* "hunter/_predicates.pyx":73
+          /* "hunter/_predicates.pyx":71
  *                         if not isinstance(value, (list, set, tuple)):
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  *                         value = tuple(value)             # <<<<<<<<<<<<<<
  *                     mapping = self.query_endswith
  *                 elif operator == 'in':
  */
-          __pyx_t_1 = PySequence_Tuple(__pyx_v_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PySequence_Tuple(__pyx_v_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF_SET(__pyx_v_value, __pyx_t_1);
           __pyx_t_1 = 0;
 
-          /* "hunter/_predicates.pyx":70
+          /* "hunter/_predicates.pyx":68
  *                     mapping = self.query_startswith
  *                 elif operator == 'endswith':
  *                     if not isinstance(value, string_types):             # <<<<<<<<<<<<<<
@@ -2042,7 +1972,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  */
         }
 
-        /* "hunter/_predicates.pyx":74
+        /* "hunter/_predicates.pyx":72
  *                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
  *                         value = tuple(value)
  *                     mapping = self.query_endswith             # <<<<<<<<<<<<<<
@@ -2054,7 +1984,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         __Pyx_XDECREF_SET(__pyx_v_mapping, ((PyObject*)__pyx_t_1));
         __pyx_t_1 = 0;
 
-        /* "hunter/_predicates.pyx":69
+        /* "hunter/_predicates.pyx":67
  *                         value = tuple(value)
  *                     mapping = self.query_startswith
  *                 elif operator == 'endswith':             # <<<<<<<<<<<<<<
@@ -2064,17 +1994,17 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         goto __pyx_L11;
       }
 
-      /* "hunter/_predicates.pyx":75
+      /* "hunter/_predicates.pyx":73
  *                         value = tuple(value)
  *                     mapping = self.query_endswith
  *                 elif operator == 'in':             # <<<<<<<<<<<<<<
  *                     mapping = self.query_in
  *                 elif operator == 'contains':
  */
-      __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_in, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (__pyx_t_12) {
+      __pyx_t_11 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_in, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__pyx_t_11) {
 
-        /* "hunter/_predicates.pyx":76
+        /* "hunter/_predicates.pyx":74
  *                     mapping = self.query_endswith
  *                 elif operator == 'in':
  *                     mapping = self.query_in             # <<<<<<<<<<<<<<
@@ -2086,7 +2016,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         __Pyx_XDECREF_SET(__pyx_v_mapping, ((PyObject*)__pyx_t_1));
         __pyx_t_1 = 0;
 
-        /* "hunter/_predicates.pyx":75
+        /* "hunter/_predicates.pyx":73
  *                         value = tuple(value)
  *                     mapping = self.query_endswith
  *                 elif operator == 'in':             # <<<<<<<<<<<<<<
@@ -2096,17 +2026,17 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         goto __pyx_L11;
       }
 
-      /* "hunter/_predicates.pyx":77
+      /* "hunter/_predicates.pyx":75
  *                 elif operator == 'in':
  *                     mapping = self.query_in
  *                 elif operator == 'contains':             # <<<<<<<<<<<<<<
  *                     mapping = self.query_contains
  *                 elif operator == 'regex':
  */
-      __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_contains, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (__pyx_t_12) {
+      __pyx_t_11 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_contains, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__pyx_t_11) {
 
-        /* "hunter/_predicates.pyx":78
+        /* "hunter/_predicates.pyx":76
  *                     mapping = self.query_in
  *                 elif operator == 'contains':
  *                     mapping = self.query_contains             # <<<<<<<<<<<<<<
@@ -2118,7 +2048,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         __Pyx_XDECREF_SET(__pyx_v_mapping, ((PyObject*)__pyx_t_1));
         __pyx_t_1 = 0;
 
-        /* "hunter/_predicates.pyx":77
+        /* "hunter/_predicates.pyx":75
  *                 elif operator == 'in':
  *                     mapping = self.query_in
  *                 elif operator == 'contains':             # <<<<<<<<<<<<<<
@@ -2128,75 +2058,126 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
         goto __pyx_L11;
       }
 
-      /* "hunter/_predicates.pyx":79
+      /* "hunter/_predicates.pyx":77
  *                 elif operator == 'contains':
  *                     mapping = self.query_contains
  *                 elif operator == 'regex':             # <<<<<<<<<<<<<<
  *                     value = re.compile(value)
  *                     mapping = self.query_regex
  */
-      __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_regex, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (__pyx_t_12) {
+      __pyx_t_11 = (__Pyx_PyString_Equals(__pyx_v_operator, __pyx_n_s_regex, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__pyx_t_11) {
 
-        /* "hunter/_predicates.pyx":80
+        /* "hunter/_predicates.pyx":78
  *                     mapping = self.query_contains
  *                 elif operator == 'regex':
  *                     value = re.compile(value)             # <<<<<<<<<<<<<<
  *                     mapping = self.query_regex
- *             else:
+ *                 else:
  */
-        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_re); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_compile); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_compile); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_t_6 = NULL;
-        if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_7))) {
-          __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_7);
+        if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_5))) {
+          __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
           if (likely(__pyx_t_6)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
             __Pyx_INCREF(__pyx_t_6);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_7, function);
+            __Pyx_DECREF_SET(__pyx_t_5, function);
           }
         }
         if (!__pyx_t_6) {
-          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
         } else {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_5);
-          __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
+          __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_7);
+          __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
           __Pyx_INCREF(__pyx_v_value);
           __Pyx_GIVEREF(__pyx_v_value);
-          PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_value);
-          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_value);
+          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
-          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         }
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF_SET(__pyx_v_value, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "hunter/_predicates.pyx":81
+        /* "hunter/_predicates.pyx":79
  *                 elif operator == 'regex':
  *                     value = re.compile(value)
  *                     mapping = self.query_regex             # <<<<<<<<<<<<<<
- *             else:
- *                 mapping = self.query_eq
+ *                 else:
+ *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
  */
         __pyx_t_1 = __pyx_v_self->query_regex;
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_mapping, ((PyObject*)__pyx_t_1));
         __pyx_t_1 = 0;
 
-        /* "hunter/_predicates.pyx":79
+        /* "hunter/_predicates.pyx":77
  *                 elif operator == 'contains':
  *                     mapping = self.query_contains
  *                 elif operator == 'regex':             # <<<<<<<<<<<<<<
  *                     value = re.compile(value)
  *                     mapping = self.query_regex
  */
+        goto __pyx_L11;
+      }
+
+      /* "hunter/_predicates.pyx":81
+ *                     mapping = self.query_regex
+ *                 else:
+ *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))             # <<<<<<<<<<<<<<
+ *             else:
+ *                 mapping = self.query_eq
+ */
+      /*else*/ {
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unexpected_operator_r_Must_be_on, __pyx_n_s_format); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_7 = NULL;
+        __pyx_t_9 = 0;
+        if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_5))) {
+          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
+          if (likely(__pyx_t_7)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+            __Pyx_INCREF(__pyx_t_7);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_5, function);
+            __pyx_t_9 = 1;
+          }
+        }
+        __pyx_t_6 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_6);
+        if (__pyx_t_7) {
+          __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7); __pyx_t_7 = NULL;
+        }
+        __Pyx_INCREF(__pyx_v_operator);
+        __Pyx_GIVEREF(__pyx_v_operator);
+        PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_9, __pyx_v_operator);
+        __Pyx_INCREF(__pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
+        __Pyx_GIVEREF(__pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
+        PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_9, __pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS);
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_GIVEREF(__pyx_t_1);
+        PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+        __pyx_t_1 = 0;
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __pyx_L11:;
 
@@ -2205,13 +2186,13 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  *                 ))
  *             elif count == 2:             # <<<<<<<<<<<<<<
  *                 prefix, operator = parts
- *                 if operator not in ALLOWED_OPERATORS:
+ *                 if operator == 'startswith':
  */
       goto __pyx_L10;
     }
 
     /* "hunter/_predicates.pyx":83
- *                     mapping = self.query_regex
+ *                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
  *             else:
  *                 mapping = self.query_eq             # <<<<<<<<<<<<<<
  *                 prefix = key
@@ -2242,9 +2223,9 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  *                 raise TypeError('Unexpected argument %r. Must be one of %s.' % (key, ALLOWED_KEYS))
  * 
  */
-    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_prefix, __pyx_v_6hunter_11_predicates_ALLOWED_KEYS, Py_NE)); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_11 = (__pyx_t_12 != 0);
-    if (__pyx_t_11) {
+    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_v_prefix, __pyx_v_6hunter_11_predicates_ALLOWED_KEYS, Py_NE)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = (__pyx_t_11 != 0);
+    if (__pyx_t_12) {
 
       /* "hunter/_predicates.pyx":87
  * 
@@ -2261,19 +2242,19 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
       __Pyx_INCREF(__pyx_v_6hunter_11_predicates_ALLOWED_KEYS);
       __Pyx_GIVEREF(__pyx_v_6hunter_11_predicates_ALLOWED_KEYS);
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_6hunter_11_predicates_ALLOWED_KEYS);
-      __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_Unexpected_argument_r_Must_be_on_2, __pyx_t_1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_Unexpected_argument_r_Must_be_on_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_GIVEREF(__pyx_t_7);
-      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
-      __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
+      __pyx_t_5 = 0;
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_Raise(__pyx_t_7, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_Raise(__pyx_t_5, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
       /* "hunter/_predicates.pyx":86
@@ -2292,7 +2273,6 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
  * 
  *     def __str__(self):
  */
-    if (unlikely(!__pyx_v_mapping)) { __Pyx_RaiseUnboundLocalError("mapping"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
     if (unlikely(__pyx_v_mapping == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -13198,7 +13178,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
@@ -14242,10 +14222,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     return result;
 }
 #endif
-
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
-    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
-}
 
 static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname) {
     PyErr_Format(PyExc_NameError, "free variable '%s' referenced before assignment in enclosing scope", varname);
