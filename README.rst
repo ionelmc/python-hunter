@@ -184,12 +184,19 @@ On Windows you'd do something like::
     set PYTHONHUNTER=module='os.path'
     python yourapp.py
 
-The activation works with a clever ``.pth`` file that checks for that env var presence and before your app runs does something like this::
+The activation works with a clever ``.pth`` file that checks for that env var presence and before your app runs does something
+like this::
 
     from hunter import *
     trace(<whatever-you-had-in-the-PYTHONHUNTER-env-var>)
 
-That also means that it will do activation even if the env var is empty, eg: ``PYTHONHUNTER=""``.
+Note that Hunter is activated even if the env var is empty, eg: ``PYTHONHUNTER=""``.
+
+Filtering DSL
+-------------
+
+Hunter supports a flexible query DSL, see the `introduction
+<https://python-hunter.readthedocs.org/en/latest/introduction.html>`_.
 
 Development
 ===========
