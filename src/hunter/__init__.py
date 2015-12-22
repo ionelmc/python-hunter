@@ -64,7 +64,7 @@ def Q(*predicates, **query):
         if query:
             predicates += Query(**query),
 
-        result = Or(*predicates)
+        result = And(*predicates)
     else:
         result = Query(**query)
 

@@ -190,9 +190,9 @@ def test_predicate_q_nest_1():
 
 
 def test_predicate_q_expansion():
-    assert Q(1, 2, module=3) == Or(1, 2, Q(module=3))
-    assert Q(1, 2, module=3, action=4) == When(Or(1, 2, Q(module=3)), 4)
-    assert Q(1, 2, module=3, actions=[4, 5]) == When(Or(1, 2, Q(module=3)), 4, 5)
+    assert Q(1, 2, module=3) == And(1, 2, Q(module=3))
+    assert Q(1, 2, module=3, action=4) == When(And(1, 2, Q(module=3)), 4)
+    assert Q(1, 2, module=3, actions=[4, 5]) == When(And(1, 2, Q(module=3)), 4, 5)
 
 
 def test_predicate_and():
@@ -241,7 +241,7 @@ def test_tracing_bare(LineMatcher):
 
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
-    with trace(CodePrinter(stream=lines), VarsPrinter("x", stream=lines)):
+    with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
         class Bad(Exception):
             def __repr__(self):
                 raise RuntimeError("I'm a bad class!")
@@ -342,27 +342,27 @@ def test_trace_api_expansion():
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
     with trace(Q(function="foobar", action=Debugger), module="foo") as t:
-        assert t._handler == When(Or(
+        assert t._handler == When(And(
             When(Q(function="foobar"), Debugger),
             Q(module="foo")
         ), CodePrinter)
 
     # dumping variables from stack
     with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
-        assert t._handler == When(Or(
+        assert t._handler == When(And(
             When(Q(function="foobar"), VarsPrinter("foobar")),
             Q(module="foo"),
         ), CodePrinter)
 
     with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
-        assert t._handler == When(Or(
+        assert t._handler == When(And(
             When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
             Q(module="foo"),
         ), CodePrinter)
 
     # multiple actions
     with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
-        assert t._handler == When(Or(
+        assert t._handler == When(And(
             When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
             Q(module="foo"),
         ), CodePrinter)
@@ -391,7 +391,7 @@ def test_predicate_no_inf_recursion():
     assert And(And(1)) == 1
     predicate = Q(Q(lambda ev: 1, module='wat'))
     print('predicate:', predicate)
-    predicate('foo')
+    predicate({'module': 'foo'})
 
 
 def test_predicate_compression():
