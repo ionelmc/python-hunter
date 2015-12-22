@@ -449,6 +449,7 @@ def test_predicate_when_allowed():
     ({'module_startswith': "abc"}, {'module': "abcd"}, True),
     ({'module__startswith': "abc"}, {'module': "abcd"}, True),
     ({'module_contains': "bc"}, {'module': "abcd"}, True),
+    ({'module_contains': "bcde"}, {'module': "abcd"}, False),
 
     ({'module_endswith': "abc"}, {'module': "abcd"}, False),
     ({'module__endswith': "bcd"}, {'module': "abcd"}, True),
@@ -465,9 +466,15 @@ def test_predicate_when_allowed():
     ({'module_startswith': {"abc", "xyz"}}, {'module': "abc"}, True),
     ({'module_startswith': ["abc", "xyz"]}, {'module': "abc"}, True),
     ({'module_startswith': ("abc", "xyz")}, {'module': "abcd"}, True),
-
     ({'module_startswith': ("abc", "xyz")}, {'module': "xyzw"}, True),
     ({'module_startswith': ("abc", "xyz")}, {'module': "fooabc"}, False),
+
+    ({'module_endswith': ("abc", "xyz")}, {'module': "abc"}, True),
+    ({'module_endswith': {"abc", "xyz"}}, {'module': "abc"}, True),
+    ({'module_endswith': ["abc", "xyz"]}, {'module': "abc"}, True),
+    ({'module_endswith': ("abc", "xyz")}, {'module': "1abc"}, True),
+    ({'module_endswith': ("abc", "xyz")}, {'module': "1xyz"}, True),
+    ({'module_endswith': ("abc", "xyz")}, {'module': "abcfoo"}, False),
 
     ({'module': "abc"}, {'module': 1}, False),
 
@@ -488,6 +495,7 @@ def test_predicate_matching(expr, inp, expected):
     (ValueError, {'module_endswith': 1}),
     (ValueError, {'module_endswith': {1: 2}}),
     (TypeError, {'module_foo': 1}),
+    (TypeError, {'module_a_b': 1}),
 ])
 def test_predicate_bad_query(expr, exc_type):
     pytest.raises(exc_type, Query, **expr)
