@@ -8,7 +8,7 @@ import sys
 import tokenize
 
 try:
-    from StringIO import StringIO
+    from cStringIO import StringIO
 except ImportError:
     from io import StringIO
 try:
@@ -562,16 +562,23 @@ def test_perf_filter(tracer_impl, benchmark):
             _tokenize()
 
 
-def test_perf_dump(tracer_impl, benchmark):
+def test_perf_actions(tracer_impl, benchmark):
     t = tracer_impl()
-    output = StringIO()
 
     @benchmark
     def run():
+        output = StringIO()
         with t.trace(Q(
-            ~Q(module=['re', 'sre']),
+            ~Q(module_in=['re', 'sre', 'sre_parse']) & ~Q(module_startswith='namedtuple') & Q(kind="call"),
             actions=[
-                CodePrinter(stream=output),
-                VarsPrinter('len(line)', 'pos', globals=True, stream=output)
-            ])):
+                CodePrinter(
+                    stream=output
+                ),
+                VarsPrinter(
+                    'line',
+                    globals=True,
+                    stream=output
+                )
+            ]
+        )):
             _tokenize()
