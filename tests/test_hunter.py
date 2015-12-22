@@ -543,17 +543,35 @@ def tracer_impl(request):
         return pytest.importorskip('hunter._tracer').Tracer
 
 
+def _tokenize():
+    with open(tokenize.__file__, 'rb') as fh:
+        toks = []
+        try:
+            for tok in tokenize.tokenize(fh.readline):
+                toks.append(tok)
+        except tokenize.TokenError as exc:
+            toks.append(exc)
+
+
 def test_perf_filter(tracer_impl, benchmark):
     t = tracer_impl()
-    import tokenize
 
     @benchmark
     def run():
         with t.trace(Q(module="does-not-exist") | Q(module="does not exist".split())):
-            with open(tokenize.__file__, 'rb') as fh:
-                toks = []
-                try:
-                    for tok in tokenize.tokenize(fh.readline):
-                        toks.append(tok)
-                except tokenize.TokenError as exc:
-                    toks.append(exc)
+            _tokenize()
+
+
+def test_perf_dump(tracer_impl, benchmark):
+    t = tracer_impl()
+    output = StringIO()
+
+    @benchmark
+    def run():
+        with t.trace(Q(
+            ~Q(module=['re', 'sre']),
+            actions=[
+                CodePrinter(stream=output),
+                VarsPrinter('len(line)', 'pos', globals=True, stream=output)
+            ])):
+            _tokenize()
