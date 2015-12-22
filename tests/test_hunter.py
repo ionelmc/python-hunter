@@ -429,12 +429,12 @@ def test_debugger(LineMatcher):
 def test_custom_action():
     calls = []
 
-    with trace(action=lambda event: calls.append(123), kind="return"):
+    with trace(action=lambda event: calls.append(event.function), kind="return"):
         def foo():
             return 1
 
         foo()
-    assert calls == [123, 123, 123]
+    assert calls[-1] == 'foo'
 
 
 def test_trace_with_class_actions():
