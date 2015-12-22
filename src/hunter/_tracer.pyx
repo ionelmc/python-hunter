@@ -10,6 +10,7 @@ from ._predicates cimport fast_When_call
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
+
 cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
     if frame.f_trace is not <PyObject*> self:
         junk = frame.f_trace
@@ -22,6 +23,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif handler is not None:
         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+
 
 cdef class Tracer:
     """

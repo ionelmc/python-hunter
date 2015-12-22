@@ -1,5 +1,3 @@
-from cpython.ref cimport Py_INCREF
-
 import re
 from functools import partial
 from linecache import getline
@@ -11,8 +9,8 @@ from .const import SITE_PACKAGES_PATH
 from .const import SYS_PREFIX_PATHS
 from ._tracer cimport *
 
-
 cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+
 
 cdef class Event:
     """
