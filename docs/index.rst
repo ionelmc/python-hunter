@@ -9,7 +9,7 @@ Contents
    installation
    introduction
    cookbook
-   reference/index
+   reference
    contributing
    authors
    changelog
