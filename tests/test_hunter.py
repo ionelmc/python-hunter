@@ -633,8 +633,32 @@ def test_perf_filter(tracer_impl, benchmark):
 
     @benchmark
     def run():
-        with t.trace(Q(module="does-not-exist") | Q(module="does not exist".split())):
+        output = StringIO()
+        with t.trace(Q(
+            Q(module="does-not-exist") | Q(module="does not exist".split()),
+            action=CodePrinter(stream=output)
+        )):
             _tokenize()
+        return output
+
+    assert run.getvalue() == ''
+
+
+def test_perf_stdlib(tracer_impl, benchmark):
+    t = tracer_impl()
+
+    @benchmark
+    def run():
+        output = StringIO()
+        with t.trace(Q(
+            ~Q(module_contains='pytest'),
+            stdlib=False,
+            action=CodePrinter(stream=output)
+        )):
+            _tokenize()
+        return output
+
+    assert run.getvalue() == ''
 
 
 def test_perf_actions(tracer_impl, benchmark):
