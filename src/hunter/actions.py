@@ -195,11 +195,10 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
     An action that prints local variables and optionally global variables visible from the current executing frame.
 
     Args:
-        *names (strings):
-            Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are present on
-            the frame.
+        *names (strings): Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are
+            present on the frame.
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
-        filename_alignment (int): Default size for the filaneme column (files are right-aligned). Default: ``40``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
     """
 

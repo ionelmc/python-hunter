@@ -103,6 +103,12 @@ _current_tracer = None
 
 
 def stop():
+    """
+    Stop tracing.
+
+    Notes:
+        Restores previous tracer (if there was any).
+    """
     global _current_tracer
 
     if _current_tracer is not None:
@@ -118,6 +124,17 @@ def _prepare_predicate(*predicates, **options):
 
 
 def trace(*predicates, **options):
+    """
+    Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
+    before ``__enter__`` is called).
+
+    Parameters:
+        *predicates (callables): Runs actions if any of the given predicates match.
+    Keyword Args:
+        clear_env_var: Disables tracing in subprocess. Default: ``False``.
+        action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
+        actions: Actions to run (in case you want more than 1).
+    """
     global _current_tracer
 
     predicate = _prepare_predicate(*predicates, **options)

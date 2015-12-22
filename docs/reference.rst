@@ -1,5 +1,5 @@
-hunter
-======
+Reference
+=========
 
 .. automodule:: hunter
 
@@ -38,7 +38,7 @@ hunter
 
         hunter.event.Event
 
-.. autofunction:: hunter.trace(*predicates, **options)
+.. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[])
 
 .. autofunction:: hunter.stop()
 
@@ -46,37 +46,30 @@ hunter
 
 .. autoclass:: hunter.Query
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.When
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.And
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.Or
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.CodePrinter
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.Debugger
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.VarsPrinter
     :members:
-    :private-members:
     :special-members:
 
 .. autoclass:: hunter.event.Event

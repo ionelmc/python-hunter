@@ -59,15 +59,6 @@ cdef class Tracer:
         return self
 
     def trace(self, predicate):
-        """
-        Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
-        before ``__enter__`` is
-        called).
-
-        Args:
-            predicates (:class:`hunter.Q` instances): Runs actions if any of the given predicates match.
-            options: Keyword arguments that are passed to :class:`hunter.Q`, for convenience.
-        """
         self._handler = predicate
         previous = PyThreadState_Get()
         if previous.c_traceobj is NULL:
@@ -78,9 +69,6 @@ cdef class Tracer:
         return self
 
     def stop(self):
-        """
-        Stop tracing.
-        """
         if self._handler is not None:
             if self._previous is None:
                 PyEval_SetTrace(NULL, NULL)
