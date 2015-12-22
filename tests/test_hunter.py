@@ -35,12 +35,13 @@ from hunter import VarsPrinter
 pytest_plugins = 'pytester',
 
 
-@pytest.yield_fixture(autouse=True, scope="function")
-def auto_stop():
-    try:
-        yield
-    finally:
-        stop()
+# from hunter import stop
+# @pytest.yield_fixture(autouse=True, scope="function")
+# def auto_stop():
+#     try:
+#         yield
+#     finally:
+#         stop()
 
 
 def _get_func_spec(func):
@@ -318,9 +319,12 @@ def test_tracing_vars(LineMatcher):
 
 
 def test_trace_merge():
-    trace(function="a")
-    trace(function="b")
-    assert trace(function="c")._handler == When(Q(function="c"), CodePrinter)
+    with trace(function="a"):
+        with trace(function="b"):
+            with trace(function="c"):
+                assert sys.gettrace()._handler == When(Q(function="c"), CodePrinter)
+            assert sys.gettrace()._handler == When(Q(function="b"), CodePrinter)
+        assert sys.gettrace()._handler == When(Q(function="a"), CodePrinter)
 
 
 def test_trace_api_expansion():
