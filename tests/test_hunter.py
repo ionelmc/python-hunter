@@ -40,9 +40,8 @@ class EvilTracer(object):
         self._tracer = hunter.trace(self._append)
 
     def _append(self, event):
-        event.module
-        event.function
-        event.filename
+        # Make sure the lineno is cached. Frames are reused
+        # and later on the events would be very broken ..
         event.lineno
         self._calls.append(event)
 
