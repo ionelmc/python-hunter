@@ -21,7 +21,7 @@ Changelog
   **BACKWARDS INCOMPATIBLE**
 * Remove the `previous_tracer handling`. Now when you call ``hunter.trace(...)`` the previous tracer (whatever was in
   ``sys.gettrace()``) is disabled and restored when ``hunter.stop()`` is called. **BACKWARDS INCOMPATIBLE**
-
+* Fixed ``CodePrinter`` to show module name if it fails to get any sources.
 
 0.6.0 (2015-10-10)
 ------------------

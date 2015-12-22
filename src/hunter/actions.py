@@ -135,8 +135,11 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
     def _safe_source(self, event):
         try:
             lines = event._raw_fullsource.rstrip().splitlines()
-            if not lines:
-                raise RuntimeError("Source code string is empty.")
+            if lines:
+                return lines
+            else:
+                return "{source-failure}??? NO SOURCE: {source-detail}" \
+                       "Source code string for module {!r} is empty.".format(event.module, **self.event_colors),
             return lines
         except Exception as exc:
             return "{source-failure}??? NO SOURCE: {source-detail}{!r}".format(exc, **self.event_colors),
