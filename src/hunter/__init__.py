@@ -47,7 +47,7 @@ __all__ = (
 def Q(*predicates, **query):
     """
     Handles situations where :class:`hunter.Query` objects (or other callables) are passed in as positional arguments.
-    Conveniently converts that to an :class:`hunter.Or` predicate.
+    Conveniently converts that to an :class:`hunter.And` predicate.
     """
     optional_actions = query.pop("actions", [])
     if "action" in query:

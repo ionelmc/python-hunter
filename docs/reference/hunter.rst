@@ -36,16 +36,13 @@ hunter
     .. autosummary::
         :nosignatures:
 
-        hunter.Event
+        hunter.event.Event
 
 .. autofunction:: hunter.trace(*predicates, **options)
 
 .. autofunction:: hunter.stop()
 
-.. autoclass:: hunter.Q
-    :members:
-    :private-members:
-    :special-members:
+.. autofunction:: hunter.Q
 
 .. autoclass:: hunter.Query
     :members:
@@ -82,7 +79,7 @@ hunter
     :private-members:
     :special-members:
 
-.. autoclass:: hunter.Event
+.. autoclass:: hunter.event.Event
     :members:
 
 
