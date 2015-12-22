@@ -24,7 +24,6 @@ from hunter import Not
 from hunter import Or
 from hunter import Q
 from hunter import Query
-from hunter import stop
 from hunter import trace
 from hunter import When
 
@@ -371,13 +370,71 @@ def test_trace_api_expansion():
             Q(module="foo"),
         ), CodePrinter)
 
-    # customization
-    assert trace(lambda event: event.locals.get("node") == "Foobar",
-                 module="foo", function="foobar")
-    assert trace(Q(lambda event: event.locals.get("node") == "Foobar",
-                   function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo", )
-    assert trace(Q(function="foobar", actions=[VarsPrinter("foobar"),
-                                               lambda event: print("some custom output")]), module="foo", )
+
+def test_locals():
+    out = StringIO()
+    with trace(
+        lambda event: event.locals.get("node") == "Foobar",
+        module="test_hunter",
+        function="foo",
+        action=CodePrinter(stream=out)
+    ):
+        def foo():
+            a = 1
+            node = "Foobar"
+            node += "x"
+            a += 2
+            return a
+
+        foo()
+    assert out.getvalue().endswith('node += "x"\n')
+
+
+def test_debugger(LineMatcher):
+    out = StringIO()
+    calls = []
+
+    class FakePDB:
+        def __init__(self, foobar=1):
+            calls.append(foobar)
+
+        def set_trace(self, frame):
+            calls.append(frame.f_code.co_name)
+
+    with trace(
+        lambda event: event.locals.get("node") == "Foobar",
+        module="test_hunter",
+        function="foo",
+        actions=[VarsPrinter("a", "node", "foo", "test_debugger", globals=True, stream=out),
+                 Debugger(klass=FakePDB, foobar=2)]
+    ):
+        def foo():
+            a = 1
+            node = "Foobar"
+            node += "x"
+            a += 2
+            return a
+
+        foo()
+    print(out.getvalue())
+    assert calls == [2, 'foo']
+    lm = LineMatcher(out.getvalue().splitlines())
+    lm.fnmatch_lines_random([
+        "*      test_debugger => <function test_debugger at *",
+        "*      node => 'Foobar'",
+        "*      a => 1",
+    ])
+
+
+def test_custom_action():
+    calls = []
+
+    with trace(action=lambda event: calls.append(123), kind="return"):
+        def foo():
+            return 1
+
+        foo()
+    assert calls == [123, 123, 123]
 
 
 def test_trace_with_class_actions():
