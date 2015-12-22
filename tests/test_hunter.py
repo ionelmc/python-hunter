@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 import sys
+import tokenize
 
 try:
     from StringIO import StringIO
@@ -162,30 +163,30 @@ def test_pth_sample2(LineMatcher):
 
 
 def test_predicate_str_repr():
-    assert repr(Q(module='a')).endswith("predicates.Query: query={'module': 'a'}>")
+    assert repr(Q(module='a')).endswith("predicates.Query: query_eq={'module': 'a'}>")
     assert str(Q(module='a')) == "Query(module='a')"
 
     assert "predicates.When: condition=<hunter." in repr(Q(module='a', action='foo'))
-    assert "predicates.Query: query={'module': 'a'}>, actions=['foo']>" in repr(Q(module='a', action='foo'))
+    assert "predicates.Query: query_eq={'module': 'a'}>, actions=['foo']>" in repr(Q(module='a', action='foo'))
     assert str(Q(module='a', action='foo')) == "When(Query(module='a'), 'foo')"
 
     assert "predicates.Not: predicate=<hunter." in repr(~Q(module='a'))
-    assert "predicates.Query: query={'module': 'a'}>>" in repr(~Q(module='a'))
+    assert "predicates.Query: query_eq={'module': 'a'}>>" in repr(~Q(module='a'))
     assert str(~Q(module='a')) == "Not(Query(module='a'))"
 
     assert "predicates.Or: predicates=(<hunter." in repr(Q(module='a') | Q(module='b'))
-    assert "predicates.Query: query={'module': 'a'}>, " in repr(Q(module='a') | Q(module='b'))
-    assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query={'module': 'b'}>)>")
+    assert "predicates.Query: query_eq={'module': 'a'}>, " in repr(Q(module='a') | Q(module='b'))
+    assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query_eq={'module': 'b'}>)>")
     assert str(Q(module='a') | Q(module='b')) == "Or(Query(module='a'), Query(module='b'))"
 
     assert "predicates.And: predicates=(<hunter." in repr(Q(module='a') & Q(module='b'))
-    assert "predicates.Query: query={'module': 'a'}>," in repr(Q(module='a') & Q(module='b'))
-    assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query={'module': 'b'}>)>")
+    assert "predicates.Query: query_eq={'module': 'a'}>," in repr(Q(module='a') & Q(module='b'))
+    assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq={'module': 'b'}>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
 
 
 def test_predicate_q_nest_1():
-    assert repr(Q(Q(module='a'))).endswith("predicates.Query: query={'module': 'a'}>")
+    assert repr(Q(Q(module='a'))).endswith("predicates.Query: query_eq={'module': 'a'}>")
 
 
 def test_predicate_q_expansion():
@@ -445,29 +446,46 @@ def test_predicate_when_allowed():
     ({'module': "abc"}, {'module': "abc"}, True),
     ({'module': "abcd"}, {'module': "abc"}, False),
     ({'module': "abcd"}, {'module': "abce"}, False),
-    ({'module': "abc"}, {'module': "abcd"}, False),
-    ({'module': ("abc", "xyz")}, {'module': "abc"}, True),
-    ({'module': ("abc", "xyz")}, {'module': "abcd"}, True),
-    ({'module': ("abc", "xyz")}, {'module': "xyzw"}, True),
-    ({'module': ("abc", "xyz")}, {'module': "fooabc"}, False),
-    ({'module': ("abc", "xyz")}, {'module': 1}, False),
+    ({'module_startswith': "abc"}, {'module': "abcd"}, True),
+    ({'module__startswith': "abc"}, {'module': "abcd"}, True),
+    ({'module_contains': "bc"}, {'module': "abcd"}, True),
 
-    ({'module': ["abc", "xyz"]}, {'module': "abc"}, True),
-    ({'module': ["abc", "xyz"]}, {'module': "abcd"}, True),
-    ({'module': ["abc", "xyz"]}, {'module': "xyzw"}, True),
-    ({'module': ["abc", "xyz"]}, {'module': "fooabc"}, False),
-    ({'module': ["abc", "xyz"]}, {'module': 1}, False),
+    ({'module_endswith': "abc"}, {'module': "abcd"}, False),
+    ({'module__endswith': "bcd"}, {'module': "abcd"}, True),
 
-    ({'module': {"abc", "xyz"}}, {'module': "abc"}, True),
-    ({'module': {"abc", "xyz"}}, {'module': "abcd"}, True),
-    ({'module': {"abc", "xyz"}}, {'module': "xyzw"}, True),
-    ({'module': {"abc", "xyz"}}, {'module': "fooabc"}, False),
-    ({'module': {"abc", "xyz"}}, {'module': 1}, False),
+    ({'module_in': "abcd"}, {'module': "bc"}, True),
+    ({'module': "abcd"}, {'module': "bc"}, False),
+    ({'module': ["abcd"]}, {'module': "bc"}, False),
+    ({'module_in': ["abcd"]}, {'module': "bc"}, False),
+    ({'module_in': ["a", "bc", "d"]}, {'module': "bc"}, True),
+
+    ({'module': "abcd"}, {'module': "abc"}, False),
+
+    ({'module_startswith': ("abc", "xyz")}, {'module': "abc"}, True),
+    ({'module_startswith': {"abc", "xyz"}}, {'module': "abc"}, True),
+    ({'module_startswith': ["abc", "xyz"]}, {'module': "abc"}, True),
+    ({'module_startswith': ("abc", "xyz")}, {'module': "abcd"}, True),
+
+    ({'module_startswith': ("abc", "xyz")}, {'module': "xyzw"}, True),
+    ({'module_startswith': ("abc", "xyz")}, {'module': "fooabc"}, False),
 
     ({'module': "abc"}, {'module': 1}, False),
 ])
 def test_predicate_matching(expr, inp, expected):
     assert Query(**expr)(inp) == expected
+
+
+@pytest.mark.parametrize('exc_type,expr', [
+    (TypeError, {'module_1': 1}),
+    (TypeError, {'module1': 1}),
+    (ValueError, {'module_startswith': 1}),
+    (ValueError, {'module_startswith': {1: 2}}),
+    (ValueError, {'module_endswith': 1}),
+    (ValueError, {'module_endswith': {1: 2}}),
+    (TypeError, {'module_foo': 1}),
+])
+def test_predicate_bad_query(expr, exc_type):
+    pytest.raises(exc_type, Query, **expr)
 
 
 def test_predicate_when():
