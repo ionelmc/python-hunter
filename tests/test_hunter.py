@@ -35,9 +35,16 @@ pytest_plugins = 'pytester',
 
 class EvilTracer(object):
     def __init__(self, *args, **kwargs):
-        self.calls = []
+        self._calls = []
         self._handler = hunter._prepare_predicate(*args, **kwargs)
-        self._tracer = hunter.trace(self.calls.append)
+        self._tracer = hunter.trace(self._append)
+
+    def _append(self, event):
+        event.module
+        event.function
+        event.filename
+        event.lineno
+        self._calls.append(event)
 
     def __enter__(self):
         return self
@@ -45,7 +52,7 @@ class EvilTracer(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._tracer.stop()
         predicate = self._handler
-        for call in self.calls:
+        for call in self._calls:
             predicate(call)
 
 
@@ -249,7 +256,7 @@ def test_tracing_bare(LineMatcher):
 
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
-    with hunter.trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
+    with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
         class Bad(Exception):
             def __repr__(self):
                 raise RuntimeError("I'm a bad class!")
@@ -394,6 +401,65 @@ def test_locals():
 
         foo()
     assert out.getvalue().endswith('node += "x"\n')
+
+
+def test_fullsource_decorator_issue(LineMatcher):
+    out = StringIO()
+    with trace(kind='call', action=CodePrinter(stream=out)):
+        foo = bar = lambda x: x
+
+        @foo
+        @bar
+        def foo():
+            return 1
+
+        foo()
+
+    lm = LineMatcher(out.getvalue().splitlines())
+    lm.fnmatch_lines([
+        '* call              @foo',
+        '*    |              @bar',
+        '*    |              def foo():',
+    ])
+
+
+def test_source(LineMatcher):
+    calls = []
+    with trace(action=lambda event: calls.append(event.source)):
+        foo = bar = lambda x: x
+
+        @foo
+        @bar
+        def foo():
+            return 1
+
+        foo()
+
+    lm = LineMatcher(calls)
+    lm.fnmatch_lines([
+        '        foo = bar = lambda x: x\n',
+        '        @foo\n',
+        '            return 1\n',
+    ])
+
+def test_fullsource(LineMatcher):
+    calls = []
+    with trace(action=lambda event: calls.append(event.fullsource)):
+        foo = bar = lambda x: x
+
+        @foo
+        @bar
+        def foo():
+            return 1
+
+        foo()
+
+    lm = LineMatcher(calls)
+    lm.fnmatch_lines([
+        '        foo = bar = lambda x: x\n',
+        '        @foo\n        @bar\n        def foo():\n',
+        '            return 1\n',
+    ])
 
 
 def test_debugger(LineMatcher):
