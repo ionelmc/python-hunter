@@ -14,10 +14,12 @@ cdef class Event:
         readonly object arg
         readonly Tracer tracer
 
-        object _module
         object _filename
         object _fullsource
+        object _lineno
+        object _module
         object _source
 
     cdef object _get_globals(self)
+
     cdef object _get_locals(self)

@@ -477,9 +477,10 @@ struct __pyx_obj_6hunter_6_event_Event {
   PyObject *kind;
   PyObject *arg;
   struct __pyx_obj_6hunter_7_tracer_Tracer *tracer;
-  PyObject *_module;
   PyObject *_filename;
   PyObject *_fullsource;
+  PyObject *_lineno;
+  PyObject *_module;
   PyObject *_source;
 };
 

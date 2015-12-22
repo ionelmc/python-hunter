@@ -91,7 +91,9 @@ cdef class Event:
             """
             An integer with line number in file.
             """
-            return self.frame.f_lineno
+            if self._lineno is None:
+                self._lineno = self.frame.f_lineno
+            return self._lineno
 
     property code:
         def __get__(self):
