@@ -110,14 +110,18 @@ def stop():
         _current_tracer = None
 
 
-def trace(*predicates, **options):
-    global _current_tracer
-
+def _prepare_predicate(*predicates, **options):
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
 
+    return Q(*predicates, **options)
+
+
+def trace(*predicates, **options):
+    global _current_tracer
+
+    predicate = _prepare_predicate(*predicates, **options)
     clear_env_var = options.pop("clear_env_var", False)
-    predicate = Q(*predicates, **options)
 
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)

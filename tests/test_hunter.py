@@ -24,7 +24,6 @@ from hunter import Not
 from hunter import Or
 from hunter import Q
 from hunter import Query
-from hunter import trace
 from hunter import When
 
 from hunter import CodePrinter
@@ -34,13 +33,23 @@ from hunter import VarsPrinter
 pytest_plugins = 'pytester',
 
 
-# from hunter import stop
-# @pytest.yield_fixture(autouse=True, scope="function")
-# def auto_stop():
-#     try:
-#         yield
-#     finally:
-#         stop()
+class EvilTracer(object):
+    def __init__(self, *args, **kwargs):
+        self.calls = []
+        self._handler = hunter._prepare_predicate(*args, **kwargs)
+        self._tracer = hunter.trace(self.calls.append)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._tracer.stop()
+        predicate = self._handler
+        for call in self.calls:
+            predicate(call)
+
+
+trace = EvilTracer
 
 
 def _get_func_spec(func):
@@ -218,7 +227,7 @@ def test_predicate_or():
 
 def test_tracing_bare(LineMatcher):
     lines = StringIO()
-    with trace(CodePrinter(stream=lines)):
+    with hunter.trace(CodePrinter(stream=lines)):
         def a():
             return 1
 
@@ -231,7 +240,6 @@ def test_tracing_bare(LineMatcher):
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        "* ...       return value: <hunter.*tracer.Tracer *",
         "*test_hunter.py* call              def a():",
         "*test_hunter.py* line                  return 1",
         "*test_hunter.py* return                return 1",
@@ -241,7 +249,7 @@ def test_tracing_bare(LineMatcher):
 
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
-    with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
+    with hunter.trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
         class Bad(Exception):
             def __repr__(self):
                 raise RuntimeError("I'm a bad class!")
@@ -261,7 +269,6 @@ def test_tracing_printing_failures(LineMatcher):
             pass
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        """* ...       return value: <hunter.*tracer.Tracer *""",
         """*tests*test_hunter.py:* call              class Bad(Exception):""",
         """*tests*test_hunter.py:* line              class Bad(Exception):""",
         """*tests*test_hunter.py:* line                  def __repr__(self):""",
@@ -289,7 +296,7 @@ def test_tracing_printing_failures(LineMatcher):
 
 def test_tracing_vars(LineMatcher):
     lines = StringIO()
-    with trace(actions=[VarsPrinter('b', stream=lines), CodePrinter(stream=lines)]):
+    with hunter.trace(actions=[VarsPrinter('b', stream=lines), CodePrinter(stream=lines)]):
         def a():
             b = 1
             b = 2
@@ -304,7 +311,6 @@ def test_tracing_vars(LineMatcher):
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        "* ...       return value: <hunter.*tracer.Tracer *",
         "*test_hunter.py* call              def a():",
         "*test_hunter.py* line                  b = 1",
         "* vars      b => 1",
@@ -318,9 +324,9 @@ def test_tracing_vars(LineMatcher):
 
 
 def test_trace_merge():
-    with trace(function="a"):
-        with trace(function="b"):
-            with trace(function="c"):
+    with hunter.trace(function="a"):
+        with hunter.trace(function="b"):
+            with hunter.trace(function="c"):
                 assert sys.gettrace()._handler == When(Q(function="c"), CodePrinter)
             assert sys.gettrace()._handler == When(Q(function="b"), CodePrinter)
         assert sys.gettrace()._handler == When(Q(function="a"), CodePrinter)
@@ -373,7 +379,7 @@ def test_trace_api_expansion():
 
 def test_locals():
     out = StringIO()
-    with trace(
+    with hunter.trace(
         lambda event: event.locals.get("node") == "Foobar",
         module="test_hunter",
         function="foo",
@@ -401,7 +407,7 @@ def test_debugger(LineMatcher):
         def set_trace(self, frame):
             calls.append(frame.f_code.co_name)
 
-    with trace(
+    with hunter.trace(
         lambda event: event.locals.get("node") == "Foobar",
         module="test_hunter",
         function="foo",
@@ -434,7 +440,7 @@ def test_custom_action():
             return 1
 
         foo()
-    assert calls[-1] == 'foo'
+    assert 'foo' in calls
 
 
 def test_trace_with_class_actions():
