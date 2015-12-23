@@ -718,6 +718,7 @@ def test_perf_stdlib(tracer_impl, benchmark):
         with t.trace(Q(
             ~Q(module_contains='pytest'),
             ~Q(module_contains='hunter'),
+            ~Q(filename=''),
             stdlib=False,
             action=CodePrinter(stream=output)
         )):
