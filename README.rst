@@ -204,3 +204,49 @@ Development
 To run the all tests run::
 
     tox
+
+
+FAQ
+===
+
+Why not Smiley?
+---------------
+
+There's some obvious overlap with `smiley <https://pypi.python.org/pypi/smiley>`_ but there are huge differences to how things
+work and from my perspective are problematic in Smiley:
+
+* Complexity. Smiley is over-engineered:
+
+  * It's uses IPC and a SQL database.
+  * It has a webserver.
+  * It uses threads. Side-effects and subtle bugs are introduced in your code.
+  * It records everything. Tries to dump any variable. Often fails and stops working.
+
+  Why do you need all that just to debug some stuff in a terminal? Simply put, it's a nice idea but the design choices work
+  against you when you're already neck-deep into debugging your own code.
+* Tracing long running code. This will make Smiley record lots of data, making it unusable.
+
+  Now because Smiley records everything, you'd think it's better suited for short programs. But alas, if your program runs
+  quickly then it's pointless to record the execution. You can just run it again.
+
+  It seems there's only one situation where it's reasonable to use Smiley: tracing io-bound apps remotely. Those apps don't
+  execute lots of code, they just wait on network so Smiley's storage won't blow out of proportion and tracing overhead might
+  be acceptable.
+* Use-cases. It seems to me Smiley's purpose is not really debugging code, but more of a "non interactive monitoring" tool.
+
+Why (not) coverage?
+-------------------
+
+For purposes off debugging `coverage <https://pypi.python.org/pypi/coverage>`_ is a great tool but only as far as "debugging
+by looking at what code is (not) run". Checking branch coverage is good but it will only get you as far.
+
+From the other perspective, you'd be wondering if you could use Hunter to measure coverage-like things. You could do it but
+for that purpose Hunter is very "rough": it has no builtin storage. You'd have to implement your own storage. You can do it
+but it wouldn't give you any advantage over making your own tracer if you don't need to "pre-filter" whatever you're
+recording.
+
+In other words, filtering events is the main selling point of Hunter - it's fast (cython implementation) and the query API is
+flexible enough.
+
+
+
