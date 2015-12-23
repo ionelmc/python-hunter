@@ -5,21 +5,21 @@ from __future__ import absolute_import, print_function
 import io
 import os
 import re
+from distutils.command.build import build
 from glob import glob
 from os.path import basename
 from os.path import dirname
 from os.path import join
 from os.path import relpath
 from os.path import splitext
-from distutils.command.build import build
 
+from setuptools import Extension
 from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.build_ext import build_ext
-from setuptools import Extension
 from setuptools.command.develop import develop
-from setuptools.command.install_lib import install_lib
 from setuptools.command.easy_install import easy_install
+from setuptools.command.install_lib import install_lib
 try:
     # Allow installing package without any Cython available. This
     # assumes you are going to include the .c files in your sdist.
@@ -40,6 +40,8 @@ def read(*names, **kwargs):
 # deps have been safely installed).
 if 'TOXENV' in os.environ and 'SETUPPY_CFLAGS' in os.environ:
     os.environ['CFLAGS'] = os.environ['SETUPPY_CFLAGS']
+
+
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
@@ -53,6 +55,7 @@ class BuildWithPTH(build):
                 )
         dest = join(self.build_lib, basename(path))
         self.copy_file(path, dest)
+
 
 class EasyInstallWithPTH(easy_install):
     def run(self):
