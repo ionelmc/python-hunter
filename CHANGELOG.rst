@@ -2,7 +2,7 @@
 Changelog
 =========
 
-1.0.0 (unreleased)
+1.0.0 (2015-12-24)
 ------------------
 
 * Implemented fast tracer and query objects in Cython. **MAY BE BACKWARDS INCOMPATIBLE**
