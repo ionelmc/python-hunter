@@ -4,7 +4,7 @@ Cookbook
 
 .. epigraph::
 
-    When in doubt, use hunter.
+    When in doubt, use Hunter.
 
 Packaging
 =========
