@@ -212,18 +212,19 @@ FAQ
 Why not Smiley?
 ---------------
 
-There's some obvious overlap with `smiley <https://pypi.python.org/pypi/smiley>`_ but there are huge differences to how things
-work and from my perspective are problematic in Smiley:
+There's some obvious overlap with `smiley <https://pypi.python.org/pypi/smiley>`_ but there are few fundamental differences:
 
-* Complexity. Smiley is over-engineered:
+* Complexity. Smiley is simply over-engineered:
 
   * It's uses IPC and a SQL database.
-  * It has a webserver.
+  * It has a webserver. Lots of dependencies.
   * It uses threads. Side-effects and subtle bugs are introduced in your code.
   * It records everything. Tries to dump any variable. Often fails and stops working.
 
   Why do you need all that just to debug some stuff in a terminal? Simply put, it's a nice idea but the design choices work
-  against you when you're already neck-deep into debugging your own code.
+  against you when you're already neck-deep into debugging your own code. In my experience Smiley has been very buggy and
+  unreliable. Your mileage might way of course.
+
 * Tracing long running code. This will make Smiley record lots of data, making it unusable.
 
   Now because Smiley records everything, you'd think it's better suited for short programs. But alas, if your program runs
@@ -234,10 +235,19 @@ work and from my perspective are problematic in Smiley:
   be acceptable.
 * Use-cases. It seems to me Smiley's purpose is not really debugging code, but more of a "non interactive monitoring" tool.
 
+In contrast, Hunter is very simple:
+
+* Few dependencies.
+* Low overhead (tracing/filtering code has an optional Cython extension).
+* No storage. This simplifies lots of things.
+
+  The only cost is that you might need to run the code multiple times to get the filtering/actions right. This means Hunter is
+  not really suited for "post-mortem" debugging. If you can't reproduce the problem anymore then Hunter won't be of much help.
+
 Why (not) coverage?
 -------------------
 
-For purposes off debugging `coverage <https://pypi.python.org/pypi/coverage>`_ is a great tool but only as far as "debugging
+For purposes of debugging `coverage <https://pypi.python.org/pypi/coverage>`_ is a great tool but only as far as "debugging
 by looking at what code is (not) run". Checking branch coverage is good but it will only get you as far.
 
 From the other perspective, you'd be wondering if you could use Hunter to measure coverage-like things. You could do it but
@@ -247,6 +257,3 @@ recording.
 
 In other words, filtering events is the main selling point of Hunter - it's fast (cython implementation) and the query API is
 flexible enough.
-
-
-
