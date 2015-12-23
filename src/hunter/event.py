@@ -101,8 +101,10 @@ class Event(Fields.kind.function.module.filename):
         if self.filename.startswith(SITE_PACKAGES_PATH):
             # if it's in site-packages then its definitely not stdlib
             return False
-        if self.filename.startswith(SYS_PREFIX_PATHS):
+        elif self.filename.startswith(SYS_PREFIX_PATHS):
             return True
+        else:
+            return False
 
     @cached_property
     def fullsource(self):

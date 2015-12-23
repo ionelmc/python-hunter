@@ -19,6 +19,7 @@ cdef class Event:
         object _lineno
         object _module
         object _source
+        object _stdlib
 
     cdef object _get_globals(self)
 

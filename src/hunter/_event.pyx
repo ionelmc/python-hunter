@@ -11,6 +11,7 @@ from ._tracer cimport *
 
 cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
+cdef object UNSET = object()
 
 cdef class Event:
     """
@@ -24,10 +25,12 @@ cdef class Event:
         self.kind = kind
         self.tracer = tracer
 
-        self._filename = None
-        self._fullsource = None
-        self._module = None
-        self._source = None
+        self._filename = UNSET
+        self._fullsource = UNSET
+        self._lineno = UNSET
+        self._module = UNSET
+        self._source = UNSET
+        self._stdlib = UNSET
 
     property locals:
         def __get__(self):
@@ -62,7 +65,7 @@ cdef class Event:
         A string with module name (eg: ``"foo.bar"``).
         """
         def __get__(self):
-            if self._module is None:
+            if self._module is UNSET:
                 module = self.frame.f_globals.get('__name__', '')
                 if module is None:
                     module = ''
@@ -75,7 +78,7 @@ cdef class Event:
             """
             A string with absolute path to file.
             """
-            if self._filename is None:
+            if self._filename is UNSET:
                 filename = self.frame.f_globals.get('__file__', '')
                 if filename is None:
                     filename = ''
@@ -91,7 +94,7 @@ cdef class Event:
             """
             An integer with line number in file.
             """
-            if self._lineno is None:
+            if self._lineno is UNSET:
                 self._lineno = self.frame.f_lineno
             return self._lineno
 
@@ -107,11 +110,15 @@ cdef class Event:
             """
             A boolean flag. ``True`` if frame is in stdlib.
             """
-            if self.filename.startswith(SITE_PACKAGES_PATH):
-                # if it's in site-packages then its definitely not stdlib
-                return False
-            if self.filename.startswith(SYS_PREFIX_PATHS):
-                return True
+            if self._stdlib is UNSET:
+                if self.filename.startswith(SITE_PACKAGES_PATH):
+                    # if it's in site-packages then its definitely not stdlib
+                    self._stdlib = False
+                elif self.filename.startswith(SYS_PREFIX_PATHS):
+                    self._stdlib = True
+                else:
+                    self._stdlib = False
+            return self._stdlib
 
     property fullsource:
         def __get__(self):
@@ -120,7 +127,7 @@ cdef class Event:
 
             May include multiple lines if it's a class/function definition (will include decorators).
             """
-            if self._fullsource is None:
+            if self._fullsource is UNSET:
                 try:
                     self._fullsource = self._raw_fullsource
                 except Exception as exc:
@@ -135,7 +142,7 @@ cdef class Event:
 
             Fast but sometimes incomplete.
             """
-            if self._source is None:
+            if self._source is UNSET:
                 try:
                     self._source = getline(self.filename, self.lineno)
                 except Exception as exc:
