@@ -109,7 +109,7 @@ class OptionalBuildExt(build_ext):
         print('*' * 80)
 setup(
     name='hunter',
-    version='1.0.0',
+    version='1.0.1',
     license='BSD',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (
