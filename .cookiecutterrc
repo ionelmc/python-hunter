@@ -30,6 +30,6 @@ cookiecutter:
     test_matrix_configurator: 'no'
     test_runner: pytest
     travis: 'yes'
-    version: 0.6.0
+    version: 1.0.1
     website: http://blog.ionelmc.ro
     year: '2015'

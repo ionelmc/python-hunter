@@ -83,8 +83,6 @@ Hunter is a flexible code tracing toolkit, not for measuring coverage, but for d
 nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation
 <env-var-activation_>`_).
 
-API is considered unstable until 1.0 is released.
-
 * Free software: BSD license
 
 Installation
