@@ -153,7 +153,7 @@ cdef class Query:
         else:
             return PyObject_RichCompare(id(self), id(other), op)
 
-cdef inline fast_Query_call(Query self, event):
+cdef fast_Query_call(Query self, event):
     for key, value in self.query_eq.items():
         evalue = event[key]
         if evalue != value:

@@ -6,4 +6,4 @@ cdef class When:
         readonly object condition
         readonly list actions
 
-cdef inline fast_When_call(When self, event)
+cdef fast_When_call(When self, event)

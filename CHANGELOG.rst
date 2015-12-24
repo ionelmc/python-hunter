@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.0.1 (2015-12-24)
+------------------
+
+* Fix a compile issue with the MSVC compiler (seems it don't like the inline option on the ``fast_When_call``).
+
 1.0.0 (2015-12-24)
 ------------------
 
