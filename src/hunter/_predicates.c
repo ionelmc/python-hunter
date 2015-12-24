@@ -1023,7 +1023,7 @@ static PyTypeObject *__pyx_ptype_6hunter_11_predicates___pyx_scope_struct_10_gen
 static PyObject *__pyx_v_6hunter_11_predicates_ALLOWED_KEYS = 0;
 static PyObject *__pyx_v_6hunter_11_predicates_ALLOWED_OPERATORS = 0;
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(struct __pyx_obj_6hunter_11_predicates_When *, PyObject *); /*proto*/
-static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *, PyObject *); /*proto*/
+static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *, PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_And_call(struct __pyx_obj_6hunter_11_predicates_And *, PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Or_call(struct __pyx_obj_6hunter_11_predicates_Or *, PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Not_call(struct __pyx_obj_6hunter_11_predicates_Not *, PyObject *); /*proto*/
@@ -4020,7 +4020,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14__richcmp__(PyObject *_
  *         else:
  *             return PyObject_RichCompare(id(self), id(other), op)             # <<<<<<<<<<<<<<
  * 
- * cdef inline fast_Query_call(Query self, event):
+ * cdef fast_Query_call(Query self, event):
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
@@ -4296,12 +4296,12 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_11query_regex___get__(str
 /* "hunter/_predicates.pyx":156
  *             return PyObject_RichCompare(id(self), id(other), op)
  * 
- * cdef inline fast_Query_call(Query self, event):             # <<<<<<<<<<<<<<
+ * cdef fast_Query_call(Query self, event):             # <<<<<<<<<<<<<<
  *     for key, value in self.query_eq.items():
  *         evalue = event[key]
  */
 
-static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *__pyx_v_self, PyObject *__pyx_v_event) {
+static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *__pyx_v_self, PyObject *__pyx_v_event) {
   PyObject *__pyx_v_key = NULL;
   PyObject *__pyx_v_value = NULL;
   PyObject *__pyx_v_evalue = NULL;
@@ -4324,7 +4324,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
 
   /* "hunter/_predicates.pyx":157
  * 
- * cdef inline fast_Query_call(Query self, event):
+ * cdef fast_Query_call(Query self, event):
  *     for key, value in self.query_eq.items():             # <<<<<<<<<<<<<<
  *         evalue = event[key]
  *         if evalue != value:
@@ -4431,7 +4431,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
     __pyx_t_6 = 0;
 
     /* "hunter/_predicates.pyx":158
- * cdef inline fast_Query_call(Query self, event):
+ * cdef fast_Query_call(Query self, event):
  *     for key, value in self.query_eq.items():
  *         evalue = event[key]             # <<<<<<<<<<<<<<
  *         if evalue != value:
@@ -4478,7 +4478,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
 
     /* "hunter/_predicates.pyx":157
  * 
- * cdef inline fast_Query_call(Query self, event):
+ * cdef fast_Query_call(Query self, event):
  *     for key, value in self.query_eq.items():             # <<<<<<<<<<<<<<
  *         evalue = event[key]
  *         if evalue != value:
@@ -5400,7 +5400,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(str
   /* "hunter/_predicates.pyx":156
  *             return PyObject_RichCompare(id(self), id(other), op)
  * 
- * cdef inline fast_Query_call(Query self, event):             # <<<<<<<<<<<<<<
+ * cdef fast_Query_call(Query self, event):             # <<<<<<<<<<<<<<
  *     for key, value in self.query_eq.items():
  *         evalue = event[key]
  */
@@ -6543,7 +6543,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_9condition___get__(struct 
  *         readonly object condition
  *         readonly list actions             # <<<<<<<<<<<<<<
  * 
- * cdef inline fast_When_call(When self, event)
+ * cdef fast_When_call(When self, event)
  */
 
 /* Python wrapper */

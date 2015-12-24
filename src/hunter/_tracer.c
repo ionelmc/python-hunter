@@ -817,7 +817,7 @@ static PyTypeObject *__pyx_ptype_6hunter_6_event_Event = 0;
 
 /* Module declarations from 'hunter._predicates' */
 static PyTypeObject *__pyx_ptype_6hunter_11_predicates_When = 0;
-static CYTHON_INLINE PyObject *(*__pyx_f_6hunter_11_predicates_fast_When_call)(struct __pyx_obj_6hunter_11_predicates_When *, PyObject *); /*proto*/
+static PyObject *(*__pyx_f_6hunter_11_predicates_fast_When_call)(struct __pyx_obj_6hunter_11_predicates_When *, PyObject *); /*proto*/
 
 /* Module declarations from 'hunter._tracer' */
 static PyTypeObject *__pyx_ptype_6hunter_7_tracer_CodeType = 0;
