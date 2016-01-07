@@ -1,5 +1,7 @@
 cimport cython
-from cpython cimport pystate
+from cpython.pystate cimport Py_tracefunc
+from cpython.pystate cimport PyThreadState_Get
+
 
 cdef extern from "frameobject.h":
     ctypedef struct PyObject
@@ -15,16 +17,19 @@ cdef extern from "frameobject.h":
         cdef object f_locals
         cdef int f_lineno
 
-    void PyEval_SetTrace(pystate.Py_tracefunc func, PyObject *obj)
+    void PyEval_SetTrace(Py_tracefunc func, PyObject *obj)
+
 
 cdef extern from "pystate.h":
     ctypedef struct PyThreadState:
         PyObject *c_traceobj
+        Py_tracefunc c_tracefunc
 
-    PyThreadState* PyThreadState_Get()
+
 
 @cython.final
 cdef class Tracer:
     cdef:
         readonly object _handler
         readonly object _previous
+        Py_tracefunc _previousfunc

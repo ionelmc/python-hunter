@@ -33,6 +33,12 @@ cdef class Tracer:
     def __cinit__(self):
         self._handler = None
         self._previous = None
+        self._previousfunc = NULL
+
+    def __dealloc__(self):
+        cdef PyThreadState *state = PyThreadState_Get()
+        if state.c_traceobj is <PyObject *>self:
+            self.stop()
 
     def __repr__(self):
         return '<hunter._tracer.Tracer at 0x%x: %s%s%s%s>' % (
@@ -59,12 +65,14 @@ cdef class Tracer:
         return self
 
     def trace(self, predicate):
+        cdef PyThreadState *state = PyThreadState_Get()
         self._handler = predicate
-        previous = PyThreadState_Get()
-        if previous.c_traceobj is NULL:
+        if state.c_traceobj is NULL:
             self._previous = None
+            self._previousfunc = NULL
         else:
-            self._previous = <object>previous.c_traceobj
+            self._previous = <object>(state.c_traceobj)
+            self._previousfunc = state.c_tracefunc
         PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 
@@ -73,8 +81,9 @@ cdef class Tracer:
             if self._previous is None:
                 PyEval_SetTrace(NULL, NULL)
             else:
-                settrace(self._previous)
+                PyEval_SetTrace(self._previousfunc, <PyObject *> self._previous)
             self._handler = self._previous = None
+            self._previousfunc = NULL
 
     def __enter__(self):
         return self
