@@ -38,6 +38,8 @@ Reference
 
         hunter.event.Event
 
+-----
+
 .. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[])
 
 .. autofunction:: hunter.stop()
