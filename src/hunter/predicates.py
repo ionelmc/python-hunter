@@ -246,6 +246,9 @@ class And(Fields.predicates):
     def __invert__(self):
         return Not(self)
 
+    def __hash__(self):
+        return hash(self.predicates)
+
 
 class Or(Fields.predicates):
     """
@@ -289,6 +292,9 @@ class Or(Fields.predicates):
 
     def __invert__(self):
         return Not(self)
+
+    def __hash__(self):
+        return hash(self.predicates)
 
 
 class Not(Fields.predicate):
