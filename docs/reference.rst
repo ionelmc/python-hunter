@@ -1,42 +1,41 @@
 Reference
 =========
 
-.. automodule:: hunter
 
-    .. rubric:: Functions
+.. rubric:: Functions
 
-    .. autosummary::
-        :nosignatures:
+.. autosummary::
+    :nosignatures:
 
-        hunter.trace
-        hunter.stop
-        hunter.Q
+    hunter.trace
+    hunter.stop
+    hunter.Q
 
-    .. rubric:: Predicates
+.. rubric:: Predicates
 
-    .. autosummary::
-        :nosignatures:
+.. autosummary::
+    :nosignatures:
 
-        hunter.Query
-        hunter.When
-        hunter.And
-        hunter.Or
+    hunter.Query
+    hunter.When
+    hunter.And
+    hunter.Or
 
-    .. rubric:: Actions
+.. rubric:: Actions
 
-    .. autosummary::
-        :nosignatures:
+.. autosummary::
+    :nosignatures:
 
-        hunter.CodePrinter
-        hunter.Debugger
-        hunter.VarsPrinter
+    hunter.CodePrinter
+    hunter.Debugger
+    hunter.VarsPrinter
 
-    .. rubric:: Objects
+.. rubric:: Objects
 
-    .. autosummary::
-        :nosignatures:
+.. autosummary::
+    :nosignatures:
 
-        hunter.event.Event
+    hunter.event.Event
 
 -----
 
