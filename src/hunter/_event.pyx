@@ -15,9 +15,14 @@ cdef object UNSET = object()
 
 cdef class Event:
     """
-    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
+    custom functions or predicates.
 
     Provides few convenience properties.
+
+    .. warning::
+
+        **Users do not instantiate this directly.**
     """
     def __cinit__(self, FrameType frame, str kind, object arg, Tracer tracer):
         self.arg = arg

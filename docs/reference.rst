@@ -1,49 +1,21 @@
 Reference
 =========
 
+.. contents::
+    :local:
+    :backlinks: none
 
-.. rubric:: Functions
-
-.. autosummary::
-    :nosignatures:
-
-    hunter.trace
-    hunter.stop
-    hunter.Q
-
-.. rubric:: Predicates
-
-.. autosummary::
-    :nosignatures:
-
-    hunter.Query
-    hunter.When
-    hunter.And
-    hunter.Or
-
-.. rubric:: Actions
-
-.. autosummary::
-    :nosignatures:
-
-    hunter.CodePrinter
-    hunter.Debugger
-    hunter.VarsPrinter
-
-.. rubric:: Objects
-
-.. autosummary::
-    :nosignatures:
-
-    hunter.event.Event
-
------
+Functions
+---------
 
 .. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[])
 
 .. autofunction:: hunter.stop()
 
 .. autofunction:: hunter.Q
+
+Predicates
+----------
 
 .. autoclass:: hunter.Query
     :members:
@@ -57,19 +29,23 @@ Reference
 
 .. autofunction:: hunter.Or
 
-.. autoclass:: hunter.CodePrinter
+Objects
+-------
+
+.. autoclass:: hunter.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False)
     :members:
     :special-members:
 
-.. autoclass:: hunter.Debugger
+.. autoclass:: hunter.Debugger(klass=pdb.Pdb, **kwargs)
     :members:
     :special-members:
 
-.. autoclass:: hunter.VarsPrinter
+.. autoclass:: hunter.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, filename_alignment=40, globals=False)
     :members:
     :special-members:
+
+Other
+-----
 
 .. autoclass:: hunter.event.Event
     :members:
-
-

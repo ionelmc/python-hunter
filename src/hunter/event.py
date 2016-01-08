@@ -16,9 +16,14 @@ STARTSWITH_TYPES = list, tuple, set
 
 class Event(Fields.kind.function.module.filename):
     """
-    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets).
+    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
+    custom functions or predicates.
 
     Provides few convenience properties.
+
+    .. warning::
+
+        Users do not instantiate this directly.
     """
     frame = None
     kind = None
