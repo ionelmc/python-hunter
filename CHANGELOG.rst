@@ -2,6 +2,12 @@
 Changelog
 =========
 
+master
+------
+
+* Implemented a destructor (``__dealloc__``) for the Cython tracer.
+* Removed ``tracer`` as an allowed filtering argument in :class:`hunter.predicates.Query`.
+
 1.0.2 (2016-01-05)
 ------------------
 

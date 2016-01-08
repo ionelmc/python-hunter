@@ -10,7 +10,7 @@ from six import string_types
 from .actions import Action
 from .event import Event
 
-ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
+ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_') and i != 'tracer')
 ALLOWED_OPERATORS = 'startswith', 'endswith', 'in', 'contains', 'regex'
 
 
