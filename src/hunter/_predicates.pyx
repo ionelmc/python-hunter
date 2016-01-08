@@ -319,7 +319,7 @@ cdef class And:
             return PyObject_RichCompare(id(self), id(other), op)
 
     def __hash__(self):
-        return hash(self.predicates)
+        return hash(frozenset(self.predicates))
 
 cdef inline fast_And_call(And self, event):
     for predicate in self.predicates:
@@ -387,7 +387,7 @@ cdef class Or:
             return PyObject_RichCompare(id(self), id(other), op)
 
     def __hash__(self):
-        return hash(self.predicates)
+        return hash(frozenset(self.predicates))
 
 cdef inline fast_Or_call(Or self, event):
     for predicate in self.predicates:

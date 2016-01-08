@@ -244,7 +244,7 @@ class And(Fields.predicates):
         return Not(self)
 
     def __hash__(self):
-        return hash(self.predicates)
+        return hash(frozenset(self.predicates))
 
 
 class Or(Fields.predicates):
@@ -288,7 +288,7 @@ class Or(Fields.predicates):
         return Not(self)
 
     def __hash__(self):
-        return hash(self.predicates)
+        return hash(frozenset(self.predicates))
 
 
 class Not(Fields.predicate):
