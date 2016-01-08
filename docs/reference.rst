@@ -54,13 +54,9 @@ Reference
     :members:
     :special-members:
 
-.. autoclass:: hunter.And
-    :members:
-    :special-members:
+.. autofunction:: hunter.And
 
-.. autoclass:: hunter.Or
-    :members:
-    :special-members:
+.. autofunction:: hunter.Or
 
 .. autoclass:: hunter.CodePrinter
     :members:
