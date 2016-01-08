@@ -95,7 +95,7 @@ def _flatten(cls, predicate, *predicates):
 
 def And(*predicates, **kwargs):
     """
-    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    `And` predicate. Returns ``False`` at the first sub-predicate that returns ``False``.
     """
     if kwargs:
         predicates += Query(**kwargs),
@@ -104,7 +104,7 @@ def And(*predicates, **kwargs):
 
 def Or(*predicates, **kwargs):
     """
-    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    `Or` predicate. Returns ``True`` at the first sub-predicate that returns ``True``.
     """
     if kwargs:
         predicates += tuple(Query(**{k: v}) for k, v in kwargs.items())
