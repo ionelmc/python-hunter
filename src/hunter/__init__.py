@@ -42,7 +42,7 @@ __all__ = (
     'VarsPrinter',
     'When',
 )
-_current_tracer = None
+_last_tracer = None
 
 
 def Q(*predicates, **query):
@@ -113,16 +113,13 @@ def Or(*predicates, **kwargs):
 
 def stop():
     """
-    Stop tracing.
-
-    Notes:
-        Restores previous tracer (if there was any).
+    Stop tracing. Restores previous tracer (if there was any).
     """
-    global _current_tracer
+    global _last_tracer
 
-    if _current_tracer is not None:
-        _current_tracer.stop()
-        _current_tracer = None
+    if _last_tracer is not None:
+        _last_tracer.stop()
+        _last_tracer = None
 
 
 def _prepare_predicate(*predicates, **options):
@@ -144,7 +141,7 @@ def trace(*predicates, **options):
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
     """
-    global _current_tracer
+    global _last_tracer
 
     predicate = _prepare_predicate(*predicates, **options)
     clear_env_var = options.pop("clear_env_var", False)
@@ -152,7 +149,7 @@ def trace(*predicates, **options):
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
     try:
-        _current_tracer = Tracer()
-        return _current_tracer.trace(predicate)
+        _last_tracer = Tracer()
+        return _last_tracer.trace(predicate)
     finally:
-        atexit.register(_current_tracer.stop)
+        atexit.register(_last_tracer.stop)
