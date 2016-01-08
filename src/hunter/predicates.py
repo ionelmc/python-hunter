@@ -104,7 +104,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
         )
 
     def __repr__(self):
-        return '<hunter._predicates.Query: %s>' % ' '.join(
+        return '<hunter.predicates.Query: %s>' % ' '.join(
             fmt % (mapping,) for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
                 ('query_in=%r', self.query_in),
@@ -183,7 +183,7 @@ class When(Fields.condition.actions):
         )
 
     def __repr__(self):
-        return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
+        return '<hunter.predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
 
     def __call__(self, event):
         """
@@ -215,7 +215,7 @@ class And(Fields.predicates):
         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
+        return '<hunter.predicates.And: predicates=%r>' % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -259,7 +259,7 @@ class Or(Fields.predicates):
         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
+        return '<hunter.predicates.Or: predicates=%r>' % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -300,7 +300,7 @@ class Not(Fields.predicate):
         return 'Not(%s)' % self.predicate
 
     def __repr__(self):
-        return '<hunter._predicates.Not: predicate=%r>' % self.predicate
+        return '<hunter.predicates.Not: predicate=%r>' % self.predicate
 
     def __call__(self, event):
         """
