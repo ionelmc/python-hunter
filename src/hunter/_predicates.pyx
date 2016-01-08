@@ -26,12 +26,12 @@ cdef class Query:
 
     See :class:`hunter.Event` for fields that can be filtered on.
     """
-    cdef readonly dict query_eq
-    cdef readonly dict query_startswith
-    cdef readonly dict query_endswith
-    cdef readonly dict query_in
-    cdef readonly dict query_contains
-    cdef readonly dict query_regex
+    cdef readonly tuple query_eq
+    cdef readonly tuple query_startswith
+    cdef readonly tuple query_endswith
+    cdef readonly tuple query_in
+    cdef readonly tuple query_contains
+    cdef readonly tuple query_regex
 
     def __init__(self, **query):
         """
@@ -41,12 +41,12 @@ cdef class Query:
                 Accepted arguments: ``arg``, ``code``, ``filename``, ``frame``, ``fullsource``, ``function``,
                 ``globals``, ``kind``, ``lineno``, ``locals``, ``module``, ``source``, ``stdlib``, ``tracer``.
         """
-        self.query_eq = {}
-        self.query_startswith = {}
-        self.query_endswith = {}
-        self.query_in = {}
-        self.query_contains = {}
-        self.query_regex = {}
+        query_eq = {}
+        query_startswith = {}
+        query_endswith = {}
+        query_in = {}
+        query_contains = {}
+        query_regex = {}
 
         for key, value in query.items():
             parts = [p for p in key.split('_') if p]
@@ -62,24 +62,24 @@ cdef class Query:
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
-                    mapping = self.query_startswith
+                    mapping = query_startswith
                 elif operator == 'endswith':
                     if not isinstance(value, string_types):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
-                    mapping = self.query_endswith
+                    mapping = query_endswith
                 elif operator == 'in':
-                    mapping = self.query_in
+                    mapping = query_in
                 elif operator == 'contains':
-                    mapping = self.query_contains
+                    mapping = query_contains
                 elif operator == 'regex':
                     value = re.compile(value)
-                    mapping = self.query_regex
+                    mapping = query_regex
                 else:
                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
             else:
-                mapping = self.query_eq
+                mapping = query_eq
                 prefix = key
 
             if prefix not in ALLOWED_KEYS:
@@ -87,10 +87,17 @@ cdef class Query:
 
             mapping[prefix] = value
 
+        self.query_eq = tuple(sorted(query_eq.items()))
+        self.query_startswith = tuple(sorted(query_startswith.items()))
+        self.query_endswith = tuple(sorted(query_endswith.items()))
+        self.query_in = tuple(sorted(query_in.items()))
+        self.query_contains = tuple(sorted(query_contains.items()))
+        self.query_regex = tuple(sorted(query_regex.items()))
+
     def __str__(self):
         return 'Query(%s)' % (
             ', '.join(
-                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping.items())
+                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping)
                 for kind, mapping in [
                     ('', self.query_eq),
                     ('_in', self.query_in),
@@ -104,7 +111,7 @@ cdef class Query:
 
     def __repr__(self):
         return '<hunter._predicates.Query: %s>' % ' '.join(
-            fmt % mapping for fmt, mapping in [
+            fmt % (mapping,) for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
                 ('query_in=%r', self.query_in),
                 ('query_contains=%r', self.query_contains),
@@ -153,28 +160,38 @@ cdef class Query:
         else:
             return PyObject_RichCompare(id(self), id(other), op)
 
+    def __hash__(self):
+        return hash((
+            self.query_eq,
+            self.query_startswith,
+            self.query_endswith,
+            self.query_in,
+            self.query_contains,
+            self.query_regex
+        ))
+
 cdef fast_Query_call(Query self, event):
-    for key, value in self.query_eq.items():
+    for key, value in self.query_eq:
         evalue = event[key]
         if evalue != value:
             return False
-    for key, value in self.query_in.items():
+    for key, value in self.query_in:
         evalue = event[key]
         if evalue not in value:
             return False
-    for key, value in self.query_contains.items():
+    for key, value in self.query_contains:
         evalue = event[key]
         if value not in evalue:
             return False
-    for key, value in self.query_startswith.items():
+    for key, value in self.query_startswith:
         evalue = event[key]
         if not evalue.startswith(value):
             return False
-    for key, value in self.query_endswith.items():
+    for key, value in self.query_endswith:
         evalue = event[key]
         if not evalue.endswith(value):
             return False
-    for key, value in self.query_regex.items():
+    for key, value in self.query_regex:
         evalue = event[key]
         if not value.match(evalue):
             return False
@@ -194,9 +211,9 @@ cdef class When:
         if not actions:
             raise TypeError("Must give at least one action.")
         self.condition = condition
-        self.actions = [
+        self.actions = tuple(
             action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions]
+            for action in actions)
 
     def __str__(self):
         return "When(%s, %s)" % (
@@ -232,6 +249,9 @@ cdef class When:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+    def __hash__(self):
+        return hash((self.condition, self.actions))
 
 cdef inline fast_When_call(When self, event):
     cdef object result
@@ -289,7 +309,10 @@ cdef class And:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, And) and self.predicates == (<And> other).predicates
+        # try:
+        is_equal = isinstance(other, And) and set(self.predicates) == set((<And> other).predicates)
+        # except TypeError:
+        #     is_equal = False
 
         if op == Py_EQ:
             return is_equal
@@ -297,6 +320,9 @@ cdef class And:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+    def __hash__(self):
+        return hash(self.predicates)
 
 cdef inline fast_And_call(And self, event):
     for predicate in self.predicates:
@@ -354,7 +380,10 @@ cdef class Or:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, Or) and self.predicates == (<Or> other).predicates
+        # try:
+        is_equal = isinstance(other, Or) and set(self.predicates) == set((<Or> other).predicates)
+        # except TypeError:
+        #     is_equal = False
 
         if op == Py_EQ:
             return is_equal
@@ -362,6 +391,9 @@ cdef class Or:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+    def __hash__(self):
+        return hash(self.predicates)
 
 cdef inline fast_Or_call(Or self, event):
     for predicate in self.predicates:
@@ -432,6 +464,9 @@ cdef class Not:
             return not is_equal
         else:
             return PyObject_RichCompare(id(self), id(other), op)
+
+    def __hash__(self):
+        return hash(self.predicate)
 
 cdef inline fast_Not_call(Not self, event):
     predicate = self.predicate

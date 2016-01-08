@@ -178,30 +178,33 @@ def test_pth_sample2(LineMatcher):
 
 
 def test_predicate_str_repr():
-    assert repr(Q(module='a')).endswith("predicates.Query: query_eq={'module': 'a'}>")
+    assert repr(Q(module='a', function='b')).endswith("predicates.Query: query_eq=(('function', 'b'), ('module', 'a'))>")
+    assert str(Q(module='a', function='b')) == "Query(function='b', module='a')"
+
+    assert repr(Q(module='a')).endswith("predicates.Query: query_eq=(('module', 'a'),)>")
     assert str(Q(module='a')) == "Query(module='a')"
 
     assert "predicates.When: condition=<hunter." in repr(Q(module='a', action='foo'))
-    assert "predicates.Query: query_eq={'module': 'a'}>, actions=['foo']>" in repr(Q(module='a', action='foo'))
+    assert "predicates.Query: query_eq=(('module', 'a'),)>, actions=('foo',)>" in repr(Q(module='a', action='foo'))
     assert str(Q(module='a', action='foo')) == "When(Query(module='a'), 'foo')"
 
     assert "predicates.Not: predicate=<hunter." in repr(~Q(module='a'))
-    assert "predicates.Query: query_eq={'module': 'a'}>>" in repr(~Q(module='a'))
+    assert "predicates.Query: query_eq=(('module', 'a'),)>>" in repr(~Q(module='a'))
     assert str(~Q(module='a')) == "Not(Query(module='a'))"
 
     assert "predicates.Or: predicates=(<hunter." in repr(Q(module='a') | Q(module='b'))
-    assert "predicates.Query: query_eq={'module': 'a'}>, " in repr(Q(module='a') | Q(module='b'))
-    assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query_eq={'module': 'b'}>)>")
+    assert "predicates.Query: query_eq=(('module', 'a'),)>, " in repr(Q(module='a') | Q(module='b'))
+    assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') | Q(module='b')) == "Or(Query(module='a'), Query(module='b'))"
 
     assert "predicates.And: predicates=(<hunter." in repr(Q(module='a') & Q(module='b'))
-    assert "predicates.Query: query_eq={'module': 'a'}>," in repr(Q(module='a') & Q(module='b'))
-    assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq={'module': 'b'}>)>")
+    assert "predicates.Query: query_eq=(('module', 'a'),)>," in repr(Q(module='a') & Q(module='b'))
+    assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
 
 
 def test_predicate_q_nest_1():
-    assert repr(Q(Q(module='a'))).endswith("predicates.Query: query_eq={'module': 'a'}>")
+    assert repr(Q(Q(module='a'))).endswith("predicates.Query: query_eq=(('module', 'a'),)>")
 
 
 def test_predicate_q_expansion():
@@ -349,38 +352,38 @@ def test_trace_api_expansion():
 
     # pdb.set_trace
     with trace(function="foobar", action=Debugger) as t:
-        assert t._handler == When(Q(function="foobar"), Debugger)
+        assert str(t._handler) == str(When(Q(function="foobar"), Debugger))
 
     # pdb.set_trace on any hits
     with trace(module="foo", function="foobar", action=Debugger) as t:
-        assert t._handler == When(Q(module="foo", function="foobar"), Debugger)
+        assert str(t._handler) == str(When(Q(module="foo", function="foobar"), Debugger))
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
     with trace(Q(function="foobar", action=Debugger), module="foo") as t:
-        assert t._handler == When(And(
+        assert str(t._handler) == str(When(And(
             When(Q(function="foobar"), Debugger),
             Q(module="foo")
-        ), CodePrinter)
+        ), CodePrinter))
 
     # dumping variables from stack
     with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
-        assert t._handler == When(And(
+        assert str(t._handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar")),
             Q(module="foo"),
-        ), CodePrinter)
+        ), CodePrinter))
 
     with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
-        assert t._handler == When(And(
+        assert str(t._handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
             Q(module="foo"),
-        ), CodePrinter)
+        ), CodePrinter))
 
     # multiple actions
     with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
-        assert t._handler == When(And(
+        assert str(t._handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
             Q(module="foo"),
-        ), CodePrinter)
+        ), CodePrinter))
 
 
 def test_locals():

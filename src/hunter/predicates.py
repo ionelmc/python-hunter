@@ -2,9 +2,9 @@ from __future__ import absolute_import
 
 import inspect
 import re
+from itertools import chain
 
 from fields import Fields
-from itertools import chain
 from six import string_types
 
 from .actions import Action
@@ -12,6 +12,13 @@ from .event import Event
 
 ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_'))
 ALLOWED_OPERATORS = 'startswith', 'endswith', 'in', 'contains', 'regex'
+
+
+def _sloppy_hash(obj):
+    try:
+        return hash(obj)
+    except TypeError:
+        return 'id(%x)' % id(obj)
 
 
 class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_contains):
@@ -28,12 +35,12 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                 Accepted arguments: ``arg``, ``code``, ``filename``, ``frame``, ``fullsource``, ``function``,
                 ``globals``, ``kind``, ``lineno``, ``locals``, ``module``, ``source``, ``stdlib``, ``tracer``.
         """
-        self.query_eq = {}
-        self.query_startswith = {}
-        self.query_endswith = {}
-        self.query_in = {}
-        self.query_contains = {}
-        self.query_regex = {}
+        query_eq = {}
+        query_startswith = {}
+        query_endswith = {}
+        query_in = {}
+        query_contains = {}
+        query_regex = {}
 
         for key, value in query.items():
             parts = [p for p in key.split('_') if p]
@@ -49,24 +56,24 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
-                    mapping = self.query_startswith
+                    mapping = query_startswith
                 elif operator == 'endswith':
                     if not isinstance(value, string_types):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
-                    mapping = self.query_endswith
+                    mapping = query_endswith
                 elif operator == 'in':
-                    mapping = self.query_in
+                    mapping = query_in
                 elif operator == 'contains':
-                    mapping = self.query_contains
+                    mapping = query_contains
                 elif operator == 'regex':
                     value = re.compile(value)
-                    mapping = self.query_regex
+                    mapping = query_regex
                 else:
                     raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
             else:
-                mapping = self.query_eq
+                mapping = query_eq
                 prefix = key
 
             if prefix not in ALLOWED_KEYS:
@@ -74,10 +81,17 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
 
             mapping[prefix] = value
 
+        self.query_eq = tuple(sorted(query_eq.items()))
+        self.query_startswith = tuple(sorted(query_startswith.items()))
+        self.query_endswith = tuple(sorted(query_endswith.items()))
+        self.query_in = tuple(sorted(query_in.items()))
+        self.query_contains = tuple(sorted(query_contains.items()))
+        self.query_regex = tuple(sorted(query_regex.items()))
+
     def __str__(self):
         return 'Query(%s)' % (
             ', '.join(
-                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping.items())
+                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping)
                 for kind, mapping in [
                     ('', self.query_eq),
                     ('_in', self.query_in),
@@ -91,7 +105,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
 
     def __repr__(self):
         return '<hunter._predicates.Query: %s>' % ' '.join(
-            fmt % mapping for fmt, mapping in [
+            fmt % (mapping,) for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
                 ('query_in=%r', self.query_in),
                 ('query_contains=%r', self.query_contains),
@@ -105,27 +119,27 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
         """
         Handles event. Returns True if all criteria matched.
         """
-        for key, value in self.query_eq.items():
+        for key, value in self.query_eq:
             evalue = event[key]
             if evalue != value:
                 return False
-        for key, value in self.query_in.items():
+        for key, value in self.query_in:
             evalue = event[key]
             if evalue not in value:
                 return False
-        for key, value in self.query_contains.items():
+        for key, value in self.query_contains:
             evalue = event[key]
             if value not in evalue:
                 return False
-        for key, value in self.query_startswith.items():
+        for key, value in self.query_startswith:
             evalue = event[key]
             if not evalue.startswith(value):
                 return False
-        for key, value in self.query_endswith.items():
+        for key, value in self.query_endswith:
             evalue = event[key]
             if not evalue.endswith(value):
                 return False
-        for key, value in self.query_regex.items():
+        for key, value in self.query_regex:
             evalue = event[key]
             if not value.match(evalue):
                 return False
@@ -158,10 +172,9 @@ class When(Fields.condition.actions):
     def __init__(self, condition, *actions):
         if not actions:
             raise TypeError('Must give at least one action.')
-        super(When, self).__init__(condition, [
+        super(When, self).__init__(condition, tuple(
             action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions
-            ])
+            for action in actions))
 
     def __str__(self):
         return 'When(%s, %s)' % (
@@ -214,6 +227,16 @@ class And(Fields.predicates):
         else:
             return True
 
+    def __eq__(self, other):
+        if isinstance(other, And):
+            if len(self.predicates) != len(other.predicates):
+                return False
+            # try:
+            return set(self.predicates) == set(other.predicates)
+            # except TypeError:
+            #     return False
+        return NotImplemented
+
     def __or__(self, other):
         return Or(self, other)
 
@@ -247,6 +270,16 @@ class Or(Fields.predicates):
                 return True
         else:
             return False
+
+    def __eq__(self, other):
+        if isinstance(other, Or):
+            if len(self.predicates) != len(other.predicates):
+                return False
+            # try:
+            return set(self.predicates) == set(other.predicates)
+            # except TypeError:
+            #     return False
+        return NotImplemented
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
