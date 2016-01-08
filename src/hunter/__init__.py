@@ -42,6 +42,7 @@ __all__ = (
     'VarsPrinter',
     'When',
 )
+_current_tracer = None
 
 
 def Q(*predicates, **query):
@@ -74,11 +75,7 @@ def Q(*predicates, **query):
     return result
 
 
-def _flatten(predicate, *predicates, **kwargs):
-    cls = kwargs.pop('cls')
-    if kwargs:
-        raise TypeError("Did not expecte keyword arguments")
-
+def _flatten(cls, predicate, *predicates):
     if not predicates:
         return predicate
     else:
@@ -96,10 +93,22 @@ def _flatten(predicate, *predicates, **kwargs):
         return cls(*all_predicates)
 
 
-And = partial(_flatten, cls=_And)
-Or = partial(_flatten, cls=_Or)
+def And(*predicates, **kwargs):
+    """
+    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    """
+    if kwargs:
+        predicates += Query(**kwargs),
+    return _flatten(_And, *predicates)
 
-_current_tracer = None
+
+def Or(*predicates, **kwargs):
+    """
+    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    """
+    if kwargs:
+        predicates += tuple(Query(**{k: v}) for k, v in kwargs.items())
+    return _flatten(_Or, *predicates)
 
 
 def stop():

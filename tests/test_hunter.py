@@ -668,6 +668,14 @@ def test_predicate_when():
     assert called == [[{'module': 1, 'function': 2}], [{'module': 1, 'function': 2}]]
 
 
+def test_and_or_kwargs():
+    assert And(module=1, function=2) == Query(module=1, function=2)
+    assert Or(module=1, function=2) == Or(Query(module=1), Query(function=2))
+
+    assert And(3, module=1, function=2) == And(3, Query(module=1, function=2))
+    assert Or(3, module=1, function=2) == Or(3, Query(module=1), Query(function=2))
+
+
 def test_proper_backend():
     if os.environ.get('PUREPYTHONHUNTER') or platform.python_implementation() == 'PyPy':
         assert 'hunter.tracer.Tracer' in repr(hunter.Tracer)
