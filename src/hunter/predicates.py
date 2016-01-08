@@ -231,10 +231,7 @@ class And(Fields.predicates):
         if isinstance(other, And):
             if len(self.predicates) != len(other.predicates):
                 return False
-            # try:
             return set(self.predicates) == set(other.predicates)
-            # except TypeError:
-            #     return False
         return NotImplemented
 
     def __or__(self, other):
@@ -278,10 +275,7 @@ class Or(Fields.predicates):
         if isinstance(other, Or):
             if len(self.predicates) != len(other.predicates):
                 return False
-            # try:
             return set(self.predicates) == set(other.predicates)
-            # except TypeError:
-            #     return False
         return NotImplemented
 
     def __or__(self, other):

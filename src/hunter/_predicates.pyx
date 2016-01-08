@@ -309,10 +309,7 @@ cdef class And:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        # try:
         is_equal = isinstance(other, And) and set(self.predicates) == set((<And> other).predicates)
-        # except TypeError:
-        #     is_equal = False
 
         if op == Py_EQ:
             return is_equal
@@ -380,10 +377,7 @@ cdef class Or:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        # try:
         is_equal = isinstance(other, Or) and set(self.predicates) == set((<Or> other).predicates)
-        # except TypeError:
-        #     is_equal = False
 
         if op == Py_EQ:
             return is_equal
