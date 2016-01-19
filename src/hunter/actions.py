@@ -38,7 +38,7 @@ EVENT_COLORS = {
     'colon': Fore.BLACK + Style.BRIGHT,
     'lineno': Style.RESET_ALL,
     'kind': Fore.CYAN,
-    'continuation': Fore.BLUE,
+    'continuation': Fore.BLUE + Style.BRIGHT,
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
     'detail': Style.NORMAL,
@@ -48,6 +48,7 @@ EVENT_COLORS = {
     'internal-detail': Fore.WHITE,
     'source-failure': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
     'source-detail': Fore.WHITE,
+    'call': Fore.CYAN + Style.BRIGHT,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -55,6 +56,7 @@ CODE_COLORS = {
     'return': Fore.YELLOW,
     'exception': Fore.RED,
 }
+MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
 
 
 class Action(object):
@@ -84,6 +86,7 @@ class ColorStreamAction(Action):
     _tty = None
     default_stream = sys.stderr
     force_colors = False
+    repr_limit = 1024
 
     @property
     def stream(self):
@@ -110,10 +113,18 @@ class ColorStreamAction(Action):
             self.code_colors = NO_COLORS
 
     def _safe_repr(self, obj):
+        limit = self.repr_limit
+
         try:
-            return repr(obj)
+            s = repr(obj)
+            s = s.replace('\n', r'\n')
+            if len(s) > limit:
+                cutoff = limit // 2
+                return "{} {continuation}[...]{reset} {}".format(s[:cutoff], s[-cutoff:], **self.event_colors)
+            else:
+                return s
         except Exception as exc:
-            return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}".format(exc, **self.event_colors)
+            return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
 
 
 class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
