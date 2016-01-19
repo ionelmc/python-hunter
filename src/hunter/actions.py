@@ -215,7 +215,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
 
     def __init__(self, *names, **options):
         if not names:
-            raise TypeError("Must give at least one name/expression.")
+            raise TypeError("VarsPrinter requires at least one variable name/expression.")
         self.stream = options.pop('stream', self.default_stream)
         self.force_colors = options.pop('force_colors', False)
         self.filename_alignment = max(5, options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT))
