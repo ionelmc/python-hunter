@@ -53,6 +53,14 @@ def Q(*predicates, **query):
     if "action" in query:
         optional_actions.append(query.pop("action"))
 
+    for p in predicates:
+        if not callable(p):
+            raise TypeError("Predicate {0!r} is not callable.".format(p))
+
+    for a in optional_actions:
+        if not callable(a):
+            raise TypeError("Action {0!r} is not callable.".format(a))
+
     if predicates:
         predicates = tuple(
             p() if inspect.isclass(p) and issubclass(p, Action) else p

@@ -7,6 +7,19 @@ import subprocess
 import sys
 import tokenize
 
+import hunter
+import pytest
+from fields import Fields
+from hunter import Q
+from hunter import And
+from hunter import CodePrinter
+from hunter import Debugger
+from hunter import Not
+from hunter import Or
+from hunter import Query
+from hunter import VarsPrinter
+from hunter import When
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -16,21 +29,20 @@ try:
 except ImportError:
     from itertools import zip_longest as izip_longest
 
-import pytest
-
-import hunter
-from hunter import And
-from hunter import Not
-from hunter import Or
-from hunter import Q
-from hunter import Query
-from hunter import When
-
-from hunter import CodePrinter
-from hunter import Debugger
-from hunter import VarsPrinter
-
 pytest_plugins = 'pytester',
+
+
+class FakeCallable(Fields.value):
+    def __call__(self):
+        raise NotImplementedError("Nope")
+
+    def __repr__(self):
+        return repr(self.value)
+
+    def __str__(self):
+        return str(self.value)
+
+C = FakeCallable
 
 
 class EvilTracer(object):
@@ -184,9 +196,9 @@ def test_predicate_str_repr():
     assert repr(Q(module='a')).endswith("predicates.Query: query_eq=(('module', 'a'),)>")
     assert str(Q(module='a')) == "Query(module='a')"
 
-    assert "predicates.When: condition=<hunter." in repr(Q(module='a', action='foo'))
-    assert "predicates.Query: query_eq=(('module', 'a'),)>, actions=('foo',)>" in repr(Q(module='a', action='foo'))
-    assert str(Q(module='a', action='foo')) == "When(Query(module='a'), 'foo')"
+    assert "predicates.When: condition=<hunter." in repr(Q(module='a', action=C('foo')))
+    assert "predicates.Query: query_eq=(('module', 'a'),)>, actions=('foo',)>" in repr(Q(module='a', action=C('foo')))
+    assert str(Q(module='a', action=C('foo'))) == "When(Query(module='a'), 'foo')"
 
     assert "predicates.Not: predicate=<hunter." in repr(~Q(module='a'))
     assert "predicates.Query: query_eq=(('module', 'a'),)>>" in repr(~Q(module='a'))
@@ -207,14 +219,19 @@ def test_predicate_q_nest_1():
     assert repr(Q(Q(module='a'))).endswith("predicates.Query: query_eq=(('module', 'a'),)>")
 
 
+def test_predicate_q_not_callable():
+    exc = pytest.raises(TypeError, Q, 'foobar')
+    assert exc.value.args == ("Predicate 'foobar' is not callable.",)
+
+
 def test_predicate_q_expansion():
-    assert Q(1, 2, module=3) == And(1, 2, Q(module=3))
-    assert Q(1, 2, module=3, action=4) == When(And(1, 2, Q(module=3)), 4)
-    assert Q(1, 2, module=3, actions=[4, 5]) == When(And(1, 2, Q(module=3)), 4, 5)
+    assert Q(C(1), C(2), module=3) == And(C(1), C(2), Q(module=3))
+    assert Q(C(1), C(2), module=3, action=C(4)) == When(And(C(1), C(2), Q(module=3)), C(4))
+    assert Q(C(1), C(2), module=3, actions=[C(4), C(5)]) == When(And(C(1), C(2), Q(module=3)), C(4), C(5))
 
 
 def test_predicate_and():
-    assert And(1, 2) == And(1, 2)
+    assert And(C(1), C(2)) == And(C(1), C(2))
     assert Q(module=1) & Q(module=2) == And(Q(module=1), Q(module=2))
     assert Q(module=1) & Q(module=2) & Q(module=3) == And(Q(module=1), Q(module=2), Q(module=3))
 
