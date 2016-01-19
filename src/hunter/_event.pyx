@@ -5,7 +5,7 @@ from linecache import getlines
 from tokenize import TokenError
 from tokenize import generate_tokens
 
-from .const import SITE_PACKAGES_PATH
+from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from ._tracer cimport *
 
@@ -116,7 +116,7 @@ cdef class Event:
             A boolean flag. ``True`` if frame is in stdlib.
             """
             if self._stdlib is UNSET:
-                if self.filename.startswith(SITE_PACKAGES_PATH):
+                if self.filename.startswith(SITE_PACKAGES_PATHS):
                     # if it's in site-packages then its definitely not stdlib
                     self._stdlib = False
                 elif self.filename.startswith(SYS_PREFIX_PATHS):

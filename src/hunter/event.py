@@ -7,7 +7,7 @@ from functools import partial
 
 from fields import Fields
 
-from .const import SITE_PACKAGES_PATH
+from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import cached_property
 
@@ -103,7 +103,7 @@ class Event(Fields.kind.function.module.filename):
         """
         A boolean flag. ``True`` if frame is in stdlib.
         """
-        if self.filename.startswith(SITE_PACKAGES_PATH):
+        if self.filename.startswith(SITE_PACKAGES_PATHS):
             # if it's in site-packages then its definitely not stdlib
             return False
         elif self.filename.startswith(SYS_PREFIX_PATHS):

@@ -935,14 +935,14 @@ static char __pyx_k_hunter__event[] = "hunter._event";
 static char __pyx_k_raw_fullsource[] = "_raw_fullsource";
 static char __pyx_k_generate_tokens[] = "generate_tokens";
 static char __pyx_k_SYS_PREFIX_PATHS[] = "SYS_PREFIX_PATHS";
-static char __pyx_k_SITE_PACKAGES_PATH[] = "SITE_PACKAGES_PATH";
+static char __pyx_k_SITE_PACKAGES_PATHS[] = "SITE_PACKAGES_PATHS";
 static char __pyx_k_A_string_with_module_name_eg_fo[] = "\n        A string with module name (eg: ``\"foo.bar\"``).\n        ";
 static char __pyx_k_home_ionel_osp_python_hunter_sr[] = "/home/ionel/osp/python-hunter/src/hunter/_event.pyx";
 static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_Exception;
 static PyObject *__pyx_n_s_MULTILINE;
 static PyObject *__pyx_kp_s_NO_SOURCE_r;
-static PyObject *__pyx_n_s_SITE_PACKAGES_PATH;
+static PyObject *__pyx_n_s_SITE_PACKAGES_PATHS;
 static PyObject *__pyx_n_s_SYS_PREFIX_PATHS;
 static PyObject *__pyx_n_s_TokenError;
 static PyObject *__pyx_kp_s__7;
@@ -2073,7 +2073,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *             A boolean flag. ``True`` if frame is in stdlib.
  *             """
  *             if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
- *                 if self.filename.startswith(SITE_PACKAGES_PATH):
+ *                 if self.filename.startswith(SITE_PACKAGES_PATHS):
  *                     # if it's in site-packages then its definitely not stdlib
  */
   __pyx_t_1 = (__pyx_v_self->_stdlib == __pyx_v_6hunter_6_event_UNSET);
@@ -2083,7 +2083,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     /* "hunter/_event.pyx":119
  *             """
  *             if self._stdlib is UNSET:
- *                 if self.filename.startswith(SITE_PACKAGES_PATH):             # <<<<<<<<<<<<<<
+ *                 if self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
  *                     # if it's in site-packages then its definitely not stdlib
  *                     self._stdlib = False
  */
@@ -2092,7 +2092,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_startswith); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_SITE_PACKAGES_PATH); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_SITE_PACKAGES_PATHS); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_5))) {
@@ -2125,7 +2125,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     if (__pyx_t_2) {
 
       /* "hunter/_event.pyx":121
- *                 if self.filename.startswith(SITE_PACKAGES_PATH):
+ *                 if self.filename.startswith(SITE_PACKAGES_PATHS):
  *                     # if it's in site-packages then its definitely not stdlib
  *                     self._stdlib = False             # <<<<<<<<<<<<<<
  *                 elif self.filename.startswith(SYS_PREFIX_PATHS):
@@ -2140,7 +2140,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
       /* "hunter/_event.pyx":119
  *             """
  *             if self._stdlib is UNSET:
- *                 if self.filename.startswith(SITE_PACKAGES_PATH):             # <<<<<<<<<<<<<<
+ *                 if self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
  *                     # if it's in site-packages then its definitely not stdlib
  *                     self._stdlib = False
  */
@@ -2234,7 +2234,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *             A boolean flag. ``True`` if frame is in stdlib.
  *             """
  *             if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
- *                 if self.filename.startswith(SITE_PACKAGES_PATH):
+ *                 if self.filename.startswith(SITE_PACKAGES_PATHS):
  *                     # if it's in site-packages then its definitely not stdlib
  */
   }
@@ -4495,7 +4495,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Exception, __pyx_k_Exception, sizeof(__pyx_k_Exception), 0, 0, 1, 1},
   {&__pyx_n_s_MULTILINE, __pyx_k_MULTILINE, sizeof(__pyx_k_MULTILINE), 0, 0, 1, 1},
   {&__pyx_kp_s_NO_SOURCE_r, __pyx_k_NO_SOURCE_r, sizeof(__pyx_k_NO_SOURCE_r), 0, 0, 1, 0},
-  {&__pyx_n_s_SITE_PACKAGES_PATH, __pyx_k_SITE_PACKAGES_PATH, sizeof(__pyx_k_SITE_PACKAGES_PATH), 0, 0, 1, 1},
+  {&__pyx_n_s_SITE_PACKAGES_PATHS, __pyx_k_SITE_PACKAGES_PATHS, sizeof(__pyx_k_SITE_PACKAGES_PATHS), 0, 0, 1, 1},
   {&__pyx_n_s_SYS_PREFIX_PATHS, __pyx_k_SYS_PREFIX_PATHS, sizeof(__pyx_k_SYS_PREFIX_PATHS), 0, 0, 1, 1},
   {&__pyx_n_s_TokenError, __pyx_k_TokenError, sizeof(__pyx_k_TokenError), 0, 0, 1, 1},
   {&__pyx_kp_s__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 0, 1, 0},
@@ -4861,7 +4861,7 @@ PyMODINIT_FUNC PyInit__event(void)
  * from tokenize import TokenError
  * from tokenize import generate_tokens             # <<<<<<<<<<<<<<
  * 
- * from .const import SITE_PACKAGES_PATH
+ * from .const import SITE_PACKAGES_PATHS
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 6; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -4880,27 +4880,27 @@ PyMODINIT_FUNC PyInit__event(void)
   /* "hunter/_event.pyx":8
  * from tokenize import generate_tokens
  * 
- * from .const import SITE_PACKAGES_PATH             # <<<<<<<<<<<<<<
+ * from .const import SITE_PACKAGES_PATHS             # <<<<<<<<<<<<<<
  * from .const import SYS_PREFIX_PATHS
  * from ._tracer cimport *
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_n_s_SITE_PACKAGES_PATH);
-  __Pyx_GIVEREF(__pyx_n_s_SITE_PACKAGES_PATH);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_SITE_PACKAGES_PATH);
+  __Pyx_INCREF(__pyx_n_s_SITE_PACKAGES_PATHS);
+  __Pyx_GIVEREF(__pyx_n_s_SITE_PACKAGES_PATHS);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_SITE_PACKAGES_PATHS);
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_const, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_SITE_PACKAGES_PATH); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_SITE_PACKAGES_PATHS); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SITE_PACKAGES_PATH, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SITE_PACKAGES_PATHS, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "hunter/_event.pyx":9
  * 
- * from .const import SITE_PACKAGES_PATH
+ * from .const import SITE_PACKAGES_PATHS
  * from .const import SYS_PREFIX_PATHS             # <<<<<<<<<<<<<<
  * from ._tracer cimport *
  * 
