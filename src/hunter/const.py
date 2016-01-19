@@ -3,8 +3,11 @@ import sys
 from distutils.sysconfig import get_python_lib
 
 
-SITE_PACKAGES_PATHS = set(site.getsitepackages())
-SITE_PACKAGES_PATHS.add(site.getusersitepackages())
+SITE_PACKAGES_PATHS = set()
+if hasattr(site, 'getsitepackages'):
+    SITE_PACKAGES_PATHS.update(site.getsitepackages())
+if hasattr(site, 'getusersitepackages'):
+    SITE_PACKAGES_PATHS.add(site.getusersitepackages())
 SITE_PACKAGES_PATHS.add(get_python_lib())
 SITE_PACKAGES_PATHS = tuple(SITE_PACKAGES_PATHS)
 
