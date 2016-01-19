@@ -127,6 +127,66 @@ class ColorStreamAction(Action):
             return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
 
 
+class CallPrinter(Fields.stream.filename_alignment, ColorStreamAction):
+    """
+    An action that just prints the code being executed.
+
+    Args:
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+    """
+
+    def __init__(self,
+                 stream=ColorStreamAction.default_stream, force_colors=False,
+                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
+        self.stream = stream
+        self.force_colors = force_colors
+        self.filename_alignment = max(5, filename_alignment)
+        self.stack = []
+
+    def __call__(self, event, sep=os.path.sep, join=os.path.join):
+        """
+        Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
+        prints values.
+        """
+        filename = event.filename or "<???>"
+        if len(filename) > self.filename_alignment:
+            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+        ident = event.module, event.function
+
+        if event.kind == 'call':
+            code = event.code
+            self.stream.write("{filename}{0:>{align}}{colon}:{lineno}{1:<5} {kind}{2:9} {3}{call}=> {4}({vars}{5}{call}){reset}\n".format(
+                filename,
+                event.lineno,
+                event.kind,
+                '  ' * len(self.stack),
+                event.function,
+                ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(var, self._safe_repr(event.locals.get(var, MISSING)),
+                                                                   **self.event_colors)
+                          for var in code.co_varnames[:code.co_argcount]),
+                align=self.filename_alignment,
+                code=self.code_colors[event.kind],
+                **self.event_colors
+            ))
+            self.stack.append(ident)
+        elif event.kind in ('return', 'exception'):
+            if self.stack and self.stack[-1] == ident:
+                self.stack.pop()
+            self.stream.write("{filename}{0:>{align}}{colon}:{lineno}{1:<5} {kind}{2:9} {code}{3}{4} {5}: {reset}{6}\n".format(
+                filename,
+                event.lineno,
+                event.kind,
+                '  ' * len(self.stack),
+                {'return': '<=', 'exception': '<<'}[event.kind],
+                event.function,
+                self._safe_repr(event.arg),
+                align=self.filename_alignment,
+                code=self.event_colors[event.kind],
+                **self.event_colors
+            ))
+
+
 class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
     """
     An action that just prints the code being executed.

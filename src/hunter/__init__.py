@@ -5,6 +5,7 @@ import inspect
 import os
 
 from .actions import Action
+from .actions import CallPrinter
 from .actions import CodePrinter
 from .actions import Debugger
 from .actions import VarsPrinter
@@ -30,6 +31,7 @@ except ImportError:
 __version__ = "1.1.0"
 __all__ = (
     'And',
+    'CallPrinter',
     'CodePrinter',
     'Debugger',
     'Not',
