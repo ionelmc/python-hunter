@@ -2,12 +2,15 @@
 Changelog
 =========
 
-master
-------
+1.1.0 (2016-01-21)
+------------------
 
 * Implemented a destructor (``__dealloc__``) for the Cython tracer.
 * Improved the restoring of the previous tracer in the Cython tracer (use ``PyEval_SetTrace``) directly.
 * Removed ``tracer`` as an allowed filtering argument in ``hunter.Query``.
+* Add basic validation (must be callable) for positional arguments and actions passed into ``hunter.Q``. Closes
+  `#23 <https://github.com/ionelmc/python-hunter/issues/23>`_.
+* Fixed ``stdlib`` checks (wasn't very reliable). Closes `#24 <https://github.com/ionelmc/python-hunter/issues/24>`_.
 
 1.0.2 (2016-01-05)
 ------------------
