@@ -5,6 +5,7 @@ env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
+    - PYTEST_ADDOPTS=--benchmark-disable
   matrix:
     - TOXENV=check
 {% for env in tox_environments %}{{ '' }}

@@ -5,6 +5,7 @@ cache:
 environment:
   global:
     WITH_COMPILER: 'cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd'
+    PYTEST_ADDOPTS: '--benchmark-disable'
   matrix:
     - TOXENV: check
       PYTHON_HOME: C:\Python27
