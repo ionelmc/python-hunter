@@ -34,21 +34,22 @@ NO_COLORS = {
 }
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
+    'normal': Style.NORMAL,
     'filename': '',
-    'colon': Fore.BLACK + Style.BRIGHT,
+    'colon': Style.BRIGHT + Fore.BLACK,
     'lineno': Style.RESET_ALL,
     'kind': Fore.CYAN,
-    'continuation': Fore.BLUE + Style.BRIGHT,
+    'continuation': Style.BRIGHT + Fore.BLUE,
+    'call': Style.BRIGHT + Fore.BLUE,
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
     'detail': Style.NORMAL,
     'vars': Style.RESET_ALL + Fore.MAGENTA,
     'vars-name': Style.BRIGHT,
-    'internal-failure': Back.RED + Style.BRIGHT + Fore.RED,
+    'internal-failure': Style.BRIGHT + Back.RED + Fore.RED,
     'internal-detail': Fore.WHITE,
     'source-failure': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
     'source-detail': Fore.WHITE,
-    'call': Fore.CYAN + Style.BRIGHT,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -80,13 +81,20 @@ class Debugger(Fields.klass.kwargs, Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
-class ColorStreamAction(Action):
+class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None
     _tty = None
-    default_stream = sys.stderr
-    force_colors = False
-    repr_limit = 1024
+
+    def __init__(self,
+                 stream=sys.stderr,
+                 force_colors=False,
+                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT,
+                 repr_limit=1024):
+        self.force_colors = force_colors
+        self.stream = stream
+        self.filename_alignment = max(5, filename_alignment)
+        self.repr_limit = repr_limit
 
     @property
     def stream(self):
@@ -102,7 +110,7 @@ class ColorStreamAction(Action):
 
         isatty = getattr(value, 'isatty', None)
         if self.force_colors or (isatty and isatty() and os.name != 'java'):
-            self._stream = AnsiToWin32(value)
+            self._stream = AnsiToWin32(value, strip=False)
             self._tty = True
             self.event_colors = EVENT_COLORS
             self.code_colors = CODE_COLORS
@@ -127,82 +135,15 @@ class ColorStreamAction(Action):
             return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
 
 
-class CallPrinter(Fields.stream.filename_alignment, ColorStreamAction):
+class CodePrinter(ColorStreamAction):
     """
     An action that just prints the code being executed.
 
     Args:
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+        force_colors (bool): Force coloring.
     """
-
-    def __init__(self,
-                 stream=ColorStreamAction.default_stream, force_colors=False,
-                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
-        self.stream = stream
-        self.force_colors = force_colors
-        self.filename_alignment = max(5, filename_alignment)
-        self.stack = []
-
-    def __call__(self, event, sep=os.path.sep, join=os.path.join):
-        """
-        Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
-        prints values.
-        """
-        filename = event.filename or "<???>"
-        if len(filename) > self.filename_alignment:
-            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-        ident = event.module, event.function
-
-        if event.kind == 'call':
-            code = event.code
-            self.stream.write("{filename}{0:>{align}}{colon}:{lineno}{1:<5} {kind}{2:9} {3}{call}=> {4}({vars}{5}{call}){reset}\n".format(
-                filename,
-                event.lineno,
-                event.kind,
-                '  ' * len(self.stack),
-                event.function,
-                ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(var, self._safe_repr(event.locals.get(var, MISSING)),
-                                                                   **self.event_colors)
-                          for var in code.co_varnames[:code.co_argcount]),
-                align=self.filename_alignment,
-                code=self.code_colors[event.kind],
-                **self.event_colors
-            ))
-            self.stack.append(ident)
-        elif event.kind in ('return', 'exception'):
-            if self.stack and self.stack[-1] == ident:
-                self.stack.pop()
-            self.stream.write("{filename}{0:>{align}}{colon}:{lineno}{1:<5} {kind}{2:9} {code}{3}{4} {5}: {reset}{6}\n".format(
-                filename,
-                event.lineno,
-                event.kind,
-                '  ' * len(self.stack),
-                {'return': '<=', 'exception': '<<'}[event.kind],
-                event.function,
-                self._safe_repr(event.arg),
-                align=self.filename_alignment,
-                code=self.event_colors[event.kind],
-                **self.event_colors
-            ))
-
-
-class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
-    """
-    An action that just prints the code being executed.
-
-    Args:
-        stream (file-like): Stream to write to. Default: ``sys.stderr``.
-        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
-    """
-
-    def __init__(self,
-                 stream=ColorStreamAction.default_stream, force_colors=False,
-                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT):
-        self.stream = stream
-        self.force_colors = force_colors
-        self.filename_alignment = max(5, filename_alignment)
-
     def _safe_source(self, event):
         try:
             lines = event._raw_fullsource.rstrip().splitlines()
@@ -215,14 +156,17 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         except Exception as exc:
             return "{source-failure}??? NO SOURCE: {source-detail}{!r}".format(exc, **self.event_colors),
 
+    def _format_filename(self, event):
+        filename = event.filename or "<???>"
+        if len(filename) > self.filename_alignment:
+            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+        return filename
+
     def __call__(self, event, sep=os.path.sep, join=os.path.join):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
-        filename = event.filename or "<???>"
-        if len(filename) > self.filename_alignment:
-            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
 
         # context = event.tracer
         # alignment = context.filename_alignment = max(
@@ -231,7 +175,7 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
         # )
         lines = self._safe_source(event)
         self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
-            filename,
+            self._format_filename(event),
             event.lineno,
             event.kind,
             lines[0],
@@ -261,6 +205,72 @@ class CodePrinter(Fields.stream.filename_alignment, ColorStreamAction):
             ))
 
 
+class CallPrinter(CodePrinter):
+    """
+    An action that just prints the code being executed.
+
+    Args:
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+        force_colors (bool): Force coloring.
+    """
+
+    def __init__(self, **options):
+        super(CallPrinter, self).__init__(**options)
+        self.stack = []
+
+    def __call__(self, event, sep=os.path.sep, join=os.path.join):
+        """
+        Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
+        prints values.
+        """
+        filename = self._format_filename(event)
+        ident = event.module, event.function
+
+        if event.kind == 'call':
+            code = event.code
+            self.stack.append(ident)
+            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} {}({}{call}{normal}){reset}\n".format(
+                filename,
+                event.lineno,
+                event.kind,
+                '   ' * (len(self.stack) - 1),
+                event.function,
+                ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
+                    var,
+                    self._safe_repr(event.locals.get(var, MISSING)),
+                    **self.event_colors
+                ) for var in code.co_varnames[:code.co_argcount]),
+                align=self.filename_alignment,
+                **self.event_colors
+            ))
+        elif event.kind in ('return', 'exception'):
+            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{}{normal} {}: {reset}{}\n".format(
+                filename,
+                event.lineno,
+                event.kind,
+                '   ' * (len(self.stack) - 1),
+                {'return': '<=', 'exception': '<<'}[event.kind],
+                event.function,
+                self._safe_repr(event.arg),
+                align=self.filename_alignment,
+                code=self.event_colors[event.kind],
+                **self.event_colors
+            ))
+            if self.stack and self.stack[-1] == ident:
+                self.stack.pop()
+        else:
+            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
+                filename,
+                event.lineno,
+                event.kind,
+                '   ' * len(self.stack),
+                event.source.strip(),
+                align=self.filename_alignment,
+                code=self.code_colors[event.kind],
+                **self.event_colors
+            ))
+
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
@@ -271,18 +281,17 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
+        force_colors (bool): Force coloring.
     """
 
     def __init__(self, *names, **options):
         if not names:
             raise TypeError("VarsPrinter requires at least one variable name/expression.")
-        self.stream = options.pop('stream', self.default_stream)
-        self.force_colors = options.pop('force_colors', False)
-        self.filename_alignment = max(5, options.pop('filename_alignment', DEFAULT_MIN_FILENAME_ALIGNMENT))
+        super(VarsPrinter, self).__init__(**options)
         self.names = {
             name: set(self._iter_symbols(name))
             for name in names
-            }
+        }
         self.globals = options.pop('globals', False)
 
     @staticmethod
