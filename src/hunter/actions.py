@@ -231,7 +231,8 @@ class CallPrinter(CodePrinter):
         if event.kind == 'call':
             code = event.code
             self.stack.append(ident)
-            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} {}({}{call}{normal}){reset}\n".format(
+            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
+                              "{}({}{call}{normal}){reset}\n".format(
                 filename,
                 event.lineno,
                 event.kind,
