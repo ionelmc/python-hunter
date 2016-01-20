@@ -250,7 +250,7 @@ class CallPrinter(CodePrinter):
                 event.lineno,
                 event.kind,
                 '   ' * (len(self.stack) - 1),
-                {'return': '<=', 'exception': '<<'}[event.kind],
+                {'return': '<=', 'exception': '<!'}[event.kind],
                 event.function,
                 self._safe_repr(event.arg),
                 align=self.filename_alignment,
@@ -270,6 +270,7 @@ class CallPrinter(CodePrinter):
                 code=self.code_colors[event.kind],
                 **self.event_colors
             ))
+
 
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
     """
