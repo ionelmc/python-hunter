@@ -231,21 +231,22 @@ class CallPrinter(CodePrinter):
         if event.kind == 'call':
             code = event.code
             self.stack.append(ident)
-            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
-                              "{}({}{call}{normal}){reset}\n".format(
-                filename,
-                event.lineno,
-                event.kind,
-                '   ' * (len(self.stack) - 1),
-                event.function,
-                ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
-                    var,
-                    self._safe_repr(event.locals.get(var, MISSING)),
+            self.stream.write(
+                "{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
+                "{}({}{call}{normal}){reset}\n".format(
+                    filename,
+                    event.lineno,
+                    event.kind,
+                    '   ' * (len(self.stack) - 1),
+                    event.function,
+                    ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
+                        var,
+                        self._safe_repr(event.locals.get(var, MISSING)),
+                        **self.event_colors
+                    ) for var in code.co_varnames[:code.co_argcount]),
+                    align=self.filename_alignment,
                     **self.event_colors
-                ) for var in code.co_varnames[:code.co_argcount]),
-                align=self.filename_alignment,
-                **self.event_colors
-            ))
+                ))
         elif event.kind in ('return', 'exception'):
             self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{}{normal} {}: {reset}{}\n".format(
                 filename,
