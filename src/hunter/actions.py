@@ -9,7 +9,7 @@ from colorama import AnsiToWin32
 from colorama import Back
 from colorama import Fore
 from colorama import Style
-from fields import Fields
+from fields import PrintableMixin
 from six import string_types
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 40
@@ -65,7 +65,7 @@ class Action(object):
         raise NotImplementedError()
 
 
-class Debugger(Fields.klass.kwargs, Action):
+class Debugger(PrintableMixin.klass.kwargs, Action):
     """
     An action that starts ``pdb``.
     """
@@ -81,7 +81,7 @@ class Debugger(Fields.klass.kwargs, Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
-class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit, Action):
+class ColorStreamAction(PrintableMixin.stream.force_colors.filename_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -272,7 +272,7 @@ class CallPrinter(CodePrinter):
             ))
 
 
-class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
+class VarsPrinter(PrintableMixin.names.globals.stream.filename_alignment, ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
 
