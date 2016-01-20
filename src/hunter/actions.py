@@ -9,8 +9,9 @@ from colorama import AnsiToWin32
 from colorama import Back
 from colorama import Fore
 from colorama import Style
-from fields import PrintableMixin
 from six import string_types
+
+from .util import Fields
 
 DEFAULT_MIN_FILENAME_ALIGNMENT = 40
 NO_COLORS = {
@@ -65,7 +66,7 @@ class Action(object):
         raise NotImplementedError()
 
 
-class Debugger(PrintableMixin.klass.kwargs, Action):
+class Debugger(Fields.klass.kwargs, Action):
     """
     An action that starts ``pdb``.
     """
@@ -81,7 +82,7 @@ class Debugger(PrintableMixin.klass.kwargs, Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
-class ColorStreamAction(PrintableMixin.stream.force_colors.filename_alignment.repr_limit, Action):
+class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -272,7 +273,7 @@ class CallPrinter(CodePrinter):
             ))
 
 
-class VarsPrinter(PrintableMixin.names.globals.stream.filename_alignment, ColorStreamAction):
+class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
 
@@ -288,12 +289,12 @@ class VarsPrinter(PrintableMixin.names.globals.stream.filename_alignment, ColorS
     def __init__(self, *names, **options):
         if not names:
             raise TypeError("VarsPrinter requires at least one variable name/expression.")
-        super(VarsPrinter, self).__init__(**options)
         self.names = {
             name: set(self._iter_symbols(name))
             for name in names
         }
         self.globals = options.pop('globals', False)
+        super(VarsPrinter, self).__init__(**options)
 
     @staticmethod
     def _iter_symbols(code):
