@@ -113,26 +113,79 @@ The default action is to just print the code being executed. Example:
 
 Would result in::
 
-    python2.7/posixpath.py:60    call      def join(a, *p):
-    python2.7/posixpath.py:64    line          path = a
-    python2.7/posixpath.py:65    line          for b in p:
-    python2.7/posixpath.py:66    line              if b.startswith('/'):
-    python2.7/posixpath.py:68    line              elif path == '' or path.endswith('/'):
-    python2.7/posixpath.py:71    line                  path += '/' + b
-    python2.7/posixpath.py:65    line          for b in p:
-    python2.7/posixpath.py:72    line          return path
-    python2.7/posixpath.py:72    return        return path
-                                 ...       return value: 'a/b'
+    >>> os.path.join('a', 'b')
+             /usr/lib/python3.5/posixpath.py:71    call      def join(a, *p):
+             /usr/lib/python3.5/posixpath.py:76    line          sep = _get_sep(a)
+             /usr/lib/python3.5/posixpath.py:39    call      def _get_sep(path):
+             /usr/lib/python3.5/posixpath.py:40    line          if isinstance(path, bytes):
+             /usr/lib/python3.5/posixpath.py:43    line              return '/'
+             /usr/lib/python3.5/posixpath.py:43    return            return '/'
+                                                   ...       return value: '/'
+             /usr/lib/python3.5/posixpath.py:77    line          path = a
+             /usr/lib/python3.5/posixpath.py:78    line          try:
+             /usr/lib/python3.5/posixpath.py:79    line              if not p:
+             /usr/lib/python3.5/posixpath.py:81    line              for b in p:
+             /usr/lib/python3.5/posixpath.py:82    line                  if b.startswith(sep):
+             /usr/lib/python3.5/posixpath.py:84    line                  elif not path or path.endswith(sep):
+             /usr/lib/python3.5/posixpath.py:87    line                      path += sep + b
+             /usr/lib/python3.5/posixpath.py:81    line              for b in p:
+             /usr/lib/python3.5/posixpath.py:91    line          return path
+             /usr/lib/python3.5/posixpath.py:91    return        return path
+                                                   ...       return value: 'a/b'
+    'a/b'
 
 - or in a terminal:
 
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/simple-trace.png
 
-You can have custom actions, like a variable printer - example:
+Custom actions
+--------------
+
+The tracer allow custom actions like ``CallPrinter`` or ``VarsPrinter``.
+
+With ``CallPrinter`` (added in `hunter 1.2.0`, will be the default action in `2.0.0`):
 
 .. sourcecode:: python
 
     import hunter
+    hunter.trace(module='posixpath', action=hunter.CallPrinter)
+
+    import os
+    os.path.join('a', 'b')
+
+Would result in::
+
+    >>> os.path.join('a', 'b')
+             /usr/lib/python3.5/posixpath.py:71    call      => join(a='a')
+             /usr/lib/python3.5/posixpath.py:76    line         sep = _get_sep(a)
+             /usr/lib/python3.5/posixpath.py:39    call         => _get_sep(path='a')
+             /usr/lib/python3.5/posixpath.py:40    line            if isinstance(path, bytes):
+             /usr/lib/python3.5/posixpath.py:43    line            return '/'
+             /usr/lib/python3.5/posixpath.py:43    return       <= _get_sep: '/'
+             /usr/lib/python3.5/posixpath.py:77    line         path = a
+             /usr/lib/python3.5/posixpath.py:78    line         try:
+             /usr/lib/python3.5/posixpath.py:79    line         if not p:
+             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
+             /usr/lib/python3.5/posixpath.py:82    line         if b.startswith(sep):
+             /usr/lib/python3.5/posixpath.py:84    line         elif not path or path.endswith(sep):
+             /usr/lib/python3.5/posixpath.py:87    line         path += sep + b
+             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
+             /usr/lib/python3.5/posixpath.py:91    line         return path
+             /usr/lib/python3.5/posixpath.py:91    return    <= join: 'a/b'
+    'a/b'
+
+- or in a terminal:
+
+.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/code-trace.png
+
+-----
+
+With ``VarsPrinter``:
+
+.. sourcecode:: python
+
+    import hunter
+    # note that this kind of invocation will also use the default `CodePrinter`
     hunter.trace(hunter.Q(module='posixpath', action=hunter.VarsPrinter('path')))
 
     import os
@@ -140,23 +193,39 @@ You can have custom actions, like a variable printer - example:
 
 Would result in::
 
-    python2.7/posixpath.py:60    call      def join(a, *p):
-    python2.7/posixpath.py:64    line          path = a
-                                 vars      path => 'a'
-    python2.7/posixpath.py:65    line          for b in p:
-                                 vars      path => 'a'
-    python2.7/posixpath.py:66    line              if b.startswith('/'):
-                                 vars      path => 'a'
-    python2.7/posixpath.py:68    line              elif path == '' or path.endswith('/'):
-                                 vars      path => 'a'
-    python2.7/posixpath.py:71    line                  path += '/' + b
-                                 vars      path => 'a/b'
-    python2.7/posixpath.py:65    line          for b in p:
-                                 vars      path => 'a/b'
-    python2.7/posixpath.py:72    line          return path
-                                 vars      path => 'a/b'
-    python2.7/posixpath.py:72    return        return path
-                                 ...       return value: 'a/b'
+    >>> os.path.join('a', 'b')
+             /usr/lib/python3.5/posixpath.py:71    call      def join(a, *p):
+             /usr/lib/python3.5/posixpath.py:76    line          sep = _get_sep(a)
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:39    call      def _get_sep(path):
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:40    line          if isinstance(path, bytes):
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:43    line              return '/'
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:43    return            return '/'
+                                                   ...       return value: '/'
+             /usr/lib/python3.5/posixpath.py:77    line          path = a
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:78    line          try:
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:79    line              if not p:
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:81    line              for b in p:
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:82    line                  if b.startswith(sep):
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:84    line                  elif not path or path.endswith(sep):
+                                                   vars      path => 'a'
+             /usr/lib/python3.5/posixpath.py:87    line                      path += sep + b
+                                                   vars      path => 'a/b'
+             /usr/lib/python3.5/posixpath.py:81    line              for b in p:
+                                                   vars      path => 'a/b'
+             /usr/lib/python3.5/posixpath.py:91    line          return path
+                                                   vars      path => 'a/b'
+             /usr/lib/python3.5/posixpath.py:91    return        return path
+                                                   ...       return value: 'a/b'
+    'a/b'
 
 - or in a terminal:
 

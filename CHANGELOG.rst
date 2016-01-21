@@ -2,6 +2,14 @@
 Changelog
 =========
 
+1.2.0 (2016-01-24)
+------------------
+
+* Fixed printouts of objects that return very large string in ``__repr__()``. Trimmed to 512. Configurable in actions with the
+  ``repr_limit`` option.
+* Improved validation of ``VarsPrinter``'s initializer.
+* Added a ``CallPrinter`` action.
+
 1.1.0 (2016-01-21)
 ------------------
 
