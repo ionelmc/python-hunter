@@ -13,7 +13,6 @@ from six import string_types
 
 from .util import Fields
 
-DEFAULT_MIN_FILENAME_ALIGNMENT = 40
 NO_COLORS = {
     'reset': '',
     'filename': '',
@@ -90,7 +89,7 @@ class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit
     def __init__(self,
                  stream=sys.stderr,
                  force_colors=False,
-                 filename_alignment=DEFAULT_MIN_FILENAME_ALIGNMENT,
+                 filename_alignment=40,
                  repr_limit=1024):
         self.force_colors = force_colors
         self.stream = stream
@@ -143,7 +142,8 @@ class CodePrinter(ColorStreamAction):
     Args:
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
-        force_colors (bool): Force coloring.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
     """
     def _safe_source(self, event):
         try:
@@ -208,12 +208,20 @@ class CodePrinter(ColorStreamAction):
 
 class CallPrinter(CodePrinter):
     """
-    An action that just prints the code being executed.
+    An action that just prints the code being executed, but unlike :obj:`hunter.CodePrinter` it indents based on
+    callstack depth and it also shows ``repr()`` of function arguments.
 
     Args:
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
-        force_colors (bool): Force coloring.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+
+    .. versionadded:: 1.2.0
+
+    .. note::
+
+        This will be the default action in `hunter 2.0`.
     """
 
     def __init__(self, **options):
@@ -282,10 +290,18 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
     Args:
         *names (strings): Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are
             present on the frame.
+        globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
-        globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
-        force_colors (bool): Force coloring.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+
+    .. note::
+        This is the default action.
+
+    .. warning::
+
+        In `hunter 2.0` the default action will be :obj:`hunter.CallPrinter`.
     """
 
     def __init__(self, *names, **options):

@@ -29,10 +29,14 @@ Predicates
 
 .. autofunction:: hunter.Or
 
-Objects
+Actions
 -------
 
-.. autoclass:: hunter.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False)
+.. autoclass:: hunter.CallPrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
     :members:
     :special-members:
 
@@ -40,12 +44,12 @@ Objects
     :members:
     :special-members:
 
-.. autoclass:: hunter.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, filename_alignment=40, globals=False)
+.. autoclass:: hunter.VarsPrinter(name, [name, [name, [...]]], globals=False, stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
     :members:
     :special-members:
 
-Other
------
+Objects
+-------
 
 .. autoclass:: hunter.event.Event
     :members:
