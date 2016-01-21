@@ -111,7 +111,9 @@ The default action is to just print the code being executed. Example:
     import os
     os.path.join('a', 'b')
 
-Would result in::
+Would result in:
+
+.. sourcecode:: pycon
 
     >>> os.path.join('a', 'b')
              /usr/lib/python3.5/posixpath.py:71    call      def join(a, *p):
@@ -153,7 +155,9 @@ With ``CallPrinter`` (added in `hunter 1.2.0`, will be the default action in `2.
     import os
     os.path.join('a', 'b')
 
-Would result in::
+Would result in:
+
+.. sourcecode:: pycon
 
     >>> os.path.join('a', 'b')
              /usr/lib/python3.5/posixpath.py:71    call      => join(a='a')
@@ -174,11 +178,11 @@ Would result in::
              /usr/lib/python3.5/posixpath.py:91    return    <= join: 'a/b'
     'a/b'
 
-- or in a terminal:
+In a terminal it would look like:
 
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/code-trace.png
 
------
+------
 
 With ``VarsPrinter``:
 
@@ -191,7 +195,9 @@ With ``VarsPrinter``:
     import os
     os.path.join('a', 'b')
 
-Would result in::
+Would result in:
+
+.. sourcecode:: pycon
 
     >>> os.path.join('a', 'b')
              /usr/lib/python3.5/posixpath.py:71    call      def join(a, *p):
@@ -227,14 +233,72 @@ Would result in::
                                                    ...       return value: 'a/b'
     'a/b'
 
-- or in a terminal:
+In a terminal it would look like:
 
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/vars-trace.png
+
+-----
 
 You can give it a tree-like configuration where you can optionally configure specific actions for parts of the
 tree (like dumping variables or a pdb set_trace):
 
-    TODO: More examples.
+.. sourcecode:: python
+
+from hunter import trace, Q, Debugger
+from pdb import Pdb
+
+trace(
+    # drop into a Pdb session if ``foo.bar()`` is called
+    Q(module="foo", function="bar", kind="call", action=Debugger(klass=Pdb))
+    |  # or
+    Q(
+        # show code that contains "mumbo.jumbo" on the current line
+        lambda event: event.locals.get("mumbo") == "jumbo",
+        # and it's not in Python's stdlib
+        stdlib=False,
+        # and it contains "mumbo" on the current line
+        source__contains="mumbo"
+    )
+)
+
+import foo
+foo.func()
+
+With a ``foo.py`` like this:
+
+.. sourcecode:: python
+
+    def bar():
+        execution_will_get_stopped  # cause we get a Pdb session here
+
+    def func():
+        mumbo = 1
+        mumbo = "jumbo"
+        print("not shown in trace")
+        print(mumbo)
+        mumbo = 2
+        print(mumbo) # not shown in trace
+        bar()
+
+
+We get:
+
+.. sourcecode:: pycon
+
+    >>> foo.func()
+    not shown in trace
+        /home/ionel/osp/python-hunter/foo.py:8     line          print(mumbo)
+    jumbo
+        /home/ionel/osp/python-hunter/foo.py:9     line          mumbo = 2
+    2
+        /home/ionel/osp/python-hunter/foo.py:1     call      def bar():
+    > /home/ionel/osp/python-hunter/foo.py(2)bar()
+    -> execution_will_get_stopped  # cause we get a Pdb session here
+    (Pdb)
+
+In a terminal it would look like:
+
+.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/tree-trace.png
 
 .. _env-var-activation:
 
