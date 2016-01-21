@@ -44,7 +44,7 @@ Overview
     :target: https://landscape.io/github/ionelmc/python-hunter/master
     :alt: Code Quality Status
 
-.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg?style=flat
+.. |codacy| image:: https://api.codacy.com/project/badge/grade/2342e517f3dc4e66910087953afb3a0e
     :target: https://www.codacy.com/app/ionelmc/python-hunter
     :alt: Codacy Code Quality Status
 
