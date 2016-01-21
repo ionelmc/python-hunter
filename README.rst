@@ -244,25 +244,25 @@ tree (like dumping variables or a pdb set_trace):
 
 .. sourcecode:: python
 
-from hunter import trace, Q, Debugger
-from pdb import Pdb
+    from hunter import trace, Q, Debugger
+    from pdb import Pdb
 
-trace(
-    # drop into a Pdb session if ``foo.bar()`` is called
-    Q(module="foo", function="bar", kind="call", action=Debugger(klass=Pdb))
-    |  # or
-    Q(
-        # show code that contains "mumbo.jumbo" on the current line
-        lambda event: event.locals.get("mumbo") == "jumbo",
-        # and it's not in Python's stdlib
-        stdlib=False,
-        # and it contains "mumbo" on the current line
-        source__contains="mumbo"
+    trace(
+        # drop into a Pdb session if ``foo.bar()`` is called
+        Q(module="foo", function="bar", kind="call", action=Debugger(klass=Pdb))
+        |  # or
+        Q(
+            # show code that contains "mumbo.jumbo" on the current line
+            lambda event: event.locals.get("mumbo") == "jumbo",
+            # and it's not in Python's stdlib
+            stdlib=False,
+            # and it contains "mumbo" on the current line
+            source__contains="mumbo"
+        )
     )
-)
 
-import foo
-foo.func()
+    import foo
+    foo.func()
 
 With a ``foo.py`` like this:
 

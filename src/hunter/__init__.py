@@ -144,7 +144,7 @@ def trace(*predicates, **options):
     before ``__enter__`` is called).
 
     Parameters:
-        *predicates (callables): Runs actions if any of the given predicates match.
+        *predicates (callables): Runs actions if **all** of the given predicates match.
     Keyword Args:
         clear_env_var: Disables tracing in subprocess. Default: ``False``.
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
