@@ -347,14 +347,14 @@ There's some obvious overlap with `smiley <https://pypi.python.org/pypi/smiley>`
 
 * Complexity. Smiley is simply over-engineered:
 
-  * It's uses IPC and a SQL database.
+  * It uses IPC and a SQL database.
   * It has a webserver. Lots of dependencies.
   * It uses threads. Side-effects and subtle bugs are introduced in your code.
   * It records everything. Tries to dump any variable. Often fails and stops working.
 
   Why do you need all that just to debug some stuff in a terminal? Simply put, it's a nice idea but the design choices work
   against you when you're already neck-deep into debugging your own code. In my experience Smiley has been very buggy and
-  unreliable. Your mileage might way of course.
+  unreliable. Your mileage may vary of course.
 
 * Tracing long running code. This will make Smiley record lots of data, making it unusable.
 
