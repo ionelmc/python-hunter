@@ -12,6 +12,7 @@ import pytest
 from fields import Fields
 from hunter import Q
 from hunter import And
+from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
 from hunter import Not
@@ -439,6 +440,32 @@ def test_fullsource_decorator_issue(LineMatcher):
         '* call              @foo',
         '*    |              @bar',
         '*    |              def foo():',
+    ])
+
+
+def test_callprinter(LineMatcher):
+    out = StringIO()
+    with trace(action=CallPrinter(stream=out)):
+        foo = bar = lambda x: x
+
+        @foo
+        @bar
+        def foo():
+            return 1
+
+        foo()
+
+    lm = LineMatcher(out.getvalue().splitlines())
+    lm.fnmatch_lines([
+        '* call      => <lambda>(x=<function *foo at *>)',
+        '* line         foo = bar = lambda x: x',
+        '* return    <= <lambda>: <function *foo at *>',
+        '* call      => <lambda>(x=<function *foo at *>)',
+        '* line         foo = bar = lambda x: x',
+        '* return    <= <lambda>: <function *foo at *>',
+        '* call      => foo()',
+        '* line         return 1',
+        '* return    <= foo: 1',
     ])
 
 

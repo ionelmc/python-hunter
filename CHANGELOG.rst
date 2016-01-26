@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.2.1 (2016-01-27)
+------------------
+
+* Fix "KeyError: 'normal'" bug in ``CallPrinter``. Create the NO_COLORS dict from the COLOR dicts. Some keys were missing.
+
 1.2.0 (2016-01-24)
 ------------------
 

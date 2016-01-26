@@ -4,6 +4,7 @@ import ast
 import os
 import pdb
 import sys
+from itertools import chain
 
 from colorama import AnsiToWin32
 from colorama import Back
@@ -13,25 +14,7 @@ from six import string_types
 
 from .util import Fields
 
-NO_COLORS = {
-    'reset': '',
-    'filename': '',
-    'colon': '',
-    'lineno': '',
-    'kind': '',
-    'continuation': '',
-    'return': '',
-    'exception': '',
-    'detail': '',
-    'vars': '',
-    'vars-name': '',
-    'call': '',
-    'line': '',
-    'internal-failure': '',
-    'internal-detail': '',
-    'source-failure': '',
-    'source-detail': '',
-}
+
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
     'normal': Style.NORMAL,
@@ -57,6 +40,7 @@ CODE_COLORS = {
     'return': Fore.YELLOW,
     'exception': Fore.RED,
 }
+NO_COLORS = {key: '' for key in chain(CODE_COLORS, EVENT_COLORS)}
 MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
 
 
