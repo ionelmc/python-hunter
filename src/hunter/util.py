@@ -1,6 +1,6 @@
 import fields
 
-Fields = fields.Factory(sealer=fields.Callable(fields.class_sealer, initializer=False, base=object))
+Fields = fields.factory(fields.class_sealer, initializer=False, base=object)
 
 
 class cached_property(object):
