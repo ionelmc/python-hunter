@@ -28,7 +28,7 @@ except ImportError:
     from .predicates import Query
     from .tracer import Tracer
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __all__ = (
     'And',
     'CallPrinter',
