@@ -6,7 +6,6 @@ from itertools import chain
 
 cimport cython
 from cpython.object cimport PyObject_RichCompare, Py_EQ, Py_NE
-from six import string_types
 
 from .actions import Action
 
@@ -58,13 +57,13 @@ cdef class Query:
             elif count == 2:
                 prefix, operator = parts
                 if operator == 'startswith':
-                    if not isinstance(value, string_types):
+                    if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator == 'endswith':
-                    if not isinstance(value, string_types):
+                    if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
