@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 * Fix broken import. Require `fields>=4.0`.
+* Simplify a string check in Cython code.
 
 1.2.1 (2016-01-27)
 ------------------
