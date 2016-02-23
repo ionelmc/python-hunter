@@ -255,33 +255,36 @@ class CallPrinter(CodePrinter):
                     **self.event_colors
                 ))
         elif event.kind in ('return', 'exception'):
-            self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{}{normal} {}: {reset}{}\n".format(
-                filename,
-                event.lineno,
-                event.kind,
-                '   ' * (len(stack) - 1),
-                {'return': '<=', 'exception': '<!'}[event.kind],
-                event.function,
-                self._safe_repr(event.arg),
-                thread=thread_name, thread_align=thread_align,
-                align=self.filename_alignment,
-                code=self.event_colors[event.kind],
-                **self.event_colors
-            ))
+            self.stream.write(
+                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
+                "{code}{}{}{normal} {}: {reset}{}\n".format(
+                    filename,
+                    event.lineno,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    {'return': '<=', 'exception': '<!'}[event.kind],
+                    event.function,
+                    self._safe_repr(event.arg),
+                    thread=thread_name, thread_align=thread_align,
+                    align=self.filename_alignment,
+                    code=self.event_colors[event.kind],
+                    **self.event_colors
+                ))
             if stack and stack[-1] == ident:
                 stack.pop()
         else:
-            self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
-                filename,
-                event.lineno,
-                event.kind,
-                '   ' * len(stack),
-                event.source.strip(),
-                thread=thread_name, thread_align=thread_align,
-                align=self.filename_alignment,
-                code=self.code_colors[event.kind],
-                **self.event_colors
-            ))
+            self.stream.write(
+                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
+                    filename,
+                    event.lineno,
+                    event.kind,
+                    '   ' * len(stack),
+                    event.source.strip(),
+                    thread=thread_name, thread_align=thread_align,
+                    align=self.filename_alignment,
+                    code=self.code_colors[event.kind],
+                    **self.event_colors
+                ))
 
 
 class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
