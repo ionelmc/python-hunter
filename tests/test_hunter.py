@@ -278,7 +278,17 @@ def test_tracing_bare(LineMatcher):
 
 def test_threading_support(LineMatcher):
     lines = StringIO()
-    with hunter.trace(actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
+    idents = set()
+    names = set()
+    non_main_idents = set()
+
+    def record(event):
+        idents.add(event.threadid)
+        names.add(event.threadname)
+        return True
+
+    with hunter.trace(record,
+                      actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
                       threading_support=True):
         def foo(a=1):
             print(a)
@@ -291,15 +301,17 @@ def test_threading_support(LineMatcher):
         main()
 
     lm = LineMatcher(lines.getvalue().splitlines())
+    assert idents - {t.ident} == {None}
+    assert names == {'MainThread', 'Thread-1'}
     lm.fnmatch_lines_random([
-        'Thread-1    [...]/python-hunter/tests/test_hunter.py:283   call              def foo(a=1):',
-        'Thread-1                                                   vars      a => 1',
-        'Thread-1    [...]/python-hunter/tests/test_hunter.py:283   call         => foo(a=1)',
-        'Thread-1                                                   vars      a => 1',
-        'MainThread  [...]/python-hunter/tests/test_hunter.py:283   call              def foo(a=1):',
-        'MainThread                                                 vars      a => 1',
-        'MainThread  [...]/python-hunter/tests/test_hunter.py:283   call         => foo(a=1)',
-        'MainThread                                                 vars      a => 1',
+        'Thread-1    *test_hunter.py:*   call              def foo(a=1):',
+        'Thread-1    *                   vars      a => 1',
+        'Thread-1    *test_hunter.py:*   call         => foo(a=1)',
+        'Thread-1    *                   vars      a => 1',
+        'MainThread  *test_hunter.py:*   call              def foo(a=1):',
+        'MainThread  *                   vars      a => 1',
+        'MainThread  *test_hunter.py:*   call         => foo(a=1)',
+        'MainThread  *                   vars      a => 1',
     ])
 
 

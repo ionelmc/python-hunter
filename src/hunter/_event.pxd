@@ -20,6 +20,9 @@ cdef class Event:
         object _module
         object _source
         object _stdlib
+        object _thread
+        object _threadid
+        object _threadname
 
     cdef object _get_globals(self)
 

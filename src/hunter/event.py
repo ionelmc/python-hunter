@@ -4,6 +4,8 @@ import linecache
 import re
 import tokenize
 from functools import partial
+from threading import current_thread
+from threading import main_thread
 
 from fields import Fields
 
@@ -29,12 +31,37 @@ class Event(Fields.kind.function.module.filename):
     kind = None
     arg = None
     tracer = None
+    threadid = None
+    threadname = None
 
     def __init__(self, frame, kind, arg, tracer):
         self.frame = frame
         self.kind = kind
         self.arg = arg
         self.tracer = tracer
+
+    @cached_property
+    def threadid(self):
+        """
+        Current thread ident. If current thread is main thread then it returns ``None``.
+        """
+        main = main_thread().ident
+        current = self.thread.ident
+        return current if current != main else None
+
+    @cached_property
+    def threadname(self):
+        """
+        Current thread name.
+        """
+        return self.thread.name
+
+    @cached_property
+    def thread(self):
+        """
+        Current thread object.
+        """
+        return current_thread()
 
     @cached_property
     def locals(self):

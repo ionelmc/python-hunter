@@ -483,6 +483,9 @@ struct __pyx_obj_6hunter_6_event_Event {
   PyObject *_module;
   PyObject *_source;
   PyObject *_stdlib;
+  PyObject *_thread;
+  PyObject *_threadid;
+  PyObject *_threadname;
 };
 
 

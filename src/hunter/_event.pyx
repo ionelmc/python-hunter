@@ -2,8 +2,11 @@ import re
 from functools import partial
 from linecache import getline
 from linecache import getlines
+from threading import current_thread, main_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
+
+from cpython.pythread cimport PyThread_get_thread_ident
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
@@ -36,6 +39,47 @@ cdef class Event:
         self._module = UNSET
         self._source = UNSET
         self._stdlib = UNSET
+        self._thread = UNSET
+        self._threadid = UNSET
+        self._threadname = UNSET
+
+    property threadid:
+        def __get__(self):
+            """
+            Current thread ident. If current thread is main thread then it returns ``None``.
+            """
+            cdef long current
+
+            if self._threadid is UNSET:
+                main = main_thread().ident
+                current = PyThread_get_thread_ident()
+                if main == current:
+                    self._threadid = None
+                else:
+                    self._threadid = current
+
+            return self._threadid
+
+    property threadname:
+        def __get__(self):
+            """
+            Current thread name.
+            """
+            if self._threadname is UNSET:
+                if self._thread is UNSET:
+                    self._thread = current_thread()
+                self._threadname = self._thread.name
+            return self._threadname
+
+    property thread:
+        def __get__(self):
+            """
+            Current thread object.
+            """
+            if self._thread is UNSET:
+                self._thread = current_thread()
+            return self._thread
+
 
     property locals:
         def __get__(self):

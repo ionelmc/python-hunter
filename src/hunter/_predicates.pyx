@@ -11,7 +11,7 @@ from .actions import Action
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
-    'fullsource', 'tracer'
+    'fullsource', 'tracer', 'threadname', 'threadid,'
 )
 cdef tuple ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex'
