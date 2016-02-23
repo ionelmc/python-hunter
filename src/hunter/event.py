@@ -3,15 +3,25 @@ from __future__ import absolute_import
 import linecache
 import re
 import tokenize
+import weakref
 from functools import partial
 from threading import current_thread
-from threading import main_thread
 
 from fields import Fields
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import cached_property
+
+try:
+    from threading import main_thread
+except ImportError:
+    import threading
+    get_main_thread = weakref.ref(threading._shutdown.im_self)
+else:
+    get_main_thread = weakref.ref(main_thread())
+
+__all__ = 'Event',
 
 STARTSWITH_TYPES = list, tuple, set
 
@@ -45,9 +55,13 @@ class Event(Fields.kind.function.module.filename):
         """
         Current thread ident. If current thread is main thread then it returns ``None``.
         """
-        main = main_thread().ident
         current = self.thread.ident
-        return current if current != main else None
+        main = get_main_thread()
+        if main is None:
+            return current
+        else:
+            return current if current != main.ident else None
+
 
     @cached_property
     def threadname(self):

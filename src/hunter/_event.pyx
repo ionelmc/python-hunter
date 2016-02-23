@@ -1,8 +1,9 @@
 import re
+import weakref
 from functools import partial
 from linecache import getline
 from linecache import getlines
-from threading import current_thread, main_thread
+from threading import current_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
 
@@ -11,6 +12,14 @@ from cpython.pythread cimport PyThread_get_thread_ident
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from ._tracer cimport *
+
+try:
+    from threading import main_thread
+except ImportError:
+    import threading
+    get_main_thread = weakref.ref(threading._shutdown.im_self)
+else:
+    get_main_thread = weakref.ref(main_thread())
 
 cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
@@ -51,13 +60,12 @@ cdef class Event:
             cdef long current
 
             if self._threadid is UNSET:
-                main = main_thread().ident
                 current = PyThread_get_thread_ident()
-                if main == current:
+                main = get_main_thread()
+                if main is not None and current == main.ident:
                     self._threadid = None
                 else:
                     self._threadid = current
-
             return self._threadid
 
     property threadname:
