@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import atexit
 import inspect
 import os
-import threading
 
 from .actions import Action
 from .actions import CallPrinter
