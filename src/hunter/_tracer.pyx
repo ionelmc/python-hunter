@@ -1,8 +1,9 @@
-from sys import settrace
+import threading
 
 from cpython cimport pystate
 from cpython.ref cimport Py_INCREF
 from cpython.ref cimport Py_XDECREF
+from cpython.pystate cimport PyThreadState_Get
 
 from ._event cimport Event
 from ._predicates cimport When
@@ -30,10 +31,12 @@ cdef class Tracer:
     Tracer object.
 
     """
-    def __cinit__(self):
+    def __cinit__(self, threading_support=False):
         self._handler = None
         self._previous = None
         self._previousfunc = NULL
+        self._threading_previous = None
+        self.threading_support = threading_support
 
     def __dealloc__(self):
         cdef PyThreadState *state = PyThreadState_Get()
@@ -86,7 +89,13 @@ cdef class Tracer:
             self._previousfunc = NULL
 
     def __enter__(self):
+        if self.threading_support:
+            self._threading_previous = getattr(threading, '_trace_hook', None)
+            threading.settrace(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
+        if self.threading_support:
+            threading.settrace(self._threading_previous)
+            self._threading_previous = None

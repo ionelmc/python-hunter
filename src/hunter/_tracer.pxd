@@ -1,6 +1,6 @@
 cimport cython
+from cpython cimport bool
 from cpython.pystate cimport Py_tracefunc
-from cpython.pystate cimport PyThreadState_Get
 
 
 cdef extern from "frameobject.h":
@@ -32,4 +32,7 @@ cdef class Tracer:
     cdef:
         readonly object _handler
         readonly object _previous
+        readonly object _threading_previous
+        readonly bool threading_support
+
         Py_tracefunc _previousfunc

@@ -4,6 +4,8 @@ import ast
 import os
 import pdb
 import sys
+import threading
+from collections import defaultdict
 from itertools import chain
 
 from colorama import AnsiToWin32
@@ -65,7 +67,7 @@ class Debugger(Fields.klass.kwargs, Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
-class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit, Action):
+class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -74,10 +76,12 @@ class ColorStreamAction(Fields.stream.force_colors.filename_alignment.repr_limit
                  stream=sys.stderr,
                  force_colors=False,
                  filename_alignment=40,
+                 thread_alignment=12,
                  repr_limit=1024):
         self.force_colors = force_colors
         self.stream = stream
-        self.filename_alignment = max(5, filename_alignment)
+        self.filename_alignment = filename_alignment
+        self.thread_alignment = thread_alignment
         self.repr_limit = repr_limit
 
     @property
@@ -159,31 +163,37 @@ class CodePrinter(ColorStreamAction):
         #     len(filename)
         # )
         lines = self._safe_source(event)
-        self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
+        thread_name = threading.current_thread().name if event.tracer.threading_support else ''
+        thread_align = self.thread_alignment if event.tracer.threading_support else 0
+
+        self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
             self._format_filename(event),
             event.lineno,
             event.kind,
             lines[0],
+            thread=thread_name, thread_align=thread_align,
             align=self.filename_alignment,
             code=self.code_colors[event.kind],
             **self.event_colors
         ))
         for line in lines[1:]:
-            self.stream.write("{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
+            self.stream.write("{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
                 "",
                 r"   |",
                 line,
+                thread=thread_name, thread_align=thread_align,
                 align=self.filename_alignment,
                 code=self.code_colors[event.kind],
                 **self.event_colors
             ))
 
         if event.kind in ('return', 'exception'):
-            self.stream.write("{:>{align}}       {continuation}{:9} {color}{} value: {detail}{}{reset}\n".format(
+            self.stream.write("{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} value: {detail}{}{reset}\n".format(
                 "",
                 "...",
                 event.kind,
                 self._safe_repr(event.arg),
+                thread=thread_name, thread_align=thread_align,
                 align=self.filename_alignment,
                 color=self.event_colors[event.kind],
                 **self.event_colors
@@ -210,7 +220,7 @@ class CallPrinter(CodePrinter):
 
     def __init__(self, **options):
         super(CallPrinter, self).__init__(**options)
-        self.stack = []
+        self.locals = defaultdict(list)
 
     def __call__(self, event, sep=os.path.sep, join=os.path.join):
         """
@@ -219,48 +229,55 @@ class CallPrinter(CodePrinter):
         """
         filename = self._format_filename(event)
         ident = event.module, event.function
+        thread = threading.current_thread()
+        thread_name = thread.name if event.tracer.threading_support else ''
+        thread_align = self.thread_alignment if event.tracer.threading_support else 0
+        stack = self.locals[thread.ident]
 
         if event.kind == 'call':
             code = event.code
-            self.stack.append(ident)
+            stack.append(ident)
             self.stream.write(
-                "{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
+                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
                 "{}({}{call}{normal}){reset}\n".format(
                     filename,
                     event.lineno,
                     event.kind,
-                    '   ' * (len(self.stack) - 1),
+                    '   ' * (len(stack) - 1),
                     event.function,
                     ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
                         var,
                         self._safe_repr(event.locals.get(var, MISSING)),
                         **self.event_colors
                     ) for var in code.co_varnames[:code.co_argcount]),
+                    thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     **self.event_colors
                 ))
         elif event.kind in ('return', 'exception'):
-            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{}{normal} {}: {reset}{}\n".format(
+            self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{}{normal} {}: {reset}{}\n".format(
                 filename,
                 event.lineno,
                 event.kind,
-                '   ' * (len(self.stack) - 1),
+                '   ' * (len(stack) - 1),
                 {'return': '<=', 'exception': '<!'}[event.kind],
                 event.function,
                 self._safe_repr(event.arg),
+                thread=thread_name, thread_align=thread_align,
                 align=self.filename_alignment,
                 code=self.event_colors[event.kind],
                 **self.event_colors
             ))
-            if self.stack and self.stack[-1] == ident:
-                self.stack.pop()
+            if stack and stack[-1] == ident:
+                stack.pop()
         else:
-            self.stream.write("{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
+            self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
                 filename,
                 event.lineno,
                 event.kind,
-                '   ' * len(self.stack),
+                '   ' * len(stack),
                 event.source.strip(),
+                thread=thread_name, thread_align=thread_align,
                 align=self.filename_alignment,
                 code=self.code_colors[event.kind],
                 **self.event_colors
@@ -329,6 +346,8 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         frame_symbols = set(event.locals)
         if self.globals:
             frame_symbols |= set(event.globals)
+        thread_name = threading.current_thread().name if event.tracer.threading_support else ''
+        thread_align = self.thread_alignment if event.tracer.threading_support else 0
 
         for code, symbols in self.names.items():
             try:
@@ -341,11 +360,12 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
                 printout = self._safe_repr(obj)
 
             if frame_symbols >= symbols:
-                self.stream.write("{:>{align}}       {vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
+                self.stream.write("{thread:{thread_align}}{:>{align}}       {vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
                     "",
                     "vars" if first else "...",
                     code,
                     printout,
+                    thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     **self.event_colors
                 ))

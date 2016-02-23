@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import sys
+import threading
 
 from .event import Event
 
@@ -11,9 +12,11 @@ class Tracer(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, threading_support=False):
         self._handler = None
         self._previous = None
+        self._threading_previous = None
+        self.threading_support = threading_support
 
     def __repr__(self):
         return '<hunter.tracer.Tracer at 0x%x: %s%s%s%s>' % (
@@ -49,7 +52,13 @@ class Tracer(object):
             self._handler = self._previous = None
 
     def __enter__(self):
+        if self.threading_support:
+            self._threading_previous = getattr(threading, '_trace_hook', None)
+            threading.settrace(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
+        if self.threading_support:
+            threading.settrace(self._threading_previous)
+            self._threading_previous = None

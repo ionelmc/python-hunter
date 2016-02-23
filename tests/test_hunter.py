@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 import sys
+import threading
 import tokenize
 
 import hunter
@@ -49,8 +50,9 @@ C = FakeCallable
 class EvilTracer(object):
     def __init__(self, *args, **kwargs):
         self._calls = []
+        threading_support = kwargs.pop('threading_support', False)
         self._handler = hunter._prepare_predicate(*args, **kwargs)
-        self._tracer = hunter.trace(self._append)
+        self._tracer = hunter.trace(self._append, threading_support=threading_support)
 
     def _append(self, event):
         # Make sure the lineno is cached. Frames are reused
@@ -274,6 +276,33 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
+def test_threading_support(LineMatcher):
+    lines = StringIO()
+    with hunter.trace(actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
+                      threading_support=True):
+        def foo(a=1):
+            print(a)
+
+        def main():
+            foo()
+
+        t = threading.Thread(target=foo)
+        t.start()
+        main()
+
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines_random([
+        'Thread-1    [...]/python-hunter/tests/test_hunter.py:283   call              def foo(a=1):',
+        'Thread-1                                                   vars      a => 1',
+        'Thread-1    [...]/python-hunter/tests/test_hunter.py:283   call         => foo(a=1)',
+        'Thread-1                                                   vars      a => 1',
+        'MainThread  [...]/python-hunter/tests/test_hunter.py:283   call              def foo(a=1):',
+        'MainThread                                                 vars      a => 1',
+        'MainThread  [...]/python-hunter/tests/test_hunter.py:283   call         => foo(a=1)',
+        'MainThread                                                 vars      a => 1',
+    ])
+
+
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
     with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
@@ -487,6 +516,7 @@ def test_source(LineMatcher):
         '        @foo\n',
         '            return 1\n',
     ])
+
 
 def test_fullsource(LineMatcher):
     calls = []

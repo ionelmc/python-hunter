@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import atexit
 import inspect
 import os
+import threading
 
 from .actions import Action
 from .actions import CallPrinter
@@ -147,18 +148,20 @@ def trace(*predicates, **options):
         *predicates (callables): Runs actions if **all** of the given predicates match.
     Keyword Args:
         clear_env_var: Disables tracing in subprocess. Default: ``False``.
+        threads: Enable tracing *new* threads. Default: ``False``.
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
     """
     global _last_tracer
 
-    predicate = _prepare_predicate(*predicates, **options)
     clear_env_var = options.pop("clear_env_var", False)
+    threading_support = options.pop("threading_support", False)
+    predicate = _prepare_predicate(*predicates, **options)
 
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
     try:
-        _last_tracer = Tracer()
+        _last_tracer = Tracer(threading_support)
         return _last_tracer.trace(predicate)
     finally:
         atexit.register(_last_tracer.stop)
