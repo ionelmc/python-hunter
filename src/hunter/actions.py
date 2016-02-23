@@ -164,18 +164,19 @@ class CodePrinter(ColorStreamAction):
         # )
         lines = self._safe_source(event)
         thread_name = threading.current_thread().name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else 0
+        thread_align = self.thread_alignment if event.tracer.threading_support else ''
 
-        self.stream.write("{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
-            self._format_filename(event),
-            event.lineno,
-            event.kind,
-            lines[0],
-            thread=thread_name, thread_align=thread_align,
-            align=self.filename_alignment,
-            code=self.code_colors[event.kind],
-            **self.event_colors
-        ))
+        self.stream.write(
+            "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
+                self._format_filename(event),
+                event.lineno,
+                event.kind,
+                lines[0],
+                thread=thread_name, thread_align=thread_align,
+                align=self.filename_alignment,
+                code=self.code_colors[event.kind],
+                **self.event_colors
+            ))
         for line in lines[1:]:
             self.stream.write("{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
                 "",
@@ -188,16 +189,18 @@ class CodePrinter(ColorStreamAction):
             ))
 
         if event.kind in ('return', 'exception'):
-            self.stream.write("{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} value: {detail}{}{reset}\n".format(
-                "",
-                "...",
-                event.kind,
-                self._safe_repr(event.arg),
-                thread=thread_name, thread_align=thread_align,
-                align=self.filename_alignment,
-                color=self.event_colors[event.kind],
-                **self.event_colors
-            ))
+            self.stream.write(
+                "{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} "
+                "value: {detail}{}{reset}\n".format(
+                    "",
+                    "...",
+                    event.kind,
+                    self._safe_repr(event.arg),
+                    thread=thread_name, thread_align=thread_align,
+                    align=self.filename_alignment,
+                    color=self.event_colors[event.kind],
+                    **self.event_colors
+                ))
 
 
 class CallPrinter(CodePrinter):
@@ -231,7 +234,7 @@ class CallPrinter(CodePrinter):
         ident = event.module, event.function
         thread = threading.current_thread()
         thread_name = thread.name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else 0
+        thread_align = self.thread_alignment if event.tracer.threading_support else ''
         stack = self.locals[thread.ident]
 
         if event.kind == 'call':
@@ -350,7 +353,7 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         if self.globals:
             frame_symbols |= set(event.globals)
         thread_name = threading.current_thread().name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else 0
+        thread_align = self.thread_alignment if event.tracer.threading_support else ''
 
         for code, symbols in self.names.items():
             try:
