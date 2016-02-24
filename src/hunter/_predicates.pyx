@@ -76,7 +76,7 @@ cdef class Query:
                     value = re.compile(value)
                     mapping = query_regex
                 else:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.'.format(operator, ALLOWED_OPERATORS))
+                    raise TypeError('Unexpected operator %r. Must be one of %s.' % (operator, ALLOWED_OPERATORS))
             else:
                 mapping = query_eq
                 prefix = key
