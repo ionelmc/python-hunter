@@ -650,6 +650,16 @@ def test_predicate_no_inf_recursion():
     predicate({'module': 'foo'})
 
 
+def test_predicate_compression_with_callable():
+    def f(ev):
+        pass
+
+    assert And(f) != f
+    assert Or(f) != f
+    assert 'predicates.And' in repr(And(f))
+    assert 'predicates.Or' in repr(Or(f))
+
+
 def test_predicate_compression():
     assert Or(Or(1, 2), And(3)) == Or(1, 2, 3)
     assert Or(Or(1, 2), 3) == Or(1, 2, 3)
