@@ -138,6 +138,18 @@ cdef class Query:
         """
         return And(self, other)
 
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``Q() | Q()``. It converts that to ``Or(Q(), Q())``.
+        """
+        return Or(self, other)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
+        """
+        return And(self, other)
+
     def __invert__(self):
         return Not(self)
 
@@ -235,6 +247,12 @@ cdef class When:
     def __and__(self, other):
         return And(self, other)
 
+    def __ror__(self, other):
+        return Or(self, other)
+
+    def __rand__(self, other):
+        return And(self, other)
+
     def __richcmp__(self, other, int op):
         is_equal = (
             isinstance(other, When) and
@@ -302,6 +320,12 @@ cdef class And:
         return Or(self, other)
 
     def __and__(self, other):
+        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
+
+    def __ror__(self, other):
+        return Or(self, other)
+
+    def __rand__(self, other):
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
     def __invert__(self):
@@ -372,6 +396,12 @@ cdef class Or:
     def __and__(self, other):
         return And(self, other)
 
+    def __ror__(self, other):
+        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
+
+    def __rand__(self, other):
+        return And(self, other)
+
     def __invert__(self):
         return Not(self)
 
@@ -440,6 +470,18 @@ cdef class Not:
             return Or(self, other)
 
     def __and__(self, other):
+        if isinstance(other, Not):
+            return Not(Or(self.predicate, other.predicate))
+        else:
+            return And(self, other)
+
+    def __ror__(self, other):
+        if isinstance(other, Not):
+            return Not(And(self.predicate, other.predicate))
+        else:
+            return Or(self, other)
+
+    def __rand__(self, other):
         if isinstance(other, Not):
             return Not(Or(self.predicate, other.predicate))
         else:

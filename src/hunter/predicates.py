@@ -161,6 +161,9 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
     def __invert__(self):
         return Not(self)
 
+    __ror__ = __or__
+    __rand__ = __and__
+
 
 class When(Fields.condition.actions):
     """
@@ -201,6 +204,9 @@ class When(Fields.condition.actions):
 
     def __and__(self, other):
         return And(self, other)
+
+    __ror__ = __or__
+    __rand__ = __and__
 
 
 class And(Fields.predicates):
@@ -246,6 +252,9 @@ class And(Fields.predicates):
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
+    __ror__ = __or__
+    __rand__ = __and__
+
 
 class Or(Fields.predicates):
     """
@@ -290,6 +299,9 @@ class Or(Fields.predicates):
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
+    __ror__ = __or__
+    __rand__ = __and__
+
 
 class Not(Fields.predicate):
     """
@@ -322,3 +334,6 @@ class Not(Fields.predicate):
 
     def __invert__(self):
         return self.predicate
+
+    __ror__ = __or__
+    __rand__ = __and__
