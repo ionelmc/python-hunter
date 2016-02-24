@@ -1151,7 +1151,7 @@ static char __pyx_k_filename[] = "filename";
 static char __pyx_k_function[] = "function";
 static char __pyx_k_query_eq[] = "query_eq";
 static char __pyx_k_query_in[] = "query_in";
-static char __pyx_k_threadid[] = "threadid,";
+static char __pyx_k_threadid[] = "threadid";
 static char __pyx_k_TypeError[] = "TypeError";
 static char __pyx_k_condition[] = "condition";
 static char __pyx_k_itertools[] = "itertools";
@@ -1274,7 +1274,7 @@ static PyObject *__pyx_n_s_stdlib;
 static PyObject *__pyx_n_s_str___locals_genexpr;
 static PyObject *__pyx_n_s_str___locals_genexpr_locals_ge;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_kp_s_threadid;
+static PyObject *__pyx_n_s_threadid;
 static PyObject *__pyx_n_s_threadname;
 static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_n_s_tracer;
@@ -13890,7 +13890,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_str___locals_genexpr, __pyx_k_str___locals_genexpr, sizeof(__pyx_k_str___locals_genexpr), 0, 0, 1, 1},
   {&__pyx_n_s_str___locals_genexpr_locals_ge, __pyx_k_str___locals_genexpr_locals_ge, sizeof(__pyx_k_str___locals_genexpr_locals_ge), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_kp_s_threadid, __pyx_k_threadid, sizeof(__pyx_k_threadid), 0, 0, 1, 0},
+  {&__pyx_n_s_threadid, __pyx_k_threadid, sizeof(__pyx_k_threadid), 0, 0, 1, 1},
   {&__pyx_n_s_threadname, __pyx_k_threadname, sizeof(__pyx_k_threadname), 0, 0, 1, 1},
   {&__pyx_n_s_throw, __pyx_k_throw, sizeof(__pyx_k_throw), 0, 0, 1, 1},
   {&__pyx_n_s_tracer, __pyx_k_tracer, sizeof(__pyx_k_tracer), 0, 0, 1, 1},
@@ -13935,10 +13935,10 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef tuple ALLOWED_KEYS = (
  *     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',             # <<<<<<<<<<<<<<
- *     'fullsource', 'tracer', 'threadname', 'threadid,'
+ *     'fullsource', 'tracer', 'threadname', 'threadid',
  * )
  */
-  __pyx_tuple__7 = PyTuple_Pack(16, __pyx_n_s_function, __pyx_n_s_code, __pyx_n_s_frame, __pyx_n_s_module, __pyx_n_s_lineno, __pyx_n_s_globals, __pyx_n_s_stdlib, __pyx_n_s_arg, __pyx_n_s_locals, __pyx_n_s_kind, __pyx_n_s_filename, __pyx_n_s_source, __pyx_n_s_fullsource, __pyx_n_s_tracer, __pyx_n_s_threadname, __pyx_kp_s_threadid); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__7 = PyTuple_Pack(16, __pyx_n_s_function, __pyx_n_s_code, __pyx_n_s_frame, __pyx_n_s_module, __pyx_n_s_lineno, __pyx_n_s_globals, __pyx_n_s_stdlib, __pyx_n_s_arg, __pyx_n_s_locals, __pyx_n_s_kind, __pyx_n_s_filename, __pyx_n_s_source, __pyx_n_s_fullsource, __pyx_n_s_tracer, __pyx_n_s_threadname, __pyx_n_s_threadid); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
@@ -14281,7 +14281,7 @@ PyMODINIT_FUNC PyInit__predicates(void)
  * 
  * cdef tuple ALLOWED_KEYS = (
  *     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',             # <<<<<<<<<<<<<<
- *     'fullsource', 'tracer', 'threadname', 'threadid,'
+ *     'fullsource', 'tracer', 'threadname', 'threadid',
  * )
  */
   __Pyx_INCREF(__pyx_tuple__7);
