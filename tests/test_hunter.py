@@ -302,7 +302,7 @@ def test_threading_support(LineMatcher):
 
     lm = LineMatcher(lines.getvalue().splitlines())
     assert idents - {t.ident} == {None}
-    assert names == {'MainThread', 'Thread-1'}
+    assert names.issuperset({'MainThread', 'Thread-1'})
     lm.fnmatch_lines_random([
         'Thread-1    *test_hunter.py:*   call              def foo(a=1):',
         'Thread-1    *                   vars      a => 1',
