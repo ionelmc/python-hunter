@@ -147,14 +147,21 @@ def trace(*predicates, **options):
         *predicates (callables): Runs actions if **all** of the given predicates match.
     Keyword Args:
         clear_env_var: Disables tracing in subprocess. Default: ``False``.
-        threads: Enable tracing *new* threads. Default: ``False``.
+        threading_support: Enable tracing *new* threads. Default: ``False``.
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
     """
     global _last_tracer
 
     clear_env_var = options.pop("clear_env_var", False)
-    threading_support = options.pop("threading_support", False)
+    threading_support = (
+        options.pop("threading_support", False) or
+        options.pop("threads_support", False) or
+        options.pop("thread_support", False) or
+        options.pop("threading", False) or
+        options.pop("threads", False) or
+        options.pop("thread", False)
+    )
     predicate = _prepare_predicate(*predicates, **options)
 
     if clear_env_var:
