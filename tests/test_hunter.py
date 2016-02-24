@@ -276,6 +276,18 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
+def test_mix_predicates_with_callables():
+    hunter._prepare_predicate(Q(module=1) | Q(lambda: 2))
+    hunter._prepare_predicate(Q(lambda: 2) | Q(module=1))
+    hunter._prepare_predicate(Q(module=1) & Q(lambda: 2))
+    hunter._prepare_predicate(Q(lambda: 2) & Q(module=1))
+
+    hunter._prepare_predicate(Q(module=1) | (lambda: 2))
+    hunter._prepare_predicate((lambda: 2) | Q(module=1))
+    hunter._prepare_predicate(Q(module=1) & (lambda: 2))
+    hunter._prepare_predicate((lambda: 2) & Q(module=1))
+
+
 def test_threading_support(LineMatcher):
     lines = StringIO()
     idents = set()
@@ -648,16 +660,6 @@ def test_predicate_no_inf_recursion():
     predicate = Q(Q(lambda ev: 1, module='wat'))
     print('predicate:', predicate)
     predicate({'module': 'foo'})
-
-
-def test_predicate_compression_with_callable():
-    def f(ev):
-        pass
-
-    assert And(f) != f
-    assert Or(f) != f
-    assert 'predicates.And' in repr(And(f))
-    assert 'predicates.Or' in repr(Or(f))
 
 
 def test_predicate_compression():

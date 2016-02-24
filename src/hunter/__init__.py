@@ -85,7 +85,7 @@ def Q(*predicates, **query):
 
 
 def _flatten(cls, predicate, *predicates):
-    if not predicates and isinstance(predicate, (Query, _And, _Or, Not, When)):
+    if not predicates:
         return predicate
     else:
         all_predicates = []
