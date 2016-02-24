@@ -280,7 +280,6 @@ def test_threading_support(LineMatcher):
     lines = StringIO()
     idents = set()
     names = set()
-    non_main_idents = set()
 
     def record(event):
         idents.add(event.threadid)
@@ -304,14 +303,50 @@ def test_threading_support(LineMatcher):
     assert idents - {t.ident} == {None}
     assert names.issuperset({'MainThread', 'Thread-1'})
     lm.fnmatch_lines_random([
-        'Thread-1    *test_hunter.py:*   call              def foo(a=1):',
-        'Thread-1    *                   vars      a => 1',
-        'Thread-1    *test_hunter.py:*   call         => foo(a=1)',
-        'Thread-1    *                   vars      a => 1',
-        'MainThread  *test_hunter.py:*   call              def foo(a=1):',
-        'MainThread  *                   vars      a => 1',
-        'MainThread  *test_hunter.py:*   call         => foo(a=1)',
-        'MainThread  *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
+        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call         => foo(a=1)',
+        'Thread-*   *                   vars      a => 1',
+        'MainThread *test_hunter.py:*   call              def foo(a=1):',
+        'MainThread *                   vars      a => 1',
+        'MainThread *test_hunter.py:*   call         => foo(a=1)',
+        'MainThread *                   vars      a => 1',
+    ])
+
+
+@pytest.mark.parametrize('query', [{'threadid': None}, {'threadname': 'MainThread'}])
+def test_thread_filtering(LineMatcher, query):
+    lines = StringIO()
+    idents = set()
+    names = set()
+
+    def record(event):
+        idents.add(event.threadid)
+        names.add(event.threadname)
+        return True
+
+    with hunter.trace(~Q(**query), record,
+                      actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
+                      threading_support=True):
+        def foo(a=1):
+            print(a)
+
+        def main():
+            foo()
+
+        t = threading.Thread(target=foo)
+        t.start()
+        main()
+
+    lm = LineMatcher(lines.getvalue().splitlines())
+    print(lines.getvalue())
+    assert None not in idents
+    assert 'MainThread' not in names
+    lm.fnmatch_lines_random([
+        'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
+        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call         => foo(a=1)',
+        'Thread-*   *                   vars      a => 1',
     ])
 
 
