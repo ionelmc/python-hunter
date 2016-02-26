@@ -159,6 +159,9 @@ def trace(*predicates, **options):
         options.pop("threading_support", False) or
         options.pop("threads_support", False) or
         options.pop("thread_support", False) or
+        options.pop("threadingsupport", False) or
+        options.pop("threadssupport", False) or
+        options.pop("threadsupport", False) or
         options.pop("threading", False) or
         options.pop("threads", False) or
         options.pop("thread", False)
