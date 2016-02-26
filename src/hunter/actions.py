@@ -65,6 +65,16 @@ class Debugger(Fields.klass.kwargs, Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
+class Manhole(Action):
+    def __init__(self, **options):
+        self.options = options
+
+    def __call__(self, event):
+        import manhole
+        inst = manhole.install(strict=False, thread=False, **self.options)
+        inst.handle_oneshot()
+
+
 class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None

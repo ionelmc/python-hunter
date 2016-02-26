@@ -155,7 +155,7 @@ setup(
         'six',
     ],
     extras_require={
-        # eg: 'rst': ['docutils>=0.11'],
+        'manhole': ['manhole>=1.3.0'],
     },
     entry_points={
         'console_scripts': [

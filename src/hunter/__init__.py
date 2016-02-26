@@ -9,6 +9,7 @@ from .actions import Action
 from .actions import CallPrinter
 from .actions import CodePrinter
 from .actions import Debugger
+from .actions import Manhole
 from .actions import VarsPrinter
 
 try:
@@ -35,14 +36,16 @@ __all__ = (
     'CallPrinter',
     'CodePrinter',
     'Debugger',
+    'Manhole',
     'Not',
     'Or',
     'Q',
     'Query',
-    'stop',
-    'trace',
     'VarsPrinter',
     'When',
+
+    'stop',
+    'trace',
 )
 _last_tracer = None
 
