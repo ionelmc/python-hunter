@@ -70,6 +70,9 @@ cdef class Tracer:
     def trace(self, predicate):
         cdef PyThreadState *state = PyThreadState_Get()
         self._handler = predicate
+        if self.threading_support:
+            self._threading_previous = getattr(threading, '_trace_hook', None)
+            threading.settrace(self)
         if state.c_traceobj is NULL:
             self._previous = None
             self._previousfunc = NULL
@@ -87,15 +90,12 @@ cdef class Tracer:
                 PyEval_SetTrace(self._previousfunc, <PyObject *> self._previous)
             self._handler = self._previous = None
             self._previousfunc = NULL
+            if self.threading_support:
+                threading.settrace(self._threading_previous)
+                self._threading_previous = None
 
     def __enter__(self):
-        if self.threading_support:
-            self._threading_previous = getattr(threading, '_trace_hook', None)
-            threading.settrace(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
-        if self.threading_support:
-            threading.settrace(self._threading_previous)
-            self._threading_previous = None

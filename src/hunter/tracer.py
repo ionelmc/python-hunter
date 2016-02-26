@@ -42,6 +42,9 @@ class Tracer(object):
 
     def trace(self, predicate):
         self._handler = predicate
+        if self.threading_support:
+            self._threading_previous = getattr(threading, '_trace_hook', None)
+            threading.settrace(self)
         self._previous = sys.gettrace()
         sys.settrace(self)
         return self
@@ -50,15 +53,12 @@ class Tracer(object):
         if self._handler is not None:
             sys.settrace(self._previous)
             self._handler = self._previous = None
+            if self.threading_support:
+                threading.settrace(self._threading_previous)
+                self._threading_previous = None
 
     def __enter__(self):
-        if self.threading_support:
-            self._threading_previous = getattr(threading, '_trace_hook', None)
-            threading.settrace(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
-        if self.threading_support:
-            threading.settrace(self._threading_previous)
-            self._threading_previous = None
