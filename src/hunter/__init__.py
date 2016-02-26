@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import atexit
 import inspect
 import os
+import weakref
 
 from .actions import Action
 from .actions import CallPrinter
@@ -166,8 +167,14 @@ def trace(*predicates, **options):
 
     if clear_env_var:
         os.environ.pop("PYTHONHUNTER", None)
-    try:
-        _last_tracer = Tracer(threading_support)
-        return _last_tracer.trace(predicate)
-    finally:
-        atexit.register(_last_tracer.stop)
+
+    _last_tracer = Tracer(threading_support)
+
+    @atexit.register
+    def atexit_cleanup(ref=weakref.ref(_last_tracer)):
+        maybe_tracer = ref()
+        if maybe_tracer is not None:
+            maybe_tracer.stop()
+
+    return _last_tracer.trace(predicate)
+

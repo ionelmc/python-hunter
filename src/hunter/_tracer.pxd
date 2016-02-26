@@ -35,4 +35,5 @@ cdef class Tracer:
         readonly object _threading_previous
         readonly bool threading_support
 
+        object __weakref__
         Py_tracefunc _previousfunc
