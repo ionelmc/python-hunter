@@ -466,14 +466,15 @@ struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
  *     cdef:
- *         readonly object _handler
+ *         readonly object handler
  */
 struct __pyx_obj_6hunter_7_tracer_Tracer {
   PyObject_HEAD
-  PyObject *_handler;
-  PyObject *_previous;
-  PyObject *_threading_previous;
+  PyObject *handler;
+  PyObject *previous;
   PyBoolObject *threading_support;
+  PyObject *__weakref__;
+  PyObject *_threading_previous;
   Py_tracefunc _previousfunc;
 };
 
