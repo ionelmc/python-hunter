@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import ast
 import os
-import pdb
 import sys
 import threading
 from collections import defaultdict
@@ -55,8 +54,7 @@ class Debugger(Fields.klass.kwargs, Action):
     """
     An action that starts ``pdb``.
     """
-
-    def __init__(self, klass=pdb.Pdb, **kwargs):
+    def __init__(self, klass=lambda **kwargs: __import__('pdb').Pdb(**kwargs), **kwargs):
         self.klass = klass
         self.kwargs = kwargs
 
