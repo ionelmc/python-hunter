@@ -18,9 +18,18 @@ class Tracer(object):
         self._threading_previous = None
         self.threading_support = threading_support
 
+    @property
+    def handler(self):
+        return self._handler
+
+    @property
+    def previous(self):
+        return self._previous
+
     def __repr__(self):
-        return '<hunter.tracer.Tracer at 0x%x: %s%s%s%s>' % (
+        return '<hunter.tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
             id(self),
+            self.threading_support,
             '<stopped>' if self._handler is None else 'handler=',
             '' if self._handler is None else repr(self._handler),
             '' if self._previous is None else ', previous=',

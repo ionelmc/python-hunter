@@ -19,7 +19,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         frame.f_trace = <PyObject*> self
         Py_XDECREF(junk)
 
-    handler = self._handler
+    handler = self.handler
     if type(handler) is When:
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif handler is not None:
@@ -32,8 +32,8 @@ cdef class Tracer:
 
     """
     def __cinit__(self, threading_support=False):
-        self._handler = None
-        self._previous = None
+        self.handler = None
+        self.previous = None
         self._previousfunc = NULL
         self._threading_previous = None
         self.threading_support = threading_support
@@ -44,12 +44,13 @@ cdef class Tracer:
             self.stop()
 
     def __repr__(self):
-        return '<hunter._tracer.Tracer at 0x%x: %s%s%s%s>' % (
+        return '<hunter._tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
             id(self),
-            '<stopped>' if self._handler is None else 'handler=',
-            '' if self._handler is None else repr(self._handler),
-            '' if self._previous is None else ', previous=',
-            '' if self._previous is None else repr(self._previous),
+            self.threading_support,
+            '<stopped>' if self.handler is None else 'handler=',
+            '' if self.handler is None else repr(self.handler),
+            '' if self.previous is None else ', previous=',
+            '' if self.previous is None else repr(self.previous),
         )
 
     def __call__(self, frame, kind, arg):
@@ -69,26 +70,26 @@ cdef class Tracer:
 
     def trace(self, predicate):
         cdef PyThreadState *state = PyThreadState_Get()
-        self._handler = predicate
+        self.handler = predicate
         if self.threading_support:
             self._threading_previous = getattr(threading, '_trace_hook', None)
             threading.settrace(self)
         if state.c_traceobj is NULL:
-            self._previous = None
+            self.previous = None
             self._previousfunc = NULL
         else:
-            self._previous = <object>(state.c_traceobj)
+            self.previous = <object>(state.c_traceobj)
             self._previousfunc = state.c_tracefunc
         PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 
     def stop(self):
-        if self._handler is not None:
-            if self._previous is None:
+        if self.handler is not None:
+            if self.previous is None:
                 PyEval_SetTrace(NULL, NULL)
             else:
-                PyEval_SetTrace(self._previousfunc, <PyObject *> self._previous)
-            self._handler = self._previous = None
+                PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
+            self.handler = self.previous = None
             self._previousfunc = NULL
             if self.threading_support:
                 threading.settrace(self._threading_previous)

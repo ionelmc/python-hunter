@@ -30,10 +30,11 @@ cdef extern from "pystate.h":
 @cython.final
 cdef class Tracer:
     cdef:
-        readonly object _handler
-        readonly object _previous
-        readonly object _threading_previous
+        readonly object handler
+        readonly object previous
         readonly bool threading_support
 
         object __weakref__
+
+        readonly object _threading_previous
         Py_tracefunc _previousfunc
