@@ -375,6 +375,14 @@ In contrast, Hunter is very simple:
   The only cost is that you might need to run the code multiple times to get the filtering/actions right. This means Hunter is
   not really suited for "post-mortem" debugging. If you can't reproduce the problem anymore then Hunter won't be of much help.
 
+Why not pytrace?
+----------------
+
+`Pytrace <https://pypi.python.org/pypi/pytrace>`_ is another tracer tool. It seems quite similar to Smiley - it uses a sqlite 
+database for the events, threads and IPC.
+
+TODO: Expand this.
+
 Why (not) coverage?
 -------------------
 
