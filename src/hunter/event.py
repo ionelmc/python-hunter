@@ -16,8 +16,10 @@ from .util import cached_property
 try:
     from threading import main_thread
 except ImportError:
-    import threading
-    get_main_thread = weakref.ref(threading._shutdown.im_self)
+    from threading import _shutdown
+    get_main_thread = weakref.ref(
+        _shutdown.__self__ if hasattr(_shutdown, '__self__') else _shutdown.im_self)
+    del _shutdown
 else:
     get_main_thread = weakref.ref(main_thread())
 
