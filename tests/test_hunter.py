@@ -51,7 +51,7 @@ class EvilTracer(object):
     def __init__(self, *args, **kwargs):
         self._calls = []
         threading_support = kwargs.pop('threading_support', False)
-        self._handler = hunter._prepare_predicate(*args, **kwargs)
+        self.handler = hunter._prepare_predicate(*args, **kwargs)
         self._tracer = hunter.trace(self._append, threading_support=threading_support)
 
     def _append(self, event):
@@ -65,7 +65,7 @@ class EvilTracer(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._tracer.stop()
-        predicate = self._handler
+        predicate = self.handler
         for call in self._calls:
             predicate(call)
 
@@ -442,51 +442,51 @@ def test_trace_merge():
     with hunter.trace(function="a"):
         with hunter.trace(function="b"):
             with hunter.trace(function="c"):
-                assert sys.gettrace()._handler == When(Q(function="c"), CodePrinter)
-            assert sys.gettrace()._handler == When(Q(function="b"), CodePrinter)
-        assert sys.gettrace()._handler == When(Q(function="a"), CodePrinter)
+                assert sys.gettrace().handler == When(Q(function="c"), CodePrinter)
+            assert sys.gettrace().handler == When(Q(function="b"), CodePrinter)
+        assert sys.gettrace().handler == When(Q(function="a"), CodePrinter)
 
 
 def test_trace_api_expansion():
     # simple use
     with trace(function="foobar") as t:
-        assert t._handler == When(Q(function="foobar"), CodePrinter)
+        assert t.handler == When(Q(function="foobar"), CodePrinter)
 
     # "or" by expression
     with trace(module="foo", function="foobar") as t:
-        assert t._handler == When(Q(module="foo", function="foobar"), CodePrinter)
+        assert t.handler == When(Q(module="foo", function="foobar"), CodePrinter)
 
     # pdb.set_trace
     with trace(function="foobar", action=Debugger) as t:
-        assert str(t._handler) == str(When(Q(function="foobar"), Debugger))
+        assert str(t.handler) == str(When(Q(function="foobar"), Debugger))
 
     # pdb.set_trace on any hits
     with trace(module="foo", function="foobar", action=Debugger) as t:
-        assert str(t._handler) == str(When(Q(module="foo", function="foobar"), Debugger))
+        assert str(t.handler) == str(When(Q(module="foo", function="foobar"), Debugger))
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
     with trace(Q(function="foobar", action=Debugger), module="foo") as t:
-        assert str(t._handler) == str(When(And(
+        assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), Debugger),
             Q(module="foo")
         ), CodePrinter))
 
     # dumping variables from stack
     with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
-        assert str(t._handler) == str(When(And(
+        assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar")),
             Q(module="foo"),
         ), CodePrinter))
 
     with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
-        assert str(t._handler) == str(When(And(
+        assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
             Q(module="foo"),
         ), CodePrinter))
 
     # multiple actions
     with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
-        assert str(t._handler) == str(When(And(
+        assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
             Q(module="foo"),
         ), CodePrinter))
