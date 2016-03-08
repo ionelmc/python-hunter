@@ -7,6 +7,7 @@ import subprocess
 import sys
 import threading
 import tokenize
+from pprint import pprint
 
 import hunter
 import pytest
@@ -314,6 +315,7 @@ def test_threading_support(LineMatcher):
     lm = LineMatcher(lines.getvalue().splitlines())
     assert idents - {t.ident} == {None}
     assert names.issuperset({'MainThread', 'Thread-1'})
+    pprint(lm.lines)
     lm.fnmatch_lines_random([
         'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
         'Thread-*   *                   vars      a => 1',
@@ -354,6 +356,7 @@ def test_thread_filtering(LineMatcher, query):
     print(lines.getvalue())
     assert None not in idents
     assert 'MainThread' not in names
+    pprint(lm.lines)
     lm.fnmatch_lines_random([
         'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
         'Thread-*   *                   vars      a => 1',
@@ -626,6 +629,7 @@ def test_debugger(LineMatcher):
     print(out.getvalue())
     assert calls == [2, 'foo']
     lm = LineMatcher(out.getvalue().splitlines())
+    pprint(lm.lines)
     lm.fnmatch_lines_random([
         "*      test_debugger => <function test_debugger at *",
         "*      node => 'Foobar'",
