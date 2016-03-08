@@ -183,4 +183,3 @@ def trace(*predicates, **options):
             maybe_tracer.stop()
 
     return _last_tracer.trace(predicate)
-

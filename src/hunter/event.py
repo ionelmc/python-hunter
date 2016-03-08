@@ -62,7 +62,6 @@ class Event(Fields.kind.function.module.filename):
         else:
             return current if current != main.ident else None
 
-
     @cached_property
     def threadname(self):
         """
