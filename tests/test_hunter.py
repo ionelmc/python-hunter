@@ -293,6 +293,7 @@ def test_threading_support(LineMatcher):
     lines = StringIO()
     idents = set()
     names = set()
+    started = threading.Event()
 
     def record(event):
         idents.add(event.threadid)
@@ -303,6 +304,7 @@ def test_threading_support(LineMatcher):
                       actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
                       threading_support=True):
         def foo(a=1):
+            started.set()
             print(a)
 
         def main():
@@ -310,6 +312,7 @@ def test_threading_support(LineMatcher):
 
         t = threading.Thread(target=foo)
         t.start()
+        started.wait(10)
         main()
 
     lm = LineMatcher(lines.getvalue().splitlines())
@@ -333,6 +336,7 @@ def test_thread_filtering(LineMatcher, query):
     lines = StringIO()
     idents = set()
     names = set()
+    started = threading.Event()
 
     def record(event):
         idents.add(event.threadid)
@@ -343,6 +347,7 @@ def test_thread_filtering(LineMatcher, query):
                       actions=[CodePrinter(stream=lines), VarsPrinter('a', stream=lines), CallPrinter(stream=lines)],
                       threading_support=True):
         def foo(a=1):
+            started.set()
             print(a)
 
         def main():
@@ -350,6 +355,7 @@ def test_thread_filtering(LineMatcher, query):
 
         t = threading.Thread(target=foo)
         t.start()
+        started.wait(10)
         main()
 
     lm = LineMatcher(lines.getvalue().splitlines())
