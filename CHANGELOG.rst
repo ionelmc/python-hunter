@@ -2,6 +2,18 @@
 Changelog
 =========
 
+1.3.0 (unreleased)
+------------------
+
+* Added ``Event.thread``.
+* Added ``Event.threadid`` and ``Event.threadname`` (available for filtering with ``Q`` objects).
+* Added ``threading_support`` argument to ``hunter.trace``: makes new threads be traced and changes action output to include
+  threadname.
+* Added support for using `pdb++ <https://pypi.python.org/pypi/pdbpp>`_ in the ``Debugger`` action.
+* Added support for using `manhole <https://pypi.python.org/pypi/manhole>`_ via a new ``Manhole`` action.
+* Made the ``handler`` a public but readonly property of ``Tracer`` objects.
+
+
 1.2.2 (2016-01-28)
 ------------------
 
