@@ -51,7 +51,7 @@ cdef class Event:
         self._source = UNSET
         self._stdlib = UNSET
         self._thread = UNSET
-        self._threadid = UNSET
+        self._threadidn = UNSET
         self._threadname = UNSET
 
     property threadid:
@@ -61,14 +61,14 @@ cdef class Event:
             """
             cdef long current
 
-            if self._threadid is UNSET:
+            if self._threadidn is UNSET:
                 current = PyThread_get_thread_ident()
                 main = get_main_thread()
                 if main is not None and current == main.ident:
-                    self._threadid = None
+                    self._threadidn = None
                 else:
-                    self._threadid = current
-            return self._threadid
+                    self._threadidn = current
+            return self._threadidn
 
     property threadname:
         def __get__(self):

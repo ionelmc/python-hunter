@@ -531,7 +531,7 @@ struct __pyx_obj_6hunter_6_event_Event {
   PyObject *_source;
   PyObject *_stdlib;
   PyObject *_thread;
-  PyObject *_threadid;
+  PyObject *_threadidn;
   PyObject *_threadname;
 };
 
@@ -1498,7 +1498,7 @@ static int __pyx_pf_6hunter_6_event_5Event___cinit__(struct __pyx_obj_6hunter_6_
  *         self._source = UNSET
  *         self._stdlib = UNSET             # <<<<<<<<<<<<<<
  *         self._thread = UNSET
- *         self._threadid = UNSET
+ *         self._threadidn = UNSET
  */
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
@@ -1510,7 +1510,7 @@ static int __pyx_pf_6hunter_6_event_5Event___cinit__(struct __pyx_obj_6hunter_6_
  *         self._source = UNSET
  *         self._stdlib = UNSET
  *         self._thread = UNSET             # <<<<<<<<<<<<<<
- *         self._threadid = UNSET
+ *         self._threadidn = UNSET
  *         self._threadname = UNSET
  */
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
@@ -1522,19 +1522,19 @@ static int __pyx_pf_6hunter_6_event_5Event___cinit__(struct __pyx_obj_6hunter_6_
   /* "hunter/_event.pyx":54
  *         self._stdlib = UNSET
  *         self._thread = UNSET
- *         self._threadid = UNSET             # <<<<<<<<<<<<<<
+ *         self._threadidn = UNSET             # <<<<<<<<<<<<<<
  *         self._threadname = UNSET
  * 
  */
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
-  __Pyx_GOTREF(__pyx_v_self->_threadid);
-  __Pyx_DECREF(__pyx_v_self->_threadid);
-  __pyx_v_self->_threadid = __pyx_v_6hunter_6_event_UNSET;
+  __Pyx_GOTREF(__pyx_v_self->_threadidn);
+  __Pyx_DECREF(__pyx_v_self->_threadidn);
+  __pyx_v_self->_threadidn = __pyx_v_6hunter_6_event_UNSET;
 
   /* "hunter/_event.pyx":55
  *         self._thread = UNSET
- *         self._threadid = UNSET
+ *         self._threadidn = UNSET
  *         self._threadname = UNSET             # <<<<<<<<<<<<<<
  * 
  *     property threadid:
@@ -1596,17 +1596,17 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
   /* "hunter/_event.pyx":64
  *             cdef long current
  * 
- *             if self._threadid is UNSET:             # <<<<<<<<<<<<<<
+ *             if self._threadidn is UNSET:             # <<<<<<<<<<<<<<
  *                 current = PyThread_get_thread_ident()
  *                 main = get_main_thread()
  */
-  __pyx_t_1 = (__pyx_v_self->_threadid == __pyx_v_6hunter_6_event_UNSET);
+  __pyx_t_1 = (__pyx_v_self->_threadidn == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
     /* "hunter/_event.pyx":65
  * 
- *             if self._threadid is UNSET:
+ *             if self._threadidn is UNSET:
  *                 current = PyThread_get_thread_ident()             # <<<<<<<<<<<<<<
  *                 main = get_main_thread()
  *                 if main is not None and current == main.ident:
@@ -1614,11 +1614,11 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
     __pyx_v_current = PyThread_get_thread_ident();
 
     /* "hunter/_event.pyx":66
- *             if self._threadid is UNSET:
+ *             if self._threadidn is UNSET:
  *                 current = PyThread_get_thread_ident()
  *                 main = get_main_thread()             # <<<<<<<<<<<<<<
  *                 if main is not None and current == main.ident:
- *                     self._threadid = None
+ *                     self._threadidn = None
  */
     __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_get_main_thread); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -1647,7 +1647,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
  *                 current = PyThread_get_thread_ident()
  *                 main = get_main_thread()
  *                 if main is not None and current == main.ident:             # <<<<<<<<<<<<<<
- *                     self._threadid = None
+ *                     self._threadidn = None
  *                 else:
  */
     __pyx_t_1 = (__pyx_v_main != Py_None);
@@ -1673,40 +1673,40 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
       /* "hunter/_event.pyx":68
  *                 main = get_main_thread()
  *                 if main is not None and current == main.ident:
- *                     self._threadid = None             # <<<<<<<<<<<<<<
+ *                     self._threadidn = None             # <<<<<<<<<<<<<<
  *                 else:
- *                     self._threadid = current
+ *                     self._threadidn = current
  */
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
-      __Pyx_GOTREF(__pyx_v_self->_threadid);
-      __Pyx_DECREF(__pyx_v_self->_threadid);
-      __pyx_v_self->_threadid = Py_None;
+      __Pyx_GOTREF(__pyx_v_self->_threadidn);
+      __Pyx_DECREF(__pyx_v_self->_threadidn);
+      __pyx_v_self->_threadidn = Py_None;
 
       /* "hunter/_event.pyx":67
  *                 current = PyThread_get_thread_ident()
  *                 main = get_main_thread()
  *                 if main is not None and current == main.ident:             # <<<<<<<<<<<<<<
- *                     self._threadid = None
+ *                     self._threadidn = None
  *                 else:
  */
       goto __pyx_L4;
     }
 
     /* "hunter/_event.pyx":70
- *                     self._threadid = None
+ *                     self._threadidn = None
  *                 else:
- *                     self._threadid = current             # <<<<<<<<<<<<<<
- *             return self._threadid
+ *                     self._threadidn = current             # <<<<<<<<<<<<<<
+ *             return self._threadidn
  * 
  */
     /*else*/ {
       __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_5);
-      __Pyx_GOTREF(__pyx_v_self->_threadid);
-      __Pyx_DECREF(__pyx_v_self->_threadid);
-      __pyx_v_self->_threadid = __pyx_t_5;
+      __Pyx_GOTREF(__pyx_v_self->_threadidn);
+      __Pyx_DECREF(__pyx_v_self->_threadidn);
+      __pyx_v_self->_threadidn = __pyx_t_5;
       __pyx_t_5 = 0;
     }
     __pyx_L4:;
@@ -1714,7 +1714,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
     /* "hunter/_event.pyx":64
  *             cdef long current
  * 
- *             if self._threadid is UNSET:             # <<<<<<<<<<<<<<
+ *             if self._threadidn is UNSET:             # <<<<<<<<<<<<<<
  *                 current = PyThread_get_thread_ident()
  *                 main = get_main_thread()
  */
@@ -1722,14 +1722,14 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
 
   /* "hunter/_event.pyx":71
  *                 else:
- *                     self._threadid = current
- *             return self._threadid             # <<<<<<<<<<<<<<
+ *                     self._threadidn = current
+ *             return self._threadidn             # <<<<<<<<<<<<<<
  * 
  *     property threadname:
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_self->_threadid);
-  __pyx_r = __pyx_v_self->_threadid;
+  __Pyx_INCREF(__pyx_v_self->_threadidn);
+  __pyx_r = __pyx_v_self->_threadidn;
   goto __pyx_L0;
 
   /* "hunter/_event.pyx":58
@@ -4792,7 +4792,7 @@ static PyObject *__pyx_tp_new_6hunter_6_event_Event(PyTypeObject *t, PyObject *a
   p->_source = Py_None; Py_INCREF(Py_None);
   p->_stdlib = Py_None; Py_INCREF(Py_None);
   p->_thread = Py_None; Py_INCREF(Py_None);
-  p->_threadid = Py_None; Py_INCREF(Py_None);
+  p->_threadidn = Py_None; Py_INCREF(Py_None);
   p->_threadname = Py_None; Py_INCREF(Py_None);
   if (unlikely(__pyx_pw_6hunter_6_event_5Event_1__cinit__(o, a, k) < 0)) {
     Py_DECREF(o); o = 0;
@@ -4814,7 +4814,7 @@ static void __pyx_tp_dealloc_6hunter_6_event_Event(PyObject *o) {
   Py_CLEAR(p->_source);
   Py_CLEAR(p->_stdlib);
   Py_CLEAR(p->_thread);
-  Py_CLEAR(p->_threadid);
+  Py_CLEAR(p->_threadidn);
   Py_CLEAR(p->_threadname);
   (*Py_TYPE(o)->tp_free)(o);
 }
@@ -4852,8 +4852,8 @@ static int __pyx_tp_traverse_6hunter_6_event_Event(PyObject *o, visitproc v, voi
   if (p->_thread) {
     e = (*v)(p->_thread, a); if (e) return e;
   }
-  if (p->_threadid) {
-    e = (*v)(p->_threadid, a); if (e) return e;
+  if (p->_threadidn) {
+    e = (*v)(p->_threadidn, a); if (e) return e;
   }
   if (p->_threadname) {
     e = (*v)(p->_threadname, a); if (e) return e;
@@ -4894,8 +4894,8 @@ static int __pyx_tp_clear_6hunter_6_event_Event(PyObject *o) {
   tmp = ((PyObject*)p->_thread);
   p->_thread = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
-  tmp = ((PyObject*)p->_threadid);
-  p->_threadid = Py_None; Py_INCREF(Py_None);
+  tmp = ((PyObject*)p->_threadidn);
+  p->_threadidn = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->_threadname);
   p->_threadname = Py_None; Py_INCREF(Py_None);

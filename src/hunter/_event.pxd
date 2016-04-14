@@ -21,7 +21,7 @@ cdef class Event:
         object _source
         object _stdlib
         object _thread
-        object _threadid
+        object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
 
     cdef object _get_globals(self)

@@ -515,7 +515,7 @@ struct __pyx_obj_6hunter_6_event_Event {
   PyObject *_source;
   PyObject *_stdlib;
   PyObject *_thread;
-  PyObject *_threadid;
+  PyObject *_threadidn;
   PyObject *_threadname;
 };
 
