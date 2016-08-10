@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import linecache
+import os
 import re
 import tokenize
 import weakref
@@ -111,7 +112,7 @@ class Event(Fields.kind.function.module.filename):
         return module
 
     @cached_property
-    def filename(self):
+    def filename(self, exists=os.path.exists, cython_suffix_re=re.compile(r'[.]cpython-[0-9]+.+$', re.IGNORECASE)):
         """
         A string with absolute path to file.
         """
@@ -123,7 +124,13 @@ class Event(Fields.kind.function.module.filename):
             filename = filename[:-1]
         elif filename.endswith('$py.class'):  # Jython
             filename = filename[:-9] + ".py"
-
+        elif filename.endswith(('.so', '.pyd')):
+            basename = cython_suffix_re.sub('', filename)
+            for ext in ('.pyx', '.py'):
+                cyfilename = basename + ext
+                if exists(cyfilename):
+                    filename = cyfilename
+                    break
         return filename
 
     @cached_property

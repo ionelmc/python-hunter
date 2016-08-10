@@ -12,13 +12,13 @@ from pprint import pprint
 import hunter
 import pytest
 from fields import Fields
-from hunter import Q
 from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
 from hunter import Not
 from hunter import Or
+from hunter import Q
 from hunter import Query
 from hunter import VarsPrinter
 from hunter import When
@@ -586,6 +586,19 @@ def test_source(LineMatcher):
     ])
 
 
+def test_source_cython(LineMatcher):
+    calls = []
+    from sample5 import foo
+    with trace(action=lambda event: calls.append(event.source)):
+        foo()
+
+    lm = LineMatcher(calls)
+    lm.fnmatch_lines([
+        'def foo():\n',
+        '    return 1\n',
+    ])
+
+
 def test_fullsource(LineMatcher):
     calls = []
     with trace(action=lambda event: calls.append(event.fullsource)):
@@ -603,6 +616,19 @@ def test_fullsource(LineMatcher):
         '        foo = bar = lambda x: x\n',
         '        @foo\n        @bar\n        def foo():\n',
         '            return 1\n',
+    ])
+
+
+def test_fullsource_cython(LineMatcher):
+    calls = []
+    from sample5 import foo
+    with trace(action=lambda event: calls.append(event.fullsource)):
+        foo()
+
+    lm = LineMatcher(calls)
+    lm.fnmatch_lines([
+        'def foo():\n',
+        '    return 1\n',
     ])
 
 

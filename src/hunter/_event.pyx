@@ -3,6 +3,7 @@ import weakref
 from functools import partial
 from linecache import getline
 from linecache import getlines
+from os.path import exists
 from threading import current_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
@@ -24,6 +25,7 @@ else:
     get_main_thread = weakref.ref(main_thread())
 
 cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+cdef object CYTHON_SUFFIX_RE = re.compile(r'[.]cpython-[0-9]+.+$', re.IGNORECASE)
 
 cdef object UNSET = object()
 
@@ -141,9 +143,15 @@ cdef class Event:
                 filename = self.frame.f_globals.get('__file__', '')
                 if filename is None:
                     filename = ''
-
-                if filename.endswith(('.pyc', '.pyo')):
+                elif filename.endswith(('.pyc', '.pyo')):
                     filename = filename[:-1]
+                elif filename.endswith(('.so', '.pyd')):
+                    basename = CYTHON_SUFFIX_RE.sub('', filename)
+                    for ext in ('.pyx', '.py'):
+                        cyfilename = basename + ext
+                        if exists(cyfilename):
+                            filename = cyfilename
+                            break
 
                 self._filename = filename
             return self._filename
