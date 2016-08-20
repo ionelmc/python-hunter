@@ -1,9 +1,13 @@
 [paths]
-source = src
+source =
+   src/hunter
+   */site-packages/hunter
 
 [run]
-branch = True
-source = src
+branch = true
+source =
+    hunter
+    tests
 parallel = true
 
 [report]

@@ -2,7 +2,6 @@
 
 cookiecutter:
     appveyor: 'yes'
-    bin_name: nameless
     c_extension_cython: 'yes'
     c_extension_optional: 'yes'
     c_extension_support: 'yes'
@@ -10,6 +9,7 @@ cookiecutter:
     codeclimate: 'yes'
     codecov: 'yes'
     command_line_interface: 'no'
+    command_line_interface_bin_name: '-'
     coveralls: 'yes'
     distribution_name: hunter
     email: contact@ionelmc.ro
@@ -22,14 +22,16 @@ cookiecutter:
         measuring coverage, but for debugging, logging, inspection and other nefarious
         purposes. It has a simple Python API and a convenient terminal API (see `Environment
         variable activation <env-var-activation_>`_).
-    release_date: today
+    release_date: '2016-04-14'
     repo_name: python-hunter
     requiresio: 'yes'
     scrutinizer: 'yes'
+    sphinx_doctest: 'no'
     sphinx_theme: sphinx-py3doc-enhanced-theme
     test_matrix_configurator: 'no'
+    test_matrix_separate_coverage: 'no'
     test_runner: pytest
     travis: 'yes'
-    version: 1.0.1
-    website: http://blog.ionelmc.ro
-    year: '2015'
+    version: 1.3.0
+    website: https://blog.ionelmc.ro
+    year: 2015-2016

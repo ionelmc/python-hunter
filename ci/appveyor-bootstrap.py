@@ -5,8 +5,10 @@ This is a port of https://github.com/pypa/python-packaging-user-guide/blob/maste
 with various fixes and improvements that just weren't feasible to implement in PowerShell.
 """
 from __future__ import print_function
+
 from os import environ
 from os.path import exists
+from subprocess import CalledProcessError
 from subprocess import check_call
 
 try:
@@ -18,8 +20,6 @@ BASE_URL = "https://www.python.org/ftp/python/"
 GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 GET_PIP_PATH = "C:\get-pip.py"
 URLS = {
-    ("2.6", "64"): BASE_URL + "2.6.6/python-2.6.6.amd64.msi",
-    ("2.6", "32"): BASE_URL + "2.6.6/python-2.6.6.msi",
     ("2.7", "64"): BASE_URL + "2.7.10/python-2.7.10.amd64.msi",
     ("2.7", "32"): BASE_URL + "2.7.10/python-2.7.10.msi",
     # NOTE: no .msi installer for 3.3.6
@@ -32,8 +32,6 @@ URLS = {
 }
 INSTALL_CMD = {
     # Commands are allowed to fail only if they are not the last command.  Eg: uninstall (/x) allowed to fail.
-    "2.6": [["msiexec.exe", "/L*+!", "install.log", "/qn", "/x", "{path}"],
-            ["msiexec.exe", "/L*+!", "install.log", "/qn", "/i", "{path}", "TARGETDIR={home}"]],
     "2.7": [["msiexec.exe", "/L*+!", "install.log", "/qn", "/x", "{path}"],
             ["msiexec.exe", "/L*+!", "install.log", "/qn", "/i", "{path}", "TARGETDIR={home}"]],
     "3.3": [["msiexec.exe", "/L*+!", "install.log", "/qn", "/x", "{path}"],
@@ -71,7 +69,7 @@ def install_python(version, arch, home):
         print("Running:", " ".join(cmd))
         try:
             check_call(cmd)
-        except Exception as exc:
+        except CalledProcessError as exc:
             print("Failed command", cmd, "with:", exc)
             if exists("install.log"):
                 with open("install.log") as fh:

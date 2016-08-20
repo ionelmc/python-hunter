@@ -37,7 +37,8 @@ Development
 
 To set up `python-hunter` for local development:
 
-1. `Fork python-hunter on GitHub <https://github.com/ionelmc/python-hunter/fork>`_.
+1. Fork `python-hunter <https://github.com/ionelmc/python-hunter>`_
+   (look for the "Fork" button).
 2. Clone your fork locally::
 
     git clone git@github.com:your_name_here/python-hunter.git
@@ -68,15 +69,15 @@ If you need some code review or feedback while you're developing the code just m
 For merging, you should:
 
 1. Include passing tests (run ``tox``) [1]_.
-2. Update documentation when there's new API, functionality etc. 
+2. Update documentation when there's new API, functionality etc.
 3. Add a note to ``CHANGELOG.rst`` about the changes.
 4. Add yourself to ``AUTHORS.rst``.
 
-.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will 
+.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
        `run the tests <https://travis-ci.org/ionelmc/python-hunter/pull_requests>`_ for each change you add in the pull request.
-       
+
        It will be slower though ...
-       
+
 Tips
 ----
 
