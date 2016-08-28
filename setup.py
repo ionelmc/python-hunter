@@ -115,7 +115,7 @@ setup(
     license='BSD',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M|re.S).sub('', read('README.rst')),
+        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
     ),
     author='Ionel Cristian Mărieș',
