@@ -12,6 +12,8 @@ from cpython.pythread cimport PyThread_get_thread_ident
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
+from .event import CYTHON_SUFFIX_RE
+from .event import LEADING_WHITESPACE_RE
 from ._tracer cimport *
 
 try:
@@ -24,8 +26,6 @@ except ImportError:
 else:
     get_main_thread = weakref.ref(main_thread())
 
-cdef object LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
-cdef object CYTHON_SUFFIX_RE = re.compile(r'[.]cpython-[0-9]+.+$', re.IGNORECASE)
 
 cdef object UNSET = object()
 

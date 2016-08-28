@@ -27,6 +27,8 @@ else:
 __all__ = 'Event',
 
 STARTSWITH_TYPES = list, tuple, set
+CYTHON_SUFFIX_RE = re.compile(r'([.]cpython-[0-9]+.+)?[.](so|pyd)$', re.IGNORECASE)
+LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 
 class Event(Fields.kind.function.module.filename):
@@ -112,7 +114,7 @@ class Event(Fields.kind.function.module.filename):
         return module
 
     @cached_property
-    def filename(self, exists=os.path.exists, cython_suffix_re=re.compile(r'([.]cpython-[0-9]+.+)?[.](so|pyd)$', re.IGNORECASE)):
+    def filename(self, exists=os.path.exists, cython_suffix_re=CYTHON_SUFFIX_RE):
         """
         A string with absolute path to file.
         """
@@ -214,7 +216,7 @@ class Event(Fields.kind.function.module.filename):
 def yield_lines(filename, start, collector,
                 limit=10,
                 getlines=linecache.getlines,
-                leading_whitespace_re=re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)):
+                leading_whitespace_re=LEADING_WHITESPACE_RE):
     dedent = None
     amount = 0
     for line in getlines(filename)[start:start + limit]:
