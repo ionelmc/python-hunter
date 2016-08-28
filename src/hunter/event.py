@@ -119,8 +119,6 @@ class Event(Fields.kind.function.module.filename):
         A string with absolute path to file.
         """
         filename = self.frame.f_globals.get('__file__', '')
-
-        print filename
         if filename is None:
             filename = ''
 
@@ -129,13 +127,10 @@ class Event(Fields.kind.function.module.filename):
         elif filename.endswith('$py.class'):  # Jython
             filename = filename[:-9] + ".py"
         elif filename.endswith(('.so', '.pyd')):
-            print 'cy:', filename
             basename = cython_suffix_re.sub('', filename)
             for ext in ('.pyx', '.py'):
                 cyfilename = basename + ext
-                print 'cy-:', filename
                 if exists(cyfilename):
-                    print 'cy:', cyfilename
                     filename = cyfilename
                     break
         return filename
