@@ -9,9 +9,10 @@ import threading
 import tokenize
 from pprint import pprint
 
-import hunter
 import pytest
 from fields import Fields
+
+import hunter
 from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
