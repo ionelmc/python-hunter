@@ -310,13 +310,6 @@ class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAct
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
-
-    .. note::
-        This is the default action.
-
-    .. warning::
-
-        In `hunter 2.0` the default action will be :obj:`hunter.CallPrinter`.
     """
 
     def __init__(self, *names, **options):
