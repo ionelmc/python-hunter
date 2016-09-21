@@ -9,10 +9,9 @@ import threading
 import tokenize
 from pprint import pprint
 
+import hunter
 import pytest
 from fields import Fields
-
-import hunter
 from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
@@ -445,6 +444,22 @@ def test_tracing_vars(LineMatcher):
         "* vars      b => 2",
         "*test_hunter.py* return                return 1",
         "* ...       return value: 1",
+    ])
+
+
+def test_tracing_vars_expressions(LineMatcher):
+    lines = StringIO()
+    with hunter.trace(actions=[VarsPrinter('Foo.bar', 'Foo.__dict__["bar"]', stream=lines)]):
+        def main():
+            class Foo(object):
+                bar = 1
+
+        main()
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        '*      Foo.bar => 1',
+        '*      Foo.__dict__[[]"bar"[]] => 1',
     ])
 
 
