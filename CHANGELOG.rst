@@ -2,6 +2,11 @@
 Changelog
 =========
 
+1.4.1 (2016-09-24)
+------------------
+
+* Fix support for getting sources for Cython module (it was broken on Windows and Python3.5+).
+
 1.4.0 (2016-09-24)
 ------------------
 
