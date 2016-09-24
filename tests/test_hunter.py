@@ -457,7 +457,7 @@ def test_tracing_vars_expressions(LineMatcher):
         main()
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
-    lm.fnmatch_lines([
+    lm.fnmatch_lines_random([
         '*      Foo.bar => 1',
         '*      Foo.__dict__[[]"bar"[]] => 1',
     ])
