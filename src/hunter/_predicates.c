@@ -486,7 +486,7 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "src/hunter/_predicates.pyx",
-  ".tox/py35-cython-cover/lib/python3.5/site-packages/Cython/Includes/cpython/type.pxd",
+  "type.pxd",
 };
 
 /*--- Type declarations ---*/
