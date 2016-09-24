@@ -2,6 +2,12 @@
 Changelog
 =========
 
+1.4.0 (2016-09-24)
+------------------
+
+* Added support for tracing Cython modules (`#30 <https://github.com/ionelmc/python-hunter/issues/30>`_). A
+  `# cython: linetrace=True` stanza or equivalent is required in Cython modules for this to work.
+
 1.3.0 (2016-04-14)
 ------------------
 
