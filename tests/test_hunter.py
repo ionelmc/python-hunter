@@ -604,6 +604,7 @@ def test_source(LineMatcher):
 
 
 def test_source_cython(LineMatcher):
+    pytest.importorskip('sample5')
     calls = []
     from sample5 import foo
     with trace(action=lambda event: calls.append(event.source)):
@@ -637,6 +638,7 @@ def test_fullsource(LineMatcher):
 
 
 def test_fullsource_cython(LineMatcher):
+    pytest.importorskip('sample5')
     calls = []
     from sample5 import foo
     with trace(action=lambda event: calls.append(event.fullsource)):
