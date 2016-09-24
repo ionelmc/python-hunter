@@ -27,7 +27,7 @@ else:
 __all__ = 'Event',
 
 STARTSWITH_TYPES = list, tuple, set
-CYTHON_SUFFIX_RE = re.compile(r'([.]cpython-[0-9]+.+)?[.](so|pyd)$', re.IGNORECASE)
+CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
 LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 
