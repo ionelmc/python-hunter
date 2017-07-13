@@ -1,3 +1,4 @@
+# cython: linetrace=True
 import threading
 
 from cpython cimport pystate

@@ -9,6 +9,7 @@ source =
     hunter
     tests
 parallel = true
+plugins = Cython.Coverage
 
 [report]
 show_missing = true

@@ -1,3 +1,4 @@
+# cython: linetrace=True
 import re
 import weakref
 from functools import partial
