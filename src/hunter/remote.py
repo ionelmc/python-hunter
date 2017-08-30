@@ -2,18 +2,24 @@ from __future__ import print_function
 
 import argparse
 import errno
+import json
 import os
+import shlex
 import signal
 import socket
 import sys
 import time
 from contextlib import closing
+from contextlib import contextmanager
+from subprocess import check_call
 
 import manhole
-from manhole.cli import parse_signal
 from manhole import get_peercred
-from . import stop, trace
+from manhole.cli import parse_signal
+
 from . import actions
+from . import stop
+from . import trace
 
 
 def install(**kwargs):
@@ -43,11 +49,47 @@ class RemoteStream(object):
         pass
 
 
-def connect_manhole(pid, timeout, signal, gdb):
-    if gdb:
-        pass
-    else:
-        os.kill(pid, signal)
+@contextmanager
+def manhole_bootstrap(args, activation_payload, deactivation_payload):
+    activation_payload += '\nexit()\n'
+    deactivation_payload += '\nexit()\n'
+
+    activation_payload = activation_payload.encode('utf-8')
+    deactivation_payload = deactivation_payload.encode('utf-8')
+
+    with connect_manhole(args.pid, args.timeout, args.signal) as manhole:
+        manhole.send(activation_payload)
+    try:
+        yield
+    finally:
+        with connect_manhole(args.pid, args.timeout, args.signal) as manhole:
+            manhole.send(deactivation_payload)
+
+
+@contextmanager
+def gdb_bootstrap(args, activation_payload, deactivation_payload):
+    print('WARNING: Using GDB may deadlock the process or create unpredictable results!')
+    activation_command = [
+        'gdb', '-p', str(args.pid), '-batch',
+        '-ex', 'call PyGILState_Ensure()',
+        '-ex', 'call PyRun_SimpleString(%s)' % json.dumps(activation_payload),
+        '-ex', 'call PyGILState_Release($1)',
+    ]
+    deactivation_command = [
+        'gdb', '-p', str(args.pid), '-batch',
+        '-ex', 'call PyGILState_Ensure()',
+        '-ex', 'call PyRun_SimpleString(%s)' % json.dumps(deactivation_payload),
+        '-ex', 'call PyGILState_Release($1)',
+    ]
+    check_call(activation_command)
+    try:
+        yield
+    finally:
+        check_call(deactivation_command)
+
+
+def connect_manhole(pid, timeout, signal):
+    os.kill(pid, signal)
 
     start = time.time()
     uds_path = '/tmp/manhole-%s' % pid
@@ -80,10 +122,13 @@ def activate(sink_path, isatty, encoding, options):
         actions.DEFAULT_STREAM = sys.stderr
         raise
 
+trace  # used in eval above
+
 
 def deactivate():
     actions.DEFAULT_STREAM = sys.stderr
     stop()
+
 
 parser = argparse.ArgumentParser(description='Connect to a manhole.')
 parser.add_argument('-p', '--pid', metavar='PID', type=int, required=True,
@@ -104,29 +149,24 @@ def main():
     sink_path = '/tmp/hunter-%s' % os.getpid()
     sink.bind(sink_path)
     sink.listen(1)
+    os.chmod(sink_path, 0o777)
 
     stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
     encoding = getattr(sys.stdout, 'encoding', 'utf-8')
-    payload = 'from hunter import remote; remote.activate(%r, %r, %r, %r)\nexit()' % (
+    bootstrapper = gdb_bootstrap if args.gdb else manhole_bootstrap
+    payload = 'from hunter import remote; remote.activate(%r, %r, %r, %r)' % (
         sink_path,
         sys.stdout.isatty(),
         encoding,
         ','.join(i.strip(',') for i in args.options)
     )
-    manhole = connect_manhole(args.pid, args.timeout, args.signal, args.gdb)
-    manhole.send(payload.encode('utf-8'))
-    manhole.close()
-    try:
-        with closing(sink), closing(manhole), closing(sink.accept()[0]) as conn:
-            pid, _, _ = get_peercred(conn)
-            if pid != args.pid:
-                raise Exception("Unexpected pid %r connected to output socket. Was expecting %s." % (pid, args.pid))
+    with bootstrapper(args, payload, 'from hunter import remote; remote.deactivate()'):
+        conn, _ = sink.accept()
+        os.unlink(sink_path)
+        pid, _, _ = get_peercred(conn)
+        if pid != args.pid:
+            raise Exception("Unexpected pid %r connected to output socket. Was expecting %s." % (pid, args.pid))
+        data = conn.recv(1024)
+        while data:
+            stdout.write(data)
             data = conn.recv(1024)
-            while data:
-                stdout.write(data)
-                data = conn.recv(1024)
-    finally:
-        manhole = connect_manhole(args.pid, args.timeout, args.signal, args.gdb)
-        manhole.send(b'from hunter import remote; remote.deactivate()')
-        manhole.close()
-
