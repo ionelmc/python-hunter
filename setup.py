@@ -22,6 +22,7 @@ from setuptools.command.build_ext import build_ext
 from setuptools.command.develop import develop
 from setuptools.command.easy_install import easy_install
 from setuptools.command.install_lib import install_lib
+
 try:
     # Allow installing package without any Cython available. This
     # assumes you are going to include the .c files in your sdist.
@@ -109,6 +110,8 @@ class OptionalBuildExt(build_ext):
         print('')
         print('    ' + repr(e))
         print('*' * 80)
+
+
 setup(
     name='hunter',
     version='1.4.1',

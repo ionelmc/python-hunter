@@ -15,7 +15,6 @@ from six import string_types
 
 from .util import Fields
 
-
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
     'normal': Style.NORMAL,

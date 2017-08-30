@@ -4,12 +4,10 @@ import argparse
 import errno
 import json
 import os
-import shlex
 import signal
 import socket
 import sys
 import time
-from contextlib import closing
 from contextlib import contextmanager
 from subprocess import check_call
 
@@ -121,6 +119,7 @@ def activate(sink_path, isatty, encoding, options):
         ))
         actions.DEFAULT_STREAM = sys.stderr
         raise
+
 
 trace  # used in eval above
 
