@@ -155,10 +155,11 @@ setup(
         'six',
     ],
     extras_require={
-        'manhole': ['manhole>=1.4.1'],
+        'remote': ['manhole>=1' '.' '5' '.' '0'],
     },
     entry_points={
         'console_scripts': [
+            'hunter-trace = hunter.remote:main',
         ]
     },
     cmdclass={
