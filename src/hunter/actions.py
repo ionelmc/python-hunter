@@ -75,19 +75,22 @@ class Manhole(Action):
         inst.handle_oneshot()
 
 
+DEFAULT_STREAM = sys.stderr
+
+
 class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_alignment.repr_limit, Action):
     _stream_cache = {}
     _stream = None
     _tty = None
 
     def __init__(self,
-                 stream=sys.stderr,
+                 stream=None,
                  force_colors=False,
                  filename_alignment=40,
                  thread_alignment=12,
                  repr_limit=1024):
         self.force_colors = force_colors
-        self.stream = stream
+        self.stream = DEFAULT_STREAM if stream is None else stream
         self.filename_alignment = filename_alignment
         self.thread_alignment = thread_alignment
         self.repr_limit = repr_limit
