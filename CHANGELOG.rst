@@ -2,6 +2,16 @@
 Changelog
 =========
 
+1.5.0 (2017-09-02)
+------------------
+
+* Added the ``Event.count`` and ``Event.calls`` attributes.
+* Added the ``lt``/``lte``/``gt``/``gte`` lookups.
+* Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``) and ``regex`` (``rx``).
+* Added a convenience ``hunter.wrap`` decorator to start tracing around a function.
+* Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
+  the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
+
 1.4.1 (2016-09-24)
 ------------------
 
