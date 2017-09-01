@@ -33,6 +33,8 @@ cdef class Tracer:
         readonly object handler
         readonly object previous
         readonly bool threading_support
+        readonly int depth
+        readonly int calls
 
         object __weakref__
 

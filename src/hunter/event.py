@@ -26,12 +26,11 @@ else:
 
 __all__ = 'Event',
 
-STARTSWITH_TYPES = list, tuple, set
 CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
 LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 
-class Event(Fields.kind.function.module.filename):
+class Event(Fields.kind.depth.function.module.filename):
     """
     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
     custom functions or predicates.
@@ -48,11 +47,15 @@ class Event(Fields.kind.function.module.filename):
     tracer = None
     threadid = None
     threadname = None
+    depth = None
+    calls = None
 
     def __init__(self, frame, kind, arg, tracer):
         self.frame = frame
         self.kind = kind
         self.arg = arg
+        self.depth = tracer.depth
+        self.calls = tracer.calls
         self.tracer = tracer
 
     @cached_property

@@ -45,6 +45,8 @@ cdef class Event:
         self.arg = arg
         self.frame = frame
         self.kind = kind
+        self.depth = tracer.depth
+        self.calls = tracer.calls
         self.tracer = tracer
 
         self._filename = UNSET

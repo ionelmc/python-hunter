@@ -17,6 +17,8 @@ class Tracer(object):
         self._previous = None
         self._threading_previous = None
         self.threading_support = threading_support
+        self.depth = 0
+        self.calls = 0
 
     @property
     def handler(self):
@@ -47,6 +49,12 @@ class Tracer(object):
         """
         if self._handler is not None:
             self._handler(Event(frame, kind, arg, self))
+            if kind == 'call':
+                self.depth += 1
+                self.calls += 1
+            elif kind == 'return':
+                self.depth -= 1
+
             return self
 
     def trace(self, predicate):

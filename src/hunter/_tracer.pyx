@@ -26,6 +26,12 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     elif handler is not None:
         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
 
+    if kind == 0:
+        self.depth += 1
+        self.calls += 1
+    elif kind == 3:
+        self.depth -= 1
+
 
 cdef class Tracer:
     """
@@ -38,6 +44,8 @@ cdef class Tracer:
         self._previousfunc = NULL
         self._threading_previous = None
         self.threading_support = threading_support
+        self.depth = 1
+        self.calls = 0
 
     def __dealloc__(self):
         cdef PyThreadState *state = PyThreadState_Get()
@@ -61,8 +69,7 @@ cdef class Tracer:
         .. note::
 
             This always returns self (drills down) - as opposed to only drilling down when predicate(event) is True
-            because it might
-            match further inside.
+            because it might match further inside.
         """
         trace_func(self, frame, kind_names.index(kind), <PyObject *> arg)
         if kind == "call":

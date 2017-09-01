@@ -603,6 +603,49 @@ def test_source(LineMatcher):
     ])
 
 
+def test_wraps(LineMatcher):
+    calls = []
+
+    @hunter.wrap(action=lambda event: calls.append("%06s calls=%s depth=%s %s" % (event.kind, event.calls, event.depth, event.fullsource)))
+    def foo():
+        return 1
+
+    foo()
+    lm = LineMatcher(calls)
+    lm.fnmatch_lines([
+        '  call calls=0 depth=0     @hunter.wrap*',
+        '  line calls=1 depth=1         return 1\n',
+        'return calls=1 depth=1         return 1\n',
+    ])
+
+
+def test_depth():
+    calls = []
+    tracer = hunter.trace(action=lambda event: calls.append((event.kind, event.module, event.function, event.depth)))
+    try:
+        def bar():
+            for i in range(2):
+                yield i
+
+        def foo():
+            gen = bar()
+            next(gen)
+            while True:
+                try:
+                    gen.send('foo')
+                except StopIteration:
+                    break
+            list(i for i in range(2))
+            x = [i for i in range(2)]
+
+        foo()
+    finally:
+        tracer.stop()
+    pprint(calls)
+    assert ('call', 'test_hunter', 'bar', 1) in calls
+    assert ('return', 'test_hunter', 'foo', 1) in calls
+
+
 def test_source_cython(LineMatcher):
     pytest.importorskip('sample5')
     calls = []
@@ -886,7 +929,7 @@ def _tokenize():
     with open(tokenize.__file__, 'rb') as fh:
         toks = []
         try:
-            for tok in tokenize.tokenize(fh.readline):
+            for tok in getattr(tokenize, 'generate_tokens', tokenize.tokenize)(fh.readline):
                 toks.append(tok)
         except tokenize.TokenError as exc:
             toks.append(exc)

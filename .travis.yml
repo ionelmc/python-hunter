@@ -26,6 +26,10 @@ env:
     - TOXENV=py35-pure-nocov
     - TOXENV=py35-cython-cover,extension-coveralls,coveralls,codecov
     - TOXENV=py35-cython-nocov
+    - TOXENV=py36-pure-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=py36-pure-nocov
+    - TOXENV=py36-cython-cover,extension-coveralls,coveralls,codecov
+    - TOXENV=py36-cython-nocov
     - TOXENV=pypy-pure-cover,extension-coveralls,coveralls,codecov
     - TOXENV=pypy-pure-nocov
     - TOXENV=pypy-cython-cover,extension-coveralls,coveralls,codecov

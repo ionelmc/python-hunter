@@ -12,10 +12,12 @@ from .actions import Action
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
-    'fullsource', 'tracer', 'threadname', 'threadid',
+    'fullsource', 'tracer', 'threadname', 'threadid', 'depth', 'calls',
 )
 cdef tuple ALLOWED_OPERATORS = (
-    'startswith', 'endswith', 'in', 'contains', 'regex'
+    'startswith', 'endswith', 'in', 'contains', 'regex',
+    'sw', 'ew', 'has', 'rx',
+    'gt', 'gte', 'lt', 'lte',
 )
 
 
@@ -32,6 +34,10 @@ cdef class Query:
     cdef readonly tuple query_in
     cdef readonly tuple query_contains
     cdef readonly tuple query_regex
+    cdef readonly tuple query_lt
+    cdef readonly tuple query_lte
+    cdef readonly tuple query_gt
+    cdef readonly tuple query_gte
 
     def __init__(self, **query):
         """
@@ -47,6 +53,10 @@ cdef class Query:
         query_in = {}
         query_contains = {}
         query_regex = {}
+        query_lt = {}
+        query_lte = {}
+        query_gt = {}
+        query_gte = {}
 
         for key, value in query.items():
             parts = [p for p in key.split('_') if p]
@@ -57,13 +67,13 @@ cdef class Query:
                 ))
             elif count == 2:
                 prefix, operator = parts
-                if operator == 'startswith':
+                if operator in ('startswith', 'sw'):
                     if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_startswith
-                elif operator == 'endswith':
+                elif operator in ('endswith', 'ew'):
                     if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
@@ -71,11 +81,19 @@ cdef class Query:
                     mapping = query_endswith
                 elif operator == 'in':
                     mapping = query_in
-                elif operator == 'contains':
+                elif operator in ('contains', 'has'):
                     mapping = query_contains
-                elif operator == 'regex':
+                elif operator in ('regex', 'rx'):
                     value = re.compile(value)
                     mapping = query_regex
+                elif operator == 'lt':
+                    mapping = query_lt
+                elif operator == 'lte':
+                    mapping = query_lte
+                elif operator == 'gt':
+                    mapping = query_gt
+                elif operator == 'gte':
+                    mapping = query_gte
                 else:
                     raise TypeError('Unexpected operator %r. Must be one of %s.' % (operator, ALLOWED_OPERATORS))
             else:
@@ -93,6 +111,10 @@ cdef class Query:
         self.query_in = tuple(sorted(query_in.items()))
         self.query_contains = tuple(sorted(query_contains.items()))
         self.query_regex = tuple(sorted(query_regex.items()))
+        self.query_lt = tuple(sorted(query_lt.items()))
+        self.query_lte = tuple(sorted(query_lte.items()))
+        self.query_gt = tuple(sorted(query_gt.items()))
+        self.query_gte = tuple(sorted(query_gte.items()))
 
     def __str__(self):
         return 'Query(%s)' % (
@@ -105,6 +127,10 @@ cdef class Query:
                     ('_startswith', self.query_startswith),
                     ('_endswith', self.query_endswith),
                     ('_regex', self.query_regex),
+                    ('_lt', self.query_lt),
+                    ('_lte', self.query_lte),
+                    ('_gt', self.query_gt),
+                    ('_gte', self.query_gte),
                 ] if mapping
             )
         )
@@ -118,6 +144,11 @@ cdef class Query:
                 ('query_startswith=%r', self.query_startswith),
                 ('query_endswith=%r', self.query_endswith),
                 ('query_regex=%r', self.query_regex),
+                ('query_lt=%r', self.query_lt),
+                ('query_lte=%r', self.query_lte),
+                ('query_gt=%r', self.query_gt),
+                ('query_gte=%r', self.query_gte),
+
             ] if mapping
         )
 
@@ -207,6 +238,22 @@ cdef fast_Query_call(Query self, event):
         evalue = event[key]
         if not value.match(evalue):
             return False
+    for key, value in self.query_gt:
+        evalue = event[key]
+        if not evalue > value:
+            return False
+    for key, value in self.query_gte:
+        evalue = event[key]
+        if not evalue >= value:
+            return False
+    for key, value in self.query_lt:
+        evalue = event[key]
+        if not evalue < value:
+            return False
+    for key, value in self.query_lte:
+        evalue = event[key]
+        if not evalue <= value:
+            return False
 
     return True
 
@@ -253,6 +300,9 @@ cdef class When:
 
     def __rand__(self, other):
         return And(self, other)
+
+    def __invert__(self):
+        return Not(self)
 
     def __richcmp__(self, other, int op):
         is_equal = (

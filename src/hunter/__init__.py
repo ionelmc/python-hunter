@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import atexit
+import functools
 import inspect
 import os
 import weakref
@@ -135,6 +136,11 @@ def stop():
         _last_tracer = None
 
 
+class Stop(Action):
+    def __call__(self, event):
+        stop()
+
+
 def _prepare_predicate(*predicates, **options):
     if "action" not in options and "actions" not in options:
         options["action"] = CodePrinter
@@ -183,3 +189,43 @@ def trace(*predicates, **options):
             maybe_tracer.stop()
 
     return _last_tracer.trace(predicate)
+
+
+def wrap(function_to_trace=None, **trace_options):
+    """
+    Functions decorated with this will be traced.
+
+    Use ``local=True`` to only trace local code, eg::
+
+        @hunter.wrap(local=True)
+        def my_function():
+            ...
+
+    Keyword arguments are allowed, eg::
+
+        @hunter.wrap(action=hunter.CallPrinter)
+        def my_function():
+            ...
+
+    Or, filters::
+
+        @hunter.wrap(module='foobar')
+        def my_function():
+            ...
+    """
+
+    def tracing_decorator(func):
+        @functools.wraps(func)
+        def tracing_wrapper(*args, **kwargs):
+            tracer = trace(~When(Q(calls_gt=0, depth=0), Stop), **trace_options)
+            try:
+                return func(*args, **kwargs)
+            finally:
+                tracer.stop()
+        return tracing_wrapper
+    if function_to_trace is None:
+        return tracing_decorator
+    else:
+        return tracing_decorator(function_to_trace)
+
+

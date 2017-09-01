@@ -12,6 +12,8 @@ cdef class Event:
         readonly FrameType frame
         readonly str kind
         readonly object arg
+        readonly int depth
+        readonly int calls
         readonly Tracer tracer
 
         object _filename
