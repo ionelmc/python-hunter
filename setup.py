@@ -114,7 +114,7 @@ class OptionalBuildExt(build_ext):
 
 setup(
     name='hunter',
-    version='1.4.1',
+    version='2.0.0',
     license='BSD',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (
