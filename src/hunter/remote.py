@@ -152,7 +152,7 @@ def main():
     os.chmod(sink_path, 0o777)
 
     stdout = os.fdopen(sys.stdout.fileno(), 'wb', 0)
-    encoding = getattr(sys.stdout, 'encoding', 'utf-8')
+    encoding = getattr(sys.stdout, 'encoding', 'utf-8') or 'utf-8'
     bootstrapper = gdb_bootstrap if args.gdb else manhole_bootstrap
     payload = 'from hunter import remote; remote.activate(%r, %r, %r, %r)' % (
         sink_path,
