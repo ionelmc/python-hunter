@@ -318,8 +318,8 @@ def test_threading_support(LineMatcher):
 
     lm = LineMatcher(lines.getvalue().splitlines())
     assert idents - {t.ident} == {None}
-    assert names.issuperset({'MainThread', 'Thread-1'})
-    pprint(lm.lines)
+    assert 'MainThread' in names
+    assert any(name.startswith('Thread-') for name in names)
     lm.fnmatch_lines_random([
         'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
         'Thread-*   *                   vars      a => 1',
