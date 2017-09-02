@@ -7,12 +7,13 @@ import os
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.todo',
     'sphinx.ext.coverage',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
+    'sphinx.ext.doctest',
     'sphinx.ext.extlinks',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
 ]
 if os.getenv('SPELLCHECK'):
     extensions += 'sphinxcontrib.spelling',
@@ -22,7 +23,7 @@ if os.getenv('SPELLCHECK'):
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'Hunter'
-year = '2015'
+year = '2015-2017'
 author = 'Ionel Cristian Mărieș'
 copyright = '{0}, {1}'.format(year, author)
 version = release = '1.4.1'
@@ -42,7 +43,7 @@ html_theme_options = {
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'
-html_split_index = True
+html_split_index = False
 html_sidebars = {
    '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }

@@ -1,39 +1,87 @@
 language: python
-python: '3.5'
 sudo: false
+cache: pip
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
-    - PYTEST_ADDOPTS=--benchmark-disable
-    - SETUPPY_CFLAGS=-DCYTHON_TRACE=1
   matrix:
     - TOXENV=check
-
-    - TOXENV=py27-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py27-pure-nocov
-    - TOXENV=py27-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py27-cython-nocov
-    - TOXENV=py33-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py33-pure-nocov
-    - TOXENV=py33-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py33-cython-nocov
-    - TOXENV=py34-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py34-pure-nocov
-    - TOXENV=py34-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py34-cython-nocov
-    - TOXENV=py35-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py35-pure-nocov
-    - TOXENV=py35-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py35-cython-nocov
-    - TOXENV=py36-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py36-pure-nocov
-    - TOXENV=py36-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=py36-cython-nocov
-    - TOXENV=pypy-pure-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=pypy-pure-nocov
-    - TOXENV=pypy-cython-cover,extension-coveralls,coveralls,codecov
-    - TOXENV=pypy-cython-nocov
+    - TOXENV=docs
+matrix:
+  include:
+    - python: '2.7'
+      env:
+        - TOXENV=py27-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: '2.7'
+      env:
+        - TOXENV=py27-pure-nocov
+    - python: '2.7'
+      env:
+        - TOXENV=py27-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: '2.7'
+      env:
+        - TOXENV=py27-cython-nocov
+    - python: '3.3'
+      env:
+        - TOXENV=py33-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.3'
+      env:
+        - TOXENV=py33-pure-nocov
+    - python: '3.3'
+      env:
+        - TOXENV=py33-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.3'
+      env:
+        - TOXENV=py33-cython-nocov
+    - python: '3.4'
+      env:
+        - TOXENV=py34-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.4'
+      env:
+        - TOXENV=py34-pure-nocov
+    - python: '3.4'
+      env:
+        - TOXENV=py34-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.4'
+      env:
+        - TOXENV=py34-cython-nocov
+    - python: '3.5'
+      env:
+        - TOXENV=py35-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.5'
+      env:
+        - TOXENV=py35-pure-nocov
+    - python: '3.5'
+      env:
+        - TOXENV=py35-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.5'
+      env:
+        - TOXENV=py35-cython-nocov
+    - python: '3.6'
+      env:
+        - TOXENV=py36-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.6'
+      env:
+        - TOXENV=py36-pure-nocov
+    - python: '3.6'
+      env:
+        - TOXENV=py36-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: '3.6'
+      env:
+        - TOXENV=py36-cython-nocov
+    - python: 'pypy-5.4'
+      env:
+        - TOXENV=pypy-pure-cover,report,extension-coveralls,coveralls,codecov
+    - python: 'pypy-5.4'
+      env:
+        - TOXENV=pypy-pure-nocov
+    - python: 'pypy-5.4'
+      env:
+        - TOXENV=pypy-cython-cover,report,extension-coveralls,coveralls,codecov
+    - python: 'pypy-5.4'
+      env:
+        - TOXENV=pypy-cython-nocov
 before_install:
   - python --version
   - uname -a
@@ -49,11 +97,6 @@ script:
 after_failure:
   - more .tox/log/* | cat
   - more .tox/*/log/* | cat
-before_cache:
-  - rm -rf $HOME/.cache/pip/log
-cache:
-  directories:
-    - $HOME/.cache/pip
 notifications:
   email:
     on_success: never

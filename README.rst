@@ -14,7 +14,8 @@ Overview
         | |coveralls| |codecov|
         | |landscape| |scrutinizer| |codacy| |codeclimate|
     * - package
-      - |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+      - | |version| |wheel| |supported-versions| |supported-implementations|
+        | |commits-since|
 
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
     :target: https://readthedocs.org/projects/python-hunter
@@ -44,7 +45,7 @@ Overview
     :target: https://landscape.io/github/ionelmc/python-hunter/master
     :alt: Code Quality Status
 
-.. |codacy| image:: https://api.codacy.com/project/badge/grade/2342e517f3dc4e66910087953afb3a0e
+.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg
     :target: https://www.codacy.com/app/ionelmc/python-hunter
     :alt: Codacy Code Quality Status
 
@@ -52,27 +53,27 @@ Overview
    :target: https://codeclimate.com/github/ionelmc/python-hunter
    :alt: CodeClimate Quality Status
 
-.. |version| image:: https://img.shields.io/pypi/v/hunter.svg?style=flat
+.. |version| image:: https://img.shields.io/pypi/v/hunter.svg
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/hunter
 
-.. |downloads| image:: https://img.shields.io/pypi/dm/hunter.svg?style=flat
-    :alt: PyPI Package monthly downloads
-    :target: https://pypi.python.org/pypi/hunter
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v1.4.1.svg
+    :alt: Commits since latest release
+    :target: https://github.com/ionelmc/python-hunter/compare/v1.4.1...master
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/hunter.svg?style=flat
+.. |wheel| image:: https://img.shields.io/pypi/wheel/hunter.svg
     :alt: PyPI Wheel
     :target: https://pypi.python.org/pypi/hunter
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/hunter.svg?style=flat
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/hunter.svg
     :alt: Supported versions
     :target: https://pypi.python.org/pypi/hunter
 
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/hunter.svg?style=flat
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/hunter.svg
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/hunter
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/python-hunter/master.svg?style=flat
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/python-hunter/master.svg
     :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
 
