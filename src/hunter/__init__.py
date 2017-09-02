@@ -76,6 +76,9 @@ def Q(*predicates, **query):
         if any(isinstance(p, CodePrinter) for p in predicates):
             if CodePrinter in optional_actions:
                 optional_actions.remove(CodePrinter)
+        if any(isinstance(p, CallPrinter) for p in predicates):
+            if CallPrinter in optional_actions:
+                optional_actions.remove(CallPrinter)
         if query:
             predicates += Query(**query),
 
