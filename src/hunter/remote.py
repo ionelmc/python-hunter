@@ -132,7 +132,7 @@ def deactivate():
 
 parser = argparse.ArgumentParser(description='Trace a process.')
 parser.add_argument('-p', '--pid', metavar='PID', type=int, required=True,
-                    help='A numerical process id, or a path in the form: /tmp/manhole-1234')
+                    help='A numerical process id.')
 parser.add_argument('options', metavar='OPTIONS', nargs='*')
 parser.add_argument('-t', '--timeout', dest='timeout', default=1, type=float,
                     help='Timeout to use. Default: %(default)s seconds.')

@@ -2,7 +2,8 @@
 Remote tracing
 ==============
 
-Hunter supports tracing local processes, with two backends: `manhole <https://pypi.python.org/pypi/manhole>`_ and GDB.
+Hunter supports tracing local processes, with two backends:
+`manhole <https://pypi.python.org/pypi/manhole>`_ (``pip install 'hunter[remote]'``) and GDB.
 
 Using GDB is risky (if anything goes wrong your process will probably be hosed up badly) so the Manhole backend is
 recommended. To use it:
@@ -32,8 +33,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PID, --pid PID     A numerical process id, or a path in the form:
-                        /tmp/manhole-1234
+  -p PID, --pid PID     A numerical process id.
   -t TIMEOUT, --timeout TIMEOUT
                         Timeout to use. Default: 1 seconds.
   --gdb                 Use GDB to activate tracing. WARNING: it may deadlock
