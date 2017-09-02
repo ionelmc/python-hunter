@@ -927,14 +927,9 @@ def tracer_impl(request):
         return pytest.importorskip('hunter._tracer').Tracer
 
 
-def _tokenize():
-    with open(tokenize.__file__, 'rb') as fh:
-        toks = []
-        try:
-            for tok in getattr(tokenize, 'generate_tokens', tokenize.tokenize)(fh.readline):
-                toks.append(tok)
-        except tokenize.TokenError as exc:
-            toks.append(exc)
+def _bulky_func_that_use_stdlib():
+    import difflib
+    list(difflib.unified_diff(map(str, range(2000)), map(str, range(0, 2000, 2)), 'a', 'b'))
 
 
 def test_perf_filter(tracer_impl, benchmark):
@@ -947,7 +942,7 @@ def test_perf_filter(tracer_impl, benchmark):
             Q(module="does-not-exist") | Q(module="does not exist".split()),
             action=CodePrinter(stream=output)
         )):
-            _tokenize()
+            _bulky_func_that_use_stdlib()
         return output
 
     assert run.getvalue() == ''
@@ -966,7 +961,7 @@ def test_perf_stdlib(tracer_impl, benchmark):
             stdlib=False,
             action=CodePrinter(stream=output)
         )):
-            _tokenize()
+            _bulky_func_that_use_stdlib()
         return output
 
     assert run.getvalue() == ''
@@ -991,4 +986,4 @@ def test_perf_actions(tracer_impl, benchmark):
                 )
             ]
         )):
-            _tokenize()
+            _bulky_func_that_use_stdlib()
