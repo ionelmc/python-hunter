@@ -7,7 +7,6 @@ source =
 branch = true
 source =
     hunter
-    tests
 parallel = true
 plugins = Cython.Coverage
 
