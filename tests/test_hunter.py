@@ -603,6 +603,7 @@ def test_source(LineMatcher):
     ])
 
 
+@pytest.mark.skipif('os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1"')
 def test_wraps(LineMatcher):
     calls = []
 
@@ -619,6 +620,7 @@ def test_wraps(LineMatcher):
     ])
 
 
+@pytest.mark.skipif('os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1"')
 def test_depth():
     calls = []
     tracer = hunter.trace(action=lambda event: calls.append((event.kind, event.module, event.function, event.depth)))
