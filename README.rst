@@ -321,6 +321,7 @@ Then you can do::
 
 See `docs on the remote feature <https://python-hunter.readthedocs.org/en/latest/remote.html>`_.
 
+**Note:** Windows ain't supported.
 
 .. _env-var-activation:
 
