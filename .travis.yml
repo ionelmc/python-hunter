@@ -1,6 +1,10 @@
 language: python
 sudo: false
 cache: pip
+addons:
+  apt:
+    packages:
+    - gdb
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
