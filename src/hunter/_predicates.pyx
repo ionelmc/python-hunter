@@ -28,17 +28,6 @@ cdef class Query:
 
     See :class:`hunter.Event` for fields that can be filtered on.
     """
-    cdef readonly tuple query_eq
-    cdef readonly tuple query_startswith
-    cdef readonly tuple query_endswith
-    cdef readonly tuple query_in
-    cdef readonly tuple query_contains
-    cdef readonly tuple query_regex
-    cdef readonly tuple query_lt
-    cdef readonly tuple query_lte
-    cdef readonly tuple query_gt
-    cdef readonly tuple query_gte
-
     def __init__(self, **query):
         """
         Args:
@@ -350,8 +339,6 @@ cdef class And:
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
-    cdef readonly tuple predicates
-
     def __init__(self, *predicates):
         self.predicates = predicates
 
@@ -424,7 +411,6 @@ cdef class Or:
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
-    cdef readonly tuple predicates
 
     def __init__(self, *predicates):
         self.predicates = predicates
@@ -497,8 +483,6 @@ cdef class Not:
     """
     `Not` predicate.
     """
-    cdef readonly object predicate
-
     def __init__(self, predicate):
         self.predicate = predicate
 

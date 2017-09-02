@@ -9,6 +9,12 @@ from cpython.pystate cimport PyThreadState_Get
 from ._event cimport Event
 from ._predicates cimport When
 from ._predicates cimport fast_When_call
+from ._predicates cimport And
+from ._predicates cimport fast_And_call
+from ._predicates cimport Or
+from ._predicates cimport fast_Or_call
+from ._predicates cimport Not
+from ._predicates cimport fast_Not_call
 
 cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
@@ -23,6 +29,12 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     handler = self.handler
     if type(handler) is When:
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    if type(handler) is And:
+        fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    if type(handler) is Or:
+        fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    if type(handler) is Not:
+        fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif handler is not None:
         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
 
