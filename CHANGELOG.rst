@@ -2,7 +2,7 @@
 Changelog
 =========
 
-1.5.0 (2017-09-02)
+2.0.0 (2017-09-02)
 ------------------
 
 * Added the ``Event.count`` and ``Event.calls`` attributes.
@@ -11,7 +11,7 @@ Changelog
 * Added a convenience ``hunter.wrap`` decorator to start tracing around a function.
 * Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
-* Changed the default action to ``CallPrinter``.
+* Changed the default action to ``CallPrinter``. You'll need to use ``action=CodePrinter`` if you want the old output.
 
 1.4.1 (2016-09-24)
 ------------------
