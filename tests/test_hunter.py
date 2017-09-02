@@ -929,8 +929,8 @@ def tracer_impl(request):
 
 def _bulky_func_that_use_stdlib():
     import difflib
-    a = list(map(str, range(2000)))
-    b = list(map(str, range(0, 2000, 2)))
+    a = list(map(str, range(500)))
+    b = list(map(str, range(0, 500, 2)))
     list(difflib.unified_diff(a, b, 'a', 'b'))
 
 
