@@ -129,7 +129,7 @@ def deactivate():
     stop()
 
 
-parser = argparse.ArgumentParser(description='Connect to a manhole.')
+parser = argparse.ArgumentParser(description='Trace a process.')
 parser.add_argument('-p', '--pid', metavar='PID', type=int, required=True,
                     help='A numerical process id, or a path in the form: /tmp/manhole-1234')
 parser.add_argument('options', metavar='OPTIONS', nargs='*')
