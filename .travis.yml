@@ -1,5 +1,5 @@
 language: python
-sudo: false
+sudo: true
 cache: pip
 addons:
   apt:
@@ -92,6 +92,7 @@ before_install:
   - python --version
   - uname -a
   - lsb_release -a
+  - sudo sysctl -w kernel.yama.ptrace_scope=0
 install:
   - pip install tox
   - virtualenv --version
