@@ -37,6 +37,6 @@ cdef class When:
         readonly tuple actions
 
 cdef fast_When_call(When self, event)
-cdef fast_And_call(When self, event)
-cdef fast_Or_call(When self, event)
-cdef fast_Not_call(When self, event)
+cdef fast_And_call(And self, event)
+cdef fast_Or_call(Or self, event)
+cdef fast_Not_call(Not self, event)
