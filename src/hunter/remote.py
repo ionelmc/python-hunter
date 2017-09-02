@@ -8,6 +8,7 @@ import signal
 import socket
 import sys
 import time
+from contextlib import closing
 from contextlib import contextmanager
 from subprocess import check_call
 
@@ -55,12 +56,12 @@ def manhole_bootstrap(args, activation_payload, deactivation_payload):
     activation_payload = activation_payload.encode('utf-8')
     deactivation_payload = deactivation_payload.encode('utf-8')
 
-    with connect_manhole(args.pid, args.timeout, args.signal) as manhole:
+    with closing(connect_manhole(args.pid, args.timeout, args.signal)) as manhole:
         manhole.send(activation_payload)
     try:
         yield
     finally:
-        with connect_manhole(args.pid, args.timeout, args.signal) as manhole:
+        with closing(connect_manhole(args.pid, args.timeout, args.signal)) as manhole:
             manhole.send(deactivation_payload)
 
 
