@@ -227,5 +227,3 @@ def wrap(function_to_trace=None, **trace_options):
         return tracing_decorator
     else:
         return tracing_decorator(function_to_trace)
-
-
