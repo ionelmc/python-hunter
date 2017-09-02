@@ -1,8 +1,8 @@
 import os
+import platform
 import signal
 import sys
 
-import platform
 import process_tests
 import pytest
 
