@@ -23,6 +23,7 @@ from hunter import Q
 from hunter import Query
 from hunter import VarsPrinter
 from hunter import When
+from hunter.exceptions import BadPredicateComposition
 
 try:
     from cStringIO import StringIO
@@ -871,7 +872,9 @@ def test_predicate_bad_query(expr, exc_type):
 
 def test_predicate_when():
     called = []
-    assert When(Q(module=1), lambda ev: called.append(ev))({'module': 2}) == False
+    assert When(Q(module=1), lambda ev: called.append(ev))({'module': 2}) == True
+    assert called == []
+    assert (Q(module=1) & When(Q(module=1), lambda ev: called.append(ev)))({'module': 2}) == False
     assert called == []
 
     assert When(Q(module=1), lambda ev: called.append(ev))({'module': 1}) == True
@@ -881,21 +884,26 @@ def test_predicate_when():
     assert Q(module=1, action=lambda ev: called.append(ev))({'module': 1}) == True
     assert called == [{'module': 1}]
 
+    with pytest.raises(BadPredicateComposition):
+        Q(module=1, action=lambda ev: called[0].append(ev)) | Q(module=2, action=lambda ev: called[1].append(ev))
+
     called = [[], []]
     predicate = (
-        Q(module=1, action=lambda ev: called[0].append(ev)) |
-        Q(module=2, action=lambda ev: called[1].append(ev))
+        Q(lambda ev: called[0].append(ev) or True, module=1) |
+        Q(lambda ev: called[1].append(ev) or True, module=2)
     )
+    print(predicate)
     assert predicate({'module': 1}) == True
     assert called == [[{'module': 1}], []]
 
+    called = [[], []]
     assert predicate({'module': 2}) == True
-    assert called == [[{'module': 1}], [{'module': 2}]]
+    assert called == [[{'module': 2}], [{'module': 2}]]
 
     called = [[], []]
     predicate = (
-        Q(module=1, action=lambda ev: called[0].append(ev)) &
-        Q(function=2, action=lambda ev: called[1].append(ev))
+        Q(lambda ev: called[0].append(ev) or True, module=1) &
+        Q(lambda ev: called[1].append(ev) or True, function=2)
     )
     assert predicate({'module': 2}) == False
     assert called == [[], []]

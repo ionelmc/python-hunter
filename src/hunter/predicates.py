@@ -9,6 +9,7 @@ from six import string_types
 
 from .actions import Action
 from .event import Event
+from .exceptions import BadPredicateComposition
 
 ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_') and i not in ('tracer', 'thread'))
 ALLOWED_OPERATORS = (
@@ -215,6 +216,8 @@ class When(Fields.condition.actions):
     Runs ``actions`` when ``condition(event)`` is ``True``.
 
     Actions take a single ``event`` argument.
+    
+    Always returns ``True``.
     """
 
     def __init__(self, condition, *actions):
@@ -240,18 +243,13 @@ class When(Fields.condition.actions):
         if self.condition(event):
             for action in self.actions:
                 action(event)
-            return True
-        else:
-            return False
+        return True
 
     def __or__(self, other):
         return Or(self, other)
 
     def __and__(self, other):
         return And(self, other)
-
-    def __invert__(self):
-        return Not(self)
 
     __ror__ = __or__
     __rand__ = __and__
@@ -310,6 +308,10 @@ class Or(Fields.predicates):
     """
 
     def __init__(self, *predicates):
+        for predicate in predicates:
+            if isinstance(predicate, When):
+                raise BadPredicateComposition(predicate, "When predicate will always return True, "
+                                                         "therefore anything after this won't ever be called!")
         self.predicates = predicates
 
     def __str__(self):

@@ -2,7 +2,7 @@
 Changelog
 =========
 
-1.5.0 (2017-09-02)
+2.0.0 (2017-09-02)
 ------------------
 
 * Added the ``Event.count`` and ``Event.calls`` attributes.
@@ -12,6 +12,7 @@ Changelog
 * Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
 * Changed the default action to ``CallPrinter``.
+* Changed ``When`` predicate to always return ``True``.
 
 1.4.1 (2016-09-24)
 ------------------

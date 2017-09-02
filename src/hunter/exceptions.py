@@ -1,0 +1,2 @@
+class BadPredicateComposition(Exception):
+    pass

@@ -9,6 +9,7 @@ cimport cython
 from cpython.object cimport PyObject_RichCompare, Py_EQ, Py_NE
 
 from .actions import Action
+from .exceptions import BadPredicateComposition
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
@@ -253,8 +254,9 @@ cdef class When:
     Runs ``actions`` when ``condition(event)`` is ``True``.
 
     Actions take a single ``event`` argument.
+    
+    Always returns ``True``.
     """
-
     def __init__(self, condition, *actions):
         if not actions:
             raise TypeError("Must give at least one action.")
@@ -289,9 +291,6 @@ cdef class When:
 
     def __rand__(self, other):
         return And(self, other)
-
-    def __invert__(self):
-        return Not(self)
 
     def __richcmp__(self, other, int op):
         is_equal = (
@@ -331,7 +330,7 @@ cdef inline fast_When_call(When self, event):
         for action in self.actions:
             action(event)
 
-    return result
+    return True
 
 
 @cython.final
@@ -411,8 +410,11 @@ cdef class Or:
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
-
     def __init__(self, *predicates):
+        for predicate in predicates:
+            if isinstance(predicate, When):
+                raise BadPredicateComposition(predicate, "When predicate will always return True, "
+                                                         "therefore anything after this won't ever be called!")
         self.predicates = predicates
 
     def __str__(self):
