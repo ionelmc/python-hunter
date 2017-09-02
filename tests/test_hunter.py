@@ -83,7 +83,7 @@ def _get_func_spec(func):
 def test_pth_activation():
     module_name = os.path.__name__
     expected_module = "{0}.py".format(module_name)
-    hunter_env = "module={!r},function=\"join\"".format(module_name)
+    hunter_env = "action=CodePrinter,module={!r},function=\"join\"".format(module_name)
     func_spec = _get_func_spec(os.path.join)
     expected_call = "call      def join{0}:".format(func_spec)
 
@@ -109,7 +109,7 @@ def test_pth_sample4():
 
 
 def test_pth_sample2(LineMatcher):
-    env = dict(os.environ, PYTHONHUNTER="module='__main__'")
+    env = dict(os.environ, PYTHONHUNTER="module='__main__',action=CodePrinter")
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
@@ -476,11 +476,11 @@ def test_trace_merge():
 def test_trace_api_expansion():
     # simple use
     with trace(function="foobar") as t:
-        assert t.handler == When(Q(function="foobar"), CodePrinter)
+        assert t.handler == When(Q(function="foobar"), CallPrinter)
 
     # "or" by expression
     with trace(module="foo", function="foobar") as t:
-        assert t.handler == When(Q(module="foo", function="foobar"), CodePrinter)
+        assert t.handler == When(Q(module="foo", function="foobar"), CallPrinter)
 
     # pdb.set_trace
     with trace(function="foobar", action=Debugger) as t:
@@ -495,27 +495,27 @@ def test_trace_api_expansion():
         assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), Debugger),
             Q(module="foo")
-        ), CodePrinter))
+        ), CallPrinter))
 
     # dumping variables from stack
     with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
         assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar")),
             Q(module="foo"),
-        ), CodePrinter))
+        ), CallPrinter))
 
     with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
         assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
             Q(module="foo"),
-        ), CodePrinter))
+        ), CallPrinter))
 
     # multiple actions
     with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
         assert str(t.handler) == str(When(And(
             When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
             Q(module="foo"),
-        ), CodePrinter))
+        ), CallPrinter))
 
 
 def test_locals():

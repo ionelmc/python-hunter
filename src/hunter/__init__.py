@@ -143,7 +143,7 @@ class Stop(Action):
 
 def _prepare_predicate(*predicates, **options):
     if "action" not in options and "actions" not in options:
-        options["action"] = CodePrinter
+        options["action"] = CallPrinter
 
     return Q(*predicates, **options)
 

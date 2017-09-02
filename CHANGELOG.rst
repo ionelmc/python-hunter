@@ -11,6 +11,7 @@ Changelog
 * Added a convenience ``hunter.wrap`` decorator to start tracing around a function.
 * Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
+* Changed the default action to ``CallPrinter``.
 
 1.4.1 (2016-09-24)
 ------------------
