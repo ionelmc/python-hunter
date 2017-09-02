@@ -82,8 +82,7 @@ Overview
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
 nefarious purposes. It has a Python API, terminal activation (see `Environment variable activation
-<env-var-activation_>`_). and supports tracing other processes (via the ``hunter-trace`` bin, in similar fashion
-to ``strace``).
+<env-var-activation_>`_). and supports tracing other processes (see `Tracing processes <remote-tracing>`_).
 
 * Free software: BSD license
 
@@ -301,6 +300,27 @@ We get:
 In a terminal it would look like:
 
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/tree-trace.png
+
+.. _remote-tracing:
+
+Tracing processes
+-----------------
+
+In similar fashion to ``strace`` Hunter can trace other processes, eg::
+
+    hunter-trace --gdb -p 123
+
+If you wanna play it safe (no messy GDB) then ``pip install 'hunter[remote]'`` and add this in your code::
+
+    from hunter import remote
+    remote.install()
+
+Then you can do::
+
+    hunter-trace -p 123
+
+See `docs on the remote feature <https://python-hunter.readthedocs.org/en/latest/remote.html>`_.
+
 
 .. _env-var-activation:
 
