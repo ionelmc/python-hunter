@@ -81,8 +81,9 @@ Overview
 .. end-badges
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
-nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation
-<env-var-activation_>`_).
+nefarious purposes. It has a Python API, terminal activation (see `Environment variable activation
+<env-var-activation_>`_). and supports tracing other processes (via the ``hunter-trace`` bin, in similar fashion
+to ``strace``).
 
 * Free software: BSD license
 
@@ -379,7 +380,7 @@ In contrast, Hunter is very simple:
 Why not pytrace?
 ----------------
 
-`Pytrace <https://pypi.python.org/pypi/pytrace>`_ is another tracer tool. It seems quite similar to Smiley - it uses a sqlite 
+`Pytrace <https://pypi.python.org/pypi/pytrace>`_ is another tracer tool. It seems quite similar to Smiley - it uses a sqlite
 database for the events, threads and IPC.
 
 TODO: Expand this.

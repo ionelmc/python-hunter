@@ -8,6 +8,7 @@ Contents
    readme
    installation
    introduction
+   remote
    cookbook
    reference
    contributing
