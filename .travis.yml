@@ -5,6 +5,8 @@ env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
+    - SETUPPY_CFLAGS=-DCYTHON_TRACE=1
+    - PYTEST_ADDOPTS=--benchmark-disable
   matrix:
     - TOXENV=check
     - TOXENV=docs
