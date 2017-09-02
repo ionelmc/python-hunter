@@ -14,7 +14,7 @@ def test_manhole():
     with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
 
-            process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal Signals.SIGURG')
+            process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
 
             with process_tests.TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer,\
                  process_tests.dump_on_error(tracer.read):
@@ -34,7 +34,7 @@ def test_manhole_clean_exit():
     with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
 
-            process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal Signals.SIGURG')
+            process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
 
             with process_tests.TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer,\
                  process_tests.dump_on_error(tracer.read):
