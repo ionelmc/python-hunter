@@ -711,7 +711,8 @@ def test_debugger(LineMatcher):
         lambda event: event.locals.get("node") == "Foobar",
         module="test_hunter",
         function="foo",
-        actions=[VarsPrinter("a", "node", "foo", "test_debugger", globals=True, stream=out),
+        actions=[CodePrinter,
+                 VarsPrinter("a", "node", "foo", "test_debugger", globals=True, stream=out),
                  Debugger(klass=FakePDB, foobar=2)]
     ):
         def foo():
