@@ -29,12 +29,12 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     handler = self.handler
     if type(handler) is When:
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
-    if type(handler) is And:
-        fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
-    if type(handler) is Or:
-        fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
-    if type(handler) is Not:
-        fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    elif type(handler) is And:
+        fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    elif type(handler) is Or:
+        fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    elif type(handler) is Not:
+        fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif handler is not None:
         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
 

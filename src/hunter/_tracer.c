@@ -1155,9 +1155,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
 
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
-
 /* PyCFunctionFastCall.proto */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
@@ -1195,6 +1192,9 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
     Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 /* PyObjectCallNoArg.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1644,7 +1644,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     handler = self.handler
  *     if type(handler) is When:             # <<<<<<<<<<<<<<
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is And:
+ *     elif type(handler) is And:
  */
   __Pyx_TraceLine(30,0,__PYX_ERR(0, 30, __pyx_L1_error))
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_handler)) == ((PyObject *)__pyx_ptype_6hunter_11_predicates_When));
@@ -1655,8 +1655,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     handler = self.handler
  *     if type(handler) is When:
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
- *     if type(handler) is And:
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is And:
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  */
     __Pyx_TraceLine(31,0,__PYX_ERR(0, 31, __pyx_L1_error))
     if (unlikely(__pyx_v_6hunter_7_tracer_kind_names == Py_None)) {
@@ -1699,16 +1699,17 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     handler = self.handler
  *     if type(handler) is When:             # <<<<<<<<<<<<<<
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is And:
+ *     elif type(handler) is And:
  */
+    goto __pyx_L4;
   }
 
   /* "hunter/_tracer.pyx":32
  *     if type(handler) is When:
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is And:             # <<<<<<<<<<<<<<
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Or:
+ *     elif type(handler) is And:             # <<<<<<<<<<<<<<
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:
  */
   __Pyx_TraceLine(32,0,__PYX_ERR(0, 32, __pyx_L1_error))
   __pyx_t_4 = (((PyObject *)Py_TYPE(__pyx_v_handler)) == ((PyObject *)__pyx_ptype_6hunter_11_predicates_And));
@@ -1717,13 +1718,12 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
 
     /* "hunter/_tracer.pyx":33
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is And:
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
- *     if type(handler) is Or:
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is And:
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
+ *     elif type(handler) is Or:
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  */
     __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
-    if (!(likely(((__pyx_v_handler) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_handler, __pyx_ptype_6hunter_11_predicates_And))))) __PYX_ERR(0, 33, __pyx_L1_error)
     if (unlikely(__pyx_v_6hunter_7_tracer_kind_names == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 33, __pyx_L1_error)
@@ -1754,7 +1754,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __pyx_f_6hunter_11_predicates_fast_And_call(((struct __pyx_obj_6hunter_11_predicates_And *)((struct __pyx_obj_6hunter_11_predicates_When *)__pyx_v_handler)), __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6hunter_11_predicates_fast_And_call(((struct __pyx_obj_6hunter_11_predicates_And *)__pyx_v_handler), __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1762,18 +1762,19 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     /* "hunter/_tracer.pyx":32
  *     if type(handler) is When:
  *         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is And:             # <<<<<<<<<<<<<<
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Or:
+ *     elif type(handler) is And:             # <<<<<<<<<<<<<<
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:
  */
+    goto __pyx_L4;
   }
 
   /* "hunter/_tracer.pyx":34
- *     if type(handler) is And:
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Or:             # <<<<<<<<<<<<<<
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Not:
+ *     elif type(handler) is And:
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:             # <<<<<<<<<<<<<<
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:
  */
   __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_handler)) == ((PyObject *)__pyx_ptype_6hunter_11_predicates_Or));
@@ -1781,14 +1782,13 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   if (__pyx_t_4) {
 
     /* "hunter/_tracer.pyx":35
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Or:
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
- *     if type(handler) is Not:
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
+ *     elif type(handler) is Not:
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  */
     __Pyx_TraceLine(35,0,__PYX_ERR(0, 35, __pyx_L1_error))
-    if (!(likely(((__pyx_v_handler) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_handler, __pyx_ptype_6hunter_11_predicates_Or))))) __PYX_ERR(0, 35, __pyx_L1_error)
     if (unlikely(__pyx_v_6hunter_7_tracer_kind_names == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 35, __pyx_L1_error)
@@ -1819,25 +1819,26 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __pyx_f_6hunter_11_predicates_fast_Or_call(((struct __pyx_obj_6hunter_11_predicates_Or *)((struct __pyx_obj_6hunter_11_predicates_When *)__pyx_v_handler)), __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_6 = __pyx_f_6hunter_11_predicates_fast_Or_call(((struct __pyx_obj_6hunter_11_predicates_Or *)__pyx_v_handler), __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "hunter/_tracer.pyx":34
- *     if type(handler) is And:
- *         fast_And_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Or:             # <<<<<<<<<<<<<<
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Not:
+ *     elif type(handler) is And:
+ *         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:             # <<<<<<<<<<<<<<
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:
  */
+    goto __pyx_L4;
   }
 
   /* "hunter/_tracer.pyx":36
- *     if type(handler) is Or:
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Not:             # <<<<<<<<<<<<<<
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:             # <<<<<<<<<<<<<<
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  *     elif handler is not None:
  */
   __Pyx_TraceLine(36,0,__PYX_ERR(0, 36, __pyx_L1_error))
@@ -1846,14 +1847,13 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   if (__pyx_t_1) {
 
     /* "hunter/_tracer.pyx":37
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Not:
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
  *     elif handler is not None:
  *         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  */
     __Pyx_TraceLine(37,0,__PYX_ERR(0, 37, __pyx_L1_error))
-    if (!(likely(((__pyx_v_handler) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_handler, __pyx_ptype_6hunter_11_predicates_Not))))) __PYX_ERR(0, 37, __pyx_L1_error)
     if (unlikely(__pyx_v_6hunter_7_tracer_kind_names == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(0, 37, __pyx_L1_error)
@@ -1884,24 +1884,24 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __pyx_f_6hunter_11_predicates_fast_Not_call(((struct __pyx_obj_6hunter_11_predicates_Not *)((struct __pyx_obj_6hunter_11_predicates_When *)__pyx_v_handler)), __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6hunter_11_predicates_fast_Not_call(((struct __pyx_obj_6hunter_11_predicates_Not *)__pyx_v_handler), __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "hunter/_tracer.pyx":36
- *     if type(handler) is Or:
- *         fast_Or_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
- *     if type(handler) is Not:             # <<<<<<<<<<<<<<
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Or:
+ *         fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:             # <<<<<<<<<<<<<<
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  *     elif handler is not None:
  */
-    goto __pyx_L7;
+    goto __pyx_L4;
   }
 
   /* "hunter/_tracer.pyx":38
- *     if type(handler) is Not:
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  *     elif handler is not None:             # <<<<<<<<<<<<<<
  *         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  * 
@@ -1912,7 +1912,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   if (__pyx_t_4) {
 
     /* "hunter/_tracer.pyx":39
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  *     elif handler is not None:
  *         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))             # <<<<<<<<<<<<<<
  * 
@@ -1999,14 +1999,14 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "hunter/_tracer.pyx":38
- *     if type(handler) is Not:
- *         fast_Not_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+ *     elif type(handler) is Not:
+ *         fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  *     elif handler is not None:             # <<<<<<<<<<<<<<
  *         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
  * 
  */
   }
-  __pyx_L7:;
+  __pyx_L4:;
 
   /* "hunter/_tracer.pyx":41
  *         handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
@@ -4655,19 +4655,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 }
 #endif
 
-/* ExtTypeTest */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (likely(PyObject_TypeCheck(obj, type)))
-        return 1;
-    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
-                 Py_TYPE(obj)->tp_name, type->tp_name);
-    return 0;
-}
-
 /* PyCFunctionFastCall */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
@@ -5011,6 +4998,19 @@ static void __Pyx_RaiseArgtupleInvalid(
                  "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
                  func_name, more_or_less, num_expected,
                  (num_expected == 1) ? "" : "s", num_found);
+}
+
+/* ExtTypeTest */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(PyObject_TypeCheck(obj, type)))
+        return 1;
+    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
+                 Py_TYPE(obj)->tp_name, type->tp_name);
+    return 0;
 }
 
 /* PyObjectCallNoArg */
