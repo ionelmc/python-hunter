@@ -97,4 +97,3 @@ def test_gdb_clean_exit():
                                            'Doing stuff',
                                            'Doing stuff',
                                            'Doing stuff')
-
