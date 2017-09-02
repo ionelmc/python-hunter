@@ -929,7 +929,9 @@ def tracer_impl(request):
 
 def _bulky_func_that_use_stdlib():
     import difflib
-    list(difflib.unified_diff(map(str, range(2000)), map(str, range(0, 2000, 2)), 'a', 'b'))
+    a = list(map(str, range(2000)))
+    b = list(map(str, range(0, 2000, 2)))
+    list(difflib.unified_diff(a, b, 'a', 'b'))
 
 
 def test_perf_filter(tracer_impl, benchmark):
