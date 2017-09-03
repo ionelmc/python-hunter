@@ -92,6 +92,8 @@ class OptionalBuildExt(build_ext):
     """Allow the building of C extensions to fail."""
     def run(self):
         try:
+            if 'SETUPPY_NOEXT' in os.environ:
+                raise Exception("C extensions disabled (SETUPPY_NOEXT)!")
             build_ext.run(self)
         except Exception as e:
             self._unavailable(e)
