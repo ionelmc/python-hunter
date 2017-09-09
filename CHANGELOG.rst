@@ -2,6 +2,11 @@
 Changelog
 =========
 
+2.0.1 (2017-09-09)
+------------------
+
+* Now ``Py_AddPendingCall`` is used instead of acquiring the GIL (when using GDB).
+
 2.0.0 (2017-09-02)
 ------------------
 
