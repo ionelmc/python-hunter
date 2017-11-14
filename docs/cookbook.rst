@@ -64,7 +64,7 @@ the code that does something with a ``build_dir`` property:
 
     source_contains=".build_dir"
 
-You could even extend that a bit to dump some variables::
+You could even extend that a bit to dump some variables:
 
 .. sourcecode:: python
 
