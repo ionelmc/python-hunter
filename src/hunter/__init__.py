@@ -160,9 +160,12 @@ def trace(*predicates, **options):
         *predicates (callables): Runs actions if **all** of the given predicates match.
     Keyword Args:
         clear_env_var: Disables tracing in subprocess. Default: ``False``.
-        threading_support: Enable tracing *new* threads. Default: ``False``.
+        threading_support: Enable tracing *new* threads. Default: ``False``. You can also use
+        ``threads_support``, ``thread_support``, ``threadingsupport``, ``threadssupport``, ``threadsupport``,
+        ``threading``, ``threads`` or ``thread``.
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
+        **kwargs: for convenience you can also pass anything that you'd pass to :ref:`hunter.Q`
     """
     global _last_tracer
 

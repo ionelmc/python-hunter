@@ -8,7 +8,7 @@ Reference
 Functions
 ---------
 
-.. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[])
+.. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[], **kwargs)
 
 .. autofunction:: hunter.stop()
 

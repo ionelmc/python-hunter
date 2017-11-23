@@ -12,7 +12,7 @@ from .actions import Action
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
-    'fullsource', 'tracer', 'threadname', 'threadid', 'depth', 'calls',
+    'fullsource', 'threadname', 'threadid', 'depth', 'calls',
 )
 cdef tuple ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex',
@@ -33,8 +33,24 @@ cdef class Query:
         Args:
             query: criteria to match on.
 
-                Accepted arguments: ``arg``, ``code``, ``filename``, ``frame``, ``fullsource``, ``function``,
-                ``globals``, ``kind``, ``lineno``, ``locals``, ``module``, ``source``, ``stdlib``, ``tracer``.
+                Accepted arguments:
+                ``arg``,
+                ``calls``,
+                ``code``,
+                ``depth``,
+                ``filename``,
+                ``frame``,
+                ``fullsource``,
+                ``function``,
+                ``globals``,
+                ``kind``,
+                ``lineno``,
+                ``locals``,
+                ``module``,
+                ``source``,
+                ``stdlib``,
+                ``threadid``,
+                ``threadname``.
         """
         query_eq = {}
         query_startswith = {}

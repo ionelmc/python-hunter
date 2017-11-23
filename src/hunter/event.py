@@ -51,11 +51,23 @@ class Event(Fields.kind.depth.function.module.filename):
     calls = None
 
     def __init__(self, frame, kind, arg, tracer):
+        #: The original Frame object.
         self.frame = frame
+
+        #: The kind of the event, could be one of 'call', 'line', 'return', 'exception',
+        #: 'c_call', 'c_return', or 'c_exception'.
         self.kind = kind
+
+        #: A value that depends on ``kind``
         self.arg = arg
+
+        #: Tracing depth (increases on calls, decreases on returns)
         self.depth = tracer.depth
+
+        #: A counter for total number of calls up to this Event
         self.calls = tracer.calls
+
+        #: A reference to the Tracer object
         self.tracer = tracer
 
     @cached_property
