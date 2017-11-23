@@ -24,6 +24,9 @@ You would run the application (in Bash) like::
 
     PYTHONHUNTER='~Q(kind="line"),~Q(module_in=["six","pkg_resources"]),~Q(filename=""),stdlib=False' myapp (or python myapp.py)
 
+
+Additionally you can also add a depth filter (eg: ``depth_lt=10``) to avoid too deep output.
+
 Packaging
 =========
 
