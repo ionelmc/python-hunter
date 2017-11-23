@@ -20,7 +20,9 @@ In this situation, you could use something like
 * ``~Q(filename="")`` is necessary for filtering out events that come from code without a source (like the interpreter
   bootstrap stuff).
 
-You would run the application (in Bash) like::
+You would run the application (in Bash) like:
+
+.. sourcecode:: shell
 
     PYTHONHUNTER='~Q(kind="line"),~Q(module_in=["six","pkg_resources"]),~Q(filename=""),stdlib=False' myapp (or python myapp.py)
 
