@@ -14,6 +14,8 @@ Functions
 
 .. autofunction:: hunter.Q
 
+.. autofunction:: hunter.wrap
+
 Predicates
 ----------
 
