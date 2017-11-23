@@ -6,6 +6,24 @@ Cookbook
 
     When in doubt, use Hunter.
 
+Walkthrough
+===========
+
+Sometimes you just want to get an overview of an unfamiliar application code, eg: only see calls/returns/exceptions.
+
+In this situation, you could use something like
+``~Q(kind="line"),~Q(module_in=["six","pkg_resources"]),~Q(filename=""),stdlib=False``. Lets break that down:
+
+* ``~Q(kind="line")`` means skip line events (``~`` is a negation of the filter).
+* ``stdlib=False`` means we don't want to see anything from stdlib.
+* ``~Q(module_in=["six","pkg_resources")]`` means we're tired of seeing stuff from those modules in site-packages.
+* ``~Q(filename="")`` is necessary for filtering out events that come from code without a source (like the interpreter
+  bootstrap stuff).
+
+You would run the application (in Bash) like::
+
+    PYTHONHUNTER='~Q(kind="line"),~Q(module_in=["six","pkg_resources"]),~Q(filename=""),stdlib=False' myapp (or python myapp.py)
+
 Packaging
 =========
 
