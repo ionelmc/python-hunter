@@ -583,6 +583,41 @@ def test_callprinter(LineMatcher):
     ])
 
 
+def test_callprinter_indent(LineMatcher):
+    from sample6 import bar
+    out = StringIO()
+    with trace(action=CallPrinter(stream=out)):
+        bar()
+
+    lm = LineMatcher(out.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*sample6.py:1     call      => bar()",
+        "*sample6.py:2     line         foo()",
+        "*sample6.py:5     call         => foo()",
+        "*sample6.py:6     line            try:",
+        "*sample6.py:7     line            asdf()",
+        "*sample6.py:16    call            => asdf()",
+        "*sample6.py:17    line               raise Exception()",
+        "*sample6.py:17    exception        ! asdf: (<*Exception'>, Exception(), <traceback object at *>)",
+        "*sample6.py:17    return          <= asdf: None",
+        "*sample6.py:7     exception     ! foo: (<*Exception'>, Exception(), <traceback object at *>)",
+        "*sample6.py:8     line            except:",
+        "*sample6.py:9     line            pass",
+        "*sample6.py:10    line            try:",
+        "*sample6.py:11    line            asdf()",
+        "*sample6.py:16    call            => asdf()",
+        "*sample6.py:17    line               raise Exception()",
+        "*sample6.py:17    exception        ! asdf: (<*Exception'>, Exception(), <traceback object at *>)",
+        "*sample6.py:17    return          <= asdf: None",
+        "*sample6.py:11    exception     ! foo: (<*Exception'>, Exception(), <traceback object at *>)",
+        "*sample6.py:12    line            except:",
+        "*sample6.py:13    line            pass",
+        "*sample6.py:13    return       <= foo: None",
+        "*sample6.py:2     return    <= bar: None",
+
+    ])
+
+
 def test_source(LineMatcher):
     calls = []
     with trace(action=lambda event: calls.append(event.source)):
