@@ -2,6 +2,13 @@
 Changelog
 =========
 
+2.0.2 (2017-11-24)
+------------------
+
+* Fixed indentation in ``CallPrinter`` action (shoudln't deindent on exception).
+* Fixed option filtering in Cython Query implementation (filtering on ``tracer`` was allowed by mistake).
+* Various fixes to docstrings and docs.
+
 2.0.1 (2017-09-09)
 ------------------
 
