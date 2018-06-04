@@ -102,17 +102,58 @@ https://python-hunter.readthedocs.org/
 Overview
 ========
 
-The default action is to just print the code being executed. Example:
+Basic use involves passing various filters to the ``trace`` option. An example:
 
 .. sourcecode:: python
 
     import hunter
-    hunter.trace(module='posixpath')
+    hunter.trace(module='posixpath', action=hunter.CallPrinter)
 
     import os
     os.path.join('a', 'b')
 
-Would result in:
+That would result in:
+
+.. sourcecode:: pycon
+
+    >>> os.path.join('a', 'b')
+             /usr/lib/python3.5/posixpath.py:71    call      => join(a='a')
+             /usr/lib/python3.5/posixpath.py:76    line         sep = _get_sep(a)
+             /usr/lib/python3.5/posixpath.py:39    call         => _get_sep(path='a')
+             /usr/lib/python3.5/posixpath.py:40    line            if isinstance(path, bytes):
+             /usr/lib/python3.5/posixpath.py:43    line            return '/'
+             /usr/lib/python3.5/posixpath.py:43    return       <= _get_sep: '/'
+             /usr/lib/python3.5/posixpath.py:77    line         path = a
+             /usr/lib/python3.5/posixpath.py:78    line         try:
+             /usr/lib/python3.5/posixpath.py:79    line         if not p:
+             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
+             /usr/lib/python3.5/posixpath.py:82    line         if b.startswith(sep):
+             /usr/lib/python3.5/posixpath.py:84    line         elif not path or path.endswith(sep):
+             /usr/lib/python3.5/posixpath.py:87    line         path += sep + b
+             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
+             /usr/lib/python3.5/posixpath.py:91    line         return path
+             /usr/lib/python3.5/posixpath.py:91    return    <= join: 'a/b'
+    'a/b'
+
+In a terminal it would look like:
+
+.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/code-trace.png
+
+
+Custom actions
+--------------
+
+Output format can be controlled with "actions". There's an alternative ``CodePrinter`` action that doesn't handle nesting (it was the default action until Hunter 2.0). Example:
+
+.. sourcecode:: python
+
+    import hunter
+    hunter.trace(module='posixpath', action=hunter.CodePrinter)
+
+    import os
+    os.path.join('a', 'b')
+
+That would result in:
 
 .. sourcecode:: pycon
 
@@ -141,62 +182,20 @@ Would result in:
 
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/simple-trace.png
 
-Custom actions
---------------
-
-The tracer allow custom actions like ``CallPrinter`` or ``VarsPrinter``.
-
-With ``CallPrinter`` (added in `hunter 1.2.0`, will be the default action in `2.0.2`):
-
-.. sourcecode:: python
-
-    import hunter
-    hunter.trace(module='posixpath', action=hunter.CallPrinter)
-
-    import os
-    os.path.join('a', 'b')
-
-Would result in:
-
-.. sourcecode:: pycon
-
-    >>> os.path.join('a', 'b')
-             /usr/lib/python3.5/posixpath.py:71    call      => join(a='a')
-             /usr/lib/python3.5/posixpath.py:76    line         sep = _get_sep(a)
-             /usr/lib/python3.5/posixpath.py:39    call         => _get_sep(path='a')
-             /usr/lib/python3.5/posixpath.py:40    line            if isinstance(path, bytes):
-             /usr/lib/python3.5/posixpath.py:43    line            return '/'
-             /usr/lib/python3.5/posixpath.py:43    return       <= _get_sep: '/'
-             /usr/lib/python3.5/posixpath.py:77    line         path = a
-             /usr/lib/python3.5/posixpath.py:78    line         try:
-             /usr/lib/python3.5/posixpath.py:79    line         if not p:
-             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
-             /usr/lib/python3.5/posixpath.py:82    line         if b.startswith(sep):
-             /usr/lib/python3.5/posixpath.py:84    line         elif not path or path.endswith(sep):
-             /usr/lib/python3.5/posixpath.py:87    line         path += sep + b
-             /usr/lib/python3.5/posixpath.py:81    line         for b in p:
-             /usr/lib/python3.5/posixpath.py:91    line         return path
-             /usr/lib/python3.5/posixpath.py:91    return    <= join: 'a/b'
-    'a/b'
-
-In a terminal it would look like:
-
-.. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/code-trace.png
-
 ------
 
-With ``VarsPrinter``:
+Another useful action is the ``VarsPrinter``:
 
 .. sourcecode:: python
 
     import hunter
-    # note that this kind of invocation will also use the default `CodePrinter`
+    # note that this kind of invocation will also use the default `CallPrinter` action
     hunter.trace(hunter.Q(module='posixpath', action=hunter.VarsPrinter('path')))
 
     import os
     os.path.join('a', 'b')
 
-Would result in:
+That would result in:
 
 .. sourcecode:: pycon
 
