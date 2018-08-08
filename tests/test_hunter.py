@@ -278,6 +278,39 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
+def test_tracing_reinstall(LineMatcher):
+    lines = StringIO()
+    with hunter.trace(CodePrinter(stream=lines)):
+        def foo():
+            a = 2
+            sys.settrace(sys.gettrace())
+            a = 3
+
+        def bar():
+            a = 1
+            foo()
+            a = 4
+
+        bar()
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*test_hunter.py:*   call              def bar():",
+        "*test_hunter.py:*   line                  a = 1",
+        "*test_hunter.py:*   line                  foo()",
+        "*test_hunter.py:*   call              def foo():",
+        "*test_hunter.py:*   line                  a = 2",
+        "*test_hunter.py:*   line                  sys.settrace(sys.gettrace())",
+        "*test_hunter.py:*   line                  a = 3",
+        "*test_hunter.py:*   return                a = 3",
+        "*                   ...       return value: None",
+        "*test_hunter.py:*   line                  a = 4",
+        "*test_hunter.py:*   return                a = 4",
+        "*                   ...       return value: None",
+
+    ])
+
+
 def test_mix_predicates_with_callables():
     hunter._prepare_predicate(Q(module=1) | Q(lambda: 2))
     hunter._prepare_predicate(Q(lambda: 2) | Q(module=1))
