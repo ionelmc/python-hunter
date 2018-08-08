@@ -3,7 +3,7 @@ import threading
 
 from cpython cimport pystate
 from cpython.ref cimport Py_INCREF
-from cpython.ref cimport Py_XDECREF
+from cpython.ref cimport Py_CLEAR
 from cpython.pystate cimport PyThreadState_Get
 
 from ._event cimport Event
@@ -21,10 +21,9 @@ cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exc
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
     if frame.f_trace is not <PyObject*> self:
-        junk = frame.f_trace
+        Py_CLEAR(frame.f_trace)
         Py_INCREF(self)
         frame.f_trace = <PyObject*> self
-        Py_XDECREF(junk)
 
     handler = self.handler
     if type(handler) is When:
