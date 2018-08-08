@@ -76,6 +76,18 @@ matrix:
     - python: '3.6'
       env:
         - TOXENV=py36-cython-nocov
+    - python: '3.7'
+      env:
+        - TOXENV=py37-pure-cover,report,coveralls,codecov
+    - python: '3.7'
+      env:
+        - TOXENV=py37-pure-nocov
+    - python: '3.7'
+      env:
+        - TOXENV=py37-cython-cover,report,coveralls,codecov
+    - python: '3.7'
+      env:
+        - TOXENV=py37-cython-nocov
     - python: 'pypy-5.4'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov
