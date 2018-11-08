@@ -54,7 +54,7 @@ cdef class Tracer:
         self.previous = None
         self._previousfunc = NULL
         self._threading_previous = None
-        self.threading_support = threading_support
+        self.threading_support = bool(threading_support)
         self.depth = 1
         self.calls = 0
 
