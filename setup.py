@@ -154,7 +154,6 @@ setup(
         'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
     ],
     install_requires=[
-        'fields>=4.0.0',
         'colorama',
         'six',
     ],

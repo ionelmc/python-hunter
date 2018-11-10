@@ -14,7 +14,6 @@ from colorama import Style
 from six import string_types
 
 from .util import rudimentary_repr
-from .util import Fields
 
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
@@ -50,7 +49,7 @@ class Action(object):
         raise NotImplementedError()
 
 
-class Debugger(Fields.klass.kwargs, Action):
+class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
@@ -78,7 +77,7 @@ class Manhole(Action):
 DEFAULT_STREAM = sys.stderr
 
 
-class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_alignment.repr_limit, Action):
+class ColorStreamAction(Action):
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -233,10 +232,6 @@ class CallPrinter(CodePrinter):
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
 
     .. versionadded:: 1.2.0
-
-    .. note::
-
-        This will be the default action in `hunter 2.0`.
     """
 
     def __init__(self, **options):
@@ -321,7 +316,7 @@ class CallPrinter(CodePrinter):
                 ))
 
 
-class VarsPrinter(Fields.names.globals.stream.filename_alignment, ColorStreamAction):
+class VarsPrinter(ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
 

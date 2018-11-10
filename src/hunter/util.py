@@ -1,6 +1,3 @@
-import fields
-
-Fields = fields.factory(fields.class_sealer, initializer=False, base=object)
 import io
 import types
 from collections import deque
