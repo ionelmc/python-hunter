@@ -13,6 +13,7 @@ from colorama import Fore
 from colorama import Style
 from six import string_types
 
+from .util import rudimentary_repr
 from .util import Fields
 
 EVENT_COLORS = {
@@ -87,12 +88,14 @@ class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_ali
                  force_colors=False,
                  filename_alignment=40,
                  thread_alignment=12,
-                 repr_limit=1024):
+                 repr_limit=1024,
+                 repr_unsafe=False):
         self.force_colors = force_colors
         self.stream = DEFAULT_STREAM if stream is None else stream
         self.filename_alignment = filename_alignment
         self.thread_alignment = thread_alignment
         self.repr_limit = repr_limit
+        self.repr_unsafe = repr_unsafe
 
     @property
     def stream(self):
@@ -118,11 +121,14 @@ class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_ali
             self.event_colors = NO_COLORS
             self.code_colors = NO_COLORS
 
-    def _safe_repr(self, obj):
+    def _safe_repr(self, obj, _builtin_names=dir(__builtins__)):
         limit = self.repr_limit
-
         try:
-            s = repr(obj)
+            if self.repr_unsafe:
+                s = repr(obj)
+            else:
+                s = rudimentary_repr(obj)
+
             s = s.replace('\n', r'\n')
             if len(s) > limit:
                 cutoff = limit // 2
@@ -131,6 +137,8 @@ class ColorStreamAction(Fields.stream.force_colors.filename_alignment.thread_ali
                 return s
         except Exception as exc:
             return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
+        else:
+            return "<{} object at 0x{continuation}[...]{reset} {}".format(s[:cutoff], s[-cutoff:], **self.event_colors)
 
 
 class CodePrinter(ColorStreamAction):
