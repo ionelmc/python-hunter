@@ -41,12 +41,15 @@ def rudimentary_repr(obj, maxdepth=3):
         else:
             return '[%s]' % ', '.join(rudimentary_repr(i) for i in obj)
     elif isinstance(obj, tuple):
-        if obj_type is not list:
-            return '%s(%s,)' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
+        if obj_type is not tuple:
+            return '%s(%s%s)' % (
+                obj_type.__name__,
+                ', '.join(rudimentary_repr(i, newdepth) for i in obj),
+                ',' if len(obj) == 1 else '')
         else:
-            return '(%s,)' % ', '.join(rudimentary_repr(i, newdepth) for i in obj)
+            return '(%s%s)' % (', '.join(rudimentary_repr(i, newdepth) for i in obj), ',' if len(obj) == 1 else '')
     elif isinstance(obj, set):
-        if obj_type is not list:
+        if obj_type is not set:
             return '%s({%s})' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
         else:
             return '{%s}' % ', '.join(rudimentary_repr(i, newdepth) for i in obj)
