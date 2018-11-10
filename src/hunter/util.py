@@ -57,11 +57,14 @@ def rudimentary_repr(obj, maxdepth=3):
         return '%s({%s})' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
     elif isinstance(obj, deque):
         return '%s([%s])' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
-    elif isinstance(obj, (types.ModuleType,
-                          types.FunctionType, types.MethodType,
-                          types.BuiltinFunctionType, types.BuiltinMethodType,
-                          io.IOBase)):
-        # these have a __dict__ but are safe to repr
+    elif isinstance(obj, BaseException):
+        return '%s(%s)' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj.args))
+    elif obj_type in (type, types.ModuleType,
+                      types.FunctionType, types.MethodType,
+                      types.BuiltinFunctionType, types.BuiltinMethodType,
+                      io.IOBase):
+        # hardcoded list of safe things. note that isinstance ain't used
+        # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
     elif not hasattr(obj, '__dict__'):
         # note that this could be `not hasattr(obj, '__dict__') and not hasattr(obj, '__slots__')`

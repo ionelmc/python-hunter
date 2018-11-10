@@ -408,7 +408,9 @@ def test_thread_filtering(LineMatcher, query):
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
     with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
-        class Bad(Exception):
+        class Bad:
+            __slots__ = []
+
             def __repr__(self):
                 raise RuntimeError("I'm a bad class!")
 
@@ -418,7 +420,7 @@ def test_tracing_printing_failures(LineMatcher):
 
         def b():
             x = Bad()
-            raise x
+            raise Exception(x)
 
         a()
         try:
@@ -427,8 +429,8 @@ def test_tracing_printing_failures(LineMatcher):
             pass
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        """*tests*test_hunter.py:* call              class Bad(Exception):""",
-        """*tests*test_hunter.py:* line              class Bad(Exception):""",
+        """*tests*test_hunter.py:* call              class Bad:""",
+        """*tests*test_hunter.py:* line              class Bad:""",
         """*tests*test_hunter.py:* line                  def __repr__(self):""",
         """*tests*test_hunter.py:* return                def __repr__(self):""",
         """* ...       return value: *""",
@@ -441,12 +443,12 @@ def test_tracing_printing_failures(LineMatcher):
         """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
         """*tests*test_hunter.py:* call              def b():""",
         """*tests*test_hunter.py:* line                  x = Bad()""",
-        """*tests*test_hunter.py:* line                  raise x""",
+        """*tests*test_hunter.py:* line                  raise Exception(x)""",
         """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
-        """*tests*test_hunter.py:* exception             raise x""",
+        """*tests*test_hunter.py:* exception             raise Exception(x)""",
         """* ...       exception value: !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
         """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
-        """*tests*test_hunter.py:* return                raise x""",
+        """*tests*test_hunter.py:* return                raise Exception(x)""",
         """* ...       return value: None""",
         """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
     ])
@@ -501,9 +503,9 @@ def test_trace_merge():
     with hunter.trace(function="a"):
         with hunter.trace(function="b"):
             with hunter.trace(function="c"):
-                assert sys.gettrace().handler == When(Q(function="c"), CodePrinter)
-            assert sys.gettrace().handler == When(Q(function="b"), CodePrinter)
-        assert sys.gettrace().handler == When(Q(function="a"), CodePrinter)
+                assert sys.gettrace().handler == When(Q(function="c"), CallPrinter)
+            assert sys.gettrace().handler == When(Q(function="b"), CallPrinter)
+        assert sys.gettrace().handler == When(Q(function="a"), CallPrinter)
 
 
 def test_trace_api_expansion():

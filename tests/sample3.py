@@ -1,4 +1,4 @@
-class Bad(Exception):
+class Bad:
     __slots__ = []
 
     def __repr__(self):
@@ -9,9 +9,10 @@ def a():
     x = Bad()
     return x
 
+
 def b():
     x = Bad()
-    raise x
+    raise Exception(x)
 
 a()
 try:
