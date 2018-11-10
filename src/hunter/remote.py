@@ -70,11 +70,11 @@ def gdb_bootstrap(args, activation_payload, deactivation_payload):
     print('WARNING: Using GDB may deadlock the process or create unpredictable results!')
     activation_command = [
         'gdb', '-p', str(args.pid), '-batch',
-        '-ex', 'call Py_AddPendingCall(PyRun_SimpleString, %s)' % json.dumps(activation_payload),
+        '-ex', 'call (void)Py_AddPendingCall(PyRun_SimpleString, %s)' % json.dumps(activation_payload),
     ]
     deactivation_command = [
         'gdb', '-p', str(args.pid), '-batch',
-        '-ex', 'call Py_AddPendingCall(PyRun_SimpleString, %s)' % json.dumps(deactivation_payload),
+        '-ex', 'call (void)Py_AddPendingCall(PyRun_SimpleString, %s)' % json.dumps(deactivation_payload),
     ]
     check_call(activation_command)
     try:
