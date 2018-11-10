@@ -120,7 +120,7 @@ class ColorStreamAction(Action):
             self.event_colors = NO_COLORS
             self.code_colors = NO_COLORS
 
-    def _safe_repr(self, obj, _builtin_names=dir(__builtins__)):
+    def _safe_repr(self, obj):
         limit = self.repr_limit
         try:
             if self.repr_unsafe:
@@ -357,15 +357,6 @@ class VarsPrinter(ColorStreamAction):
         for node in ast.walk(ast.parse(code)):
             if isinstance(node, ast.Name):
                 yield node.id
-
-    def _safe_eval(self, code, event):
-        """
-        Try to evaluate the given code on the given frame. If failure occurs, returns some ugly string with exception.
-        """
-        try:
-            return eval(code, event.globals if self.globals else {}, event.locals)
-        except Exception as exc:
-            return "{internal-failure}FAILED EVAL: {internal-detail}{!r}".format(exc, **self.event_colors)
 
     def __call__(self, event):
         """
