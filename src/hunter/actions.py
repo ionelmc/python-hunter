@@ -15,6 +15,11 @@ from six import string_types
 
 from .util import rudimentary_repr
 
+try:
+    from threading import get_ident
+except ImportError:
+    from thread import get_ident
+
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
     'normal': Style.NORMAL,
@@ -217,7 +222,7 @@ class CodePrinter(ColorStreamAction):
 
     def __call__(self, event,
                  sep=os.path.sep, join=os.path.join,
-                 get_ident=threading.get_ident,
+                 get_ident=get_ident,
                  current_thread=threading.current_thread):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
