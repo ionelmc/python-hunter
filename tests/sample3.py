@@ -1,4 +1,6 @@
 class Bad(Exception):
+    __slots__ = []
+
     def __repr__(self):
         raise RuntimeError("I'm a bad class!")
 
