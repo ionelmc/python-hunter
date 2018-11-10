@@ -150,6 +150,10 @@ class CodePrinter(ColorStreamAction):
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
     """
+    def __init__(self, **options):
+        super(CodePrinter, self).__init__(**options)
+        self.seen_threads = set()
+
     def _safe_source(self, event):
         try:
             lines = event._raw_fullsource.rstrip().splitlines()
@@ -168,20 +172,20 @@ class CodePrinter(ColorStreamAction):
             filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
         return filename
 
-    def __call__(self, event, sep=os.path.sep, join=os.path.join):
+    def __call__(self, event,
+                 sep=os.path.sep, join=os.path.join,
+                 get_ident=threading.get_ident,
+                 current_thread=threading.current_thread):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
-
-        # context = event.tracer
-        # alignment = context.filename_alignment = max(
-        #     getattr(context, 'filename_alignment', 5),
-        #     len(filename)
-        # )
         lines = self._safe_source(event)
-        thread_name = threading.current_thread().name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else ''
+        self.seen_threads.add(get_ident())
+        threading_support = event.tracer.threading_support or len(self.seen_threads) > 1
+
+        thread_name = current_thread().name if threading_support else ''
+        thread_align = self.thread_alignment if threading_support else ''
 
         self.stream.write(
             "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(

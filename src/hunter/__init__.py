@@ -170,17 +170,14 @@ def trace(*predicates, **options):
     global _last_tracer
 
     clear_env_var = options.pop("clear_env_var", False)
-    threading_support = (
-        options.pop("threading_support", False) or
-        options.pop("threads_support", False) or
-        options.pop("thread_support", False) or
-        options.pop("threadingsupport", False) or
-        options.pop("threadssupport", False) or
-        options.pop("threadsupport", False) or
-        options.pop("threading", False) or
-        options.pop("threads", False) or
-        options.pop("thread", False)
-    )
+    threading_support = True
+    for alias in (
+        "threading_support", "threads_support", "thread_support",
+        "threadingsupport", "threadssupport", "threadsupport",
+        "threading", "threads", "thread",
+    ):
+        if alias in options:
+            threading_support = options.pop(alias)
     predicate = _prepare_predicate(*predicates, **options)
 
     if clear_env_var:
