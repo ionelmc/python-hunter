@@ -57,6 +57,19 @@ class Debugger(Action):
         self.klass = klass
         self.kwargs = kwargs
 
+    def __eq__(self, other):
+        return (
+            type(self) is type(other) and
+            self.klass == other.klass and
+            self.kwargs == other.kwargs
+        )
+
+    def __str__(self):
+        return '{0.__class__.__name__}(klass={0.klass}, kwargs={0.kwargs})'.format(self)
+
+    def __repr__(self):
+        return '{0.__class__.__name__}(klass={0.klass!r}, kwargs={0.kwargs!r})'.format(self)
+
     def __call__(self, event):
         """
         Runs a ``pdb.set_trace`` at the matching frame.
@@ -67,6 +80,15 @@ class Debugger(Action):
 class Manhole(Action):
     def __init__(self, **options):
         self.options = options
+
+    def __eq__(self, other):
+        return type(self) is type(other) and self.options == other.options
+
+    def __str__(self):
+        return '{0.__class__.__name__}(options={0.options})'.format(self)
+
+    def __repr__(self):
+        return '{0.__class__.__name__}(options={0.options!r})'.format(self)
 
     def __call__(self, event):
         import manhole
@@ -95,6 +117,27 @@ class ColorStreamAction(Action):
         self.thread_alignment = thread_alignment
         self.repr_limit = repr_limit
         self.repr_unsafe = repr_unsafe
+
+    def __eq__(self, other):
+        return (
+            type(self) is type(other) and
+            self.stream == other.stream and
+            self.force_colors == other.force_colors and
+            self.filename_alignment == other.filename_alignment and
+            self.thread_alignment == other.thread_alignment and
+            self.repr_limit == other.repr_limit and
+            self.repr_unsafe == other.repr_unsafe
+        )
+
+    def __str__(self):
+        return '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, ' \
+               'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, ' \
+               'repr_limit={0.repr_limit}, repr_unsafe={0.repr_unsafe})'.format(self)
+
+    def __repr__(self):
+        return '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, ' \
+               'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, ' \
+               'repr_limit={0.repr_limit!r}, repr_unsafe={0.repr_unsafe!r})'.format(self)
 
     @property
     def stream(self):
