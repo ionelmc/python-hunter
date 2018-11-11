@@ -408,7 +408,7 @@ def test_thread_filtering(LineMatcher, query):
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
     with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
-        class Bad:
+        class Bad(object):
             __slots__ = []
 
             def __repr__(self):
