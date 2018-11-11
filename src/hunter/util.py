@@ -15,7 +15,7 @@ class cached_property(object):
         return value
 
 
-def rudimentary_repr(obj, maxdepth=3):
+def rudimentary_repr(obj, maxdepth=5):
     if not maxdepth:
         return '...'
     obj_type = type(obj)
@@ -27,19 +27,19 @@ def rudimentary_repr(obj, maxdepth=3):
             return '%s({%s})' % (
                 obj_type.__name__,
                 ', '.join('%s: %s' % (
-                    rudimentary_repr(k, newdepth),
+                    rudimentary_repr(k, maxdepth),
                     rudimentary_repr(v, newdepth)
                 ) for k, v in obj.items()))
         else:
             return '{%s}' % ', '.join('%s: %s' % (
-                rudimentary_repr(k, newdepth),
+                rudimentary_repr(k, maxdepth),
                 rudimentary_repr(v, newdepth)
             ) for k, v in obj.items())
     elif isinstance(obj, list):
         if obj_type is not list:
-            return '%([%s])' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
+            return '%s([%s])' % (obj_type.__name__, ', '.join(rudimentary_repr(i, newdepth) for i in obj))
         else:
-            return '[%s]' % ', '.join(rudimentary_repr(i) for i in obj)
+            return '[%s]' % ', '.join(rudimentary_repr(i, newdepth) for i in obj)
     elif isinstance(obj, tuple):
         if obj_type is not tuple:
             return '%s(%s%s)' % (
