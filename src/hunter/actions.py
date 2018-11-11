@@ -428,14 +428,16 @@ class VarsPrinter(ColorStreamAction):
                 printout = self._safe_repr(obj)
 
             if frame_symbols >= symbols:
-                self.stream.write("{thread:{thread_align}}{:>{align}}       "
-                                  "{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
-                    "",
-                    "vars" if first else "...",
-                    code,
-                    printout,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    **self.event_colors
-                ))
+                self.stream.write(
+                    "{thread:{thread_align}}{:>{align}}       "
+                    "{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
+                        "",
+                        "vars" if first else "...",
+                        code,
+                        printout,
+                        thread=thread_name, thread_align=thread_align,
+                        align=self.filename_alignment,
+                        **self.event_colors
+                    )
+                )
                 first = False

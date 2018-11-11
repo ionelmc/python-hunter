@@ -1,8 +1,10 @@
-import _socket
 import socket
 from array import array
-from collections import deque, namedtuple
+from collections import deque
+from collections import namedtuple
 from decimal import Decimal
+
+import _socket
 
 from hunter.util import rudimentary_repr
 
@@ -13,6 +15,7 @@ class Dict(dict):
 
 class List(list):
     pass
+
 
 class Set(set):
     pass
