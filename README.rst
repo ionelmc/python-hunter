@@ -65,8 +65,9 @@ Overview
 .. end-badges
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
-nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation
-<env-var-activation_>`_).
+nefarious purposes. It has a `simple Python API <https://python-hunter.readthedocs.io/en/latest/introduction.html>`_,
+a `convenient terminal API <environment-variable-activation>`_ and
+a `CLI tool to attach to processes <tracing-processes>`_.
 
 * Free software: BSD 2-Clause License
 
