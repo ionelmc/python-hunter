@@ -429,8 +429,8 @@ def test_tracing_printing_failures(LineMatcher):
             pass
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        """*tests*test_hunter.py:* call              class Bad:""",
-        """*tests*test_hunter.py:* line              class Bad:""",
+        """*tests*test_hunter.py:* call              class Bad(object):""",
+        """*tests*test_hunter.py:* line              class Bad(object):""",
         """*tests*test_hunter.py:* line                  def __repr__(self):""",
         """*tests*test_hunter.py:* return                def __repr__(self):""",
         """* ...       return value: *""",
