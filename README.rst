@@ -12,7 +12,6 @@ Overview
     * - tests
       - | |travis| |appveyor| |requires|
         | |coveralls| |codecov|
-        | |landscape| |scrutinizer| |codacy| |codeclimate|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
@@ -20,6 +19,7 @@ Overview
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
     :target: https://readthedocs.org/projects/python-hunter
     :alt: Documentation Status
+
 
 .. |travis| image:: https://travis-ci.org/ionelmc/python-hunter.svg?branch=master
     :alt: Travis-CI Build Status
@@ -41,18 +41,6 @@ Overview
     :alt: Coverage Status
     :target: https://codecov.io/github/ionelmc/python-hunter
 
-.. |landscape| image:: https://landscape.io/github/ionelmc/python-hunter/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/ionelmc/python-hunter/master
-    :alt: Code Quality Status
-
-.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg
-    :target: https://www.codacy.com/app/ionelmc/python-hunter
-    :alt: Codacy Code Quality Status
-
-.. |codeclimate| image:: https://codeclimate.com/github/ionelmc/python-hunter/badges/gpa.svg
-   :target: https://codeclimate.com/github/ionelmc/python-hunter
-   :alt: CodeClimate Quality Status
-
 .. |version| image:: https://img.shields.io/pypi/v/hunter.svg
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/hunter
@@ -73,18 +61,14 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/hunter
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/python-hunter/master.svg
-    :alt: Scrutinizer Status
-    :target: https://scrutinizer-ci.com/g/ionelmc/python-hunter/
-
 
 .. end-badges
 
 Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other
-nefarious purposes. It has a Python API, terminal activation (see `Environment variable activation
-<environment-variable-activation_>`_). and supports tracing other processes (see `Tracing processes <tracing-processes_>`_).
+nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation
+<env-var-activation_>`_).
 
-* Free software: BSD license
+* Free software: BSD 2-Clause License
 
 Installation
 ============
@@ -96,8 +80,8 @@ Installation
 Documentation
 =============
 
-https://python-hunter.readthedocs.org/
 
+https://python-hunter.readthedocs.io/
 
 Overview
 ========
