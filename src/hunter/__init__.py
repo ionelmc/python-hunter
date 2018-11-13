@@ -12,6 +12,8 @@ from .actions import CodePrinter
 from .actions import Debugger
 from .actions import Manhole
 from .actions import VarsPrinter
+from .config import THREADING_SUPPORT_ALIASES
+from .config import load_config
 
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
@@ -49,6 +51,7 @@ __all__ = (
     'trace',
 )
 _last_tracer = None
+_default_config = {}
 
 
 def Q(*predicates, **query):
@@ -168,6 +171,8 @@ def trace(*predicates, **options):
         **kwargs: for convenience you can also pass anything that you'd pass to :ref:`hunter.Q`
     """
     global _last_tracer
+
+    options = dict(load_config(), **options)
 
     clear_env_var = options.pop("clear_env_var", False)
     threading_support = True

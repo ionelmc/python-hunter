@@ -14,7 +14,7 @@ from colorama import Style
 from six import string_types
 
 from .util import rudimentary_repr
-
+from .config import DEFAULTS
 try:
     from threading import get_ident
 except ImportError:
@@ -58,7 +58,7 @@ class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
-    def __init__(self, klass=lambda **kwargs: __import__('pdb').Pdb(**kwargs), **kwargs):
+    def __init__(self, klass=DEFAULTS.get('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
         self.klass = klass
         self.kwargs = kwargs
 
@@ -110,12 +110,12 @@ class ColorStreamAction(Action):
     _tty = None
 
     def __init__(self,
-                 stream=None,
-                 force_colors=False,
-                 filename_alignment=40,
-                 thread_alignment=12,
-                 repr_limit=1024,
-                 repr_unsafe=False):
+                 stream=DEFAULTS.get('stream', None),
+                 force_colors=DEFAULTS.get('force_colors', False),
+                 filename_alignment=DEFAULTS.get('filename_alignment', 40),
+                 thread_alignment=DEFAULTS.get('thread_alignment', 12),
+                 repr_limit=DEFAULTS.get('repr_limit', 1024),
+                 repr_unsafe=DEFAULTS.get('repr_unsafe', False)):
         self.force_colors = force_colors
         self.stream = DEFAULT_STREAM if stream is None else stream
         self.filename_alignment = filename_alignment
@@ -389,7 +389,7 @@ class VarsPrinter(ColorStreamAction):
             name: set(self._iter_symbols(name))
             for name in names
         }
-        self.globals = options.pop('globals', False)
+        self.globals = options.pop('globals', DEFAULTS.get('globals', False))
         super(VarsPrinter, self).__init__(**options)
 
     @staticmethod
