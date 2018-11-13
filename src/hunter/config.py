@@ -11,6 +11,7 @@ DEFAULTS = {}
 
 
 def load_config():
+    from . import Q
     try:
         config = eval("dict({})".format(os.environ.get("PYTHONHUNTERCONFIG", "")))
     except Exception as exc:

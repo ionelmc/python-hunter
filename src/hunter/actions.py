@@ -13,8 +13,9 @@ from colorama import Fore
 from colorama import Style
 from six import string_types
 
-from .util import rudimentary_repr
 from .config import DEFAULTS
+from .util import rudimentary_repr
+
 try:
     from threading import get_ident
 except ImportError:

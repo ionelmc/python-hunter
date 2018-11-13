@@ -176,11 +176,7 @@ def trace(*predicates, **options):
 
     clear_env_var = options.pop("clear_env_var", False)
     threading_support = True
-    for alias in (
-        "threading_support", "threads_support", "thread_support",
-        "threadingsupport", "threadssupport", "threadsupport",
-        "threading", "threads", "thread",
-    ):
+    for alias in THREADING_SUPPORT_ALIASES:
         if alias in options:
             threading_support = options.pop(alias)
     predicate = _prepare_predicate(*predicates, **options)
