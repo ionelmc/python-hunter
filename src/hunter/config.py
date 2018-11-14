@@ -41,13 +41,13 @@ def load_config():
 
         try:
             Q(**{key: value})
-        except Exception as exc:
-            sys.stderr.write("Failed to load hunter config from PYTHONHUNTERCONFIG {}={!r}: {!r}\n".format(
-                key, value, exc))
+        except TypeError:
+            pass
         else:
             options[key] = DEFAULTS.pop(key)
+            continue
 
-            DEFAULTS.pop(key)
+        DEFAULTS.pop(key)
         sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n".format(
             key, value))
     return options
