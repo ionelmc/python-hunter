@@ -6,7 +6,6 @@ import platform
 import subprocess
 import sys
 import threading
-import tokenize
 from pprint import pprint
 
 import pytest
@@ -53,8 +52,9 @@ class EvilTracer(object):
     def __init__(self, *args, **kwargs):
         self._calls = []
         threading_support = kwargs.pop('threading_support', False)
+        clear_env_var = kwargs.pop('clear_env_var', False)
         self.handler = hunter._prepare_predicate(*args, **kwargs)
-        self._tracer = hunter.trace(self._append, threading_support=threading_support)
+        self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
 
     def _append(self, event):
         # Make sure the lineno is cached. Frames are reused
@@ -218,6 +218,58 @@ def test_predicate_str_repr():
     assert "predicates.Query: query_eq=(('module', 'a'),)>," in repr(Q(module='a') & Q(module='b'))
     assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
+
+
+def test_predicate_q_deduplicate_callprinter():
+    out = repr(Q(CallPrinter(), action=CallPrinter()))
+    assert out.startswith('CallPrinter(')
+
+
+def test_predicate_q_deduplicate_codeprinter():
+    out = repr(Q(CodePrinter(), action=CodePrinter()))
+    assert out.startswith('CodePrinter(')
+
+
+def test_predicate_q_deduplicate_callprinter_cls():
+    out = repr(Q(CallPrinter(), action=CallPrinter))
+    assert out.startswith('CallPrinter(')
+
+
+def test_predicate_q_deduplicate_codeprinter_cls():
+    out = repr(Q(CodePrinter(), action=CodePrinter))
+    assert out.startswith('CodePrinter(')
+
+
+def test_predicate_q_deduplicate_callprinter_inverted():
+    out = repr(Q(CallPrinter(), action=CodePrinter()))
+    assert out.startswith('CallPrinter(')
+
+
+def test_predicate_q_deduplicate_codeprinter_inverted():
+    out = repr(Q(CodePrinter(), action=CallPrinter()))
+    assert out.startswith('CodePrinter(')
+
+
+def test_predicate_q_deduplicate_callprinter_cls_inverted():
+    out = repr(Q(CallPrinter(), action=CodePrinter))
+    assert out.startswith('CallPrinter(')
+
+
+def test_predicate_q_deduplicate_codeprinter_cls_inverted():
+    out = repr(Q(CodePrinter(), action=CallPrinter))
+    assert out.startswith('CodePrinter(')
+
+
+def test_predicate_q_action_callprinter():
+    out = repr(Q(action=CallPrinter()))
+    assert 'condition=<hunter.predicates.Query: >' in out
+    assert 'actions=(CallPrinter' in out
+
+
+def test_predicate_q_action_codeprinter():
+    out = repr(Q(action=CodePrinter()))
+    assert 'condition=<hunter.predicates.Query: >' in out
+    assert 'actions=(CodePrinter' in out
 
 
 def test_predicate_q_nest_1():
@@ -1060,3 +1112,14 @@ def test_perf_actions(tracer_impl, benchmark):
             ]
         )):
             _bulky_func_that_use_stdlib()
+
+
+def test_clear_env_var(monkeypatch):
+    monkeypatch.setitem(os.environ, 'PYTHONHUNTER', '123')
+    assert os.environ.get('PYTHONHUNTER') == '123'
+
+    out = StringIO()
+    with trace(action=CallPrinter(stream=out), clear_env_var=True):
+        assert 'PYTHONHUNTER' not in os.environ
+
+    assert os.environ.get('PYTHONHUNTER') == None

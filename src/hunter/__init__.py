@@ -76,12 +76,11 @@ def Q(*predicates, **query):
             p() if inspect.isclass(p) and issubclass(p, Action) else p
             for p in predicates
         )
-        if any(isinstance(p, CodePrinter) for p in predicates):
-            if CodePrinter in optional_actions:
-                optional_actions.remove(CodePrinter)
-        if any(isinstance(p, CallPrinter) for p in predicates):
-            if CallPrinter in optional_actions:
-                optional_actions.remove(CallPrinter)
+        if any(isinstance(p, (CallPrinter, CodePrinter)) for p in predicates):
+            # the user provided an action as a filter, remove the action then to prevent double output
+            for action in optional_actions:
+                if action in (CallPrinter, CodePrinter) or isinstance(action, (CallPrinter, CodePrinter)):
+                    optional_actions.remove(action)
         if query:
             predicates += Query(**query),
 
