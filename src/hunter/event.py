@@ -8,8 +8,6 @@ import weakref
 from functools import partial
 from threading import current_thread
 
-from fields import Fields
-
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import cached_property
@@ -30,7 +28,7 @@ CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
 LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 
-class Event(Fields.kind.depth.function.module.filename):
+class Event(object):
     """
     Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
     custom functions or predicates.
@@ -69,6 +67,16 @@ class Event(Fields.kind.depth.function.module.filename):
 
         #: A reference to the Tracer object
         self.tracer = tracer
+
+    def __eq__(self, other):
+        return (
+            type(self) == type(other) and
+            self.kind == other.kind and
+            self.depth == other.depth and
+            self.function == other.function and
+            self.module == other.module and
+            self.filename == other.filename
+        )
 
     @cached_property
     def threadid(self):
