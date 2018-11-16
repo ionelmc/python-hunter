@@ -8,9 +8,10 @@ from hunter.config import load_config
 
 @pytest.mark.parametrize('config', [
     ('foobar', (('x',), {'y': 1}), {},
-     '''Failed to load hunter config from PYTHONHUNTERCONFIG 'foobar': NameError("name 'foobar' is not defined"'''),
+     '''Failed to load hunter config from PYTHONHUNTERCONFIG 'foobar': NameError'''),
     ('foobar=1', (('x',), {'y': 1}), {}, '''Discarded config from PYTHONHUNTERCONFIG foobar=1: '''),
-    ('foobar=1, force_colors=1', (('x',), {'y': 1}), {'force_colors': 1}, '''Discarded config from PYTHONHUNTERCONFIG foobar=1: '''),
+    ('foobar=1, force_colors=1', (('x',), {'y': 1}), {'force_colors': 1},
+     '''Discarded config from PYTHONHUNTERCONFIG foobar=1: '''),
     ('klass=123', (('x',), {'y': 1}), {'klass': 123}, ''),
     ('stream=123', (('x',), {'y': 1}), {'stream': 123}, ''),
     ('force_colors=123', (('x',), {'y': 1}), {'force_colors': 123}, ''),
