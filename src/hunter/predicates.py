@@ -4,7 +4,6 @@ import inspect
 import re
 from itertools import chain
 
-from fields import Fields
 from six import string_types
 
 from .actions import Action
@@ -25,7 +24,7 @@ def _sloppy_hash(obj):
         return 'id(%x)' % id(obj)
 
 
-class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_contains):
+class Query(object):
     """
     A query class.
 
@@ -160,6 +159,22 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
             ] if mapping
         )
 
+    def __eq__(self, other):
+        return (
+            type(self) is type(other) and
+            self.query_eq == other.query_eq and
+            self.query_in == other.query_in and
+            self.query_contains == other.query_contains and
+            self.query_startswith == other.query_startswith and
+            self.query_endswith == other.query_endswith and
+            self.query_regex == other.query_regex and
+            self.query_regex == other.query_regex and
+            self.query_lt == other.query_lt and
+            self.query_lte == other.query_lte and
+            self.query_gt == other.query_gt and
+            self.query_gte == other.query_gte
+        )
+
     def __call__(self, event):
         """
         Handles event. Returns True if all criteria matched.
@@ -226,7 +241,7 @@ class Query(Fields.query_eq.query_startswith.query_endswith.query_in.query_conta
     __rand__ = __and__
 
 
-class When(Fields.condition.actions):
+class When(object):
     """
     Runs ``actions`` when ``condition(event)`` is ``True``.
 
@@ -236,9 +251,10 @@ class When(Fields.condition.actions):
     def __init__(self, condition, *actions):
         if not actions:
             raise TypeError('Must give at least one action.')
-        super(When, self).__init__(condition, tuple(
+        self.condition = condition
+        self.actions = tuple(
             action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions))
+            for action in actions)
 
     def __str__(self):
         return 'When(%s, %s)' % (
@@ -248,6 +264,13 @@ class When(Fields.condition.actions):
 
     def __repr__(self):
         return '<hunter.predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
+
+    def __eq__(self, other):
+        return (
+            type(self) is type(other) and
+            self.condition == other.condition and
+            self.actions == other.actions
+        )
 
     def __call__(self, event):
         """
@@ -273,7 +296,7 @@ class When(Fields.condition.actions):
     __rand__ = __and__
 
 
-class And(Fields.predicates):
+class And(object):
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.
     """
@@ -320,7 +343,7 @@ class And(Fields.predicates):
     __rand__ = __and__
 
 
-class Or(Fields.predicates):
+class Or(object):
     """
     `Or` predicate. Exits at first sub-predicate that returns ``True``.
     """
@@ -367,16 +390,24 @@ class Or(Fields.predicates):
     __rand__ = __and__
 
 
-class Not(Fields.predicate):
+class Not(object):
     """
     `Not` predicate.
     """
+    def __init__(self, predicate):
+        self.predicate = predicate
 
     def __str__(self):
         return 'Not(%s)' % self.predicate
 
     def __repr__(self):
         return '<hunter.predicates.Not: predicate=%r>' % self.predicate
+
+    def __eq__(self, other):
+        return (
+            type(self) is type(other) and
+            self.predicate == other.predicate
+        )
 
     def __call__(self, event):
         """
