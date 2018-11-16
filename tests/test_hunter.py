@@ -262,13 +262,13 @@ def test_predicate_q_deduplicate_codeprinter_cls_inverted():
 
 def test_predicate_q_action_callprinter():
     out = repr(Q(action=CallPrinter()))
-    assert 'condition=<hunter.predicates.Query: >' in out
+    assert 'condition=<hunter.' in out
     assert 'actions=(CallPrinter' in out
 
 
 def test_predicate_q_action_codeprinter():
     out = repr(Q(action=CodePrinter()))
-    assert 'condition=<hunter.predicates.Query: >' in out
+    assert 'condition=<hunter.' in out
     assert 'actions=(CodePrinter' in out
 
 
