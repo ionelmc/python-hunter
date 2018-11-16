@@ -123,6 +123,7 @@ class ColorStreamAction(Action):
         self.thread_alignment = thread_alignment
         self.repr_limit = repr_limit
         self.repr_unsafe = repr_unsafe
+        self.seen_threads = set()
 
     def __eq__(self, other):
         return (
@@ -199,10 +200,6 @@ class CodePrinter(ColorStreamAction):
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
     """
-    def __init__(self, **options):
-        super(CodePrinter, self).__init__(**options)
-        self.seen_threads = set()
-
     def _safe_source(self, event):
         try:
             lines = event._raw_fullsource.rstrip().splitlines()
@@ -221,19 +218,15 @@ class CodePrinter(ColorStreamAction):
             filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
         return filename
 
-    def __call__(self, event,
-                 sep=os.path.sep, join=os.path.join,
-                 get_ident=get_ident,
-                 current_thread=threading.current_thread):
+    def __call__(self, event):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
         lines = self._safe_source(event)
         self.seen_threads.add(get_ident())
-        threading_support = event.tracer.threading_support or len(self.seen_threads) > 1
-
-        thread_name = current_thread().name if threading_support else ''
+        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
+        thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
 
         self.stream.write(
@@ -291,16 +284,19 @@ class CallPrinter(CodePrinter):
         super(CallPrinter, self).__init__(**options)
         self.locals = defaultdict(list)
 
-    def __call__(self, event, sep=os.path.sep, join=os.path.join):
+    def __call__(self, event):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
         filename = self._format_filename(event)
         ident = event.module, event.function
+
+        self.seen_threads.add(get_ident())
+        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
         thread = threading.current_thread()
-        thread_name = thread.name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else ''
+        thread_name = thread.name if threading_support else ''
+        thread_align = self.thread_alignment if threading_support else ''
         stack = self.locals[thread.ident]
 
         if event.kind == 'call':
@@ -415,8 +411,11 @@ class VarsPrinter(ColorStreamAction):
         frame_symbols = set(event.locals)
         if self.globals:
             frame_symbols |= set(event.globals)
-        thread_name = threading.current_thread().name if event.tracer.threading_support else ''
-        thread_align = self.thread_alignment if event.tracer.threading_support else ''
+
+        self.seen_threads.add(get_ident())
+        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
+        thread_name = threading.current_thread().name if threading_support else ''
+        thread_align = self.thread_alignment if threading_support else ''
 
         for code, symbols in self.names.items():
             try:
