@@ -330,6 +330,35 @@ like this::
 
 Note that Hunter is activated even if the env var is empty, eg: ``PYTHONHUNTER=""``.
 
+Environment variable configuration
+``````````````````````````````````
+
+Sometimes you always use the same options (like ``stdlib=False`` or ``force_colors=True``). To save typing you can
+set something like this in your environment::
+
+    PYTHONHUNTERCONFIG="stdlib=False,force_colors=True"
+
+This is the same as ``PYTHONHUNTER="stdlib=False,action=CallPrinter(force_colors=True)"``.
+
+Notes:
+
+* Setting ``PYTHONHUNTERCONFIG`` alone doesn't activate hunter.
+* All the options for the builtin actions are supported.
+* Although using predicates is supported it can be problematic. Example of setup that won't trace anything::
+
+    PYTHONHUNTERCONFIG="Q(module_sw='django')"
+    PYTHONHUNTER="Q(module_sw='celery')"
+
+  which is the equivalent of::
+
+    PYTHONHUNTER="Q(module_sw='django'),Q(module_sw='celery')"
+
+  which is the equivalent of::
+
+    PYTHONHUNTER="Q(module_sw='django')&Q(module_sw='celery')"
+
+
+
 Filtering DSL
 -------------
 
