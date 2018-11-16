@@ -171,7 +171,7 @@ def trace(*predicates, **options):
     """
     global _last_tracer
 
-    options = dict(load_config(), **options)
+    predicates, options = load_config(predicates, options)
 
     clear_env_var = options.pop("clear_env_var", False)
     threading_support = True
