@@ -1129,3 +1129,36 @@ def test_clear_env_var(monkeypatch):
         assert 'PYTHONHUNTER' not in os.environ
 
     assert os.environ.get('PYTHONHUNTER') == None
+
+
+@pytest.mark.skipif(sys.platform == 'win32', reason="no fork on windows")
+@pytest.mark.parametrize('Action', [CodePrinter, CallPrinter])
+@pytest.mark.parametrize('force_pid', [True, False])
+def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
+    def main():
+        a = 1
+        pid = os.fork()
+        if pid:
+            print('parent')
+            os.waitpid(pid, 0)
+        else:
+            os._exit(0)  # child
+
+    with hunter.trace(actions=[Action(force_pid=force_pid, stream=sys.stdout),
+                               VarsPrinter('a', force_pid=force_pid, stream=sys.stdout)],
+                      stdlib=False,
+                      threading_support=True):
+        main()
+    out, err = capfd.readouterr()
+    print('OUT', out)
+    print('ERR', err)
+    lm = LineMatcher(out.splitlines())
+    prefix = '[[]*[]]  ' if force_pid else ''
+    lm.fnmatch_lines([
+        prefix + "MainThread  *test_hunter.py:*  line * a = 1",
+        prefix + "MainThread  *test_hunter.py:*  line * if pid:",
+        prefix + "MainThread  *               *  vars * a => 1",
+        prefix + "MainThread  *test_hunter.py:*  line * print('parent')",
+        "[[]*[]]  MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
+        "[[]*[]]  MainThread  *               *  vars * a => 1",
+    ])

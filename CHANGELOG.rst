@@ -2,6 +2,18 @@
 Changelog
 =========
 
+2.1.0 (2018-11-17)
+------------------
+
+* Made ``threading_support`` on by default but output automatic (also, now ``1`` or ``0`` allowed).
+* Added ``pid_alignment`` and ``force_pid`` action options to show a pid prefix.
+* Fixed some bugs around ``__eq__`` in various classes.
+* Dropped Python 3.3 support.
+* Dropped dependency on `fields <https://python-fields.readthedocs.io/en/stable/>`_.
+* Actions now repr using a simplified implementation that tries to avoid calling ``__repr__`` on user classes in order
+  to avoid creating side-effects while tracing.
+* Added support for the ``PYTHONHUNTERCONFIG`` environment variable (stores defaults and doesn't activate hunter).
+
 2.0.2 (2017-11-24)
 ------------------
 

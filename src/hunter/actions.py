@@ -6,6 +6,7 @@ import sys
 import threading
 from collections import defaultdict
 from itertools import chain
+from os import getpid
 
 from colorama import AnsiToWin32
 from colorama import Back
@@ -113,38 +114,46 @@ class ColorStreamAction(Action):
     def __init__(self,
                  stream=DEFAULTS.get('stream', None),
                  force_colors=DEFAULTS.get('force_colors', False),
+                 force_pid=DEFAULTS.get('force_pid', False),
                  filename_alignment=DEFAULTS.get('filename_alignment', 40),
                  thread_alignment=DEFAULTS.get('thread_alignment', 12),
+                 pid_alignment=DEFAULTS.get('pid_alignment', 9),
                  repr_limit=DEFAULTS.get('repr_limit', 1024),
                  repr_unsafe=DEFAULTS.get('repr_unsafe', False)):
         self.force_colors = force_colors
+        self.force_pid = force_pid
         self.stream = DEFAULT_STREAM if stream is None else stream
         self.filename_alignment = filename_alignment
         self.thread_alignment = thread_alignment
+        self.pid_alignment = pid_alignment
         self.repr_limit = repr_limit
         self.repr_unsafe = repr_unsafe
         self.seen_threads = set()
+        self.seen_pid = getpid()
 
     def __eq__(self, other):
         return (
-            type(self) is type(other) and
-            self.stream == other.stream and
-            self.force_colors == other.force_colors and
-            self.filename_alignment == other.filename_alignment and
-            self.thread_alignment == other.thread_alignment and
-            self.repr_limit == other.repr_limit and
-            self.repr_unsafe == other.repr_unsafe
+            isinstance(other, type(self))
+            and self.stream == other.stream
+            and self.force_colors == other.force_colors
+            and self.filename_alignment == other.filename_alignment
+            and self.thread_alignment == other.thread_alignment
+            and self.pid_alignment == other.pid_alignment
+            and self.repr_limit == other.repr_limit
+            and self.repr_unsafe == other.repr_unsafe
         )
 
     def __str__(self):
         return '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, ' \
                'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, ' \
-               'repr_limit={0.repr_limit}, repr_unsafe={0.repr_unsafe})'.format(self)
+               'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, ' \
+               'repr_unsafe={0.repr_unsafe})'.format(self)
 
     def __repr__(self):
         return '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, ' \
                'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, ' \
-               'repr_limit={0.repr_limit!r}, repr_unsafe={0.repr_unsafe!r})'.format(self)
+               'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, ' \
+               'repr_unsafe={0.repr_unsafe!r})'.format(self)
 
     @property
     def stream(self):
@@ -234,41 +243,51 @@ class CodePrinter(ColorStreamAction):
         thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
 
+        pid = getpid()
+        if self.force_pid or self.seen_pid != pid:
+            pid = "[{}] ".format(pid)
+            pid_align = self.pid_alignment
+        else:
+            pid = pid_align = ''
+
         self.stream.write(
-            "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {code}{}{reset}\n".format(
+            "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
+            "{code}{}{reset}\n".format(
                 self._format_filename(event),
                 event.lineno,
                 event.kind,
                 lines[0],
+                pid=pid, pid_align=pid_align,
                 thread=thread_name, thread_align=thread_align,
                 align=self.filename_alignment,
                 code=self.code_colors[event.kind],
-                **self.event_colors
-            ))
+                **self.event_colors))
+
         for line in lines[1:]:
-            self.stream.write("{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
-                "",
-                r"   |",
-                line,
-                thread=thread_name, thread_align=thread_align,
-                align=self.filename_alignment,
-                code=self.code_colors[event.kind],
-                **self.event_colors
-            ))
+            self.stream.write(
+                "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
+                    "",
+                    r"   |",
+                    line,
+                    pid=pid, pid_align=pid_align,
+                    thread=thread_name, thread_align=thread_align,
+                    align=self.filename_alignment,
+                    code=self.code_colors[event.kind],
+                    **self.event_colors))
 
         if event.kind in ('return', 'exception'):
             self.stream.write(
-                "{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} "
+                "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} "
                 "value: {detail}{}{reset}\n".format(
                     "",
                     "...",
                     event.kind,
                     self._safe_repr(event.arg),
+                    pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     color=self.event_colors[event.kind],
-                    **self.event_colors
-                ))
+                    **self.event_colors))
 
 
 class CallPrinter(CodePrinter):
@@ -309,12 +328,19 @@ class CallPrinter(CodePrinter):
         thread_align = self.thread_alignment if threading_support else ''
         stack = self.locals[thread.ident]
 
+        pid = getpid()
+        if self.force_pid or self.seen_pid != pid:
+            pid = "[{}] ".format(pid)
+            pid_align = self.pid_alignment
+        else:
+            pid = pid_align = ''
+
         if event.kind == 'call':
             code = event.code
             stack.append(ident)
             self.stream.write(
-                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {}{call}=>{normal} "
-                "{}({}{call}{normal}){reset}\n".format(
+                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
+                "{}{call}=>{normal} {}({}{call}{normal}){reset}\n".format(
                     filename,
                     event.lineno,
                     event.kind,
@@ -325,13 +351,14 @@ class CallPrinter(CodePrinter):
                         self._safe_repr(event.locals.get(var, MISSING)),
                         **self.event_colors
                     ) for var in code.co_varnames[:code.co_argcount]),
+                    pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     **self.event_colors
                 ))
         elif event.kind == 'exception':
             self.stream.write(
-                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
+                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
                 "{exception}{} !{normal} {}: {reset}{}\n".format(
                     filename,
                     event.lineno,
@@ -339,6 +366,7 @@ class CallPrinter(CodePrinter):
                     '   ' * (len(stack) - 1),
                     event.function,
                     self._safe_repr(event.arg),
+                    pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     **self.event_colors
@@ -346,7 +374,7 @@ class CallPrinter(CodePrinter):
 
         elif event.kind == 'return':
             self.stream.write(
-                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
+                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
                 "{return}{}<={normal} {}: {reset}{}\n".format(
                     filename,
                     event.lineno,
@@ -354,6 +382,7 @@ class CallPrinter(CodePrinter):
                     '   ' * (len(stack) - 1),
                     event.function,
                     self._safe_repr(event.arg),
+                    pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     **self.event_colors
@@ -362,12 +391,13 @@ class CallPrinter(CodePrinter):
                 stack.pop()
         else:
             self.stream.write(
-                "{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
+                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
                     filename,
                     event.lineno,
                     event.kind,
                     '   ' * len(stack),
                     event.source.strip(),
+                    pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
                     code=self.code_colors[event.kind],
@@ -432,6 +462,13 @@ class VarsPrinter(ColorStreamAction):
         thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
 
+        pid = getpid()
+        if self.force_pid or self.seen_pid != pid:
+            pid = "[{}] ".format(pid)
+            pid_align = self.pid_alignment
+        else:
+            pid = pid_align = ''
+
         for code, symbols in self.names.items():
             try:
                 obj = eval(code, event.globals if self.globals else {}, event.locals)
@@ -444,12 +481,13 @@ class VarsPrinter(ColorStreamAction):
 
             if frame_symbols >= symbols:
                 self.stream.write(
-                    "{thread:{thread_align}}{:>{align}}       "
+                    "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       "
                     "{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
                         "",
                         "vars" if first else "...",
                         code,
                         printout,
+                        pid=pid, pid_align=pid_align,
                         thread=thread_name, thread_align=thread_align,
                         align=self.filename_alignment,
                         **self.event_colors
