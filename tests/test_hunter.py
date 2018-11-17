@@ -1139,7 +1139,6 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
         a = 1
         pid = os.fork()
         if pid:
-            print('parent')
             os.waitpid(pid, 0)
         else:
             os._exit(0)  # child
@@ -1158,7 +1157,7 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
         prefix + "MainThread  *test_hunter.py:*  line * a = 1",
         prefix + "MainThread  *test_hunter.py:*  line * if pid:",
         prefix + "MainThread  *               *  vars * a => 1",
-        prefix + "MainThread  *test_hunter.py:*  line * print('parent')",
+        prefix + "MainThread  *test_hunter.py:*  line * os.waitpid(pid, 0)",
         "[[]*[]]  MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
         "[[]*[]]  MainThread  *               *  vars * a => 1",
     ])
