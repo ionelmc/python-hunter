@@ -1152,12 +1152,12 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
     print('OUT', out)
     print('ERR', err)
     lm = LineMatcher(out.splitlines())
-    prefix = '[[]*[]]  ' if force_pid else ''
+    prefix = '[[]*[]] * ' if force_pid else ''
     lm.fnmatch_lines([
         prefix + "MainThread  *test_hunter.py:*  line * a = 1",
         prefix + "MainThread  *test_hunter.py:*  line * if pid:",
         prefix + "MainThread  *               *  vars * a => 1",
         prefix + "MainThread  *test_hunter.py:*  line * os.waitpid(pid, 0)",
-        "[[]*[]]  MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
-        "[[]*[]]  MainThread  *               *  vars * a => 1",
+        "[[]*[]] * MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
+        "[[]*[]] * MainThread  *               *  vars * a => 1",
     ])
