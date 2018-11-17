@@ -151,7 +151,6 @@ class Query(object):
                 ('query_startswith=%r', self.query_startswith),
                 ('query_endswith=%r', self.query_endswith),
                 ('query_regex=%r', self.query_regex),
-                ('query_regex=%r', self.query_regex),
                 ('query_lt=%r', self.query_lt),
                 ('query_lte=%r', self.query_lte),
                 ('query_gt=%r', self.query_gt),
@@ -161,18 +160,17 @@ class Query(object):
 
     def __eq__(self, other):
         return (
-            type(self) is type(other) and
-            self.query_eq == other.query_eq and
-            self.query_in == other.query_in and
-            self.query_contains == other.query_contains and
-            self.query_startswith == other.query_startswith and
-            self.query_endswith == other.query_endswith and
-            self.query_regex == other.query_regex and
-            self.query_regex == other.query_regex and
-            self.query_lt == other.query_lt and
-            self.query_lte == other.query_lte and
-            self.query_gt == other.query_gt and
-            self.query_gte == other.query_gte
+            isinstance(other, Query)
+            and self.query_eq == other.query_eq
+            and self.query_in == other.query_in
+            and self.query_contains == other.query_contains
+            and self.query_startswith == other.query_startswith
+            and self.query_endswith == other.query_endswith
+            and self.query_regex == other.query_regex
+            and self.query_lt == other.query_lt
+            and self.query_lte == other.query_lte
+            and self.query_gt == other.query_gt
+            and self.query_gte == other.query_gte
         )
 
     def __call__(self, event):
@@ -267,9 +265,9 @@ class When(object):
 
     def __eq__(self, other):
         return (
-            type(self) is type(other) and
-            self.condition == other.condition and
-            self.actions == other.actions
+            isinstance(other, When)
+            and self.condition == other.condition
+            and self.actions == other.actions
         )
 
     def __call__(self, event):
@@ -321,11 +319,10 @@ class And(object):
             return True
 
     def __eq__(self, other):
-        if isinstance(other, And):
-            if len(self.predicates) != len(other.predicates):
-                return False
-            return set(self.predicates) == set(other.predicates)
-        return NotImplemented
+        return (
+            isinstance(other, And)
+            and self.predicates == other.predicates
+        )
 
     def __or__(self, other):
         return Or(self, other)
@@ -368,11 +365,10 @@ class Or(object):
             return False
 
     def __eq__(self, other):
-        if isinstance(other, Or):
-            if len(self.predicates) != len(other.predicates):
-                return False
-            return set(self.predicates) == set(other.predicates)
-        return NotImplemented
+        return (
+            isinstance(other, Or)
+            and self.predicates == other.predicates
+        )
 
     def __or__(self, other):
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
@@ -405,8 +401,8 @@ class Not(object):
 
     def __eq__(self, other):
         return (
-            type(self) is type(other) and
-            self.predicate == other.predicate
+            isinstance(other, Not)
+            and self.predicate == other.predicate
         )
 
     def __call__(self, event):

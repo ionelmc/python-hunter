@@ -199,6 +199,10 @@ cdef class Query:
             and self.query_in == (<Query> other).query_in
             and self.query_contains == (<Query> other).query_contains
             and self.query_regex == (<Query> other).query_regex
+            and self.query_lt == (<Query>other).query_lt
+            and self.query_lte == (<Query>other).query_lte
+            and self.query_gt == (<Query>other).query_gt
+            and self.query_gte == (<Query>other).query_gte
         )
 
         if op == Py_EQ:
@@ -311,9 +315,9 @@ cdef class When:
 
     def __richcmp__(self, other, int op):
         is_equal = (
-            isinstance(other, When) and
-            self.condition == (<When> other).condition and
-            self.actions == (<When> other).actions
+            isinstance(other, When)
+            and self.condition == (<When> other).condition
+            and self.actions == (<When> other).actions
         )
 
         if op == Py_EQ:
@@ -386,7 +390,10 @@ cdef class And:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, And) and set(self.predicates) == set((<And> other).predicates)
+        is_equal = (
+            isinstance(other, And)
+            and self.predicates == (<And> other).predicates
+        )
 
         if op == Py_EQ:
             return is_equal
@@ -459,7 +466,10 @@ cdef class Or:
         return Not(self)
 
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, Or) and set(self.predicates) == set((<Or> other).predicates)
+        is_equal = (
+            isinstance(other, Or)
+            and self.predicates == (<Or> other).predicates
+        )
 
         if op == Py_EQ:
             return is_equal
@@ -542,7 +552,10 @@ cdef class Not:
         return self.predicate
 
     def __richcmp__(self, other, int op):
-        is_equal = isinstance(other, Not) and self.predicate == (<Not> other).predicate
+        is_equal = (
+            isinstance(other, Not)
+            and self.predicate == (<Not> other).predicate
+        )
 
         if op == Py_EQ:
             return is_equal
