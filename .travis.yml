@@ -4,7 +4,7 @@ cache: pip
 addons:
   apt:
     packages:
-    - gdb
+      - gdb
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
@@ -22,68 +22,213 @@ matrix:
     - python: '2.7'
       env:
         - TOXENV=py27-pure-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp27
+        - TOXENV=py27-pure-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
     - python: '2.7'
       env:
         - TOXENV=py27-cython-cover,report,coveralls,codecov
     - python: '2.7'
       env:
         - TOXENV=py27-cython-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp27
+        - TOXENV=py27-cython-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.4'
       env:
         - TOXENV=py34-pure-cover,report,coveralls,codecov
     - python: '3.4'
       env:
         - TOXENV=py34-pure-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp34
+        - TOXENV=py34-pure-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
     - python: '3.4'
       env:
         - TOXENV=py34-cython-cover,report,coveralls,codecov
     - python: '3.4'
       env:
         - TOXENV=py34-cython-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp34
+        - TOXENV=py34-cython-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.5'
       env:
         - TOXENV=py35-pure-cover,report,coveralls,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-pure-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp35
+        - TOXENV=py35-pure-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
     - python: '3.5'
       env:
         - TOXENV=py35-cython-cover,report,coveralls,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-cython-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp35
+        - TOXENV=py35-cython-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.6'
       env:
         - TOXENV=py36-pure-cover,report,coveralls,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-pure-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp36
+        - TOXENV=py36-pure-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
     - python: '3.6'
       env:
         - TOXENV=py36-cython-cover,report,coveralls,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-cython-nocov
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp36
+        - TOXENV=py36-cython-nocov
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.7'
       env:
-        - TOXENV=py37-pure-cover,report,coveralls,codecov
-      sudo: required
+        - TOXENV=py37-pure-cover,report,coveralls,codecov      sudo: required
       dist: xenial
+
     - python: '3.7'
       env:
+        - TOXENV=py37-pure-nocov      sudo: required
+      dist: xenial
+
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp37
         - TOXENV=py37-pure-nocov
-      sudo: required
-      dist: xenial
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,report,coveralls,codecov
-      sudo: required
+        - TOXENV=py37-cython-cover,report,coveralls,codecov      sudo: required
       dist: xenial
+
     - python: '3.7'
       env:
+        - TOXENV=py37-cython-nocov      sudo: required
+      dist: xenial
+
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp37
         - TOXENV=py37-cython-nocov
-      sudo: required
-      dist: xenial
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov

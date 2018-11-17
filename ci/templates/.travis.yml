@@ -4,7 +4,7 @@ cache: pip
 addons:
   apt:
     packages:
-    - gdb
+      - gdb
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
@@ -16,16 +16,35 @@ env:
     - TOXENV=docs
 matrix:
   include:
-{%- for env in tox_environments %}{{ '' }}
+{% for env in tox_environments %}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
       env:
-        - TOXENV={{ env }}{% if 'cover' in env %},report,coveralls,codecov{% endif -%}
+        - TOXENV={{ env }}{% if 'cover' in env %},report,coveralls,codecov{% endif %}
 {% if env.startswith('py37') %}
-
       sudo: required
       dist: xenial
-{%- endif -%}
-{%- endfor %}{{ '' }}
+{% endif %}
+
+{% if not env.startswith("pypy") and not env.endswith("cover") %}
+    - os: osx
+      language: generic
+      env:
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}
+        - TOXENV={{ env }}
+      install:
+        - pip2 install cibuildwheel twine tox
+      before_install:
+        - python --version
+        - uname -a
+      script:
+        - cibuildwheel --output-dir dist
+        - tox --installpkg dist/*.whl
+{% if 'pure' not in env %}
+        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
+{% endif %}
+{% endif %}
+{% endfor %}
 before_install:
   - python --version
   - uname -a

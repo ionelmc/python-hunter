@@ -47,7 +47,7 @@ on_failure:
   - ps: dir "env:"
   - ps: get-content .tox\*\log\*
 artifacts:
-  - path: dist\*
+  - path: .tox\dist\*
 
 ### To enable remote debugging uncomment this (also, see: http://www.appveyor.com/docs/how-to/rdp-to-build-worker):
 # on_finish:
