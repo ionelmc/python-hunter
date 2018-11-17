@@ -162,19 +162,27 @@ def trace(*predicates, **options):
         *predicates (callables): Runs actions if **all** of the given predicates match.
     Keyword Args:
         clear_env_var: Disables tracing in subprocess. Default: ``False``.
-        threading_support: Enable tracing *new* threads. Default: ``False``. You can also use
-        ``threads_support``, ``thread_support``, ``threadingsupport``, ``threadssupport``, ``threadsupport``,
-        ``threading``, ``threads`` or ``thread``.
+        threading_support: Enable tracing *new* threads. Default: ``None``.
+
+            Modes:
+
+            - ``None`` - automatic (enabled but actions only prefix with thread name if more than 1 thread)
+            - ``False`` - completely disabled
+            - ``True`` - enabled (actions always prefix with thread name)
+
+            You can also use:
+            ``threads_support``, ``thread_support``, ``threadingsupport``, ``threadssupport``, ``threadsupport``,
+            ``threading``, ``threads`` or ``thread``.
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
-        **kwargs: for convenience you can also pass anything that you'd pass to :ref:`hunter.Q`
+        **kwargs: for convenience you can also pass anything that you'd pass to :obj:`hunter.Q`
     """
     global _last_tracer
 
     predicates, options = load_config(predicates, options)
 
     clear_env_var = options.pop("clear_env_var", False)
-    threading_support = True
+    threading_support = None
     for alias in THREADING_SUPPORT_ALIASES:
         if alias in options:
             threading_support = options.pop(alias)

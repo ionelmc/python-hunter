@@ -49,12 +49,12 @@ cdef class Tracer:
     Tracer object.
 
     """
-    def __cinit__(self, threading_support=False):
+    def __cinit__(self, threading_support=None):
         self.handler = None
         self.previous = None
         self._previousfunc = NULL
         self._threading_previous = None
-        self.threading_support = bool(threading_support)
+        self.threading_support = threading_support
         self.depth = 1
         self.calls = 0
 
@@ -90,7 +90,7 @@ cdef class Tracer:
     def trace(self, predicate):
         cdef PyThreadState *state = PyThreadState_Get()
         self.handler = predicate
-        if self.threading_support:
+        if self.threading_support is None or self.threading_support:
             self._threading_previous = getattr(threading, '_trace_hook', None)
             threading.settrace(self)
         if state.c_traceobj is NULL:
@@ -110,7 +110,7 @@ cdef class Tracer:
                 PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
             self.handler = self.previous = None
             self._previousfunc = NULL
-            if self.threading_support:
+            if self.threading_support is None or self.threading_support:
                 threading.settrace(self._threading_previous)
                 self._threading_previous = None
 

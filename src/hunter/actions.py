@@ -225,7 +225,12 @@ class CodePrinter(ColorStreamAction):
         """
         lines = self._safe_source(event)
         self.seen_threads.add(get_ident())
-        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
+        if event.tracer.threading_support is False:
+            threading_support = False
+        elif event.tracer.threading_support:
+            threading_support = True
+        else:
+            threading_support = len(self.seen_threads) > 1
         thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
 
@@ -293,7 +298,12 @@ class CallPrinter(CodePrinter):
         ident = event.module, event.function
 
         self.seen_threads.add(get_ident())
-        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
+        if event.tracer.threading_support is False:
+            threading_support = False
+        elif event.tracer.threading_support:
+            threading_support = True
+        else:
+            threading_support = len(self.seen_threads) > 1
         thread = threading.current_thread()
         thread_name = thread.name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
@@ -413,7 +423,12 @@ class VarsPrinter(ColorStreamAction):
             frame_symbols |= set(event.globals)
 
         self.seen_threads.add(get_ident())
-        threading_support = event.tracer.threading_support and len(self.seen_threads) > 1
+        if event.tracer.threading_support is False:
+            threading_support = False
+        elif event.tracer.threading_support:
+            threading_support = True
+        else:
+            threading_support = len(self.seen_threads) > 1
         thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
 

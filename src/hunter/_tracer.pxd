@@ -33,7 +33,7 @@ cdef class Tracer:
     cdef:
         readonly object handler
         readonly object previous
-        readonly bool threading_support
+        readonly object threading_support
         readonly int depth
         readonly int calls
 
