@@ -842,7 +842,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
   PyObject_HEAD
   PyObject *handler;
   PyObject *previous;
-  PyBoolObject *threading_support;
+  PyObject *threading_support;
   int depth;
   int calls;
   PyObject *__weakref__;
