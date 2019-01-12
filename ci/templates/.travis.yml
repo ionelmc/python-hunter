@@ -35,7 +35,6 @@ matrix:
         - TOXENV={{ env }}
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-*
-      script:
 {% endif %}
 {% endfor %}
 before_install:

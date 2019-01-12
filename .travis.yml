@@ -28,7 +28,6 @@ matrix:
         - TOXENV=py27-pure-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp27-*
-      script:
     - python: '2.7'
       env:
         - TOXENV=py27-cython-cover,report,coveralls,codecov
@@ -45,7 +44,6 @@ matrix:
         - TOXENV=py27-cython-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp27-*
-      script:
     - python: '3.4'
       env:
         - TOXENV=py34-pure-cover,report,coveralls,codecov
@@ -58,7 +56,6 @@ matrix:
         - TOXENV=py34-pure-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp34-*
-      script:
     - python: '3.4'
       env:
         - TOXENV=py34-cython-cover,report,coveralls,codecov
@@ -75,7 +72,6 @@ matrix:
         - TOXENV=py34-cython-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp34-*
-      script:
     - python: '3.5'
       env:
         - TOXENV=py35-pure-cover,report,coveralls,codecov
@@ -88,7 +84,6 @@ matrix:
         - TOXENV=py35-pure-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp35-*
-      script:
     - python: '3.5'
       env:
         - TOXENV=py35-cython-cover,report,coveralls,codecov
@@ -105,7 +100,6 @@ matrix:
         - TOXENV=py35-cython-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp35-*
-      script:
     - python: '3.6'
       env:
         - TOXENV=py36-pure-cover,report,coveralls,codecov
@@ -118,7 +112,6 @@ matrix:
         - TOXENV=py36-pure-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp36-*
-      script:
     - python: '3.6'
       env:
         - TOXENV=py36-cython-cover,report,coveralls,codecov
@@ -135,7 +128,6 @@ matrix:
         - TOXENV=py36-cython-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp36-*
-      script:
     - python: '3.7'
       env:
         - TOXENV=py37-pure-cover,report,coveralls,codecov      sudo: required
@@ -152,7 +144,6 @@ matrix:
         - TOXENV=py37-pure-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp37-*
-      script:
     - python: '3.7'
       env:
         - TOXENV=py37-cython-cover,report,coveralls,codecov
@@ -173,7 +164,6 @@ matrix:
         - TOXENV=py37-cython-nocov
         - SETUPPY_CFLAGS=
         - CIBW_BUILD=cp37-*
-      script:
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov
