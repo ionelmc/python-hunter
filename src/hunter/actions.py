@@ -14,13 +14,17 @@ from colorama import Fore
 from colorama import Style
 from six import string_types
 
-from .config import DEFAULTS
+from .config import Default
+from .config import resolve_default
 from .util import rudimentary_repr
 
 try:
     from threading import get_ident
 except ImportError:
     from thread import get_ident
+
+__all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
+
 
 EVENT_COLORS = {
     'reset': Style.RESET_ALL,
@@ -60,8 +64,8 @@ class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
-    def __init__(self, klass=DEFAULTS.get('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
-        self.klass = klass
+    def __init__(self, klass=Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
+        self.klass = resolve_default(klass)
         self.kwargs = kwargs
 
     def __eq__(self, other):
@@ -112,22 +116,22 @@ class ColorStreamAction(Action):
     _tty = None
 
     def __init__(self,
-                 stream=DEFAULTS.get('stream', None),
-                 force_colors=DEFAULTS.get('force_colors', False),
-                 force_pid=DEFAULTS.get('force_pid', False),
-                 filename_alignment=DEFAULTS.get('filename_alignment', 40),
-                 thread_alignment=DEFAULTS.get('thread_alignment', 12),
-                 pid_alignment=DEFAULTS.get('pid_alignment', 9),
-                 repr_limit=DEFAULTS.get('repr_limit', 1024),
-                 repr_unsafe=DEFAULTS.get('repr_unsafe', False)):
-        self.force_colors = force_colors
-        self.force_pid = force_pid
-        self.stream = DEFAULT_STREAM if stream is None else stream
-        self.filename_alignment = filename_alignment
-        self.thread_alignment = thread_alignment
-        self.pid_alignment = pid_alignment
-        self.repr_limit = repr_limit
-        self.repr_unsafe = repr_unsafe
+                 stream=Default('stream', None),
+                 force_colors=Default('force_colors', False),
+                 force_pid=Default('force_pid', False),
+                 filename_alignment=Default('filename_alignment', 40),
+                 thread_alignment=Default('thread_alignment', 12),
+                 pid_alignment=Default('pid_alignment', 9),
+                 repr_limit=Default('repr_limit', 1024),
+                 repr_unsafe=Default('repr_unsafe', False)):
+        self.force_colors = resolve_default(force_colors)
+        self.force_pid = resolve_default(force_pid)
+        self.stream = DEFAULT_STREAM if resolve_default(stream) is None else stream
+        self.filename_alignment = resolve_default(filename_alignment)
+        self.thread_alignment = resolve_default(thread_alignment)
+        self.pid_alignment = resolve_default(pid_alignment)
+        self.repr_limit = resolve_default(repr_limit)
+        self.repr_unsafe = resolve_default(repr_unsafe)
         self.seen_threads = set()
         self.seen_pid = getpid()
 
@@ -426,7 +430,7 @@ class VarsPrinter(ColorStreamAction):
             name: set(self._iter_symbols(name))
             for name in names
         }
-        self.globals = options.pop('globals', DEFAULTS.get('globals', False))
+        self.globals = options.pop('globals', Default('globals', False).resolve())
         super(VarsPrinter, self).__init__(**options)
 
     @staticmethod
