@@ -20,6 +20,9 @@ matrix:
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
       env:
         - TOXENV={{ env }}{% if 'cover' in env %},report,coveralls,codecov{% endif %}
+{% if 'pure' not in env %}
+        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-*
+{% endif %}
 {% if env.startswith('py37') %}
       sudo: required
       dist: xenial
@@ -29,29 +32,19 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}
         - TOXENV={{ env }}
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-{% if 'pure' not in env %}
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
-{% endif %}
 {% endif %}
 {% endfor %}
 before_install:
   - python --version
   - uname -a
-  - lsb_release -a
-  - sudo sysctl -w kernel.yama.ptrace_scope=0
+  - lsb_release -a || true
+  - sudo sysctl -w kernel.yama.ptrace_scope=0 || true
 install:
-  - pip install tox
+  - pip install cibuildwheel twine tox-wheel
   - virtualenv --version
   - easy_install --version
   - pip --version
@@ -59,26 +52,38 @@ install:
   - |
     set -ex
     if [[ $TRAVIS_PYTHON_VERSION == 'pypy' ]]; then
-        (cd $HOME
-         wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
-         tar xf pypy2-*.tar.bz2
-         pypy2-*/bin/pypy -m ensurepip
-         pypy2-*/bin/pypy -m pip install -U virtualenv)
-        export PATH=$(echo $HOME/pypy2-*/bin):$PATH
-        export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
+      (cd $HOME
+       wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
+       tar xf pypy2-*.tar.bz2
+       pypy2-*/bin/pypy -m ensurepip
+       pypy2-*/bin/pypy -m pip install -U virtualenv)
+      export PATH=$(echo $HOME/pypy2-*/bin):$PATH
+      export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
     fi
     if [[ $TRAVIS_PYTHON_VERSION == 'pypy3' ]]; then
-        (cd $HOME
-         wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
-         tar xf pypy3-*.tar.bz2
-         pypy3-*/bin/pypy3 -m ensurepip
-         pypy3-*/bin/pypy3 -m pip install -U virtualenv)
-        export PATH=$(echo $HOME/pypy3-*/bin):$PATH
-        export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
+      (cd $HOME
+       wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
+       tar xf pypy3-*.tar.bz2
+       pypy3-*/bin/pypy3 -m ensurepip
+       pypy3-*/bin/pypy3 -m pip install -U virtualenv)
+      export PATH=$(echo $HOME/pypy3-*/bin):$PATH
+      export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
     fi
     set +x
 script:
-  - tox -v
+  - |
+    set -ex
+    if [[ -n "$CIBW_BUILD" ]]; then
+      cibuildwheel --output-dir=dist
+      for wheel in dist/*.whl; do
+        tox --installpkg=$wheel -v
+      done
+      if [[ TOXENV =~ cython ]]; then
+        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
+      fi
+    else:
+      tox -v
+    fi
 after_failure:
   - more .tox/log/* | cat
   - more .tox/*/log/* | cat

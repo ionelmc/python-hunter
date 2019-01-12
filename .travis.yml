@@ -25,38 +25,25 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp27
         - TOXENV=py27-pure-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp27-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
     - python: '2.7'
       env:
-        - TOXENV=py27-cython-cover,report,coveralls,codecov
+        - TOXENV=py27-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp27-*
+
     - python: '2.7'
       env:
-        - TOXENV=py27-cython-nocov
+        - TOXENV=py27-cython-nocov        - CIBW_BUILD=cp27-*
+
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp27
         - TOXENV=py27-cython-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp27-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.4'
       env:
         - TOXENV=py34-pure-cover,report,coveralls,codecov
@@ -66,38 +53,25 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp34
         - TOXENV=py34-pure-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp34-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
     - python: '3.4'
       env:
-        - TOXENV=py34-cython-cover,report,coveralls,codecov
+        - TOXENV=py34-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp34-*
+
     - python: '3.4'
       env:
-        - TOXENV=py34-cython-nocov
+        - TOXENV=py34-cython-nocov        - CIBW_BUILD=cp34-*
+
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp34
         - TOXENV=py34-cython-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp34-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.5'
       env:
         - TOXENV=py35-pure-cover,report,coveralls,codecov
@@ -107,38 +81,25 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp35
         - TOXENV=py35-pure-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp35-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
     - python: '3.5'
       env:
-        - TOXENV=py35-cython-cover,report,coveralls,codecov
+        - TOXENV=py35-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp35-*
+
     - python: '3.5'
       env:
-        - TOXENV=py35-cython-nocov
+        - TOXENV=py35-cython-nocov        - CIBW_BUILD=cp35-*
+
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp35
         - TOXENV=py35-cython-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp35-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.6'
       env:
         - TOXENV=py36-pure-cover,report,coveralls,codecov
@@ -148,38 +109,25 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp36
         - TOXENV=py36-pure-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp36-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
     - python: '3.6'
       env:
-        - TOXENV=py36-cython-cover,report,coveralls,codecov
+        - TOXENV=py36-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp36-*
+
     - python: '3.6'
       env:
-        - TOXENV=py36-cython-nocov
+        - TOXENV=py36-cython-nocov        - CIBW_BUILD=cp36-*
+
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp36
         - TOXENV=py36-cython-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp36-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: '3.7'
       env:
         - TOXENV=py37-pure-cover,report,coveralls,codecov      sudo: required
@@ -193,42 +141,29 @@ matrix:
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp37
         - TOXENV=py37-pure-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp37-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,report,coveralls,codecov      sudo: required
+        - TOXENV=py37-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp37-*
+      sudo: required
       dist: xenial
 
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-nocov      sudo: required
+        - TOXENV=py37-cython-nocov        - CIBW_BUILD=cp37-*
+      sudo: required
       dist: xenial
 
     - os: osx
       language: generic
       env:
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp37
         - TOXENV=py37-cython-nocov
-      install:
-        - pip2 install cibuildwheel twine tox
-      before_install:
-        - python --version
-        - uname -a
+        - SETUPPY_CFLAGS=
+        - CIBW_BUILD=cp37-*
       script:
-        - cibuildwheel --output-dir dist
-        - tox --installpkg dist/*.whl
-        - twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov
@@ -237,10 +172,12 @@ matrix:
         - TOXENV=pypy-pure-nocov
     - python: 'pypy'
       env:
-        - TOXENV=pypy-cython-cover,report,coveralls,codecov
+        - TOXENV=pypy-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cppy-*
+
     - python: 'pypy'
       env:
-        - TOXENV=pypy-cython-nocov
+        - TOXENV=pypy-cython-nocov        - CIBW_BUILD=cppy-*
+
     - python: 'pypy3'
       env:
         - TOXENV=pypy3-pure-cover,report,coveralls,codecov
@@ -249,17 +186,19 @@ matrix:
         - TOXENV=pypy3-pure-nocov
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-cover,report,coveralls,codecov
+        - TOXENV=pypy3-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cppy3-*
+
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-nocov
+        - TOXENV=pypy3-cython-nocov        - CIBW_BUILD=cppy3-*
+
 before_install:
   - python --version
   - uname -a
-  - lsb_release -a
-  - sudo sysctl -w kernel.yama.ptrace_scope=0
+  - lsb_release -a || true
+  - sudo sysctl -w kernel.yama.ptrace_scope=0 || true
 install:
-  - pip install tox
+  - pip install cibuildwheel twine tox-wheel
   - virtualenv --version
   - easy_install --version
   - pip --version
@@ -267,26 +206,38 @@ install:
   - |
     set -ex
     if [[ $TRAVIS_PYTHON_VERSION == 'pypy' ]]; then
-        (cd $HOME
-         wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
-         tar xf pypy2-*.tar.bz2
-         pypy2-*/bin/pypy -m ensurepip
-         pypy2-*/bin/pypy -m pip install -U virtualenv)
-        export PATH=$(echo $HOME/pypy2-*/bin):$PATH
-        export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
+      (cd $HOME
+       wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
+       tar xf pypy2-*.tar.bz2
+       pypy2-*/bin/pypy -m ensurepip
+       pypy2-*/bin/pypy -m pip install -U virtualenv)
+      export PATH=$(echo $HOME/pypy2-*/bin):$PATH
+      export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
     fi
     if [[ $TRAVIS_PYTHON_VERSION == 'pypy3' ]]; then
-        (cd $HOME
-         wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
-         tar xf pypy3-*.tar.bz2
-         pypy3-*/bin/pypy3 -m ensurepip
-         pypy3-*/bin/pypy3 -m pip install -U virtualenv)
-        export PATH=$(echo $HOME/pypy3-*/bin):$PATH
-        export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
+      (cd $HOME
+       wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
+       tar xf pypy3-*.tar.bz2
+       pypy3-*/bin/pypy3 -m ensurepip
+       pypy3-*/bin/pypy3 -m pip install -U virtualenv)
+      export PATH=$(echo $HOME/pypy3-*/bin):$PATH
+      export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
     fi
     set +x
 script:
-  - tox -v
+  - |
+    set -ex
+    if [[ -n "$CIBW_BUILD" ]]; then
+      cibuildwheel --output-dir=dist
+      for wheel in dist/*.whl; do
+        tox --installpkg=$wheel -v
+      done
+      if [[ TOXENV =~ cython ]]; then
+        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
+      fi
+    else:
+      tox -v
+    fi
 after_failure:
   - more .tox/log/* | cat
   - more .tox/*/log/* | cat
