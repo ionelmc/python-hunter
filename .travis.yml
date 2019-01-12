@@ -31,11 +31,13 @@ matrix:
       script:
     - python: '2.7'
       env:
-        - TOXENV=py27-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp27-*
+        - TOXENV=py27-cython-cover,report,coveralls,codecov
+        - CIBW_BUILD=cp27-manylinux1_x86_64
 
     - python: '2.7'
       env:
-        - TOXENV=py27-cython-nocov        - CIBW_BUILD=cp27-*
+        - TOXENV=py27-cython-nocov
+        - CIBW_BUILD=cp27-manylinux1_x86_64
 
     - os: osx
       language: generic
@@ -59,11 +61,13 @@ matrix:
       script:
     - python: '3.4'
       env:
-        - TOXENV=py34-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp34-*
+        - TOXENV=py34-cython-cover,report,coveralls,codecov
+        - CIBW_BUILD=cp34-manylinux1_x86_64
 
     - python: '3.4'
       env:
-        - TOXENV=py34-cython-nocov        - CIBW_BUILD=cp34-*
+        - TOXENV=py34-cython-nocov
+        - CIBW_BUILD=cp34-manylinux1_x86_64
 
     - os: osx
       language: generic
@@ -87,11 +91,13 @@ matrix:
       script:
     - python: '3.5'
       env:
-        - TOXENV=py35-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp35-*
+        - TOXENV=py35-cython-cover,report,coveralls,codecov
+        - CIBW_BUILD=cp35-manylinux1_x86_64
 
     - python: '3.5'
       env:
-        - TOXENV=py35-cython-nocov        - CIBW_BUILD=cp35-*
+        - TOXENV=py35-cython-nocov
+        - CIBW_BUILD=cp35-manylinux1_x86_64
 
     - os: osx
       language: generic
@@ -115,11 +121,13 @@ matrix:
       script:
     - python: '3.6'
       env:
-        - TOXENV=py36-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp36-*
+        - TOXENV=py36-cython-cover,report,coveralls,codecov
+        - CIBW_BUILD=cp36-manylinux1_x86_64
 
     - python: '3.6'
       env:
-        - TOXENV=py36-cython-nocov        - CIBW_BUILD=cp36-*
+        - TOXENV=py36-cython-nocov
+        - CIBW_BUILD=cp36-manylinux1_x86_64
 
     - os: osx
       language: generic
@@ -147,13 +155,15 @@ matrix:
       script:
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cp37-*
+        - TOXENV=py37-cython-cover,report,coveralls,codecov
+        - CIBW_BUILD=cp37-manylinux1_x86_64
       sudo: required
       dist: xenial
 
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-nocov        - CIBW_BUILD=cp37-*
+        - TOXENV=py37-cython-nocov
+        - CIBW_BUILD=cp37-manylinux1_x86_64
       sudo: required
       dist: xenial
 
@@ -172,12 +182,10 @@ matrix:
         - TOXENV=pypy-pure-nocov
     - python: 'pypy'
       env:
-        - TOXENV=pypy-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cppy-*
-
+        - TOXENV=pypy-cython-cover,report,coveralls,codecov
     - python: 'pypy'
       env:
-        - TOXENV=pypy-cython-nocov        - CIBW_BUILD=cppy-*
-
+        - TOXENV=pypy-cython-nocov
     - python: 'pypy3'
       env:
         - TOXENV=pypy3-pure-cover,report,coveralls,codecov
@@ -186,12 +194,10 @@ matrix:
         - TOXENV=pypy3-pure-nocov
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-cover,report,coveralls,codecov        - CIBW_BUILD=cppy3-*
-
+        - TOXENV=pypy3-cython-cover,report,coveralls,codecov
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-nocov        - CIBW_BUILD=cppy3-*
-
+        - TOXENV=pypy3-cython-nocov
 before_install:
   - python --version
   - uname -a
@@ -205,7 +211,7 @@ install:
   - tox --version
   - |
     set -ex
-    if [[ $TRAVIS_PYTHON_VERSION == 'pypy' ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == "pypy" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
        tar xf pypy2-*.tar.bz2
@@ -214,7 +220,7 @@ install:
       export PATH=$(echo $HOME/pypy2-*/bin):$PATH
       export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
     fi
-    if [[ $TRAVIS_PYTHON_VERSION == 'pypy3' ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == "pypy3" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
        tar xf pypy3-*.tar.bz2

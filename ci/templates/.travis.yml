@@ -19,16 +19,16 @@ matrix:
 {% for env in tox_environments %}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
       env:
-        - TOXENV={{ env }}{% if 'cover' in env %},report,coveralls,codecov{% endif %}
-{% if 'pure' not in env %}
-        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-*
+        - TOXENV={{ env }}{% if "cover" in env %},report,coveralls,codecov{% endif %}
+{% if "pure" not in env and "pypy" not in env %}{{ '' }}
+        - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-manylinux1_x86_64
 {% endif %}
-{% if env.startswith('py37') %}
+{% if "py37" in env %}
       sudo: required
       dist: xenial
 {% endif %}
 
-{% if not env.startswith("pypy") and not env.endswith("cover") %}
+{% if "pypy" not in env and "cover" not in env %}
     - os: osx
       language: generic
       env:
@@ -51,7 +51,7 @@ install:
   - tox --version
   - |
     set -ex
-    if [[ $TRAVIS_PYTHON_VERSION == 'pypy' ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == "pypy" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
        tar xf pypy2-*.tar.bz2
@@ -60,7 +60,7 @@ install:
       export PATH=$(echo $HOME/pypy2-*/bin):$PATH
       export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
     fi
-    if [[ $TRAVIS_PYTHON_VERSION == 'pypy3' ]]; then
+    if [[ $TRAVIS_PYTHON_VERSION == "pypy3" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
        tar xf pypy3-*.tar.bz2
