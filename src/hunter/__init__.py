@@ -228,7 +228,7 @@ def wrap(function_to_trace=None, **trace_options):
     def tracing_decorator(func):
         @functools.wraps(func)
         def tracing_wrapper(*args, **kwargs):
-            tracer = trace(~When(Q(calls_gt=0, depth=0), Stop), **trace_options)
+            tracer = trace(~When(Q(calls_gt=1, depth=0), Stop), **trace_options)
             try:
                 return func(*args, **kwargs)
             finally:

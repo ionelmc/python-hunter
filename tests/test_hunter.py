@@ -734,7 +734,6 @@ def test_source(LineMatcher):
     ])
 
 
-@pytest.mark.skipif('os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1"')
 def test_wraps(LineMatcher):
     calls = []
 
@@ -747,7 +746,7 @@ def test_wraps(LineMatcher):
     lm.fnmatch_lines([
         '  call calls=0 depth=0     @hunter.wrap*',
         '  line calls=1 depth=1         return 1\n',
-        'return calls=1 depth=1         return 1\n',
+        'return calls=1 depth=0         return 1\n',
     ])
 
 
@@ -776,7 +775,7 @@ def test_depth():
         tracer.stop()
     pprint(calls)
     assert ('call', 'test_hunter', 'bar', 1) in calls
-    assert ('return', 'test_hunter', 'foo', 1) in calls
+    assert ('return', 'test_hunter', 'foo', 0) in calls
 
 
 def test_source_cython(LineMatcher):
