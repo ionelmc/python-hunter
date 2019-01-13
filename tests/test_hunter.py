@@ -743,11 +743,42 @@ def test_wraps(LineMatcher):
 
     foo()
     lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
     lm.fnmatch_lines([
         '  call calls=0 depth=0     @hunter.wrap*',
         '  line calls=1 depth=1         return 1\n',
         'return calls=1 depth=0         return 1\n',
     ])
+    for call in calls:
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_local(LineMatcher):
+    calls = []
+
+    def bar():
+        for i in range(2):
+            return 'A'
+
+    @hunter.wrap(local=True, action=lambda event: calls.append(
+        "%06s calls=%s depth=%s %s" % (event.kind, event.calls, event.depth, event.fullsource)))
+    def foo():
+        bar()
+        return 1
+
+    foo()
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines([
+        '  call calls=0 depth=0     @hunter.wrap*',
+        '  line calls=? depth=1         return 1\n',
+        'return calls=? depth=0         return 1\n',
+    ])
+    for call in calls:
+        assert 'for i in range(2)' not in call
+        assert 'tracer.stop()' not in call
 
 
 @pytest.mark.skipif('os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1"')

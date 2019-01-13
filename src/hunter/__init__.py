@@ -228,11 +228,16 @@ def wrap(function_to_trace=None, **trace_options):
     def tracing_decorator(func):
         @functools.wraps(func)
         def tracing_wrapper(*args, **kwargs):
-            tracer = trace(~When(Q(calls_gt=1, depth=0), Stop), **trace_options)
+            predicates = []
+            local = trace_options.pop('local', False)
+            if local:
+                predicates.append(Q(depth_lt=2))
+            predicates.append(~When(Q(calls_gt=0, depth=0) & ~Q(kind='return'), Stop))
+            local_tracer = trace(*predicates, **trace_options)
             try:
                 return func(*args, **kwargs)
             finally:
-                tracer.stop()
+                local_tracer.stop()
         return tracing_wrapper
     if function_to_trace is None:
         return tracing_decorator
