@@ -1161,3 +1161,63 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
         "[[]*[]] *MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
         "[[]*[]] *MainThread  *               *  vars * a => 1",
     ])
+
+
+@pytest.mark.parametrize('depth', [2, 3, 4], ids='depth_lt={}'.format)
+def test_depth_limit(LineMatcher, tracer_impl, depth):
+    buff = StringIO()
+    from sample7 import one
+    tracer = tracer_impl()
+    predicate = When(Q(depth_lt=depth), CallPrinter(stream=buff))
+    try:
+        tracer.trace(predicate)
+        one()
+    finally:
+        tracer.stop()
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "* call      => one()",
+        "* line         for i in range(2):",
+        "* line         two()",
+        "* call         => two()",
+        "* return       <= two: None",
+        "* line         for i in range(2):",
+        "* line         two()",
+        "* call         => two()",
+        "* return       <= two: None",
+        "* line         for i in range(2):",
+        "* return    <= one: None",
+    ])
+    if depth < 3:
+        assert 'three' not in output
+    if depth < 4:
+        assert 'four' not in output
+    if depth < 5:
+        assert 'five' not in output
+
+
+@pytest.mark.parametrize('depth', [2, 3, 4], ids='depth_lt={}'.format)
+def test_depth_limit_integration(LineMatcher, tracer_impl, depth):
+    hunter_env = "action=CallPrinter,depth_lt={!r},kind_in=['call','return'],stdlib=0".format(depth + 1)
+    output = subprocess.check_output(
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample7.py')],
+        env=dict(os.environ, PYTHONHUNTER=hunter_env),
+        stderr=subprocess.STDOUT,
+    )
+    output = output.decode('utf8')
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "* call    * => one()",
+        "* call    *    => two()",
+        "* return  *    <= two: None",
+        "* call    *    => two()",
+        "* return  *    <= two: None",
+        "* return  * <= one: None",
+    ])
+    if depth < 3:
+        assert '=> three' not in output
+    if depth < 4:
+        assert '=> four' not in output
+    if depth < 5:
+        assert '=> five' not in output
