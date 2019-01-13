@@ -181,7 +181,9 @@ cdef class Event:
             A boolean flag. ``True`` if frame is in stdlib.
             """
             if self._stdlib is UNSET:
-                if self.filename.startswith(SITE_PACKAGES_PATHS):
+                if self.module == 'pkg_resources' or self.module.startswith('pkg_resources.'):
+                    self._stdlib = False
+                elif self.filename.startswith(SITE_PACKAGES_PATHS):
                     # if it's in site-packages then its definitely not stdlib
                     self._stdlib = False
                 elif self.filename.startswith(SYS_PREFIX_PATHS):
