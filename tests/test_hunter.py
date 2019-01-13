@@ -15,6 +15,7 @@ from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
+from hunter import From
 from hunter import Not
 from hunter import Or
 from hunter import Q
@@ -1251,3 +1252,30 @@ def test_depth_limit_integration(LineMatcher, depth):
         assert '=> four' not in output
     if depth < 5:
         assert '=> five' not in output
+
+
+def test_from_predicate(LineMatcher, tracer_impl):
+    buff = StringIO()
+    from sample7 import one
+    tracer = tracer_impl()
+    predicate = From(Q(function='four'), CallPrinter(stream=buff))
+    try:
+        tracer.trace(predicate)
+        one()
+    finally:
+        tracer.stop()
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "* call      => one()",
+        "* line         for i in range(2):",
+        "* line         two()",
+        "* call         => two()",
+        "* return       <= two: None",
+        "* line         for i in range(2):",
+        "* line         two()",
+        "* call         => two()",
+        "* return       <= two: None",
+        "* line         for i in range(2):",
+        "* return    <= one: None",
+    ])

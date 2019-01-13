@@ -294,6 +294,58 @@ class When(object):
     __rand__ = __and__
 
 
+class From(object):
+    """
+    Keep running ``predicates`` after ``condition(event)`` is ``True``.
+    """
+
+    def __init__(self, condition, predicate):
+        self.condition = condition
+        self.predicate = predicate
+        self.started = False
+
+    def __str__(self):
+        return 'From(%s, %s)' % (
+            self.condition,
+            self.predicate
+        )
+
+    def __repr__(self):
+        return '<hunter.predicates.From: condition=%r, predicate=%r>' % (self.condition, self.predicate)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, From)
+            and self.condition == other.condition
+            and self.predicate == other.predicate
+        )
+
+    def __call__(self, event):
+        """
+        Handles the event.
+        """
+        if self.started:
+            return self.predicate(event)
+        else:
+            if self.condition(event):
+                self.started = True
+                return self.predicate(event)
+            else:
+                return False
+
+    def __or__(self, other):
+        return From(Or(self.condition, other), self.predicate)
+
+    def __and__(self, other):
+        return From(self.condition, And(self.predicate, other))
+
+    def __invert__(self):
+        return Not(self)
+
+    __ror__ = __or__
+    __rand__ = __and__
+
+
 class And(object):
     """
     `And` predicate. Exits at the first sub-predicate that returns ``False``.

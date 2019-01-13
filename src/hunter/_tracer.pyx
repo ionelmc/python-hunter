@@ -9,6 +9,8 @@ from cpython.pystate cimport PyThreadState_Get
 from ._event cimport Event
 from ._predicates cimport When
 from ._predicates cimport fast_When_call
+from ._predicates cimport From
+from ._predicates cimport fast_From_call
 from ._predicates cimport And
 from ._predicates cimport fast_And_call
 from ._predicates cimport Or
@@ -32,6 +34,8 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
 
     if type(handler) is When:
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+    elif type(handler) is From:
+        fast_From_call(<From>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is And:
         fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is Or:

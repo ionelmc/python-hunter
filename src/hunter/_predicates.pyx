@@ -344,6 +344,8 @@ cdef inline fast_When_call(When self, event):
         result = fast_Not_call(<Not> condition, event)
     elif type(condition) is When:
         result = fast_When_call(<When> condition, event)
+    elif type(condition) is From:
+        result = fast_From_call(<From> condition, event)
     else:
         result = condition(event)
 
@@ -352,6 +354,80 @@ cdef inline fast_When_call(When self, event):
             action(event)
 
     return result
+
+
+@cython.final
+cdef class From:
+    """
+    Keep running ``predicates`` after ``condition(event)`` is ``True``.
+    """
+
+    def __init__(self, condition, predicate):
+        self.condition = condition
+        self.predicate = predicate
+        self.started = False
+
+    def __str__(self):
+        return 'From(%s, %s)' % (
+            self.condition,
+            self.predicate
+        )
+
+    def __repr__(self):
+        return '<hunter.predicates.From: condition=%r, predicate=%r>' % (self.condition, self.predicate)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, From)
+            and self.condition == other.condition
+            and self.predicate == other.predicate
+        )
+    def __call__(self, event):
+        """
+        Handles the event.
+        """
+
+    def __or__(self, other):
+        return From(Or(self.condition, other), self.predicate)
+
+    def __and__(self, other):
+        return From(self.condition, And(self.predicate, other))
+
+    def __invert__(self):
+        return Not(self)
+
+    __ror__ = __or__
+    __rand__ = __and__
+
+cdef inline fast_From_call(self, event):
+    cdef object result
+
+    if self.started:
+
+        return self.predicate(event)
+    else:
+        condition = self.condition
+
+        if type(condition) is Query:
+            result = fast_Query_call(<Query> condition, event)
+        elif type(condition) is Or:
+            result = fast_Or_call(<Or> condition, event)
+        elif type(condition) is And:
+            result = fast_And_call(<And> condition, event)
+        elif type(condition) is Not:
+            result = fast_Not_call(<Not> condition, event)
+        elif type(condition) is When:
+            result = fast_When_call(<When> condition, event)
+        elif type(condition) is From:
+            result = fast_From_call(<From> condition, event)
+        else:
+            result = condition(event)
+
+        if result:
+            self.started = True
+            return self.predicate(event)
+        else:
+            return False
 
 
 @cython.final
@@ -421,6 +497,9 @@ cdef inline fast_And_call(And self, event):
                 return False
         elif type(predicate) is When:
             if not fast_When_call(<When> predicate, event):
+                return False
+        elif type(predicate) is From:
+            if not fast_From_call(<From> predicate, event):
                 return False
         else:
             if not predicate(event):
@@ -497,6 +576,9 @@ cdef inline fast_Or_call(Or self, event):
                 return True
         elif type(predicate) is When:
             if fast_When_call(<When> predicate, event):
+                return True
+        elif type(predicate) is From:
+            if fast_From_call(<From> predicate, event):
                 return True
         else:
             if predicate(event):
@@ -580,5 +662,7 @@ cdef inline fast_Not_call(Not self, event):
         return not fast_Not_call(<Not> predicate, event)
     elif type(predicate) is When:
         return not fast_When_call(<When> predicate, event)
+    elif type(predicate) is From:
+        return not fast_From_call(<From> predicate, event)
     else:
         return not predicate(event)

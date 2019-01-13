@@ -17,9 +17,10 @@ from .config import load_config
 
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
-        raise ImportError("Skipped")
+        raise ImportError("Cython speedups are disabled")
 
     from ._predicates import And as _And
+    from ._predicates import From
     from ._predicates import Not
     from ._predicates import Or as _Or
     from ._predicates import When
@@ -27,13 +28,14 @@ try:
     from ._tracer import Tracer
 except ImportError:
     from .predicates import And as _And
+    from .predicates import From
     from .predicates import Not
     from .predicates import Or as _Or
     from .predicates import When
     from .predicates import Query
     from .tracer import Tracer
 
-__version__ = "__version__ = '2.1.0'"
+__version__ = '2.1.0'
 __all__ = (
     'And',
     'CallPrinter',
