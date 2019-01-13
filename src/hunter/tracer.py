@@ -48,7 +48,7 @@ class Tracer(object):
             because it might match further inside.
         """
         if self._handler is not None:
-            if kind == 'return':
+            if kind == 'return' and self.depth > 0:
                 self.depth -= 1
             self._handler(Event(frame, kind, arg, self))
             if kind == 'call':

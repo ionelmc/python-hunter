@@ -27,7 +27,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
 
     handler = self.handler
 
-    if kind == 3:
+    if kind == 3 and self.depth > 0:
         self.depth -= 1
 
     if type(handler) is When:
@@ -57,7 +57,7 @@ cdef class Tracer:
         self._previousfunc = NULL
         self._threading_previous = None
         self.threading_support = threading_support
-        self.depth = 1
+        self.depth = 0
         self.calls = 0
 
     def __dealloc__(self):
