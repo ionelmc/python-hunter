@@ -26,6 +26,10 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         frame.f_trace = <PyObject*> self
 
     handler = self.handler
+
+    if kind == 3:
+        self.depth -= 1
+
     if type(handler) is When:
         fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is And:
@@ -40,8 +44,6 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     if kind == 0:
         self.depth += 1
         self.calls += 1
-    elif kind == 3:
-        self.depth -= 1
 
 
 cdef class Tracer:
