@@ -299,9 +299,10 @@ class From(object):
     Keep running ``predicates`` after ``condition(event)`` is ``True``.
     """
 
-    def __init__(self, condition, predicate):
+    def __init__(self, condition, predicate, watermark=0):
         self.condition = condition
         self.predicate = predicate
+        self.watermark = watermark
         self.waiting_for_condition = True
         self.depth = -1
 
@@ -325,7 +326,7 @@ class From(object):
         """
         Handles the event.
         """
-        if event.depth == self.depth:
+        if event.depth - self.watermark <= self.depth:
             self.waiting_for_condition = True
             self.depth = -1
 

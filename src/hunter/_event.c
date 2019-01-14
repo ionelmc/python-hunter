@@ -610,9 +610,9 @@ static CYTHON_INLINE float __PYX_NAN() {
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
-#include "pythread.h"
 #include "frameobject.h"
 #include "pystate.h"
+#include "pythread.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -823,9 +823,7 @@ static const char *__pyx_f[] = {
   "src/hunter/_event.pyx",
   "stringsource",
   "src/hunter/_event.pxd",
-  ".tox/py37-cython-nocov/lib/python3.7/site-packages/Cython/Includes/cpython/type.pxd",
-  ".tox/py37-cython-nocov/lib/python3.7/site-packages/Cython/Includes/cpython/bool.pxd",
-  ".tox/py37-cython-nocov/lib/python3.7/site-packages/Cython/Includes/cpython/complex.pxd",
+  ".tox/py37-cython-cover/lib/python3.7/site-packages/Cython/Includes/cpython/type.pxd",
   "src/hunter/_tracer.pxd",
 };
 
@@ -834,7 +832,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer;
 struct __pyx_obj_6hunter_6_event_Event;
 struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
 
-/* "_tracer.pxd":32
+/* "_tracer.pxd":31
  * 
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
@@ -1639,88 +1637,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event__get_globals(struct __pyx_obj_6h
 
 /* Module declarations from 'cython' */
 
-/* Module declarations from 'cpython.version' */
+/* Module declarations from 'libc.string' */
+
+/* Module declarations from 'libc.stdio' */
 
 /* Module declarations from '__builtin__' */
 
 /* Module declarations from 'cpython.type' */
 static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 
-/* Module declarations from 'libc.string' */
-
-/* Module declarations from 'libc.stdio' */
+/* Module declarations from 'cpython' */
 
 /* Module declarations from 'cpython.object' */
 
-/* Module declarations from 'cpython.ref' */
-
-/* Module declarations from 'cpython.exc' */
-
-/* Module declarations from 'cpython.module' */
-
-/* Module declarations from 'cpython.mem' */
-
-/* Module declarations from 'cpython.tuple' */
-
-/* Module declarations from 'cpython.list' */
-
-/* Module declarations from 'cpython.sequence' */
-
-/* Module declarations from 'cpython.mapping' */
-
-/* Module declarations from 'cpython.iterator' */
-
-/* Module declarations from 'cpython.number' */
-
-/* Module declarations from 'cpython.int' */
-
-/* Module declarations from '__builtin__' */
-
-/* Module declarations from 'cpython.bool' */
-static PyTypeObject *__pyx_ptype_7cpython_4bool_bool = 0;
-
-/* Module declarations from 'cpython.long' */
-
-/* Module declarations from 'cpython.float' */
-
-/* Module declarations from '__builtin__' */
-
-/* Module declarations from 'cpython.complex' */
-static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
-
-/* Module declarations from 'cpython.string' */
-
-/* Module declarations from 'cpython.unicode' */
-
-/* Module declarations from 'cpython.dict' */
-
-/* Module declarations from 'cpython.instance' */
-
-/* Module declarations from 'cpython.function' */
-
-/* Module declarations from 'cpython.method' */
-
-/* Module declarations from 'cpython.weakref' */
-
-/* Module declarations from 'cpython.getargs' */
-
-/* Module declarations from 'cpython.pythread' */
-
 /* Module declarations from 'cpython.pystate' */
-
-/* Module declarations from 'cpython.cobject' */
-
-/* Module declarations from 'cpython.oldbuffer' */
-
-/* Module declarations from 'cpython.set' */
-
-/* Module declarations from 'cpython.buffer' */
-
-/* Module declarations from 'cpython.bytes' */
-
-/* Module declarations from 'cpython.pycapsule' */
-
-/* Module declarations from 'cpython' */
 
 /* Module declarations from 'types' */
 
@@ -1728,6 +1658,8 @@ static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
 static PyTypeObject *__pyx_ptype_6hunter_7_tracer_CodeType = 0;
 static PyTypeObject *__pyx_ptype_6hunter_7_tracer_FrameType = 0;
 static PyTypeObject *__pyx_ptype_6hunter_7_tracer_Tracer = 0;
+
+/* Module declarations from 'cpython.pythread' */
 
 /* Module declarations from 'hunter._event' */
 static PyTypeObject *__pyx_ptype_6hunter_6_event_Event = 0;
@@ -7102,26 +7034,16 @@ static int __Pyx_modinit_type_import_code(void) {
   __Pyx_ImportType_CheckSize_Warn);
    if (!__pyx_ptype_7cpython_4type_type) __PYX_ERR(3, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 8, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_7cpython_4bool_bool) __PYX_ERR(4, 8, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(5, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_7cpython_7complex_complex) __PYX_ERR(5, 15, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 10, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType(__pyx_t_1, "types", "CodeType", sizeof(PyCodeObject), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(6, 10, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(4, 9, __pyx_L1_error)
   __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType(__pyx_t_1, "types", "FrameType", sizeof(PyFrameObject), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(6, 14, __pyx_L1_error)
-  __pyx_t_2 = PyImport_ImportModule("hunter._tracer"); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 32, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(4, 13, __pyx_L1_error)
+  __pyx_t_2 = PyImport_ImportModule("hunter._tracer"); if (unlikely(!__pyx_t_2)) __PYX_ERR(4, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType(__pyx_t_2, "hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_Tracer) __PYX_ERR(6, 32, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_Tracer) __PYX_ERR(4, 31, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
