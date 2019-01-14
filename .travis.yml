@@ -31,13 +31,9 @@ matrix:
     - python: '2.7'
       env:
         - TOXENV=py27-cython-cover,report,coveralls,codecov
-        - CIBW_BUILD=cp27-manylinux1_x86_64
-
     - python: '2.7'
       env:
         - TOXENV=py27-cython-nocov
-        - CIBW_BUILD=cp27-manylinux1_x86_64
-
     - os: osx
       language: generic
       env:

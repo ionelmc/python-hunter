@@ -20,7 +20,7 @@ matrix:
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
       env:
         - TOXENV={{ env }}{% if "cover" in env %},report,coveralls,codecov{% endif %}
-{% if "pure" not in env and "pypy" not in env %}{{ '' }}
+{% if "pure" not in env and "pypy" not in env and "py27" not in env %}{{ '' }}
         - CIBW_BUILD=cp{{ env.split("-")[0][2:] }}-manylinux1_x86_64
 {% endif %}
 {% if "py37" in env %}
