@@ -72,6 +72,10 @@ install:
 script:
   - |
     set -ex
+    if [[ $TOXENV =~ py ]]; then
+      IFS=',' read -ra envs <<< "$TOXENV"
+      tox -e ${envs[0]} -- python -c 'import collections; from hunter import const; from pprint import pprint; pprint({k: v for k, v in vars(const).items() if k.isupper()}); pprint(collections.__file__)'
+    fi
     if [[ -n "$CIBW_BUILD" ]]; then
       cibuildwheel --output-dir=dist
       for wheel in dist/*.whl; do
