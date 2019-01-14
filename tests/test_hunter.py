@@ -1210,15 +1210,11 @@ def test_depth_limit(LineMatcher, tracer_impl, depth):
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
         "* call      => one()",
-        "* line         for i in range(2):",
+        "* line         for i in range(1):  # one",
         "* line         two()",
         "* call         => two()",
         "* return       <= two: None",
-        "* line         for i in range(2):",
-        "* line         two()",
-        "* call         => two()",
-        "* return       <= two: None",
-        "* line         for i in range(2):",
+        "* line         for i in range(1):  # one",
         "* return    <= one: None",
     ])
     if depth < 3:
