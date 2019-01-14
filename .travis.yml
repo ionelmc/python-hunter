@@ -1,5 +1,4 @@
 language: python
-sudo: true
 cache: pip
 addons:
   apt:
@@ -19,147 +18,154 @@ matrix:
     - python: '2.7'
       env:
         - TOXENV=py27-pure-cover,report,coveralls,codecov
+    - os: osx
+      language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
+      env:
+        - TOXENV=py27-pure-cover
+        - SETUPPY_CFLAGS=
     - python: '2.7'
       env:
         - TOXENV=py27-pure-nocov
     - os: osx
       language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-pure-nocov
         - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp27-*
     - python: '2.7'
       env:
         - TOXENV=py27-cython-cover,report,coveralls,codecov
+    - os: osx
+      language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
+      env:
+        - TOXENV=py27-cython-cover
+        - SETUPPY_CFLAGS=
     - python: '2.7'
       env:
         - TOXENV=py27-cython-nocov
+        - WHEEL_MANYLINUX1=cp27-manylinux1_x86_64
+        - WHEEL_PATH=wheelhouse
+
     - os: osx
       language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-cython-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp27-*
+        - SETUPPY_CFLAGS=        - WHEEL_PATH=.tox/dist
     - python: '3.4'
       env:
         - TOXENV=py34-pure-cover,report,coveralls,codecov
     - python: '3.4'
       env:
         - TOXENV=py34-pure-nocov
-    - os: osx
-      language: generic
-      env:
-        - TOXENV=py34-pure-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp34-*
     - python: '3.4'
       env:
         - TOXENV=py34-cython-cover,report,coveralls,codecov
-        - CIBW_BUILD=cp34-manylinux1_x86_64
-
     - python: '3.4'
       env:
         - TOXENV=py34-cython-nocov
-        - CIBW_BUILD=cp34-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp34-manylinux1_x86_64
+        - WHEEL_PATH=wheelhouse
 
-    - os: osx
-      language: generic
-      env:
-        - TOXENV=py34-cython-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp34-*
     - python: '3.5'
       env:
         - TOXENV=py35-pure-cover,report,coveralls,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-pure-nocov
-    - os: osx
-      language: generic
-      env:
-        - TOXENV=py35-pure-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp35-*
     - python: '3.5'
       env:
         - TOXENV=py35-cython-cover,report,coveralls,codecov
-        - CIBW_BUILD=cp35-manylinux1_x86_64
-
     - python: '3.5'
       env:
         - TOXENV=py35-cython-nocov
-        - CIBW_BUILD=cp35-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp35-manylinux1_x86_64
+        - WHEEL_PATH=wheelhouse
 
-    - os: osx
-      language: generic
-      env:
-        - TOXENV=py35-cython-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp35-*
     - python: '3.6'
       env:
         - TOXENV=py36-pure-cover,report,coveralls,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-pure-nocov
-    - os: osx
-      language: generic
-      env:
-        - TOXENV=py36-pure-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp36-*
     - python: '3.6'
       env:
         - TOXENV=py36-cython-cover,report,coveralls,codecov
-        - CIBW_BUILD=cp36-manylinux1_x86_64
-
     - python: '3.6'
       env:
         - TOXENV=py36-cython-nocov
-        - CIBW_BUILD=cp36-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp36-manylinux1_x86_64
+        - WHEEL_PATH=wheelhouse
+
+    - python: '3.7'
+      env:
+        - TOXENV=py37-pure-cover,report,coveralls,codecov      dist: xenial
 
     - os: osx
       language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
       env:
-        - TOXENV=py36-cython-nocov
+        - TOXENV=py37-pure-cover
         - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp36-*
     - python: '3.7'
       env:
-        - TOXENV=py37-pure-cover,report,coveralls,codecov      sudo: required
-      dist: xenial
-
-    - python: '3.7'
-      env:
-        - TOXENV=py37-pure-nocov      sudo: required
-      dist: xenial
+        - TOXENV=py37-pure-nocov      dist: xenial
 
     - os: osx
       language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-pure-nocov
         - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp37-*
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,report,coveralls,codecov
-        - CIBW_BUILD=cp37-manylinux1_x86_64
-      sudo: required
-      dist: xenial
+        - TOXENV=py37-cython-cover,report,coveralls,codecov      dist: xenial
 
+    - os: osx
+      language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
+      env:
+        - TOXENV=py37-cython-cover
+        - SETUPPY_CFLAGS=
     - python: '3.7'
       env:
         - TOXENV=py37-cython-nocov
-        - CIBW_BUILD=cp37-manylinux1_x86_64
-      sudo: required
+        - WHEEL_MANYLINUX1=cp37-manylinux1_x86_64
+        - WHEEL_PATH=wheelhouse
       dist: xenial
 
     - os: osx
       language: generic
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-cython-nocov
-        - SETUPPY_CFLAGS=
-        - CIBW_BUILD=cp37-*
+        - SETUPPY_CFLAGS=        - WHEEL_PATH=.tox/dist
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov
@@ -183,14 +189,19 @@ matrix:
         - TOXENV=pypy3-cython-cover,report,coveralls,codecov
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-nocov
-before_install:
+        - TOXENV=pypy3-cython-nocovbefore_install:
   - python --version
   - uname -a
   - lsb_release -a || true
   - sudo sysctl -w kernel.yama.ptrace_scope=0 || true
+  - |
+    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      [[ $TOXENV =~ py3 ]] && brew upgrade python
+      [[ $TOXENV =~ py2 ]] && brew install python@2
+      export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
+    fi
 install:
-  - pip install cibuildwheel twine tox-wheel
+  - pip install twine tox-wheel
   - virtualenv --version
   - easy_install --version
   - pip --version
@@ -219,20 +230,14 @@ install:
 script:
   - |
     set -ex
-    if [[ $TOXENV =~ py ]]; then
-      IFS=',' read -ra envs <<< "$TOXENV"
-      tox -e ${envs[0]} -- python -c 'import collections; from hunter import const; from pprint import pprint; pprint({k: v for k, v in vars(const).items() if k.isupper()}); pprint(collections.__file__)'
-    fi
-    if [[ -n "$CIBW_BUILD" ]]; then
-      cibuildwheel --output-dir=dist
-      for wheel in dist/*.whl; do
-        tox --installpkg=$wheel -v
-      done
-      if [[ TOXENV =~ cython ]]; then
-        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
-      fi
+    if [[ -n $WHEEL_MANYLINUX1 ]]; then
+      docker run --rm --user $UID -itv $(pwd):/code ionelmc/manylinux $WHEEL_MANYLINUX1
+      tox --installpkg $WHEEL_PATH/*.whl -v
     else
       tox -v
+    fi
+    if [[ -n $WHEEL_PATH ]]; then
+      twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*
     fi
 after_failure:
   - more .tox/log/* | cat
