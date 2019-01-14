@@ -1,6 +1,5 @@
 # cython: language_level=3
 cimport cython
-from cpython cimport bool
 
 from ._event cimport Event
 
@@ -44,9 +43,9 @@ cdef class From:
     cdef:
         readonly object condition
         readonly object predicate
-        readonly bint started
+        readonly bint waiting_for_condition
         readonly int depth
-
+        readonly int watermark
 
 cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)

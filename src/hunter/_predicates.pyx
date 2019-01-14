@@ -363,9 +363,10 @@ cdef class From:
     Keep running ``predicates`` after ``condition(event)`` is ``True``.
     """
 
-    def __init__(self, condition, predicate):
+    def __init__(self, condition, predicate, watermark=0):
         self.condition = condition
         self.predicate = predicate
+        self.watermark = watermark
         self.waiting_for_condition = True
         self.depth = -1
 
@@ -405,7 +406,7 @@ cdef class From:
 cdef inline fast_From_call(From self, Event event):
     cdef object result
 
-    if event.depth == self.depth:
+    if event.depth - self.watermark <= self.depth:
         self.waiting_for_condition = True
         self.depth = -1
 
