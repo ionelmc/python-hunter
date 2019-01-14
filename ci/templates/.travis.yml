@@ -80,7 +80,7 @@ script:
       if [[ TOXENV =~ cython ]]; then
         twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
       fi
-    else:
+    else
       tox -v
     fi
 after_failure:
