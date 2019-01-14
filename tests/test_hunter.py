@@ -22,7 +22,6 @@ from hunter import Q
 from hunter import Query
 from hunter import VarsPrinter
 from hunter import When
-from hunter import Stop
 
 try:
     from cStringIO import StringIO
