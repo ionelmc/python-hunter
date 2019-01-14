@@ -54,7 +54,7 @@ matrix:
     - python: '2.7'
       env:
         - TOXENV=py27-cython-nocov
-        - WHEEL_MANYLINUX1=cp27-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp27
         - WHEEL_PATH=wheelhouse
 
     - os: osx
@@ -79,7 +79,7 @@ matrix:
     - python: '3.4'
       env:
         - TOXENV=py34-cython-nocov
-        - WHEEL_MANYLINUX1=cp34-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp34
         - WHEEL_PATH=wheelhouse
 
     - python: '3.5'
@@ -94,7 +94,7 @@ matrix:
     - python: '3.5'
       env:
         - TOXENV=py35-cython-nocov
-        - WHEEL_MANYLINUX1=cp35-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp35
         - WHEEL_PATH=wheelhouse
 
     - python: '3.6'
@@ -109,7 +109,7 @@ matrix:
     - python: '3.6'
       env:
         - TOXENV=py36-cython-nocov
-        - WHEEL_MANYLINUX1=cp36-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp36
         - WHEEL_PATH=wheelhouse
 
     - python: '3.7'
@@ -154,7 +154,7 @@ matrix:
     - python: '3.7'
       env:
         - TOXENV=py37-cython-nocov
-        - WHEEL_MANYLINUX1=cp37-manylinux1_x86_64
+        - WHEEL_MANYLINUX1=cp37
         - WHEEL_PATH=wheelhouse
       dist: xenial
 
