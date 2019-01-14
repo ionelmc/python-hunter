@@ -65,7 +65,8 @@ matrix:
           - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-cython-nocov
-        - SETUPPY_CFLAGS=        - WHEEL_PATH=.tox/dist
+        - SETUPPY_CFLAGS=
+        - WHEEL_PATH=.tox/dist
     - python: '3.4'
       env:
         - TOXENV=py34-pure-cover,report,coveralls,codecov
@@ -165,7 +166,8 @@ matrix:
           - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-cython-nocov
-        - SETUPPY_CFLAGS=        - WHEEL_PATH=.tox/dist
+        - SETUPPY_CFLAGS=
+        - WHEEL_PATH=.tox/dist
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,report,coveralls,codecov

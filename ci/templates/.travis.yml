@@ -36,7 +36,7 @@ matrix:
       env:
         - TOXENV={{ env }}
         - SETUPPY_CFLAGS=
-{%- if "cython-nocov" in env %}
+{%- if "cython-nocov" in env %}{{ '' }}
         - WHEEL_PATH=.tox/dist
 {%- endif %}
 {%- endif %}
