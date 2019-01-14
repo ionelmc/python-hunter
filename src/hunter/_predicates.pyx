@@ -6,9 +6,12 @@ import re
 from itertools import chain
 
 cimport cython
-from cpython.object cimport PyObject_RichCompare, Py_EQ, Py_NE
+from cpython.object cimport PyObject_RichCompare
+from cpython.object cimport Py_EQ
+from cpython.object cimport Py_NE
 
 from .actions import Action
+
 from ._event cimport Event
 
 cdef tuple ALLOWED_KEYS = (
@@ -223,7 +226,7 @@ cdef class Query:
             self.query_regex
         ))
 
-cdef fast_Query_call(Query self, Event event):
+cdef fast_Query_call(Query self, event):
     for key, value in self.query_eq:
         evalue = event[key]
         if evalue != value:
@@ -331,7 +334,7 @@ cdef class When:
     def __hash__(self):
         return hash((self.condition, self.actions))
 
-cdef inline fast_When_call(When self, Event event):
+cdef inline fast_When_call(When self, event):
     cdef object result
     condition = self.condition
 
@@ -389,6 +392,7 @@ cdef class From:
         """
         Handles the event.
         """
+        return fast_From_call(self, <Event?> event)
 
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)
@@ -500,7 +504,7 @@ cdef class And:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_And_call(And self, Event event):
+cdef inline fast_And_call(And self, event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if not fast_Query_call(<Query> predicate, event):
@@ -518,7 +522,7 @@ cdef inline fast_And_call(And self, Event event):
             if not fast_When_call(<When> predicate, event):
                 return False
         elif type(predicate) is From:
-            if not fast_From_call(<From> predicate, event):
+            if not fast_From_call(<From> predicate, <Event?> event):
                 return False
         else:
             if not predicate(event):
@@ -579,7 +583,7 @@ cdef class Or:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_Or_call(Or self, Event event):
+cdef inline fast_Or_call(Or self, event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if fast_Query_call(<Query> predicate, event):
@@ -597,7 +601,7 @@ cdef inline fast_Or_call(Or self, Event event):
             if fast_When_call(<When> predicate, event):
                 return True
         elif type(predicate) is From:
-            if fast_From_call(<From> predicate, event):
+            if fast_From_call(<From> predicate, <Event?> event):
                 return True
         else:
             if predicate(event):
@@ -668,7 +672,7 @@ cdef class Not:
     def __hash__(self):
         return hash(self.predicate)
 
-cdef inline fast_Not_call(Not self, Event event):
+cdef inline fast_Not_call(Not self, event):
     predicate = self.predicate
 
     if type(predicate) is Query:
@@ -682,6 +686,6 @@ cdef inline fast_Not_call(Not self, Event event):
     elif type(predicate) is When:
         return not fast_When_call(<When> predicate, event)
     elif type(predicate) is From:
-        return not fast_From_call(<From> predicate, event)
+        return not fast_From_call(<From> predicate, <Event?> event)
     else:
         return not predicate(event)
