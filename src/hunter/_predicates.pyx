@@ -9,6 +9,7 @@ cimport cython
 from cpython.object cimport PyObject_RichCompare, Py_EQ, Py_NE
 
 from .actions import Action
+from ._event cimport Event
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
@@ -222,7 +223,7 @@ cdef class Query:
             self.query_regex
         ))
 
-cdef fast_Query_call(Query self, event):
+cdef fast_Query_call(Query self, Event event):
     for key, value in self.query_eq:
         evalue = event[key]
         if evalue != value:
@@ -330,7 +331,7 @@ cdef class When:
     def __hash__(self):
         return hash((self.condition, self.actions))
 
-cdef inline fast_When_call(When self, event):
+cdef inline fast_When_call(When self, Event event):
     cdef object result
     condition = self.condition
 
@@ -365,7 +366,8 @@ cdef class From:
     def __init__(self, condition, predicate):
         self.condition = condition
         self.predicate = predicate
-        self.started = False
+        self.waiting_for_condition = True
+        self.depth = -1
 
     def __str__(self):
         return 'From(%s, %s)' % (
@@ -399,13 +401,15 @@ cdef class From:
     __ror__ = __or__
     __rand__ = __and__
 
-cdef inline fast_From_call(self, event):
+
+cdef inline fast_From_call(From self, Event event):
     cdef object result
 
-    if self.started:
+    if event.depth == self.depth:
+        self.waiting_for_condition = True
+        self.depth = -1
 
-        return self.predicate(event)
-    else:
+    if self.waiting_for_condition:
         condition = self.condition
 
         if type(condition) is Query:
@@ -424,11 +428,25 @@ cdef inline fast_From_call(self, event):
             result = condition(event)
 
         if result:
-            self.started = True
-            return self.predicate(event)
+            self.waiting_for_condition = False
+            self.depth = event.depth
         else:
             return False
 
+    if type(self.predicate) is Query:
+        return fast_Query_call(<Query> self.predicate, event)
+    elif type(self.predicate) is Or:
+        return fast_Or_call(<Or> self.predicate, event)
+    elif type(self.predicate) is And:
+        return fast_And_call(<And> self.predicate, event)
+    elif type(self.predicate) is Not:
+        return fast_Not_call(<Not> self.predicate, event)
+    elif type(self.predicate) is When:
+        return fast_When_call(<When> self.predicate, event)
+    elif type(self.predicate) is From:
+        return fast_From_call(<From> self.predicate, event)
+    else:
+        return self.predicate(event)
 
 @cython.final
 cdef class And:
@@ -481,7 +499,7 @@ cdef class And:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_And_call(And self, event):
+cdef inline fast_And_call(And self, Event event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if not fast_Query_call(<Query> predicate, event):
@@ -560,7 +578,7 @@ cdef class Or:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_Or_call(Or self, event):
+cdef inline fast_Or_call(Or self, Event event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if fast_Query_call(<Query> predicate, event):
@@ -649,7 +667,7 @@ cdef class Not:
     def __hash__(self):
         return hash(self.predicate)
 
-cdef inline fast_Not_call(Not self, event):
+cdef inline fast_Not_call(Not self, Event event):
     predicate = self.predicate
 
     if type(predicate) is Query:

@@ -22,6 +22,7 @@ from hunter import Q
 from hunter import Query
 from hunter import VarsPrinter
 from hunter import When
+from hunter import Stop
 
 try:
     from cStringIO import StringIO
@@ -1242,8 +1243,6 @@ def test_depth_limit_integration(LineMatcher, depth):
         "* call    * => one()",
         "* call    *    => two()",
         "* return  *    <= two: None",
-        "* call    *    => two()",
-        "* return  *    <= two: None",
         "* return  * <= one: None",
     ])
     if depth < 3:
@@ -1254,28 +1253,20 @@ def test_depth_limit_integration(LineMatcher, depth):
         assert '=> five' not in output
 
 
-def test_from_predicate(LineMatcher, tracer_impl):
+def test_from_predicate(LineMatcher):
     buff = StringIO()
     from sample7 import one
-    tracer = tracer_impl()
-    predicate = From(Q(function='four'), CallPrinter(stream=buff))
-    try:
-        tracer.trace(predicate)
+    with trace(From(Q(function='five'), CallPrinter(stream=buff))):
         one()
-    finally:
-        tracer.stop()
     output = buff.getvalue()
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
-        "* call      => one()",
-        "* line         for i in range(2):",
-        "* line         two()",
-        "* call         => two()",
-        "* return       <= two: None",
-        "* line         for i in range(2):",
-        "* line         two()",
-        "* call         => two()",
-        "* return       <= two: None",
-        "* line         for i in range(2):",
-        "* return    <= one: None",
+        "* call      => five()",
+        "* line         for i in range(1):",
+        "* line         return i",
+        "* return    <= five: 0",
     ])
+    assert 'four' not in output
+    assert 'three' not in output
+    assert 'two' not in output
+    assert 'one' not in output
