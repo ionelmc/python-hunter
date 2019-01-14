@@ -1,20 +1,22 @@
 # cython: language_level=3
 cimport cython
+from cpython cimport bool
 
+from ._event cimport Event
 
 @cython.final
 cdef class Query:
     cdef:
-        readonly tuple query_eq
-        readonly tuple query_startswith
-        readonly tuple query_endswith
-        readonly tuple query_in
         readonly tuple query_contains
-        readonly tuple query_regex
-        readonly tuple query_lt
-        readonly tuple query_lte
+        readonly tuple query_endswith
+        readonly tuple query_eq
         readonly tuple query_gt
         readonly tuple query_gte
+        readonly tuple query_in
+        readonly tuple query_lt
+        readonly tuple query_lte
+        readonly tuple query_regex
+        readonly tuple query_startswith
 
 @cython.final
 cdef class And:
@@ -37,7 +39,17 @@ cdef class When:
         readonly object condition
         readonly tuple actions
 
-cdef fast_When_call(When self, event)
-cdef fast_And_call(And self, event)
-cdef fast_Or_call(Or self, event)
-cdef fast_Not_call(Not self, event)
+@cython.final
+cdef class From:
+    cdef:
+        readonly object condition
+        readonly object predicate
+        readonly bint started
+        readonly int depth
+
+
+cdef fast_And_call(And self, Event event)
+cdef fast_From_call(From self, Event event)
+cdef fast_Not_call(Not self, Event event)
+cdef fast_Or_call(Or self, Event event)
+cdef fast_When_call(When self, Event event)

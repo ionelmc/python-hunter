@@ -302,7 +302,8 @@ class From(object):
     def __init__(self, condition, predicate):
         self.condition = condition
         self.predicate = predicate
-        self.started = False
+        self.waiting_for_condition = True
+        self.depth = -1
 
     def __str__(self):
         return 'From(%s, %s)' % (
@@ -324,14 +325,18 @@ class From(object):
         """
         Handles the event.
         """
-        if self.started:
-            return self.predicate(event)
-        else:
+        if event.depth == self.depth:
+            self.waiting_for_condition = True
+            self.depth = -1
+
+        if self.waiting_for_condition:
             if self.condition(event):
-                self.started = True
-                return self.predicate(event)
+                self.waiting_for_condition = False
+                self.depth = event.depth
             else:
                 return False
+
+        return self.predicate(event)
 
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)

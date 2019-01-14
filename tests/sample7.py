@@ -5,28 +5,28 @@ import sys
 
 
 def one():
-    for i in range(2):
+    for i in range(1):
         two()
 
 
 def two():
-    for i in range(2):
+    for i in range(1):
         three()
 
 
 def three():
-    for i in range(2):
+    for i in range(1):
         four()
 
 
 def four():
-    for i in range(2):
+    for i in range(1):
         five()
 
 
 def five():
-    for i in range(10):
-        pass
+    for i in range(1):
+        return i
 
 
 if __name__ == "__main__":
