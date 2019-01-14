@@ -40,7 +40,7 @@ matrix:
         - WHEEL_PATH=.tox/dist
 {%- endif %}
 {%- endif %}
-{%- endfor %}
+{%- endfor %}{{ '' }}
 before_install:
   - python --version
   - uname -a

@@ -191,7 +191,8 @@ matrix:
         - TOXENV=pypy3-cython-cover,report,coveralls,codecov
     - python: 'pypy3'
       env:
-        - TOXENV=pypy3-cython-nocovbefore_install:
+        - TOXENV=pypy3-cython-nocov
+before_install:
   - python --version
   - uname -a
   - lsb_release -a || true
