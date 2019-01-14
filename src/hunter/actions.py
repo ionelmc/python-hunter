@@ -12,11 +12,11 @@ from colorama import AnsiToWin32
 from colorama import Back
 from colorama import Fore
 from colorama import Style
-from six import string_types
 
 from .config import Default
 from .config import resolve_default
 from .util import rudimentary_repr
+from .util import string_types
 
 try:
     from threading import get_ident

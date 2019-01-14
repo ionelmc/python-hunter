@@ -158,7 +158,6 @@ setup(
     ],
     install_requires=[
         'colorama',
-        'six',
     ],
     extras_require={
         'remote': ['manhole>=1' '.' '5' '.' '0'],
