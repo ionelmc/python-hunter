@@ -41,6 +41,7 @@ __all__ = (
     'CallPrinter',
     'CodePrinter',
     'Debugger',
+    'From',
     'Manhole',
     'Not',
     'Or',
