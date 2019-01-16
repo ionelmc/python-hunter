@@ -160,8 +160,11 @@ def main():
         conn, _ = sink.accept()
         os.unlink(sink_path)
         pid, _, _ = get_peercred(conn)
-        if pid != args.pid:
-            raise Exception("Unexpected pid %r connected to output socket. Was expecting %s." % (pid, args.pid))
+        if pid:
+            if pid != args.pid:
+                raise Exception("Unexpected pid %r connected to output socket. Was expecting %s." % (pid, args.pid))
+        else:
+            print("WARNING: Failed to get pid of connected process.", file=sys.stderr)
         data = conn.recv(1024)
         while data:
             stdout.write(data)
