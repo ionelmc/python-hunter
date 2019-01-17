@@ -49,12 +49,14 @@ environment:
       PYTHON_HOME: C:\Python27
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py27-cython-nocov'
       TOXPYTHON: C:\Python27-x64\python.exe
       WINDOWS_SDK_VERSION: v7.0
       PYTHON_HOME: C:\Python27-x64
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py34-pure-cover,report,codecov'
       TOXPYTHON: C:\Python34\python.exe
       PYTHON_HOME: C:\Python34
@@ -93,12 +95,14 @@ environment:
       PYTHON_HOME: C:\Python34
       PYTHON_VERSION: '3.4'
       PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py34-cython-nocov'
       TOXPYTHON: C:\Python34-x64\python.exe
       WINDOWS_SDK_VERSION: v7.1
       PYTHON_HOME: C:\Python34-x64
       PYTHON_VERSION: '3.4'
       PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py35-pure-cover,report,codecov'
       TOXPYTHON: C:\Python35\python.exe
       PYTHON_HOME: C:\Python35
@@ -134,11 +138,13 @@ environment:
       PYTHON_HOME: C:\Python35
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py35-cython-nocov'
       TOXPYTHON: C:\Python35-x64\python.exe
       PYTHON_HOME: C:\Python35-x64
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py36-pure-cover,report,codecov'
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
@@ -174,11 +180,13 @@ environment:
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py36-cython-nocov'
       TOXPYTHON: C:\Python36-x64\python.exe
       PYTHON_HOME: C:\Python36-x64
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py37-pure-cover,report,codecov'
       TOXPYTHON: C:\Python37\python.exe
       PYTHON_HOME: C:\Python37
@@ -214,11 +222,13 @@ environment:
       PYTHON_HOME: C:\Python37
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
     - TOXENV: 'py37-cython-nocov'
       TOXPYTHON: C:\Python37-x64\python.exe
       PYTHON_HOME: C:\Python37-x64
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
 init:
   - ps: echo $env:TOXENV
   - ps: ls C:\Python*
@@ -231,12 +241,12 @@ install:
 test_script:
   - '%WITH_COMPILER% %PYTHON_HOME%\Scripts\tox'
 
-after_test:
-  - IF "%TOXENV:~-6,6%" == "-nocov" %WITH_COMPILER% %TOXPYTHON% setup.py bdist_wheel
-
 on_failure:
   - ps: dir "env:"
   - ps: get-content .tox\*\log\*
+on_success:
+  - IF DEFINED WHEEL_PATH twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
+
 artifacts:
   - path: .tox\dist\*
 

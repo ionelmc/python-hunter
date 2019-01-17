@@ -235,7 +235,7 @@ script:
       tox -v
     fi
     if [[ -n $WHEEL_PATH ]]; then
-      twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*
+      twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*.whl
     fi
     set +x
 after_failure:

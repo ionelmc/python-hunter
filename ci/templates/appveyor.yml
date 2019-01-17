@@ -11,12 +11,15 @@ environment:
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-{% for env in tox_environments %}{{ '' }}{% if env.startswith(('py2', 'py3')) %}
+{%- for env in tox_environments %}{% if env.startswith(('py2', 'py3')) %}{{ '' }}
     - TOXENV: '{{ env }}{% if 'cover' in env %},report,codecov{% endif %}'
       TOXPYTHON: C:\Python{{ env[2:4] }}\python.exe
       PYTHON_HOME: C:\Python{{ env[2:4] }}
       PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
       PYTHON_ARCH: '32'
+{% if "cython-nocov" in env %}
+      WHEEL_PATH: .tox/dist
+{% endif %}
     - TOXENV: '{{ env }}{% if 'cover' in env %},report,codecov{%- endif %}'
       TOXPYTHON: C:\Python{{ env[2:4] }}-x64\python.exe
       {%- if env.startswith(('py2', 'py34')) %}
@@ -27,7 +30,9 @@ environment:
       PYTHON_HOME: C:\Python{{ env[2:4] }}-x64
       PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
       PYTHON_ARCH: '64'
-{% endif %}{% endfor %}
+{%- if "cython-nocov" in env %}{{ '' }}
+      WHEEL_PATH: .tox/dist
+{%- endif %}{%- endif %}{%- endfor %}{{ '' }}
 init:
   - ps: echo $env:TOXENV
   - ps: ls C:\Python*
@@ -40,12 +45,12 @@ install:
 test_script:
   - '%WITH_COMPILER% %PYTHON_HOME%\Scripts\tox'
 
-after_test:
-  - IF "%TOXENV:~-6,6%" == "-nocov" %WITH_COMPILER% %TOXPYTHON% setup.py bdist_wheel
-
 on_failure:
   - ps: dir "env:"
   - ps: get-content .tox\*\log\*
+on_success:
+  - IF DEFINED WHEEL_PATH twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
+
 artifacts:
   - path: .tox\dist\*
 
