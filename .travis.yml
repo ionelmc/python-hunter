@@ -56,7 +56,6 @@ matrix:
         - TOXENV=py27-cython-nocov
         - WHEEL_MANYLINUX1=cp27
         - WHEEL_PATH=wheelhouse
-
     - os: osx
       language: generic
       cache:
@@ -81,7 +80,6 @@ matrix:
         - TOXENV=py34-cython-nocov
         - WHEEL_MANYLINUX1=cp34
         - WHEEL_PATH=wheelhouse
-
     - python: '3.5'
       env:
         - TOXENV=py35-pure-cover,report,coveralls,codecov
@@ -96,7 +94,6 @@ matrix:
         - TOXENV=py35-cython-nocov
         - WHEEL_MANYLINUX1=cp35
         - WHEEL_PATH=wheelhouse
-
     - python: '3.6'
       env:
         - TOXENV=py36-pure-cover,report,coveralls,codecov
@@ -111,11 +108,10 @@ matrix:
         - TOXENV=py36-cython-nocov
         - WHEEL_MANYLINUX1=cp36
         - WHEEL_PATH=wheelhouse
-
     - python: '3.7'
       env:
-        - TOXENV=py37-pure-cover,report,coveralls,codecov      dist: xenial
-
+        - TOXENV=py37-pure-cover,report,coveralls,codecov
+      dist: xenial
     - os: osx
       language: generic
       cache:
@@ -127,8 +123,8 @@ matrix:
         - SETUPPY_CFLAGS=
     - python: '3.7'
       env:
-        - TOXENV=py37-pure-nocov      dist: xenial
-
+        - TOXENV=py37-pure-nocov
+      dist: xenial
     - os: osx
       language: generic
       cache:
@@ -140,8 +136,8 @@ matrix:
         - SETUPPY_CFLAGS=
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,report,coveralls,codecov      dist: xenial
-
+        - TOXENV=py37-cython-cover,report,coveralls,codecov
+      dist: xenial
     - os: osx
       language: generic
       cache:
@@ -157,7 +153,6 @@ matrix:
         - WHEEL_MANYLINUX1=cp37
         - WHEEL_PATH=wheelhouse
       dist: xenial
-
     - os: osx
       language: generic
       cache:
