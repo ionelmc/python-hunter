@@ -1,3 +1,4 @@
+import distutils.spawn
 import os
 import platform
 import signal
@@ -7,6 +8,8 @@ import process_tests
 import pytest
 
 TIMEOUT = int(os.getenv('HUNTER_TEST_TIMEOUT', 10))
+
+platform, distutils.spawn
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
@@ -57,6 +60,7 @@ def test_manhole_clean_exit():
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
+@pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb():
     with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
@@ -77,6 +81,7 @@ def test_gdb():
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
+@pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb_clean_exit():
     with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
