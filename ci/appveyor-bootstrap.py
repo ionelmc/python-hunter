@@ -93,7 +93,7 @@ def install_pip(home):
     if exists(pip_path):
         print('Upgrading pip...')
         print('Executing:', python_path, '-mpip', '--upgrade', 'pip')
-        check_call([python_path, '-mpip', '--upgrade', 'pip'])
+        check_call([python_path, '-mpip', 'install', '--upgrade', 'pip'])
     else:
         print('Installing pip...')
         download_file(GET_PIP_URL, GET_PIP_PATH)
