@@ -5,7 +5,7 @@ cache:
 environment:
   global:
     TWINE_PASSWORD:
-      secure: bCzkJrYI4CfUbXU2PUtz1A==
+      secure: fDwCnDhQiptm9a4ZcFpgyQ==
     TWINE_USERNAME: ionel
   matrix:
     - TOXENV: check
