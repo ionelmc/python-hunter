@@ -236,18 +236,18 @@ init:
   - ps: ls C:\Python*
 install:
   - python -u ci\appveyor-bootstrap.py
-  - '%PYTHON_HOME%\Scripts\virtualenv --version'
-  - '%PYTHON_HOME%\Scripts\easy_install --version'
-  - '%PYTHON_HOME%\Scripts\pip --version'
-  - '%PYTHON_HOME%\Scripts\tox --version'
+  - %PYTHON_HOME%\Scripts\virtualenv --version
+  - %PYTHON_HOME%\Scripts\easy_install --version
+  - %PYTHON_HOME%\Scripts\pip --version
+  - %PYTHON_HOME%\Scripts\tox --version
 test_script:
-  - 'cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd %PYTHON_HOME%\Scripts\tox'
+  - cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd %PYTHON_HOME%\Scripts\tox
 
 on_failure:
   - ps: dir "env:"
   - ps: get-content .tox\*\log\*
 on_success:
-  - IF DEFINED WHEEL_PATH twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
+  - IF DEFINED WHEEL_PATH %PYTHON_HOME%\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
 
 artifacts:
   - path: .tox\dist\*
