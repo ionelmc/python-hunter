@@ -4,7 +4,9 @@ cache:
   - '%LOCALAPPDATA%\pip\Cache'
 environment:
   global:
-    WITH_COMPILER: 'cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd'
+    TWINE_PASSWORD:
+      secure: bCzkJrYI4CfUbXU2PUtz1A==
+    TWINE_USERNAME: ionel
   matrix:
     - TOXENV: check
       TOXPYTHON: C:\Python36\python.exe
@@ -43,7 +45,7 @@ install:
   - '%PYTHON_HOME%\Scripts\pip --version'
   - '%PYTHON_HOME%\Scripts\tox --version'
 test_script:
-  - '%WITH_COMPILER% %PYTHON_HOME%\Scripts\tox'
+  - 'cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd %PYTHON_HOME%\Scripts\tox'
 
 on_failure:
   - ps: dir "env:"
