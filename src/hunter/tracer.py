@@ -5,6 +5,8 @@ import threading
 
 from .event import Event
 
+__all__ = 'Tracer',
+
 
 class Tracer(object):
     """

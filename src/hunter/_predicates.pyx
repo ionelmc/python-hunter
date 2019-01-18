@@ -14,6 +14,15 @@ from .actions import Action
 
 from ._event cimport Event
 
+__all__ = (
+    'And',
+    'From',
+    'Not',
+    'Or',
+    'Query',
+    'When',
+)
+
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
     'fullsource', 'threadname', 'threadid', 'depth', 'calls',

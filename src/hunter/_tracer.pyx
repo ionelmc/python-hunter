@@ -22,7 +22,9 @@ from ._predicates cimport Or
 from ._predicates cimport Query
 from ._predicates cimport When
 
-cdef tuple kind_names = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
+__all__ = 'Tracer',
+
+cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
 
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
@@ -37,19 +39,19 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         self.depth -= 1
 
     if type(handler) is When:
-        fast_When_call(<When>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_When_call(<When>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is Query:
-        fast_Query_call(<Query>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_Query_call(<Query>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is From:
-        fast_From_call(<From>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_From_call(<From>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is And:
-        fast_And_call(<And>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_And_call(<And>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is Or:
-        fast_Or_call(<Or>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_Or_call(<Or>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif type(handler) is Not:
-        fast_Not_call(<Not>handler, Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        fast_Not_call(<Not>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
     elif handler is not None:
-        handler(Event(frame, kind_names[kind], None if arg is NULL else <object>arg, self))
+        handler(Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
 
     if kind == 0:
         self.depth += 1
@@ -94,7 +96,7 @@ cdef class Tracer:
             This always returns self (drills down) - as opposed to only drilling down when predicate(event) is True
             because it might match further inside.
         """
-        trace_func(self, frame, kind_names.index(kind), <PyObject *> arg)
+        trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
         if kind == "call":
             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self

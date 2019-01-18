@@ -9,6 +9,15 @@ from six import string_types
 from .actions import Action
 from .event import Event
 
+__all__ = (
+    'And',
+    'From',
+    'Not',
+    'Or',
+    'Query',
+    'When',
+)
+
 ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_') and i not in ('tracer', 'thread'))
 ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex',

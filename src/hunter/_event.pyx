@@ -1,5 +1,4 @@
 # cython: linetrace=True, language_level=3
-import re
 import weakref
 from functools import partial
 from linecache import getline
@@ -15,7 +14,8 @@ from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .event import CYTHON_SUFFIX_RE
 from .event import LEADING_WHITESPACE_RE
-from ._tracer cimport *
+
+from ._tracer cimport Tracer
 
 try:
     from threading import main_thread
@@ -27,6 +27,7 @@ except ImportError:
 else:
     get_main_thread = weakref.ref(main_thread())
 
+__all__ = 'Event',
 
 cdef object UNSET = object()
 
