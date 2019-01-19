@@ -2,6 +2,12 @@
 Changelog
 =========
 
+2.2.1 (2019-01-19)
+------------------
+
+* Fixed a link in changelog.
+* Fixed some issues in the Travis configuration.
+
 2.2.0 (2019-01-19)
 ------------------
 

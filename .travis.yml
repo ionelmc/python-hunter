@@ -205,7 +205,8 @@ install:
   - pip --version
   - tox --version
   - |
-    set -x
+    (
+    set -eux
     if [[ $TRAVIS_PYTHON_VERSION == "pypy" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
@@ -224,20 +225,21 @@ install:
       export PATH=$(echo $HOME/pypy3-*/bin):$PATH
       export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
     fi
-    set +x
+    )
 script:
   - |
-    set -x
-    if [[ -n $WHEEL_MANYLINUX1 ]]; then
+    (
+    set -eux
+    if [[ -n ${WHEEL_MANYLINUX1:-} ]]; then
       docker run --rm --user $UID -itv $(pwd):/code ionelmc/manylinux $WHEEL_MANYLINUX1
       tox --installpkg $WHEEL_PATH/*.whl -v
     else
       tox -v
     fi
-    if [[ -n $WHEEL_PATH ]]; then
+    if [[ -n ${WHEEL_PATH:-} ]]; then
       twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*.whl
     fi
-    set +x
+    )
 after_failure:
   - more .tox/log/* | cat
   - more .tox/*/log/* | cat
