@@ -9,7 +9,7 @@ Changelog
   a configurable offset.
 * Fixed ``PYTHONHUNTERCONFIG`` not working in some situations (config values were resolved at the wrong time).
 * Made tests in CI test the wheel that will eventually be published to PyPI
-  (`tox-wheel <https://pypi.org/project/tox-wheel/`_).
+  (`tox-wheel <https://pypi.org/project/tox-wheel/>`_).
 * Made ``event.stdlib`` more reliable: ``pkg_resources`` is considered part of stdlib and few more paths will be
   considered as stdlib.
 * Dumbed down the ``get_peercred`` check that is done when attaching with ``hunter-trace`` CLI (via
