@@ -2,6 +2,20 @@
 Changelog
 =========
 
+2.2.0 (2019-01-19)
+------------------
+
+* Added ``From`` predicate for tracing from a specific point. It stop after returning back to the same call depth with
+  a configurable offset.
+* Fixed ``PYTHONHUNTERCONFIG`` not working in some situations (config values were resolved at the wrong time).
+* Made tests in CI test the wheel that will eventually be published to PyPI
+  (`tox-wheel <https://pypi.org/project/tox-wheel/`_).
+* Made ``event.stdlib`` more reliable: ``pkg_resources`` is considered part of stdlib and few more paths will be
+  considered as stdlib.
+* Dumbed down the ``get_peercred`` check that is done when attaching with ``hunter-trace`` CLI (via
+  ``hunter.remote.install()``). It will be slightly insecure but will work on OSX.
+* Added OSX in the Travis test grid.
+
 2.1.0 (2018-11-17)
 ------------------
 
