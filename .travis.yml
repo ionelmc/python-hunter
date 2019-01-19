@@ -207,7 +207,7 @@ install:
   - |
     (
     set -eux
-    if [[ $TRAVIS_PYTHON_VERSION == "pypy" ]]; then
+    if [[ ${TRAVIS_PYTHON_VERSION:-} == "pypy" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
        tar xf pypy2-*.tar.bz2
@@ -216,7 +216,7 @@ install:
       export PATH=$(echo $HOME/pypy2-*/bin):$PATH
       export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
     fi
-    if [[ $TRAVIS_PYTHON_VERSION == "pypy3" ]]; then
+    if [[ ${TRAVIS_PYTHON_VERSION:-} == "pypy3" ]]; then
       (cd $HOME
        wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
        tar xf pypy3-*.tar.bz2
