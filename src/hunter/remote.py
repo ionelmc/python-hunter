@@ -95,12 +95,12 @@ def connect_manhole(pid, timeout, signal):
 
     start = time.time()
     uds_path = '/tmp/manhole-%s' % pid
-    manhole = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    manhole.settimeout(timeout)
+    conn = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    conn.settimeout(timeout)
     while time.time() - start < timeout:
         try:
-            manhole.connect(uds_path)
-        except OSError as exc:
+            conn.connect(uds_path)
+        except (OSError, socket.error) as exc:
             if exc.errno not in (errno.ENOENT, errno.ECONNREFUSED):
                 print("Failed to connect to %r: %r" % (uds_path, exc), file=sys.stderr)
         else:
@@ -108,7 +108,7 @@ def connect_manhole(pid, timeout, signal):
     else:
         print("Failed to connect to %r: Timeout" % uds_path, file=sys.stderr)
         sys.exit(5)
-    return manhole
+    return conn
 
 
 def activate(sink_path, isatty, encoding, options):
