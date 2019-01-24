@@ -25,6 +25,8 @@ else:
     from . import stop
     from . import trace
 
+__all__ = 'install',
+
 
 def install(**kwargs):
     kwargs.setdefault('oneshot_on', 'URG')
