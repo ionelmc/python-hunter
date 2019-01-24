@@ -98,7 +98,7 @@ def connect_manhole(pid, timeout, signal):
     while time.time() - start < timeout:
         try:
             manhole.connect(uds_path)
-        except Exception as exc:
+        except OSError as exc:
             if exc.errno not in (errno.ENOENT, errno.ECONNREFUSED):
                 print("Failed to connect to %r: %r" % (uds_path, exc), file=sys.stderr)
         else:
