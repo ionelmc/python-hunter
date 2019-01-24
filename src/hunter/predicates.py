@@ -18,7 +18,10 @@ __all__ = (
     'When',
 )
 
-ALLOWED_KEYS = tuple(i for i in Event.__dict__.keys() if not i.startswith('_') and i not in ('tracer', 'thread'))
+ALLOWED_KEYS = tuple(sorted(
+    i for i in Event.__dict__.keys()
+    if not i.startswith('_') and i not in ('tracer', 'thread', 'frame')
+))
 ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex',
     'sw', 'ew', 'has', 'rx',

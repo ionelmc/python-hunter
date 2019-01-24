@@ -19,6 +19,7 @@ try:
     if os.environ.get("PUREPYTHONHUNTER"):
         raise ImportError("Cython speedups are disabled")
 
+    from ._event import Event
     from ._predicates import And as _And
     from ._predicates import From
     from ._predicates import Not
@@ -27,6 +28,7 @@ try:
     from ._predicates import Query
     from ._tracer import Tracer
 except ImportError:
+    from .event import Event  # noqa
     from .predicates import And as _And
     from .predicates import From
     from .predicates import Not

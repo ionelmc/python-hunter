@@ -15,7 +15,8 @@ The ``trace`` function
 
 The :obj:`hunter.trace` function can take 2 types of arguments:
 
-* Keyword arguments like ``module``, ``function`` or ``action``. This is for convenience.
+* Keyword arguments like ``module``, ``function`` or ``action`` (see :obj:`hunter.Event` for all the possible
+  filters).
 * Callbacks that take an ``event`` argument:
 
   * Builtin predicates like: :class:`hunter.Query`, :class:`hunter.When`, :class:`hunter.And` or :class:`hunter.Or`.

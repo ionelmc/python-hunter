@@ -33,14 +33,15 @@ cdef object UNSET = object()
 
 cdef class Event:
     """
-    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
-    custom functions or predicates.
+    A wrapper object for Frame objects. Instances of this are passed to your custom functions or predicates.
 
     Provides few convenience properties.
 
-    .. warning::
-
-        **Users do not instantiate this directly.**
+    Args:
+        frame (Frame):
+        kind (str):
+        arg:
+        tracer (:obj:`hunter.Tracer`):
     """
     def __cinit__(self, FrameType frame, str kind, object arg, Tracer tracer):
         self.arg = arg
@@ -62,9 +63,6 @@ cdef class Event:
 
     property threadid:
         def __get__(self):
-            """
-            Current thread ident. If current thread is main thread then it returns ``None``.
-            """
             cdef long current
 
             if self._threadidn is UNSET:
@@ -78,9 +76,6 @@ cdef class Event:
 
     property threadname:
         def __get__(self):
-            """
-            Current thread name.
-            """
             if self._threadname is UNSET:
                 if self._thread is UNSET:
                     self._thread = current_thread()
@@ -89,9 +84,6 @@ cdef class Event:
 
     property thread:
         def __get__(self):
-            """
-            Current thread object.
-            """
             if self._thread is UNSET:
                 self._thread = current_thread()
             return self._thread
@@ -99,9 +91,6 @@ cdef class Event:
 
     property locals:
         def __get__(self):
-            """
-            A dict with local variables.
-            """
             return self._get_locals()
 
     cdef object _get_locals(self):
@@ -110,9 +99,6 @@ cdef class Event:
 
     property globals:
         def __get__(self):
-            """
-            A dict with global variables.
-            """
             return self._get_globals()
 
     cdef object _get_globals(self):
@@ -120,15 +106,9 @@ cdef class Event:
 
     property function:
         def __get__(self):
-            """
-            A string with function name.
-            """
             return self.frame.f_code.co_name
 
     property module:
-        """
-        A string with module name (eg: ``"foo.bar"``).
-        """
         def __get__(self):
             if self._module is UNSET:
                 module = self.frame.f_globals.get('__name__', '')
@@ -140,9 +120,6 @@ cdef class Event:
 
     property filename:
         def __get__(self):
-            """
-            A string with absolute path to file.
-            """
             if self._filename is UNSET:
                 filename = self.frame.f_globals.get('__file__', '')
                 if filename is None:
@@ -162,25 +139,16 @@ cdef class Event:
 
     property lineno:
         def __get__(self):
-            """
-            An integer with line number in file.
-            """
             if self._lineno is UNSET:
                 self._lineno = self.frame.f_lineno
             return self._lineno
 
     property code:
         def __get__(self):
-            """
-            A code object (not a string).
-            """
             return self.frame.f_code
 
     property stdlib:
         def __get__(self):
-            """
-            A boolean flag. ``True`` if frame is in stdlib.
-            """
             if self._stdlib is UNSET:
                 if self.module == 'pkg_resources' or self.module.startswith('pkg_resources.'):
                     self._stdlib = False
@@ -195,11 +163,6 @@ cdef class Event:
 
     property fullsource:
         def __get__(self):
-            """
-            A string with the sourcecode for the current statement (from ``linecache`` - failures are ignored).
-
-            May include multiple lines if it's a class/function definition (will include decorators).
-            """
             if self._fullsource is UNSET:
                 try:
                     self._fullsource = self._raw_fullsource
@@ -210,11 +173,6 @@ cdef class Event:
 
     property source:
         def __get__(self):
-            """
-            A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
-
-            Fast but sometimes incomplete.
-            """
             if self._source is UNSET:
                 try:
                     self._source = getline(self.filename, self.lineno)

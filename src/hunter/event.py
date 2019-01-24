@@ -30,14 +30,15 @@ LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 class Event(object):
     """
-    Event wrapper for ``frame, kind, arg`` (the arguments the settrace function gets). This objects is passed to your
-    custom functions or predicates.
+    A wrapper object for Frame objects. Instances of this are passed to your custom functions or predicates.
 
     Provides few convenience properties.
 
-    .. warning::
-
-        Users do not instantiate this directly.
+    Args:
+        frame (Frame):
+        kind (str):
+        arg:
+        tracer (:obj:`hunter.Tracer`):
     """
     frame = None
     kind = None
@@ -50,22 +51,40 @@ class Event(object):
 
     def __init__(self, frame, kind, arg, tracer):
         #: The original Frame object.
+        #:
+        #: .. note::
+        #:
+        #:  Not allowed in the builtin predicates (it's the actual Thread object).
+        #:  You may access it from your custom predicate though.
         self.frame = frame
 
-        #: The kind of the event, could be one of 'call', 'line', 'return', 'exception',
-        #: 'c_call', 'c_return', or 'c_exception'.
+        #: The kind of the event, could be one of ``"call"``, ``"line"``, ``"return"``, ``"exception"``,
+        #: ``"c_call"``, ``"c_return"``, or ``"c_exception"``.
+        #:
+        #: :type: str
         self.kind = kind
 
         #: A value that depends on ``kind``
         self.arg = arg
 
         #: Tracing depth (increases on calls, decreases on returns)
+        #:
+        #: :type: int
         self.depth = tracer.depth
 
-        #: A counter for total number of calls up to this Event
+        #: A counter for total number of calls up to this Event.
+        #:
+        #: :type: int
         self.calls = tracer.calls
 
-        #: A reference to the Tracer object
+        #: A reference to the Tracer object.
+        #:
+        #: .. note::
+        #:
+        #:  Not allowed in the builtin predicates (it's the actual Thread object).
+        #:  You may access it from your custom predicate though.
+        #:
+        #: :type: :obj:`hunter.Tracer`
         self.tracer = tracer
 
     def __eq__(self, other):
@@ -82,6 +101,8 @@ class Event(object):
     def threadid(self):
         """
         Current thread ident. If current thread is main thread then it returns ``None``.
+
+        :type: int or None
         """
         current = self.thread.ident
         main = get_main_thread()
@@ -94,6 +115,8 @@ class Event(object):
     def threadname(self):
         """
         Current thread name.
+
+        :type: str
         """
         return self.thread.name
 
@@ -101,6 +124,11 @@ class Event(object):
     def thread(self):
         """
         Current thread object.
+
+        .. note::
+
+            Not allowed in the builtin predicates (it's the actual Thread object).
+            You may access it from your custom predicate though.
         """
         return current_thread()
 
@@ -108,6 +136,8 @@ class Event(object):
     def locals(self):
         """
         A dict with local variables.
+
+        :type: dict
         """
         return self.frame.f_locals
 
@@ -115,6 +145,8 @@ class Event(object):
     def globals(self):
         """
         A dict with global variables.
+
+        :type: dict
         """
         return self.frame.f_globals
 
@@ -122,13 +154,17 @@ class Event(object):
     def function(self):
         """
         A string with function name.
+
+        :type: str
         """
         return self.code.co_name
 
     @cached_property
     def module(self):
         """
-        A string with module name (eg: ``"foo.bar"``).
+        A string with module name (like ``"foo.bar"``).
+
+        :type: str
         """
         module = self.frame.f_globals.get('__name__', '')
         if module is None:
@@ -140,6 +176,8 @@ class Event(object):
     def filename(self, exists=os.path.exists, cython_suffix_re=CYTHON_SUFFIX_RE):
         """
         A string with absolute path to file.
+
+        :type: str
         """
         filename = self.frame.f_globals.get('__file__', '')
         if filename is None:
@@ -162,6 +200,8 @@ class Event(object):
     def lineno(self):
         """
         An integer with line number in file.
+
+        :type: int
         """
         return self.frame.f_lineno
 
@@ -176,6 +216,8 @@ class Event(object):
     def stdlib(self):
         """
         A boolean flag. ``True`` if frame is in stdlib.
+
+        :type: bool
         """
         if self.module == 'pkg_resources' or self.module.startswith('pkg_resources.'):
             return False
@@ -193,6 +235,8 @@ class Event(object):
         A string with the sourcecode for the current statement (from ``linecache`` - failures are ignored).
 
         May include multiple lines if it's a class/function definition (will include decorators).
+
+        :type: str
         """
         try:
             return self._raw_fullsource
@@ -205,6 +249,8 @@ class Event(object):
         A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
 
         Fast but sometimes incomplete.
+
+        :type: str
         """
         try:
             return getline(self.filename, self.lineno)

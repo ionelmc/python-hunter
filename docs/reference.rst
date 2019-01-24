@@ -53,5 +53,9 @@ Actions
 Objects
 -------
 
-.. autoclass:: hunter.event.Event
+.. autoclass:: hunter.Event
     :members:
+
+.. autoclass:: hunter.Tracer
+    :members:
+    :special-members: __call__, __enter__, __exit__
