@@ -164,7 +164,7 @@ setup(
         'colorama',
     ],
     extras_require={
-        'remote': ['manhole>=1' '.' '5' '.' '0'],
+        ':platform_system != "Windows"': ['manhole >= 1.5'],
     },
     entry_points={
         'console_scripts': [

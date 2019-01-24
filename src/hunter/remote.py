@@ -4,6 +4,7 @@ import argparse
 import errno
 import json
 import os
+import platform
 import signal
 import socket
 import sys
@@ -12,13 +13,17 @@ from contextlib import closing
 from contextlib import contextmanager
 from subprocess import check_call
 
-import manhole
-from manhole import get_peercred
-from manhole.cli import parse_signal
+if platform.system() == 'Windows':
+    print("ERROR: This tool doesn't work on Windows.", file=sys.stderr)
+    sys.exit(1)
+else:
+    import manhole
+    from manhole import get_peercred
+    from manhole.cli import parse_signal
 
-from . import actions
-from . import stop
-from . import trace
+    from . import actions
+    from . import stop
+    from . import trace
 
 
 def install(**kwargs):

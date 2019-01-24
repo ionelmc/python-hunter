@@ -292,7 +292,7 @@ In similar fashion to ``strace`` Hunter can trace other processes, eg::
 
     hunter-trace --gdb -p 123
 
-If you wanna play it safe (no messy GDB) then ``pip install 'hunter[remote]'`` and add this in your code::
+If you wanna play it safe (no messy GDB) then add this in your code::
 
     from hunter import remote
     remote.install()

@@ -2,8 +2,8 @@
 Remote tracing
 ==============
 
-Hunter supports tracing local processes, with two backends:
-`manhole <https://pypi.python.org/pypi/manhole>`_ (``pip install 'hunter[remote]'``) and GDB.
+Hunter supports tracing local processes, with two backends: `manhole <https://pypi.python.org/pypi/manhole>`_ and GDB.
+For now Windows isn't supported.
 
 Using GDB is risky (if anything goes wrong your process will probably be hosed up badly) so the Manhole backend is
 recommended. To use it:
