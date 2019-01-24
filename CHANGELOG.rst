@@ -51,7 +51,8 @@ Changelog
 
 * Added the ``Event.count`` and ``Event.calls`` attributes.
 * Added the ``lt``/``lte``/``gt``/``gte`` lookups.
-* Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``) and ``regex`` (``rx``).
+* Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``), ``contains`` (``has``)
+  and ``regex`` (``rx``).
 * Added a convenience ``hunter.wrap`` decorator to start tracing around a function.
 * Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.

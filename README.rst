@@ -344,16 +344,16 @@ Notes:
 * All the options for the builtin actions are supported.
 * Although using predicates is supported it can be problematic. Example of setup that won't trace anything::
 
-    PYTHONHUNTERCONFIG="Q(module_sw='django')"
-    PYTHONHUNTER="Q(module_sw='celery')"
+    PYTHONHUNTERCONFIG="Q(module_startswith='django')"
+    PYTHONHUNTER="Q(module_startswith='celery')"
 
   which is the equivalent of::
 
-    PYTHONHUNTER="Q(module_sw='django'),Q(module_sw='celery')"
+    PYTHONHUNTER="Q(module_startswith='django'),Q(module_startswith='celery')"
 
   which is the equivalent of::
 
-    PYTHONHUNTER="Q(module_sw='django')&Q(module_sw='celery')"
+    PYTHONHUNTER="Q(module_startswith='django')&Q(module_startswith='celery')"
 
 
 

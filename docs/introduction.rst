@@ -53,9 +53,14 @@ Operators
 
 .. versionadded:: 1.0.0
 
-You can add ``startswith``, ``endswith``, ``in``, ``contains``, ``regex`` to your keyword arguments, just like in Django.
-Double underscores are not necessary, but in case you got twitchy fingers it'll just work - ``filename__startswith`` is the
-same as ``filename_startswith``.
+    You can add ``startswith``, ``endswith``, ``in``, ``contains``, ``regex`` to your keyword arguments, just like in
+    Django. Double underscores are not necessary, but in case you got twitchy fingers it'll just work -
+    ``filename__startswith`` is the same as ``filename_startswith``.
+
+.. versionadded:: 2.0.0
+
+    You can also use these convenience aliases: ``sw`` (``startswith``), ``ew`` (``endswith``), ``rx`` (``regex``) and
+    ``has`` (``contains``).
 
 Examples:
 
@@ -67,15 +72,13 @@ Examples:
 
 .. note:: If you want to filter out stdlib stuff you're better off with using ``Query(stdlib=False)``.
 
-
-
 Activation
 ==========
 
-You can activate Hunter in two ways.
+You can activate Hunter in three ways.
 
-`via` code
-----------
+from code
+---------
 
 .. sourcecode:: python
 
@@ -84,8 +87,8 @@ You can activate Hunter in two ways.
         ...
     )
 
-`via` environment variable
---------------------------
+with an environment variable
+----------------------------
 
 Set the ``PYTHONHUNTER`` environment variable. Eg:
 
@@ -110,3 +113,8 @@ The activation works with a clever ``.pth`` file that checks for that env var pr
     )
 
 That also means that it will do activation even if the env var is empty, eg: ``PYTHONHUNTER=""``.
+
+with a CLI tool
+---------------
+
+If you got an already running process you can attach to it with ``hunter-trace``. See :doc:`remote` for details.
