@@ -114,4 +114,4 @@ if __name__ == '__main__':
     install_python(environ['PYTHON_VERSION'], environ['PYTHON_ARCH'], environ['PYTHON_HOME'])
     install_pip(environ['PYTHON_HOME'])
     install_packages(environ['PYTHON_HOME'], '--upgrade', 'pip')
-    install_packages(environ['PYTHON_HOME'], 'tox-wheel', 'twine')
+    install_packages(environ['PYTHON_HOME'], '--upgrade', 'tox-wheel', 'twine')
