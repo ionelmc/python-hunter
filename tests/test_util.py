@@ -1,11 +1,13 @@
+import _socket
 import socket
 from array import array
 from collections import deque
 from collections import namedtuple
 from decimal import Decimal
 
-import _socket
+import py
 
+from hunter.util import hasdict
 from hunter.util import rudimentary_repr
 
 
@@ -59,3 +61,19 @@ def test_rudimentary_repr():
     print(rudimentary_repr([[[data]]]))
     print(rudimentary_repr([[[[data]]]]))
     print(rudimentary_repr([[[[[data]]]]]))
+
+
+def test_hasutil():
+    assert hasdict(type(py.io), py.io) is True
+    sock, _ = socket.socketpair()
+    assert hasdict(type(sock), sock) is False
+
+    class Foo(object):
+        pass
+
+    assert hasdict(Foo, Foo()) is True
+
+    class Bar:
+        pass
+
+    assert hasdict(Bar, Bar()) is True

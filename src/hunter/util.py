@@ -74,15 +74,27 @@ def rudimentary_repr(obj, maxdepth=5):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
-    elif not hasattr(obj, '__dict__'):
-        # note that this could be `not hasattr(obj, '__dict__') and not hasattr(obj, '__slots__')`
-        # but lots of objects safe to repr (like sockets) have __slots__
-        # (I don't want to have the burden of maintaining a huge list of safe to repr types)
-        #
-        # the assumption is that if you use __slots__ you know what you're doing and you ain't gonna be stupid enough to
-        # have a side-effect in __repr__ (I hope ...)
+    elif not hasdict(obj_type, obj):
         return repr(obj)
     else:
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
         #  with side-effects will be going on in __repr__ - use the default instead (object.__repr__)
         return object.__repr__(obj)
+
+
+def hasdict(obj_type, obj, tolerance=25):
+    """
+    A contrived mess to check that object doesn't have a __dit__ but avoid checking it if any ancestor is evil enough to
+    explicitly define __dict__ (like apipkg.ApiModule has __dict__ as a property).
+    """
+    ancestor_types = deque()
+    while obj_type is not type and tolerance:
+        ancestor_types.appendleft(obj_type)
+        obj_type = type(obj_type)
+        tolerance -= 1
+    for ancestor in ancestor_types:
+        __dict__ = getattr(ancestor, '__dict__', None)
+        if __dict__ is not None:
+            if '__dict__' in __dict__:
+                return True
+    return hasattr(obj, '__dict__')
