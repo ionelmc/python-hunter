@@ -354,7 +354,6 @@ class From(object):
         else:
             return self.predicate(event)
 
-
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)
 

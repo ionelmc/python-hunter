@@ -1,10 +1,10 @@
-import _socket
 import socket
 from array import array
 from collections import deque
 from collections import namedtuple
 from decimal import Decimal
 
+import _socket
 import py
 
 from hunter.util import hasdict
