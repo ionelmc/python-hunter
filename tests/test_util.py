@@ -63,7 +63,7 @@ def test_rudimentary_repr():
     print(rudimentary_repr([[[[[data]]]]]))
 
 
-def test_hasutil():
+def test_hasdict():
     assert hasdict(type(py.io), py.io) is True
     sock, _ = socket.socketpair()
     assert hasdict(type(sock), sock) is False
