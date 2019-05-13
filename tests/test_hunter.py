@@ -1282,3 +1282,39 @@ def test_from_predicate_line(LineMatcher):
     assert 'three' not in output
     assert 'two' not in output
     assert 'one' not in output
+
+
+def test_from_predicate_no_predicate(LineMatcher):
+    buff = StringIO()
+    from sample7 import one
+    with trace(From(Q(function='five')), action=CallPrinter(stream=buff)):
+        one()
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "* call      => five()",
+        "* line         for i in range(1):  # five",
+        "* line         return i",
+        "* return    <= five: 0",
+    ])
+    assert 'four' not in output
+    assert 'three' not in output
+    assert 'two' not in output
+    assert 'one' not in output
+
+
+def test_from_predicate_line_no_predicate(LineMatcher):
+    buff = StringIO()
+    from sample7 import one
+    with trace(From(Q(fullsource_has='in_five'), watermark=-1), action=CallPrinter(stream=buff)):
+        one()
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "* line *    for i in range(1):  # five",
+        "* line *    return i",
+    ])
+    assert 'four' not in output
+    assert 'three' not in output
+    assert 'two' not in output
+    assert 'one' not in output

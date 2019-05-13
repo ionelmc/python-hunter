@@ -375,7 +375,7 @@ cdef class From:
     Keep running ``predicates`` after ``condition(event)`` is ``True``.
     """
 
-    def __init__(self, condition, predicate, watermark=0):
+    def __init__(self, condition, predicate=None, watermark=0):
         self.condition = condition
         self.predicate = predicate
         self.watermark = watermark
@@ -447,7 +447,9 @@ cdef inline fast_From_call(From self, Event event):
         else:
             return False
 
-    if type(self.predicate) is Query:
+    if self.predicate is None:
+        return True
+    elif type(self.predicate) is Query:
         return fast_Query_call(<Query> self.predicate, event)
     elif type(self.predicate) is Or:
         return fast_Or_call(<Or> self.predicate, event)

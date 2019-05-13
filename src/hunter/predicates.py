@@ -311,7 +311,7 @@ class From(object):
     Keep running ``predicates`` after ``condition(event)`` is ``True``.
     """
 
-    def __init__(self, condition, predicate, watermark=0):
+    def __init__(self, condition, predicate=None, watermark=0):
         self.condition = condition
         self.predicate = predicate
         self.watermark = watermark
@@ -349,7 +349,11 @@ class From(object):
             else:
                 return False
 
-        return self.predicate(event)
+        if self.predicate is None:
+            return True
+        else:
+            return self.predicate(event)
+
 
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)
