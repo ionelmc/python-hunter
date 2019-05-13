@@ -150,7 +150,8 @@ cdef class Event:
     property stdlib:
         def __get__(self):
             if self._stdlib is UNSET:
-                if self.module == 'pkg_resources' or self.module.startswith('pkg_resources.'):
+                module_parts = self.module.split('.')
+                if 'pkg_resources' in module_parts:
                     self._stdlib = False
                 elif self.filename.startswith(SITE_PACKAGES_PATHS):
                     # if it's in site-packages then its definitely not stdlib

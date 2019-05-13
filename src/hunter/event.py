@@ -175,7 +175,8 @@ class Event(object):
     @cached_property
     def filename(self, exists=os.path.exists, cython_suffix_re=CYTHON_SUFFIX_RE):
         """
-        A string with absolute path to file.
+        A string with the path to the module's file. May be empty if ``__file__`` attribute is missing.
+        May be relative if running scripts.
 
         :type: str
         """
@@ -219,7 +220,8 @@ class Event(object):
 
         :type: bool
         """
-        if self.module == 'pkg_resources' or self.module.startswith('pkg_resources.'):
+        module_parts = self.module.split('.')
+        if 'pkg_resources' in module_parts:
             return False
         elif self.filename.startswith(SITE_PACKAGES_PATHS):
             # if it's in site-packages then its definitely not stdlib
