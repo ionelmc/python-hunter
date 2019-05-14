@@ -7,6 +7,7 @@ from socket import socket
 from socket import socketpair
 
 import py
+
 from hunter.util import hasdict
 from hunter.util import rudimentary_repr
 
