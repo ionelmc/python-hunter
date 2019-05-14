@@ -117,7 +117,11 @@ class OptionalBuildExt(build_ext):
 
 setup(
     name='hunter',
-    version='2.2.1',
+    use_scm_version={
+        'local_scheme': 'dirty-tag',
+        'write_to': 'src/hunter/_version.py',
+        'fallback_version': '2.2.1',
+    },
     license='BSD 2-Clause License',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (
