@@ -97,7 +97,7 @@ class Tracer(object):
 
     def stop(self):
         """
-        Stop tracing. Reinstalls the :ref:`hunter.Tracer.previous` tracer.
+        Stop tracing. Reinstalls the :obj:`hunter.Tracer.previous` tracer.
         """
         if self._handler is not None:
             sys.settrace(self._previous)
