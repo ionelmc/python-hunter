@@ -3,6 +3,7 @@ from collections import deque
 from collections import namedtuple
 from decimal import Decimal
 from socket import _socket
+from socket import socket
 from socket import socketpair
 
 import py
@@ -40,7 +41,7 @@ def test_rudimentary_repr():
         ('c',): deque(['d']),
         'e': _socket.socket(),
         1: array('d', [1, 2]),
-        frozenset('f'): socket.socket(),
+        frozenset('f'): socket(),
         'g': Dict({
             'a': List('123'),
             'b': Set([Decimal('1.0')]),
