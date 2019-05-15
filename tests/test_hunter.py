@@ -738,7 +738,7 @@ def test_source(LineMatcher):
 def test_wraps(LineMatcher):
     calls = []
 
-    @hunter.wrap(action=lambda event: calls.append("%06s calls=%s depth=%s %s" % (event.kind, event.calls, event.depth, event.fullsource)))
+    @hunter.wrap(action=lambda event: calls.append("%6r calls=%r depth=%r %r" % (event.kind, event.calls, event.depth, event.fullsource)))
     def foo():
         return 1
 
@@ -747,9 +747,9 @@ def test_wraps(LineMatcher):
     for line in calls:
         print(repr(line))
     lm.fnmatch_lines([
-        '  call calls=0 depth=0     @hunter.wrap*',
-        '  line calls=1 depth=1         return 1\n',
-        'return calls=1 depth=0         return 1\n',
+        r"'call' calls=0 depth=0 '    @hunter.wrap*'",
+        r"'line' calls=1 depth=1 '        return 1\n'",
+        r"'return' calls=1 depth=0 '        return 1\n'",
     ])
     for call in calls:
         assert 'tracer.stop()' not in call
