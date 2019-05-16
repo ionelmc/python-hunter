@@ -19,13 +19,12 @@ matrix:
 {%- for env in tox_environments %}{{ '' }}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
       env:
-        - TOXENV={{ env }}{% if "cover" in env %},report,coveralls,codecov{% endif %}
-{%- if "pypy" not in env and "cython-nocov" in env %}{{ '' }}
+        - TOXENV={{ env }}{% if "cover" in env %},coveralls,codecov{% endif %}
+{%- if "pypy" in env %}{{ '' }}
+        - TOXPYTHON={{ env.split("-")[0] }}
+{%- elif "cython-nocov" in env %}{{ '' }}
         - WHEEL_MANYLINUX1=cp{{ env.split("-")[0][2:] }}
         - WHEEL_PATH=wheelhouse
-{%- endif %}
-{%- if "py37" in env %}{{ '' }}
-      dist: xenial
 {%- endif %}
 {%- if "py37" in env or "py27" in env %}{{ '' }}
     - os: osx
