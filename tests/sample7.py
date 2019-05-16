@@ -31,6 +31,4 @@ def five():
 
 
 if __name__ == "__main__":
-    print('>>>>>>', os.environ.get('PYTHONHUNTER'))
-    print('>>>>>>', sys.argv)
     one()
