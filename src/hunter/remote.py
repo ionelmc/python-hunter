@@ -46,6 +46,8 @@ class RemoteStream(object):
 
     def write(self, data):
         try:
+            if isinstance(data, bytes):
+                data = data.decode('ascii', 'replace')
             self._sock.send(data.encode(self._encoding))
         except Exception as exc:
             print("Hunter failed to send trace output %r (encoding: %r): %s. Stopping tracer." % (
