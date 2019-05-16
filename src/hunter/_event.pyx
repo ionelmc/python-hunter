@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3
+# cython: linetrace=True, language_level=3str
 import weakref
 from functools import partial
 from linecache import getline

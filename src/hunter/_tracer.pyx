@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3
+# cython: linetrace=True, language_level=3str
 import threading
 
 from cpython cimport pystate

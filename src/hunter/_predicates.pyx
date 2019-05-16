@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3
+# cython: linetrace=True, language_level=3str
 from __future__ import absolute_import
 
 import inspect
