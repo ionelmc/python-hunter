@@ -3,7 +3,9 @@ import weakref
 from functools import partial
 from linecache import getline
 from linecache import getlines
+from os.path import basename
 from os.path import exists
+from os.path import splitext
 from threading import current_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
@@ -175,6 +177,8 @@ cdef class Event:
     property source:
         def __get__(self):
             if self._source is UNSET:
+                if self.filename.endswith(('.so', '.pyd')):
+                    self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
                 try:
                     self._source = getline(self.filename, self.lineno)
                 except Exception as exc:

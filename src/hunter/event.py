@@ -6,6 +6,8 @@ import re
 import tokenize
 import weakref
 from functools import partial
+from os.path import basename
+from os.path import splitext
 from threading import current_thread
 
 from .const import SITE_PACKAGES_PATHS
@@ -254,6 +256,8 @@ class Event(object):
 
         :type: str
         """
+        if self.filename.endswith(('.so', '.pyd')):
+            return "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
         try:
             return getline(self.filename, self.lineno)
         except Exception as exc:
