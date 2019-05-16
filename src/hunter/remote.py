@@ -48,7 +48,8 @@ class RemoteStream(object):
         try:
             self._sock.send(data.encode(self._encoding))
         except Exception as exc:
-            print("Hunter failed to send trace output: %s. Stopping tracer." % exc, file=sys.stderr)
+            print("Hunter failed to send trace output %r (encoding: %r): %s. Stopping tracer." % (
+                data, self._encoding, exc), file=sys.stderr)
             stop()
 
     def flush(self):
