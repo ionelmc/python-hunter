@@ -34,7 +34,7 @@ def test_manhole():
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 def test_manhole_clean_exit():
-    with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
+    with process_tests.TestProcess('python', '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
 
             process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
@@ -62,7 +62,7 @@ def test_manhole_clean_exit():
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
 @pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb():
-    with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
+    with process_tests.TestProcess('python', '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
             with process_tests.TestProcess('hunter-trace', '-p', str(target.proc.pid),
                                            '--gdb', 'stdlib=False') as tracer,\

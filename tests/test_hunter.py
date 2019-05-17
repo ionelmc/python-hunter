@@ -103,7 +103,7 @@ def test_pth_activation():
     expected_call = "call      def join{0}:".format(func_spec)
 
     output = subprocess.check_output(
-        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample.py')],
+        ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
         env=dict(os.environ, PYTHONHUNTER=hunter_env),
         stderr=subprocess.STDOUT,
     )
@@ -116,7 +116,7 @@ def test_pth_sample4():
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
-        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample4.py')],
+        ['python', os.path.join(os.path.dirname(__file__), 'sample4.py')],
         env=env,
         stderr=subprocess.STDOUT,
     )
@@ -128,7 +128,7 @@ def test_pth_sample2(LineMatcher):
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
-        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample2.py')],
+        ['python', os.path.join(os.path.dirname(__file__), 'sample2.py')],
         env=env,
         stderr=subprocess.STDOUT,
     )
@@ -1233,7 +1233,7 @@ def test_depth_limit(LineMatcher, tracer_impl, depth):
 def test_depth_limit_integration(LineMatcher, depth):
     hunter_env = "action=CallPrinter,depth_lt={!r},kind_in=['call','return'],stdlib=0".format(depth + 1)
     output = subprocess.check_output(
-        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample7.py')],
+        ['python', os.path.join(os.path.dirname(__file__), 'sample7.py')],
         env=dict(os.environ, PYTHONHUNTER=hunter_env, COV_CORE_DATAFILE=''),
         stderr=subprocess.STDOUT,
     )
