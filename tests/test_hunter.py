@@ -86,6 +86,8 @@ trace = EvilTracer
 
 
 def _get_func_spec(func):
+    if hasattr(inspect, 'signature'):
+        return str(inspect.signature(func))
     if hasattr(inspect, 'getfullargspec'):
         spec = inspect.getfullargspec(func)
     else:
