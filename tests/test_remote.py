@@ -14,7 +14,7 @@ platform, distutils.spawn
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 def test_manhole():
-    with process_tests.TestProcess(sys.executable, '-mtarget', 'manhole') as target, \
+    with process_tests.TestProcess('python', '-mtarget', 'manhole') as target, \
          process_tests.dump_on_error(target.read):
 
             process_tests.wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
