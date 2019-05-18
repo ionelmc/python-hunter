@@ -53,7 +53,7 @@ before_install:
       export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
     fi
 install:
-  - pip install --upgrade twine tox-wheel virtualenv
+  - pip install --upgrade twine tox-wheel setuptools-scm virtualenv
   - virtualenv --version
   - easy_install --version
   - pip --version
