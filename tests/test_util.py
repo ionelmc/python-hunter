@@ -66,7 +66,7 @@ def test_rudimentary_repr():
 def test_hasdict():
     assert hasdict(type(py.io), py.io) is True
 
-    sock, _ = socket()
+    sock = socket()
     assert hasdict(type(sock), sock) is False
 
     class Foo(object):
