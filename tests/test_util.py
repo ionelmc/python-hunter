@@ -4,7 +4,6 @@ from collections import namedtuple
 from decimal import Decimal
 from socket import _socket
 from socket import socket
-from socket import socketpair
 
 import py
 
@@ -66,7 +65,8 @@ def test_rudimentary_repr():
 
 def test_hasdict():
     assert hasdict(type(py.io), py.io) is True
-    sock, _ = socketpair()
+
+    sock, _ = socket()
     assert hasdict(type(sock), sock) is False
 
     class Foo(object):
