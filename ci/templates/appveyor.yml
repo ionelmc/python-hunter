@@ -53,6 +53,7 @@ on_failure:
 on_success:
   - |
     ECHO ON
+    SETLOCAL EnableDelayedExpansion
     IF DEFINED WHEEL_PATH (
       %PYTHON_HOME%\Scripts\twine check %WHEEL_PATH%/*.whl
       %PYTHON_HOME%\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
