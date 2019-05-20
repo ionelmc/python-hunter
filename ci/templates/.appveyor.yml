@@ -36,8 +36,8 @@ environment:
       WHEEL_PATH: .tox/dist
 {%- endif %}{%- endif %}{%- endfor %}{{ '' }}
 init:
-  - ps: Echo $Env:TOXENV
-  - ps: Ls C:\Python*
+  - ps: Get-ChildItem $Env:TOXENV
+  - ps: Get-ChildItem C:\Python*
 install:
   - python -u ci\appveyor-bootstrap.py
   - '%PYTHON_HOME%\Scripts\virtualenv --version'
@@ -51,11 +51,11 @@ test_script:
       if ($LastExitCode -eq 0) {
         if ($Env:WHEEL_PATH) {
           $ErrorActionPreference = "Stop"
-          $Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl
-          $Env:PYTHON_HOME\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl
+          iex "$Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl"
+          iex "$Env:PYTHON_HOME\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
         }
       } else {
-        Dir "env:"
+        Get-ChildItem Env:
         Get-Content .tox\*\log\*
       }
 
