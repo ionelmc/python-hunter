@@ -36,8 +36,8 @@ environment:
       WHEEL_PATH: .tox/dist
 {%- endif %}{%- endif %}{%- endfor %}{{ '' }}
 init:
-  - ps: echo $env:TOXENV
-  - ps: ls C:\Python*
+  - ps: Echo $Env:TOXENV
+  - ps: Ls C:\Python*
 install:
   - python -u ci\appveyor-bootstrap.py
   - '%PYTHON_HOME%\Scripts\virtualenv --version'
@@ -45,21 +45,19 @@ install:
   - '%PYTHON_HOME%\Scripts\pip --version'
   - '%PYTHON_HOME%\Scripts\tox --version'
 test_script:
-  - cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd %PYTHON_HOME%\Scripts\tox
-
-on_failure:
-  - ps: dir "env:"
-  - ps: get-content .tox\*\log\*
-on_success:
-  - |
-    ECHO ON
-    SETLOCAL EnableDelayedExpansion
-    IF DEFINED WHEEL_PATH (
-      %PYTHON_HOME%\Scripts\twine check %WHEEL_PATH%/*.whl
-      %PYTHON_HOME%\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing %WHEEL_PATH%/*.whl
-    ) ELSE (
-      ECHO No wheels to upload.
-    )
+  - ps: |
+      Set-PSDebug -Trace 1
+      cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox
+      if ($LastExitCode -eq 0)
+        if ($Env:WHEEL_PATH) {
+          $ErrorActionPreference = "Stop"
+          $Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl
+          $Env:PYTHON_HOME\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl
+        }
+      } else {
+        Dir "env:"
+        Get-Content .tox\*\log\*
+      }
 
 ### To enable remote debugging uncomment this (also, see: http://www.appveyor.com/docs/how-to/rdp-to-build-worker):
 # on_finish:
