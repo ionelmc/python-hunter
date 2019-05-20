@@ -9,7 +9,7 @@ cookiecutter:
     c_extension_support: cython
     codacy: no
     codeclimate: no
-    codecov: yes
+    codecov: no
     command_line_interface: argparse
     command_line_interface_bin_name: hunter-trace
     coveralls: yes

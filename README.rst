@@ -11,7 +11,7 @@ Overview
       - |docs|
     * - tests
       - | |travis| |appveyor| |requires|
-        | |coveralls| |codecov|
+        | |coveralls|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
@@ -34,10 +34,6 @@ Overview
 .. |coveralls| image:: https://coveralls.io/repos/ionelmc/python-hunter/badge.svg?branch=master&service=github
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/python-hunter
-
-.. |codecov| image:: https://codecov.io/github/ionelmc/python-hunter/coverage.svg?branch=master
-    :alt: Coverage Status
-    :target: https://codecov.io/github/ionelmc/python-hunter
 
 .. |version| image:: https://img.shields.io/pypi/v/hunter.svg
     :alt: PyPI Package latest release
