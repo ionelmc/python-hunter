@@ -232,7 +232,7 @@ environment:
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
 init:
-  - ps: Get-ChildItem $Env:TOXENV
+  - ps: Write-Output $Env:TOXENV
   - ps: Get-ChildItem C:\Python*
 install:
   - python -u ci\appveyor-bootstrap.py

@@ -36,7 +36,7 @@ environment:
       WHEEL_PATH: .tox/dist
 {%- endif %}{%- endif %}{%- endfor %}{{ '' }}
 init:
-  - ps: Get-ChildItem $Env:TOXENV
+  - ps: Write-Output $Env:TOXENV
   - ps: Get-ChildItem C:\Python*
 install:
   - python -u ci\appveyor-bootstrap.py
