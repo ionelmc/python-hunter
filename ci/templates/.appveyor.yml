@@ -48,7 +48,7 @@ test_script:
   - ps: |
       Set-PSDebug -Trace 1
       cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox
-      if ($LastExitCode -eq 0)
+      if ($LastExitCode -eq 0) {
         if ($Env:WHEEL_PATH) {
           $ErrorActionPreference = "Stop"
           $Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl
