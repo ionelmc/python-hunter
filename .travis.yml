@@ -1,6 +1,5 @@
 dist: xenial
 language: python
-cache: pip
 addons:
   apt:
     packages:
