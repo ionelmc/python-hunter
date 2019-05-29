@@ -200,7 +200,7 @@ def test_pth_sample2(LineMatcher):
         "*tests*sample2.py:* line              None(",
         "*tests*sample2.py:* line                  'a',",
         "*tests*sample2.py:* line                  'b'",
-        "*tests*sample2.py:* exception             'b'",
+        "*tests*sample2.py:* exception *",
         "*                 * ...       exception value: *",
         "*tests*sample2.py:* line          except:",
         "*tests*sample2.py:* line              pass",

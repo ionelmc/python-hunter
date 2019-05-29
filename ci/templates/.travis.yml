@@ -40,6 +40,18 @@ matrix:
 {%- endif %}
 {%- endif %}
 {%- endfor %}{{ '' }}
+  - python: '3.8-dev'
+    env:
+      - TOXENV=py38-cython-cover,coveralls
+  - python: '3.8-dev'
+    env:
+      - TOXENV=py38-cython-nocov
+  - python: '3.8-dev'
+    env:
+      - TOXENV=py38-pure-cover,coveralls
+  - python: '3.8-dev'
+    env:
+      - TOXENV=py38-pure-nocov
 before_install:
   - python --version
   - uname -a
