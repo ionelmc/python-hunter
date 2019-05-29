@@ -182,10 +182,11 @@ class Event(object):
 
         :type: str
         """
-        filename = self.frame.f_globals.get('__file__', '')
-        if filename is None:
+        filename = self.frame.f_code.co_filename
+        if not filename:
+            filename = self.frame.f_globals.get('__file__')
+        if not filename:
             filename = ''
-
         if filename.endswith(('.pyc', '.pyo')):
             filename = filename[:-1]
         elif filename.endswith('$py.class'):  # Jython

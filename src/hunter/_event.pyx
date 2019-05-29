@@ -123,8 +123,10 @@ cdef class Event:
     property filename:
         def __get__(self):
             if self._filename is UNSET:
-                filename = self.frame.f_globals.get('__file__', '')
-                if filename is None:
+                filename = self.frame.f_code.co_filename
+                if not filename:
+                    filename = self.frame.f_globals.get('__file__')
+                if not filename:
                     filename = ''
                 elif filename.endswith(('.pyc', '.pyo')):
                     filename = filename[:-1]
