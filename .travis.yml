@@ -145,6 +145,20 @@ matrix:
         - TOXENV=py37-cython-nocov
         - SETUPPY_CFLAGS=
         - WHEEL_PATH=.tox/dist
+    - python: '3.8'
+      env:
+        - TOXENV=py38-pure-cover,coveralls
+    - python: '3.8'
+      env:
+        - TOXENV=py38-pure-nocov
+    - python: '3.8'
+      env:
+        - TOXENV=py38-cython-cover,coveralls
+    - python: '3.8'
+      env:
+        - TOXENV=py38-cython-nocov
+        - WHEEL_MANYLINUX1=cp38
+        - WHEEL_PATH=wheelhouse
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,coveralls
