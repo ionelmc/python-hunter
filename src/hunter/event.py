@@ -7,6 +7,7 @@ import tokenize
 import weakref
 from functools import partial
 from os.path import basename
+from os.path import exists
 from os.path import splitext
 from threading import current_thread
 
@@ -175,7 +176,7 @@ class Event(object):
         return module
 
     @cached_property
-    def filename(self, exists=os.path.exists, cython_suffix_re=CYTHON_SUFFIX_RE):
+    def filename(self):
         """
         A string with the path to the module's file. May be empty if ``__file__`` attribute is missing.
         May be relative if running scripts.
@@ -192,7 +193,7 @@ class Event(object):
         elif filename.endswith('$py.class'):  # Jython
             filename = filename[:-9] + ".py"
         elif filename.endswith(('.so', '.pyd')):
-            basename = cython_suffix_re.sub('', filename)
+            basename = CYTHON_SUFFIX_RE.sub('', filename)
             for ext in ('.pyx', '.py'):
                 cyfilename = basename + ext
                 if exists(cyfilename):
@@ -248,10 +249,10 @@ class Event(object):
         try:
             return self._raw_fullsource
         except Exception as exc:
-            return "??? NO SOURCE: {!r}".format(exc)
+            return '??? NO SOURCE: {!r}'.format(exc)
 
     @cached_property
-    def source(self, getline=linecache.getline):
+    def source(self):
         """
         A string with the sourcecode for the current line (from ``linecache`` - failures are ignored).
 
@@ -260,41 +261,37 @@ class Event(object):
         :type: str
         """
         if self.filename.endswith(('.so', '.pyd')):
-            return "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
+            return '??? NO SOURCE: not reading {} file'.format(splitext(basename(self.filename))[1])
         try:
-            return getline(self.filename, self.lineno)
+            return linecache.getline(self.filename, self.lineno)
         except Exception as exc:
-            return "??? NO SOURCE: {!r}".format(exc)
+            return '??? NO SOURCE: {!r}'.format(exc)
 
     @cached_property
-    def _raw_fullsource(self,
-                        getlines=linecache.getlines,
-                        getline=linecache.getline,
-                        generate_tokens=tokenize.generate_tokens):
-        if self.kind == 'call' and self.code.co_name != "<module>":
+    def _raw_fullsource(self):
+        if self.kind == 'call' and self.code.co_name != '<module>':
             lines = []
             try:
-                for _, token, _, _, line in generate_tokens(partial(
+                for _, token, _, _, line in tokenize.generate_tokens(partial(
                     next,
                     yield_lines(self.filename, self.lineno - 1, lines.append)
                 )):
-                    if token in ("def", "class", "lambda"):
+                    if token in ('def', 'class', 'lambda'):
                         return ''.join(lines)
             except tokenize.TokenError:
                 pass
 
-        return getline(self.filename, self.lineno)
+        return linecache.getline(self.filename, self.lineno)
 
     __getitem__ = object.__getattribute__
 
 
 def yield_lines(filename, start, collector,
                 limit=10,
-                getlines=linecache.getlines,
                 leading_whitespace_re=LEADING_WHITESPACE_RE):
     dedent = None
     amount = 0
-    for line in getlines(filename)[start:start + limit]:
+    for line in linecache.getlines(filename)[start:start + limit]:
         if dedent is None:
             dedent = leading_whitespace_re.findall(line)
             dedent = dedent[0] if dedent else ""
