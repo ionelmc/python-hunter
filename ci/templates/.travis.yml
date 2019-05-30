@@ -1,5 +1,7 @@
 dist: xenial
 language: python
+git:
+  depth: false
 addons:
   apt:
     packages:
