@@ -27,7 +27,7 @@ matrix:
         - TOXENV={{ env }}{% if "cover" in env %},coveralls{% endif %}
 {%- if "pypy" in env %}{{ '' }}
         - TOXPYTHON={{ env.split("-")[0] }}
-{%- elif "cython-nocov" in env %}{{ '' }}
+{%- elif "cython-nocov" in env and not env.startswith("py38") %}{{ '' }}
         - WHEEL_MANYLINUX1=cp{{ env.split("-")[0][2:] }}
         - WHEEL_PATH=wheelhouse
 {%- endif %}

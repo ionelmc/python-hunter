@@ -157,8 +157,6 @@ matrix:
     - python: '3.8-dev'
       env:
         - TOXENV=py38-cython-nocov
-        - WHEEL_MANYLINUX1=cp38
-        - WHEEL_PATH=wheelhouse
     - python: 'pypy'
       env:
         - TOXENV=pypy-pure-cover,coveralls
