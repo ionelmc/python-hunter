@@ -28,6 +28,7 @@ matrix:
             echo "C files are stale!"
             exit 1
           fi
+          )
 {%- for env in tox_environments %}{{ '' }}
 {% if env.startswith("py38") %}
     - python: '3.8-dev'

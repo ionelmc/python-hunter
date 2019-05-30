@@ -28,6 +28,7 @@ matrix:
             echo "C files are stale!"
             exit 1
           fi
+          )
     - python: '2.7'
       env:
         - TOXENV=py27-pure-cover,coveralls
