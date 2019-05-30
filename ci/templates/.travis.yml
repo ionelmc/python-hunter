@@ -15,11 +15,26 @@ env:
     - TOXENV=docs
 matrix:
   include:
+    - python '3.6'
+      env:
+        - TOXENV=cythonize
+      script:
+        - |
+          (
+          set -eux
+          tox -v
+          git update-index -q --ignore-submodules --refresh
+          if ! git diff-files --exit-code --ignore-submodules; then
+            echo "C files are stale!"
+            exit 1
+          fi
 {%- for env in tox_environments %}{{ '' }}
 {% if env.startswith("py38") %}
     - python: '3.8-dev'
+{% elif env.startswith("pypy3") %}
+    - python: 'pypy3.5-6.0'
 {% elif env.startswith("pypy") %}
-    - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
+    - python: 'pypy2.7-6.0'
 {% else %}
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
 {% endif %}
@@ -63,28 +78,6 @@ install:
   - easy_install --version
   - pip --version
   - tox --version
-  - |
-    (
-    set -eux
-    if [[ ${TRAVIS_PYTHON_VERSION:-} == "pypy" ]]; then
-      (cd $HOME
-       wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
-       tar xf pypy2-*.tar.bz2
-       pypy2-*/bin/pypy -m ensurepip
-       pypy2-*/bin/pypy -m pip install -U virtualenv)
-      export PATH=$(echo $HOME/pypy2-*/bin):$PATH
-      export TOXPYTHON=$(echo $HOME/pypy2-*/bin/pypy)
-    fi
-    if [[ ${TRAVIS_PYTHON_VERSION:-} == "pypy3" ]]; then
-      (cd $HOME
-       wget https://bitbucket.org/pypy/pypy/downloads/pypy3-v6.0.0-linux64.tar.bz2
-       tar xf pypy3-*.tar.bz2
-       pypy3-*/bin/pypy3 -m ensurepip
-       pypy3-*/bin/pypy3 -m pip install -U virtualenv)
-      export PATH=$(echo $HOME/pypy3-*/bin):$PATH
-      export TOXPYTHON=$(echo $HOME/pypy3-*/bin/pypy3)
-    fi
-    )
 script:
   - |
     (
