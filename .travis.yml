@@ -15,7 +15,7 @@ env:
     - TOXENV=docs
 matrix:
   include:
-    - python '3.6'
+    - python: '3.6'
       env:
         - TOXENV=cythonize
       script:
