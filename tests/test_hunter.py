@@ -552,7 +552,7 @@ def test_tracing_vars(LineMatcher):
 
 def test_tracing_vars_expressions(LineMatcher):
     lines = StringIO()
-    with hunter.trace(actions=[VarsPrinter('Foo.bar', 'Foo.__dict__["bar"]', stream=lines)]):
+    with hunter.trace(actions=[VarsPrinter('Foo.bar', 'vars(Foo)', 'len(range(2))', 'Foo.__dict__["bar"]', stream=lines)]):
         def main():
             class Foo(object):
                 bar = 1
@@ -562,6 +562,8 @@ def test_tracing_vars_expressions(LineMatcher):
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines_random([
         '*      Foo.bar => 1',
+        '*      vars(Foo) => *',
+        '*      len(range(2)) => 2',
         '*      Foo.__dict__[[]"bar"[]] => 1',
     ])
 

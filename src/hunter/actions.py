@@ -23,6 +23,11 @@ try:
 except ImportError:
     from thread import get_ident
 
+try:
+    import __builtin__ as builtins
+except ImportError:
+    import builtins
+
 __all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
 
 
@@ -53,6 +58,7 @@ CODE_COLORS = {
 }
 NO_COLORS = {key: '' for key in chain(CODE_COLORS, EVENT_COLORS)}
 MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
+BUILTIN_SYMBOLS = set(vars(builtins))
 
 
 class Action(object):
@@ -453,6 +459,7 @@ class VarsPrinter(ColorStreamAction):
         """
         first = True
         frame_symbols = set(event.locals)
+        frame_symbols.update(BUILTIN_SYMBOLS)
         if self.globals:
             frame_symbols |= set(event.globals)
 
@@ -475,7 +482,12 @@ class VarsPrinter(ColorStreamAction):
 
         for code, symbols in self.names.items():
             try:
-                obj = eval(code, event.globals if self.globals else {}, event.locals)
+                if self.globals:
+                    globals = dict(event.globals)
+                    globals.update(vars(builtins))
+                else:
+                    globals = vars(builtins)
+                obj = eval(code, globals, event.locals)
             except AttributeError:
                 continue
             except Exception as exc:
