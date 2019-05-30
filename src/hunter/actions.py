@@ -15,7 +15,7 @@ from colorama import Style
 
 from .config import Default
 from .config import resolve_default
-from .util import rudimentary_repr
+from .util import safe_repr
 from .util import string_types
 
 try:
@@ -59,7 +59,10 @@ CODE_COLORS = {
 NO_COLORS = {key: '' for key in chain(CODE_COLORS, EVENT_COLORS)}
 MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
 BUILTIN_SYMBOLS = set(vars(builtins))
-
+BUILTIN_REPR_FUNCS = {
+    'repr': repr,
+    'safe_repr': safe_repr
+}
 
 class Action(object):
     def __call__(self, event):
@@ -120,6 +123,7 @@ class ColorStreamAction(Action):
     _stream_cache = {}
     _stream = None
     _tty = None
+    _repr_func = None
 
     def __init__(self,
                  stream=Default('stream', None),
@@ -129,7 +133,7 @@ class ColorStreamAction(Action):
                  thread_alignment=Default('thread_alignment', 12),
                  pid_alignment=Default('pid_alignment', 9),
                  repr_limit=Default('repr_limit', 1024),
-                 repr_unsafe=Default('repr_unsafe', False)):
+                 repr_func=Default('repr_func', 'safe_repr')):
         self.force_colors = resolve_default(force_colors)
         self.force_pid = resolve_default(force_pid)
         self.stream = DEFAULT_STREAM if resolve_default(stream) is None else stream
@@ -137,7 +141,7 @@ class ColorStreamAction(Action):
         self.thread_alignment = resolve_default(thread_alignment)
         self.pid_alignment = resolve_default(pid_alignment)
         self.repr_limit = resolve_default(repr_limit)
-        self.repr_unsafe = resolve_default(repr_unsafe)
+        self.repr_func = resolve_default(repr_func)
         self.seen_threads = set()
         self.seen_pid = getpid()
 
@@ -150,20 +154,20 @@ class ColorStreamAction(Action):
             and self.thread_alignment == other.thread_alignment
             and self.pid_alignment == other.pid_alignment
             and self.repr_limit == other.repr_limit
-            and self.repr_unsafe == other.repr_unsafe
+            and self.repr_func == other.repr_func
         )
 
     def __str__(self):
         return '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, ' \
                'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, ' \
                'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, ' \
-               'repr_unsafe={0.repr_unsafe})'.format(self)
+               'repr_func={0.repr_func})'.format(self)
 
     def __repr__(self):
         return '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, ' \
                'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, ' \
                'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, ' \
-               'repr_unsafe={0.repr_unsafe!r})'.format(self)
+               'repr_func={0.repr_func!r})'.format(self)
 
     @property
     def stream(self):
@@ -189,14 +193,23 @@ class ColorStreamAction(Action):
             self.event_colors = NO_COLORS
             self.code_colors = NO_COLORS
 
-    def _safe_repr(self, obj):
+    @property
+    def repr_func(self):
+        return self._repr_func
+
+    @repr_func.setter
+    def repr_func(self, value):
+        if callable(value):
+            self._repr_func = value
+        elif value in BUILTIN_REPR_FUNCS:
+            self._repr_func = BUILTIN_REPR_FUNCS[value]
+        else:
+            raise TypeError("Expected a callable or either 'repr' or 'safe_repr' strings, not {!r}.".format(value))
+
+    def _try_repr(self, obj):
         limit = self.repr_limit
         try:
-            if self.repr_unsafe:
-                s = repr(obj)
-            else:
-                s = rudimentary_repr(obj)
-
+            s = self.repr_func(obj)
             s = s.replace('\n', r'\n')
             if len(s) > limit:
                 cutoff = limit // 2
@@ -205,8 +218,6 @@ class ColorStreamAction(Action):
                 return s
         except Exception as exc:
             return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
-        else:
-            return "<{} object at 0x{continuation}[...]{reset} {}".format(s[:cutoff], s[-cutoff:], **self.event_colors)
 
 
 class CodePrinter(ColorStreamAction):
@@ -218,6 +229,8 @@ class CodePrinter(ColorStreamAction):
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
     """
     def _safe_source(self, event):
         try:
@@ -227,7 +240,6 @@ class CodePrinter(ColorStreamAction):
             else:
                 return "{source-failure}??? NO SOURCE: {source-detail}" \
                        "Source code string for module {!r} is empty.".format(event.module, **self.event_colors),
-            return lines
         except Exception as exc:
             return "{source-failure}??? NO SOURCE: {source-detail}{!r}".format(exc, **self.event_colors),
 
@@ -292,7 +304,7 @@ class CodePrinter(ColorStreamAction):
                     "",
                     "...",
                     event.kind,
-                    self._safe_repr(event.arg),
+                    self._try_repr(event.arg),
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
@@ -310,6 +322,8 @@ class CallPrinter(CodePrinter):
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
 
     .. versionadded:: 1.2.0
     """
@@ -358,7 +372,7 @@ class CallPrinter(CodePrinter):
                     event.function,
                     ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
                         var,
-                        self._safe_repr(event.locals.get(var, MISSING)),
+                        self._try_repr(event.locals.get(var, MISSING)),
                         **self.event_colors
                     ) for var in code.co_varnames[:code.co_argcount]),
                     pid=pid, pid_align=pid_align,
@@ -375,7 +389,7 @@ class CallPrinter(CodePrinter):
                     event.kind,
                     '   ' * (len(stack) - 1),
                     event.function,
-                    self._safe_repr(event.arg),
+                    self._try_repr(event.arg),
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
@@ -391,7 +405,7 @@ class CallPrinter(CodePrinter):
                     event.kind,
                     '   ' * (len(stack) - 1),
                     event.function,
-                    self._safe_repr(event.arg),
+                    self._try_repr(event.arg),
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
@@ -422,11 +436,12 @@ class VarsPrinter(ColorStreamAction):
     Args:
         *names (strings): Names to evaluate. Expressions can be used (will only try to evaluate if all the variables are
             present on the frame.
-        globals (bool): Allow access to globals. Default: ``False`` (only looks at locals).
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
     """
 
     def __init__(self, *names, **options):
@@ -436,7 +451,6 @@ class VarsPrinter(ColorStreamAction):
             name: set(self._iter_symbols(name))
             for name in names
         }
-        self.globals = options.pop('globals', Default('globals', False).resolve())
         super(VarsPrinter, self).__init__(**options)
 
     @staticmethod
@@ -460,8 +474,7 @@ class VarsPrinter(ColorStreamAction):
         first = True
         frame_symbols = set(event.locals)
         frame_symbols.update(BUILTIN_SYMBOLS)
-        if self.globals:
-            frame_symbols |= set(event.globals)
+        frame_symbols.update(event.globals)
 
         self.seen_threads.add(get_ident())
         if event.tracer.threading_support is False:
@@ -482,18 +495,13 @@ class VarsPrinter(ColorStreamAction):
 
         for code, symbols in self.names.items():
             try:
-                if self.globals:
-                    globals = dict(event.globals)
-                    globals.update(vars(builtins))
-                else:
-                    globals = vars(builtins)
-                obj = eval(code, globals, event.locals)
+                obj = eval(code, dict(vars(builtins), **event.globals), event.locals)
             except AttributeError:
                 continue
             except Exception as exc:
-                printout = "{internal-failure}FAILED EVAL: {internal-detail}{!r}".format(exc, **self.event_colors)
+                printout = '{internal-failure}FAILED EVAL: {internal-detail}{!r}'.format(exc, **self.event_colors)
             else:
-                printout = self._safe_repr(obj)
+                printout = self._try_repr(obj)
 
             if frame_symbols >= symbols:
                 self.stream.write(

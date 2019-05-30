@@ -44,7 +44,7 @@ def _prepare(*args, **kwargs):
             'thread_alignment',
             'pid_alignment',
             'repr_limit',
-            'repr_unsafe',
+            'repr_func',
             'globals',
         ):
             continue

@@ -8,7 +8,7 @@ from socket import socket
 import py
 
 from hunter.util import hasdict
-from hunter.util import rudimentary_repr
+from hunter.util import safe_repr
 
 
 class Dict(dict):
@@ -47,7 +47,7 @@ def test_rudimentary_repr():
             'b': Set([Decimal('1.0')]),
             'c': Stuff(1, 2),
             'd': Exception(1, 2, {
-                'a': rudimentary_repr,
+                'a': safe_repr,
                 'b': Foobar,
                 'c': Bad(),
                 'ct': Bad,
@@ -55,12 +55,12 @@ def test_rudimentary_repr():
         }),
 
     }
-    print(rudimentary_repr(data))
-    print(rudimentary_repr([data]))
-    print(rudimentary_repr([[data]]))
-    print(rudimentary_repr([[[data]]]))
-    print(rudimentary_repr([[[[data]]]]))
-    print(rudimentary_repr([[[[[data]]]]]))
+    print(safe_repr(data))
+    print(safe_repr([data]))
+    print(safe_repr([[data]]))
+    print(safe_repr([[[data]]]))
+    print(safe_repr([[[[data]]]]))
+    print(safe_repr([[[[[data]]]]]))
 
 
 def test_hasdict():
