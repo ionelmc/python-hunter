@@ -29,7 +29,7 @@ def test_manhole():
                     'line         time.sleep(1)',
                     'return    <= stuff: None',
                 )
-            process_tests.wait_for_strings(target.read, TIMEOUT, 'Broken pipe. Stopping tracer.')
+            process_tests.wait_for_strings(target.read, TIMEOUT, 'Broken pipe', 'Stopping tracer.')
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
@@ -76,7 +76,7 @@ def test_gdb():
                     'line         time.sleep(1)',
                     'return    <= stuff: None',
                 )
-            process_tests.wait_for_strings(target.read, TIMEOUT, 'Broken pipe. Stopping tracer.')
+            process_tests.wait_for_strings(target.read, TIMEOUT, 'Broken pipe', 'Stopping tracer.')
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')

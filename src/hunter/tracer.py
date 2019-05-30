@@ -30,7 +30,7 @@ class Tracer(object):
         #: :type: int
         self.depth = 0
 
-        #: A counter for total number of "call" frames that this Tracer went through.
+        #: A counter for total number of 'call' frames that this Tracer went through.
         #:
         #: :type: int
         self.calls = 0

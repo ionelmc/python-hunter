@@ -809,7 +809,7 @@ static const char *__pyx_f[] = {
   "src/hunter/_event.pyx",
   "stringsource",
   "src/hunter/_event.pxd",
-  "type.pxd",
+  ".tox/cythonize/lib/python3.6/site-packages/Cython/Includes/cpython/type.pxd",
   "src/hunter/_tracer.pxd",
 };
 

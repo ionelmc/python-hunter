@@ -64,6 +64,7 @@ BUILTIN_REPR_FUNCS = {
     'safe_repr': safe_repr
 }
 
+
 class Action(object):
     def __call__(self, event):
         raise NotImplementedError()
@@ -204,7 +205,7 @@ class ColorStreamAction(Action):
         elif value in BUILTIN_REPR_FUNCS:
             self._repr_func = BUILTIN_REPR_FUNCS[value]
         else:
-            raise TypeError("Expected a callable or either 'repr' or 'safe_repr' strings, not {!r}.".format(value))
+            raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
 
     def _try_repr(self, obj):
         limit = self.repr_limit
@@ -213,11 +214,11 @@ class ColorStreamAction(Action):
             s = s.replace('\n', r'\n')
             if len(s) > limit:
                 cutoff = limit // 2
-                return "{} {continuation}[...]{reset} {}".format(s[:cutoff], s[-cutoff:], **self.event_colors)
+                return '{} {continuation}[...]{reset} {}'.format(s[:cutoff], s[-cutoff:], **self.event_colors)
             else:
                 return s
         except Exception as exc:
-            return "{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}".format(exc, **self.event_colors)
+            return '{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}'.format(exc, **self.event_colors)
 
 
 class CodePrinter(ColorStreamAction):
@@ -230,7 +231,7 @@ class CodePrinter(ColorStreamAction):
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
         repr_func (string or callable): Function to use instead of ``repr``.
-            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
     """
     def _safe_source(self, event):
         try:
@@ -238,13 +239,13 @@ class CodePrinter(ColorStreamAction):
             if lines:
                 return lines
             else:
-                return "{source-failure}??? NO SOURCE: {source-detail}" \
-                       "Source code string for module {!r} is empty.".format(event.module, **self.event_colors),
+                return '{source-failure}??? NO SOURCE: {source-detail}' \
+                       'Source code string for module {!r} is empty.'.format(event.module, **self.event_colors),
         except Exception as exc:
-            return "{source-failure}??? NO SOURCE: {source-detail}{!r}".format(exc, **self.event_colors),
+            return '{source-failure}??? NO SOURCE: {source-detail}{!r}'.format(exc, **self.event_colors),
 
     def _format_filename(self, event):
-        filename = event.filename or "<???>"
+        filename = event.filename or '<???>'
         if len(filename) > self.filename_alignment:
             filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
         return filename
@@ -267,14 +268,14 @@ class CodePrinter(ColorStreamAction):
 
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
-            pid = "[{}] ".format(pid)
+            pid = '[{}] '.format(pid)
             pid_align = self.pid_alignment
         else:
             pid = pid_align = ''
 
         self.stream.write(
-            "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
-            "{code}{}{reset}\n".format(
+            '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
+            '{code}{}{reset}\n'.format(
                 self._format_filename(event),
                 event.lineno,
                 event.kind,
@@ -287,9 +288,9 @@ class CodePrinter(ColorStreamAction):
 
         for line in lines[1:]:
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n".format(
-                    "",
-                    r"   |",
+                '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
+                    '',
+                    r'   |',
                     line,
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
@@ -299,10 +300,10 @@ class CodePrinter(ColorStreamAction):
 
         if event.kind in ('return', 'exception'):
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} "
-                "value: {detail}{}{reset}\n".format(
-                    "",
-                    "...",
+                '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} '
+                'value: {detail}{}{reset}\n'.format(
+                    '',
+                    '...',
                     event.kind,
                     self._try_repr(event.arg),
                     pid=pid, pid_align=pid_align,
@@ -323,7 +324,7 @@ class CallPrinter(CodePrinter):
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
         repr_func (string or callable): Function to use instead of ``repr``.
-            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
 
     .. versionadded:: 1.2.0
     """
@@ -354,7 +355,7 @@ class CallPrinter(CodePrinter):
 
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
-            pid = "[{}] ".format(pid)
+            pid = '[{}] '.format(pid)
             pid_align = self.pid_alignment
         else:
             pid = pid_align = ''
@@ -363,8 +364,8 @@ class CallPrinter(CodePrinter):
             code = event.code
             stack.append(ident)
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
-                "{}{call}=>{normal} {}({}{call}{normal}){reset}\n".format(
+                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
+                '{}{call}=>{normal} {}({}{call}{normal}){reset}\n'.format(
                     filename,
                     event.lineno,
                     event.kind,
@@ -382,8 +383,8 @@ class CallPrinter(CodePrinter):
                 ))
         elif event.kind == 'exception':
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
-                "{exception}{} !{normal} {}: {reset}{}\n".format(
+                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
+                '{exception}{} !{normal} {}: {reset}{}\n'.format(
                     filename,
                     event.lineno,
                     event.kind,
@@ -398,8 +399,8 @@ class CallPrinter(CodePrinter):
 
         elif event.kind == 'return':
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} "
-                "{return}{}<={normal} {}: {reset}{}\n".format(
+                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
+                '{return}{}<={normal} {}: {reset}{}\n'.format(
                     filename,
                     event.lineno,
                     event.kind,
@@ -415,7 +416,8 @@ class CallPrinter(CodePrinter):
                 stack.pop()
         else:
             self.stream.write(
-                "{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {reset}{}{}\n".format(
+                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
+                '{reset}{}{}\n'.format(
                     filename,
                     event.lineno,
                     event.kind,
@@ -441,12 +443,12 @@ class VarsPrinter(ColorStreamAction):
         force_colors (bool): Force coloring. Default: ``False``.
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
         repr_func (string or callable): Function to use instead of ``repr``.
-            If string must be one of "repr" or "safe_repr". Default: ``'safe_repr'``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
     """
 
     def __init__(self, *names, **options):
         if not names:
-            raise TypeError("VarsPrinter requires at least one variable name/expression.")
+            raise TypeError('VarsPrinter requires at least one variable name/expression.')
         self.names = {
             name: set(self._iter_symbols(name))
             for name in names
@@ -488,7 +490,7 @@ class VarsPrinter(ColorStreamAction):
 
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
-            pid = "[{}] ".format(pid)
+            pid = '[{}] '.format(pid)
             pid_align = self.pid_alignment
         else:
             pid = pid_align = ''
@@ -505,10 +507,10 @@ class VarsPrinter(ColorStreamAction):
 
             if frame_symbols >= symbols:
                 self.stream.write(
-                    "{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       "
-                    "{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n".format(
-                        "",
-                        "vars" if first else "...",
+                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
+                    '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(
+                        '',
+                        'vars' if first else '...',
                         code,
                         printout,
                         pid=pid, pid_align=pid_align,

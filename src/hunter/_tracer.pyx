@@ -24,7 +24,7 @@ from ._predicates cimport When
 
 __all__ = 'Tracer',
 
-cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
+cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')
 
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
@@ -96,7 +96,7 @@ cdef class Tracer:
             because it might match further inside.
         """
         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
-        if kind == "call":
+        if kind == 'call':
             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 

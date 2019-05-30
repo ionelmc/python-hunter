@@ -809,9 +809,9 @@ static const char *__pyx_f[] = {
   "src/hunter/_tracer.pyx",
   "stringsource",
   "src/hunter/_tracer.pxd",
-  "type.pxd",
-  "bool.pxd",
-  "complex.pxd",
+  ".tox/cythonize/lib/python3.6/site-packages/Cython/Includes/cpython/type.pxd",
+  ".tox/cythonize/lib/python3.6/site-packages/Cython/Includes/cpython/bool.pxd",
+  ".tox/cythonize/lib/python3.6/site-packages/Cython/Includes/cpython/complex.pxd",
   "src/hunter/_event.pxd",
   "src/hunter/_predicates.pxd",
 };
@@ -3043,7 +3043,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
  *             because it might match further inside.
  *         """
  *         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)             # <<<<<<<<<<<<<<
- *         if kind == "call":
+ *         if kind == 'call':
  *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
  */
   __Pyx_TraceLine(98,0,__PYX_ERR(0, 98, __pyx_L1_error))
@@ -3057,7 +3057,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
   /* "hunter/_tracer.pyx":99
  *         """
  *         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
- *         if kind == "call":             # <<<<<<<<<<<<<<
+ *         if kind == 'call':             # <<<<<<<<<<<<<<
  *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
  *         return self
  */
@@ -3067,7 +3067,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
 
     /* "hunter/_tracer.pyx":100
  *         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
- *         if kind == "call":
+ *         if kind == 'call':
  *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)             # <<<<<<<<<<<<<<
  *         return self
  * 
@@ -3078,14 +3078,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
     /* "hunter/_tracer.pyx":99
  *         """
  *         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
- *         if kind == "call":             # <<<<<<<<<<<<<<
+ *         if kind == 'call':             # <<<<<<<<<<<<<<
  *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
  *         return self
  */
   }
 
   /* "hunter/_tracer.pyx":101
- *         if kind == "call":
+ *         if kind == 'call':
  *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
  *         return self             # <<<<<<<<<<<<<<
  * 
@@ -4483,7 +4483,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
- * cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
+ * cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')
  */
   __pyx_tuple__4 = PyTuple_Pack(1, __pyx_n_s_Tracer); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
@@ -4492,7 +4492,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "hunter/_tracer.pyx":27
  * __all__ = 'Tracer',
  * 
- * cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")             # <<<<<<<<<<<<<<
+ * cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -4886,7 +4886,7 @@ if (!__Pyx_RefNanny) {
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
- * cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")
+ * cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')
  */
   __Pyx_TraceLine(25,0,__PYX_ERR(0, 25, __pyx_L1_error))
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_tuple__4) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
@@ -4894,7 +4894,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_tracer.pyx":27
  * __all__ = 'Tracer',
  * 
- * cdef tuple KIND_NAMES = ("call", "exception", "line", "return", "c_call", "c_exception", "c_return")             # <<<<<<<<<<<<<<
+ * cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')             # <<<<<<<<<<<<<<
  * 
  * 
  */

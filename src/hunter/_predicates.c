@@ -808,7 +808,7 @@ static const char *__pyx_f[] = {
   "src/hunter/_predicates.pyx",
   "src/hunter/_predicates.pxd",
   "stringsource",
-  "type.pxd",
+  ".tox/cythonize/lib/python3.6/site-packages/Cython/Includes/cpython/type.pxd",
   "src/hunter/_tracer.pxd",
   "src/hunter/_event.pxd",
 };
@@ -1052,7 +1052,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_4_genexpr {
  * 
  *     def __init__(self, condition, *actions):             # <<<<<<<<<<<<<<
  *         if not actions:
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  */
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_5___init__ {
   PyObject_HEAD
@@ -1080,7 +1080,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_6_genexpr {
  *             for action in actions)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  */
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_7___str__ {
@@ -1090,7 +1090,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_7___str__ {
 
 
 /* "hunter/_predicates.pyx":302
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  *             ', '.join(repr(p) for p in self.actions)             # <<<<<<<<<<<<<<
  *         )
@@ -1109,7 +1109,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_8_genexpr {
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_9___str__ {
@@ -1121,7 +1121,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_9___str__ {
 /* "hunter/_predicates.pyx":476
  * 
  *     def __str__(self):
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -1138,7 +1138,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_10_genexpr {
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_11___str__ {
@@ -1150,7 +1150,7 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_11___str__ {
 /* "hunter/_predicates.pyx":555
  * 
  *     def __str__(self):
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -8465,7 +8465,7 @@ static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_
  * 
  *     def __init__(self, condition, *actions):             # <<<<<<<<<<<<<<
  *         if not actions:
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  */
 
 /* Python wrapper */
@@ -8760,7 +8760,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_4When_8__init___2generator3(__py
  * 
  *     def __init__(self, condition, *actions):             # <<<<<<<<<<<<<<
  *         if not actions:
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  */
 
 static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunter_11_predicates_When *__pyx_v_self, PyObject *__pyx_v_condition, PyObject *__pyx_v_actions) {
@@ -8790,7 +8790,7 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
  * 
  *     def __init__(self, condition, *actions):
  *         if not actions:             # <<<<<<<<<<<<<<
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  *         self.condition = condition
  */
   __Pyx_TraceLine(292,0,__PYX_ERR(0, 292, __pyx_L1_error))
@@ -8801,7 +8801,7 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
     /* "hunter/_predicates.pyx":293
  *     def __init__(self, condition, *actions):
  *         if not actions:
- *             raise TypeError("Must give at least one action.")             # <<<<<<<<<<<<<<
+ *             raise TypeError('Must give at least one action.')             # <<<<<<<<<<<<<<
  *         self.condition = condition
  *         self.actions = tuple(
  */
@@ -8816,14 +8816,14 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
  * 
  *     def __init__(self, condition, *actions):
  *         if not actions:             # <<<<<<<<<<<<<<
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  *         self.condition = condition
  */
   }
 
   /* "hunter/_predicates.pyx":294
  *         if not actions:
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  *         self.condition = condition             # <<<<<<<<<<<<<<
  *         self.actions = tuple(
  *             action() if inspect.isclass(action) and issubclass(action, Action) else action
@@ -8847,7 +8847,7 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
   __Pyx_GOTREF(__pyx_t_3);
 
   /* "hunter/_predicates.pyx":295
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  *         self.condition = condition
  *         self.actions = tuple(             # <<<<<<<<<<<<<<
  *             action() if inspect.isclass(action) and issubclass(action, Action) else action
@@ -8868,7 +8868,7 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
  * 
  *     def __init__(self, condition, *actions):             # <<<<<<<<<<<<<<
  *         if not actions:
- *             raise TypeError("Must give at least one action.")
+ *             raise TypeError('Must give at least one action.')
  */
 
   /* function exit code */
@@ -8890,7 +8890,7 @@ static int __pyx_pf_6hunter_11_predicates_4When___init__(struct __pyx_obj_6hunte
  *             for action in actions)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  */
 
@@ -8909,7 +8909,7 @@ static PyObject *__pyx_pw_6hunter_11_predicates_4When_3__str__(PyObject *__pyx_v
 static PyObject *__pyx_gb_6hunter_11_predicates_4When_7__str___2generator4(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
 /* "hunter/_predicates.pyx":302
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  *             ', '.join(repr(p) for p in self.actions)             # <<<<<<<<<<<<<<
  *         )
@@ -9035,7 +9035,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_4When_7__str___2generator4(__pyx
  *             for action in actions)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  */
 
@@ -9063,7 +9063,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
   /* "hunter/_predicates.pyx":300
  * 
  *     def __str__(self):
- *         return "When(%s, %s)" % (             # <<<<<<<<<<<<<<
+ *         return 'When(%s, %s)' % (             # <<<<<<<<<<<<<<
  *             self.condition,
  *             ', '.join(repr(p) for p in self.actions)
  */
@@ -9071,7 +9071,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
   __Pyx_XDECREF(__pyx_r);
 
   /* "hunter/_predicates.pyx":302
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  *             ', '.join(repr(p) for p in self.actions)             # <<<<<<<<<<<<<<
  *         )
@@ -9086,7 +9086,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
 
   /* "hunter/_predicates.pyx":301
  *     def __str__(self):
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,             # <<<<<<<<<<<<<<
  *             ', '.join(repr(p) for p in self.actions)
  *         )
@@ -9104,7 +9104,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
   /* "hunter/_predicates.pyx":300
  * 
  *     def __str__(self):
- *         return "When(%s, %s)" % (             # <<<<<<<<<<<<<<
+ *         return 'When(%s, %s)' % (             # <<<<<<<<<<<<<<
  *             self.condition,
  *             ', '.join(repr(p) for p in self.actions)
  */
@@ -9120,7 +9120,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
  *             for action in actions)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "When(%s, %s)" % (
+ *         return 'When(%s, %s)' % (
  *             self.condition,
  */
 
@@ -9142,7 +9142,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_2__str__(struct __pyx_obj_
  *         )
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+ *         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
  * 
  */
 
@@ -9171,7 +9171,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_4__repr__(struct __pyx_obj
   /* "hunter/_predicates.pyx":306
  * 
  *     def __repr__(self):
- *         return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)             # <<<<<<<<<<<<<<
+ *         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)             # <<<<<<<<<<<<<<
  * 
  *     def __call__(self, event):
  */
@@ -9196,7 +9196,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_4__repr__(struct __pyx_obj
  *         )
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+ *         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
  * 
  */
 
@@ -9214,7 +9214,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_4__repr__(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":308
- *         return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+ *         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -9299,7 +9299,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_6__call__(struct __pyx_obj
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":308
- *         return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+ *         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -12924,7 +12924,7 @@ static int __pyx_pf_6hunter_11_predicates_3And___init__(struct __pyx_obj_6hunter
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -12945,7 +12945,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_3And_7__str___2generator5(__pyx_
 /* "hunter/_predicates.pyx":476
  * 
  *     def __str__(self):
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -13069,7 +13069,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_3And_7__str___2generator5(__pyx_
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -13097,7 +13097,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_2__str__(struct __pyx_obj_6
   /* "hunter/_predicates.pyx":476
  * 
  *     def __str__(self):
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -13119,7 +13119,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_2__str__(struct __pyx_obj_6
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -13138,10 +13138,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_2__str__(struct __pyx_obj_6
 }
 
 /* "hunter/_predicates.pyx":478
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
  * 
  */
 
@@ -13170,7 +13170,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_4__repr__(struct __pyx_obj_
   /* "hunter/_predicates.pyx":479
  * 
  *     def __repr__(self):
- *         return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)             # <<<<<<<<<<<<<<
+ *         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)             # <<<<<<<<<<<<<<
  * 
  *     def __call__(self, event):
  */
@@ -13189,10 +13189,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_4__repr__(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":478
- *         return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
  * 
  */
 
@@ -13210,7 +13210,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_4__repr__(struct __pyx_obj_
 }
 
 /* "hunter/_predicates.pyx":481
- *         return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -13295,7 +13295,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_6__call__(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":481
- *         return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -15005,7 +15005,7 @@ static int __pyx_pf_6hunter_11_predicates_2Or___init__(struct __pyx_obj_6hunter_
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -15026,7 +15026,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_2Or_7__str___2generator6(__pyx_C
 /* "hunter/_predicates.pyx":555
  * 
  *     def __str__(self):
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -15150,7 +15150,7 @@ static PyObject *__pyx_gb_6hunter_11_predicates_2Or_7__str___2generator6(__pyx_C
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -15178,7 +15178,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_2__str__(struct __pyx_obj_6h
   /* "hunter/_predicates.pyx":555
  * 
  *     def __str__(self):
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -15200,7 +15200,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_2__str__(struct __pyx_obj_6h
  *         self.predicates = predicates
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  */
 
@@ -15219,10 +15219,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_2__str__(struct __pyx_obj_6h
 }
 
 /* "hunter/_predicates.pyx":557
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
  * 
  */
 
@@ -15251,7 +15251,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_4__repr__(struct __pyx_obj_6
   /* "hunter/_predicates.pyx":558
  * 
  *     def __repr__(self):
- *         return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)             # <<<<<<<<<<<<<<
+ *         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)             # <<<<<<<<<<<<<<
  * 
  *     def __call__(self, event):
  */
@@ -15270,10 +15270,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_4__repr__(struct __pyx_obj_6
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":557
- *         return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+ *         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
  * 
  */
 
@@ -15291,7 +15291,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_4__repr__(struct __pyx_obj_6
 }
 
 /* "hunter/_predicates.pyx":560
- *         return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -15376,7 +15376,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_6__call__(struct __pyx_obj_6
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":560
- *         return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
+ *         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -17111,7 +17111,7 @@ static int __pyx_pf_6hunter_11_predicates_3Not___init__(struct __pyx_obj_6hunter
  *         self.predicate = predicate
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Not(%s)" % self.predicate
+ *         return 'Not(%s)' % self.predicate
  * 
  */
 
@@ -17139,7 +17139,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_2__str__(struct __pyx_obj_6
   /* "hunter/_predicates.pyx":632
  * 
  *     def __str__(self):
- *         return "Not(%s)" % self.predicate             # <<<<<<<<<<<<<<
+ *         return 'Not(%s)' % self.predicate             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
@@ -17155,7 +17155,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_2__str__(struct __pyx_obj_6
  *         self.predicate = predicate
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return "Not(%s)" % self.predicate
+ *         return 'Not(%s)' % self.predicate
  * 
  */
 
@@ -17172,10 +17172,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_2__str__(struct __pyx_obj_6
 }
 
 /* "hunter/_predicates.pyx":634
- *         return "Not(%s)" % self.predicate
+ *         return 'Not(%s)' % self.predicate
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+ *         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
  * 
  */
 
@@ -17203,7 +17203,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_4__repr__(struct __pyx_obj_
   /* "hunter/_predicates.pyx":635
  * 
  *     def __repr__(self):
- *         return "<hunter._predicates.Not: predicate=%r>" % self.predicate             # <<<<<<<<<<<<<<
+ *         return '<hunter._predicates.Not: predicate=%r>' % self.predicate             # <<<<<<<<<<<<<<
  * 
  *     def __call__(self, event):
  */
@@ -17216,10 +17216,10 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_4__repr__(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":634
- *         return "Not(%s)" % self.predicate
+ *         return 'Not(%s)' % self.predicate
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
- *         return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+ *         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
  * 
  */
 
@@ -17236,7 +17236,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_4__repr__(struct __pyx_obj_
 }
 
 /* "hunter/_predicates.pyx":637
- *         return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+ *         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -17321,7 +17321,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_6__call__(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "hunter/_predicates.pyx":637
- *         return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+ *         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -24221,7 +24221,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "hunter/_predicates.pyx":293
  *     def __init__(self, condition, *actions):
  *         if not actions:
- *             raise TypeError("Must give at least one action.")             # <<<<<<<<<<<<<<
+ *             raise TypeError('Must give at least one action.')             # <<<<<<<<<<<<<<
  *         self.condition = condition
  *         self.actions = tuple(
  */

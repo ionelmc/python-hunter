@@ -40,7 +40,7 @@ class FakeCallable(object):
         self.value = value
 
     def __call__(self):
-        raise NotImplementedError("Nope")
+        raise NotImplementedError('Nope')
 
     def __repr__(self):
         return repr(self.value)
@@ -97,10 +97,10 @@ def _get_func_spec(func):
 
 def test_pth_activation():
     module_name = os.path.__name__
-    expected_module = "{0}.py".format(module_name)
-    hunter_env = "action=CodePrinter,module={!r},function=\"join\"".format(module_name)
+    expected_module = '{0}.py'.format(module_name)
+    hunter_env = 'action=CodePrinter,module={!r},function="join"'.format(module_name)
     func_spec = _get_func_spec(os.path.join)
-    expected_call = "call      def join{0}:".format(func_spec)
+    expected_call = 'call      def join{0}:'.format(func_spec)
 
     output = subprocess.check_output(
         ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
@@ -112,7 +112,7 @@ def test_pth_activation():
 
 
 def test_pth_sample4():
-    env = dict(os.environ, PYTHONHUNTER="CodePrinter")
+    env = dict(os.environ, PYTHONHUNTER='CodePrinter')
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
@@ -332,7 +332,7 @@ def test_tracing_bare(LineMatcher):
         b = a()
         b = 2
         try:
-            raise Exception("BOOM!")
+            raise Exception('BOOM!')
         except Exception:
             pass
     print(lines.getvalue())
@@ -474,7 +474,7 @@ def test_thread_filtering(LineMatcher, query):
 
 def test_tracing_printing_failures(LineMatcher):
     lines = StringIO()
-    with trace(actions=[CodePrinter(stream=lines), VarsPrinter("x", stream=lines)]):
+    with trace(actions=[CodePrinter(stream=lines), VarsPrinter('x', stream=lines)]):
         class Bad(object):
             __slots__ = []
 
@@ -532,7 +532,7 @@ def test_tracing_vars(LineMatcher):
         b = a()
         b = 2
         try:
-            raise Exception("BOOM!")
+            raise Exception('BOOM!')
         except Exception:
             pass
     print(lines.getvalue())
@@ -569,76 +569,76 @@ def test_tracing_vars_expressions(LineMatcher):
 
 
 def test_trace_merge():
-    with hunter.trace(function="a"):
-        with hunter.trace(function="b"):
-            with hunter.trace(function="c"):
-                assert sys.gettrace().handler == When(Q(function="c"), CallPrinter)
-            assert sys.gettrace().handler == When(Q(function="b"), CallPrinter)
-        assert sys.gettrace().handler == When(Q(function="a"), CallPrinter)
+    with hunter.trace(function='a'):
+        with hunter.trace(function='b'):
+            with hunter.trace(function='c'):
+                assert sys.gettrace().handler == When(Q(function='c'), CallPrinter)
+            assert sys.gettrace().handler == When(Q(function='b'), CallPrinter)
+        assert sys.gettrace().handler == When(Q(function='a'), CallPrinter)
 
 
 def test_trace_api_expansion():
     # simple use
-    with trace(function="foobar") as t:
-        assert t.handler == When(Q(function="foobar"), CallPrinter)
+    with trace(function='foobar') as t:
+        assert t.handler == When(Q(function='foobar'), CallPrinter)
 
-    # "or" by expression
-    with trace(module="foo", function="foobar") as t:
-        assert t.handler == When(Q(module="foo", function="foobar"), CallPrinter)
+    # 'or' by expression
+    with trace(module='foo', function='foobar') as t:
+        assert t.handler == When(Q(module='foo', function='foobar'), CallPrinter)
 
     # pdb.set_trace
-    with trace(function="foobar", action=Debugger) as t:
-        assert str(t.handler) == str(When(Q(function="foobar"), Debugger))
+    with trace(function='foobar', action=Debugger) as t:
+        assert str(t.handler) == str(When(Q(function='foobar'), Debugger))
 
     # pdb.set_trace on any hits
-    with trace(module="foo", function="foobar", action=Debugger) as t:
-        assert str(t.handler) == str(When(Q(module="foo", function="foobar"), Debugger))
+    with trace(module='foo', function='foobar', action=Debugger) as t:
+        assert str(t.handler) == str(When(Q(module='foo', function='foobar'), Debugger))
 
     # pdb.set_trace when function is foobar, otherwise just print when module is foo
-    with trace(Q(function="foobar", action=Debugger), module="foo") as t:
+    with trace(Q(function='foobar', action=Debugger), module='foo') as t:
         assert str(t.handler) == str(When(And(
-            When(Q(function="foobar"), Debugger),
-            Q(module="foo")
+            When(Q(function='foobar'), Debugger),
+            Q(module='foo')
         ), CallPrinter))
 
     # dumping variables from stack
-    with trace(Q(function="foobar", action=VarsPrinter("foobar")), module="foo") as t:
+    with trace(Q(function='foobar', action=VarsPrinter('foobar')), module='foo') as t:
         assert str(t.handler) == str(When(And(
-            When(Q(function="foobar"), VarsPrinter("foobar")),
-            Q(module="foo"),
+            When(Q(function='foobar'), VarsPrinter('foobar')),
+            Q(module='foo'),
         ), CallPrinter))
 
-    with trace(Q(function="foobar", action=VarsPrinter("foobar", "mumbojumbo")), module="foo") as t:
+    with trace(Q(function='foobar', action=VarsPrinter('foobar', 'mumbojumbo')), module='foo') as t:
         assert str(t.handler) == str(When(And(
-            When(Q(function="foobar"), VarsPrinter("foobar", "mumbojumbo")),
-            Q(module="foo"),
+            When(Q(function='foobar'), VarsPrinter('foobar', 'mumbojumbo')),
+            Q(module='foo'),
         ), CallPrinter))
 
     # multiple actions
-    with trace(Q(function="foobar", actions=[VarsPrinter("foobar"), Debugger]), module="foo") as t:
+    with trace(Q(function='foobar', actions=[VarsPrinter('foobar'), Debugger]), module='foo') as t:
         assert str(t.handler) == str(When(And(
-            When(Q(function="foobar"), VarsPrinter("foobar"), Debugger),
-            Q(module="foo"),
+            When(Q(function='foobar'), VarsPrinter('foobar'), Debugger),
+            Q(module='foo'),
         ), CallPrinter))
 
 
 def test_locals():
     out = StringIO()
     with hunter.trace(
-        lambda event: event.locals.get("node") == "Foobar",
-        module="test_hunter",
-        function="foo",
+        lambda event: event.locals.get('node') == 'Foobar',
+        module='test_hunter',
+        function='foo',
         action=CodePrinter(stream=out)
     ):
         def foo():
             a = 1
-            node = "Foobar"
-            node += "x"
+            node = 'Foobar'
+            node += 'x'
             a += 2
             return a
 
         foo()
-    assert out.getvalue().endswith('node += "x"\n')
+    assert out.getvalue().endswith("node += 'x'\n")
 
 
 def test_fullsource_decorator_issue(LineMatcher):
@@ -745,7 +745,7 @@ def test_source(LineMatcher):
 def test_wraps(LineMatcher):
     calls = []
 
-    @hunter.wrap(action=lambda event: calls.append("%6r calls=%r depth=%r %r" % (event.kind, event.calls, event.depth, event.fullsource)))
+    @hunter.wrap(action=lambda event: calls.append('%6r calls=%r depth=%r %s' % (event.kind, event.calls, event.depth, event.fullsource)))
     def foo():
         return 1
 
@@ -754,9 +754,9 @@ def test_wraps(LineMatcher):
     for line in calls:
         print(repr(line))
     lm.fnmatch_lines([
-        r"'call' calls=0 depth=0 '    @hunter.wrap*'",
-        r"'line' calls=1 depth=1 '        return 1\n'",
-        r"'return' calls=1 depth=0 '        return 1\n'",
+        "'call' calls=0 depth=0     @hunter.wrap*",
+        "'line' calls=1 depth=1         return 1\n",
+        "'return' calls=1 depth=0         return 1\n",
     ])
     for call in calls:
         assert 'tracer.stop()' not in call
@@ -770,7 +770,7 @@ def test_wraps_local(LineMatcher):
             return 'A'
 
     @hunter.wrap(local=True, action=lambda event: calls.append(
-        "%06s calls=%s depth=%s %s" % (event.kind, event.calls, event.depth, event.fullsource)))
+        '%06s calls=%s depth=%s %s' % (event.kind, event.calls, event.depth, event.fullsource)))
     def foo():
         bar()
         return 1
@@ -877,17 +877,17 @@ def test_debugger(LineMatcher):
             calls.append(frame.f_code.co_name)
 
     with hunter.trace(
-        lambda event: event.locals.get("node") == "Foobar",
-        module="test_hunter",
-        function="foo",
+        lambda event: event.locals.get('node') == 'Foobar',
+        module='test_hunter',
+        function='foo',
         actions=[CodePrinter,
-                 VarsPrinter("a", "node", "foo", "test_debugger", stream=out),
+                 VarsPrinter('a', 'node', 'foo', 'test_debugger', stream=out),
                  Debugger(klass=FakePDB, foobar=2)]
     ):
         def foo():
             a = 1
-            node = "Foobar"
-            node += "x"
+            node = 'Foobar'
+            node += 'x'
             a += 2
             return a
 
@@ -906,7 +906,7 @@ def test_debugger(LineMatcher):
 def test_custom_action():
     calls = []
 
-    with trace(action=lambda event: calls.append(event.function), kind="return"):
+    with trace(action=lambda event: calls.append(event.function), kind='return'):
         def foo():
             return 1
 
@@ -981,45 +981,45 @@ def test_predicate_when_allowed():
 
 
 @pytest.mark.parametrize('expr,inp,expected', [
-    ({'module': "abc"}, {'module': "abc"}, True),
-    ({'module': "abcd"}, {'module': "abc"}, False),
-    ({'module': "abcd"}, {'module': "abce"}, False),
-    ({'module_startswith': "abc"}, {'module': "abcd"}, True),
-    ({'module__startswith': "abc"}, {'module': "abcd"}, True),
-    ({'module_contains': "bc"}, {'module': "abcd"}, True),
-    ({'module_contains': "bcde"}, {'module': "abcd"}, False),
+    ({'module': 'abc'}, {'module': 'abc'}, True),
+    ({'module': 'abcd'}, {'module': 'abc'}, False),
+    ({'module': 'abcd'}, {'module': 'abce'}, False),
+    ({'module_startswith': 'abc'}, {'module': 'abcd'}, True),
+    ({'module__startswith': 'abc'}, {'module': 'abcd'}, True),
+    ({'module_contains': 'bc'}, {'module': 'abcd'}, True),
+    ({'module_contains': 'bcde'}, {'module': 'abcd'}, False),
 
-    ({'module_endswith': "abc"}, {'module': "abcd"}, False),
-    ({'module__endswith': "bcd"}, {'module': "abcd"}, True),
+    ({'module_endswith': 'abc'}, {'module': 'abcd'}, False),
+    ({'module__endswith': 'bcd'}, {'module': 'abcd'}, True),
 
-    ({'module_in': "abcd"}, {'module': "bc"}, True),
-    ({'module': "abcd"}, {'module': "bc"}, False),
-    ({'module': ["abcd"]}, {'module': "bc"}, False),
-    ({'module_in': ["abcd"]}, {'module': "bc"}, False),
-    ({'module_in': ["a", "bc", "d"]}, {'module': "bc"}, True),
+    ({'module_in': 'abcd'}, {'module': 'bc'}, True),
+    ({'module': 'abcd'}, {'module': 'bc'}, False),
+    ({'module': ['abcd']}, {'module': 'bc'}, False),
+    ({'module_in': ['abcd']}, {'module': 'bc'}, False),
+    ({'module_in': ['a', 'bc', 'd']}, {'module': 'bc'}, True),
 
-    ({'module': "abcd"}, {'module': "abc"}, False),
+    ({'module': 'abcd'}, {'module': 'abc'}, False),
 
-    ({'module_startswith': ("abc", "xyz")}, {'module': "abc"}, True),
-    ({'module_startswith': {"abc", "xyz"}}, {'module': "abc"}, True),
-    ({'module_startswith': ["abc", "xyz"]}, {'module': "abc"}, True),
-    ({'module_startswith': ("abc", "xyz")}, {'module': "abcd"}, True),
-    ({'module_startswith': ("abc", "xyz")}, {'module': "xyzw"}, True),
-    ({'module_startswith': ("abc", "xyz")}, {'module': "fooabc"}, False),
+    ({'module_startswith': ('abc', 'xyz')}, {'module': 'abc'}, True),
+    ({'module_startswith': {'abc', 'xyz'}}, {'module': 'abc'}, True),
+    ({'module_startswith': ['abc', 'xyz']}, {'module': 'abc'}, True),
+    ({'module_startswith': ('abc', 'xyz')}, {'module': 'abcd'}, True),
+    ({'module_startswith': ('abc', 'xyz')}, {'module': 'xyzw'}, True),
+    ({'module_startswith': ('abc', 'xyz')}, {'module': 'fooabc'}, False),
 
-    ({'module_endswith': ("abc", "xyz")}, {'module': "abc"}, True),
-    ({'module_endswith': {"abc", "xyz"}}, {'module': "abc"}, True),
-    ({'module_endswith': ["abc", "xyz"]}, {'module': "abc"}, True),
-    ({'module_endswith': ("abc", "xyz")}, {'module': "1abc"}, True),
-    ({'module_endswith': ("abc", "xyz")}, {'module': "1xyz"}, True),
-    ({'module_endswith': ("abc", "xyz")}, {'module': "abcfoo"}, False),
+    ({'module_endswith': ('abc', 'xyz')}, {'module': 'abc'}, True),
+    ({'module_endswith': {'abc', 'xyz'}}, {'module': 'abc'}, True),
+    ({'module_endswith': ['abc', 'xyz']}, {'module': 'abc'}, True),
+    ({'module_endswith': ('abc', 'xyz')}, {'module': '1abc'}, True),
+    ({'module_endswith': ('abc', 'xyz')}, {'module': '1xyz'}, True),
+    ({'module_endswith': ('abc', 'xyz')}, {'module': 'abcfoo'}, False),
 
-    ({'module': "abc"}, {'module': 1}, False),
+    ({'module': 'abc'}, {'module': 1}, False),
 
-    ({'module_regex': r"(re|sre.*)\b"}, {'module': "regex"}, False),
-    ({'module_regex': r"(re|sre.*)\b"}, {'module': "re.gex"}, True),
-    ({'module_regex': r"(re|sre.*)\b"}, {'module': "sregex"}, True),
-    ({'module_regex': r"(re|sre.*)\b"}, {'module': "re"}, True),
+    ({'module_regex': r'(re|sre.*)\b'}, {'module': 'regex'}, False),
+    ({'module_regex': r'(re|sre.*)\b'}, {'module': 're.gex'}, True),
+    ({'module_regex': r'(re|sre.*)\b'}, {'module': 'sregex'}, True),
+    ({'module_regex': r'(re|sre.*)\b'}, {'module': 're'}, True),
 ])
 def test_predicate_matching(expr, inp, expected):
     assert Query(**expr)(inp) == expected
@@ -1086,7 +1086,7 @@ def test_proper_backend():
         assert 'hunter._tracer.Tracer' in repr(hunter.Tracer)
 
 
-@pytest.fixture(scope="session", params=['pure', 'cython'])
+@pytest.fixture(scope='session', params=['pure', 'cython'])
 def tracer_impl(request):
     if request.param == 'pure':
         return pytest.importorskip('hunter.tracer').Tracer
@@ -1108,7 +1108,7 @@ def test_perf_filter(tracer_impl, benchmark):
     def run():
         output = StringIO()
         with t.trace(Q(
-            Q(module="does-not-exist") | Q(module="does not exist".split()),
+            Q(module='does-not-exist') | Q(module='does not exist'.split()),
             action=CodePrinter(stream=output)
         )):
             _bulky_func_that_use_stdlib()
@@ -1144,7 +1144,7 @@ def test_perf_actions(tracer_impl, benchmark):
     def run():
         output = StringIO()
         with t.trace(Q(
-            ~Q(module_in=['re', 'sre', 'sre_parse']) & ~Q(module_startswith='namedtuple') & Q(kind="call"),
+            ~Q(module_in=['re', 'sre', 'sre_parse']) & ~Q(module_startswith='namedtuple') & Q(kind='call'),
             actions=[
                 CodePrinter(
                     stream=output
@@ -1169,7 +1169,7 @@ def test_clear_env_var(monkeypatch):
     assert os.environ.get('PYTHONHUNTER') == None
 
 
-@pytest.mark.skipif(sys.platform == 'win32', reason="no fork on windows")
+@pytest.mark.skipif(sys.platform == 'win32', reason='no fork on windows')
 @pytest.mark.parametrize('Action', [CodePrinter, CallPrinter])
 @pytest.mark.parametrize('force_pid', [True, False])
 def test_pid_prefix(LineMatcher, Action, force_pid, capfd):

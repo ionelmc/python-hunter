@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import linecache
-import os
 import re
 import tokenize
 import weakref
@@ -61,8 +60,8 @@ class Event(object):
         #:  You may access it from your custom predicate though.
         self.frame = frame
 
-        #: The kind of the event, could be one of ``"call"``, ``"line"``, ``"return"``, ``"exception"``,
-        #: ``"c_call"``, ``"c_return"``, or ``"c_exception"``.
+        #: The kind of the event, could be one of ``'call'``, ``'line'``, ``'return'``, ``'exception'``,
+        #: ``'c_call'``, ``'c_return'``, or ``'c_exception'``.
         #:
         #: :type: str
         self.kind = kind
@@ -165,7 +164,7 @@ class Event(object):
     @cached_property
     def module(self):
         """
-        A string with module name (like ``"foo.bar"``).
+        A string with module name (like ``'foo.bar'``).
 
         :type: str
         """
@@ -191,7 +190,7 @@ class Event(object):
         if filename.endswith(('.pyc', '.pyo')):
             filename = filename[:-1]
         elif filename.endswith('$py.class'):  # Jython
-            filename = filename[:-9] + ".py"
+            filename = filename[:-9] + '.py'
         elif filename.endswith(('.so', '.pyd')):
             basename = CYTHON_SUFFIX_RE.sub('', filename)
             for ext in ('.pyx', '.py'):

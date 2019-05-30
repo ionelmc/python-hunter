@@ -290,20 +290,20 @@ cdef class When:
 
     def __init__(self, condition, *actions):
         if not actions:
-            raise TypeError("Must give at least one action.")
+            raise TypeError('Must give at least one action.')
         self.condition = condition
         self.actions = tuple(
             action() if inspect.isclass(action) and issubclass(action, Action) else action
             for action in actions)
 
     def __str__(self):
-        return "When(%s, %s)" % (
+        return 'When(%s, %s)' % (
             self.condition,
             ', '.join(repr(p) for p in self.actions)
         )
 
     def __repr__(self):
-        return "<hunter._predicates.When: condition=%r, actions=%r>" % (self.condition, self.actions)
+        return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
 
     def __call__(self, event):
         """
@@ -473,10 +473,10 @@ cdef class And:
         self.predicates = predicates
 
     def __str__(self):
-        return "And(%s)" % ', '.join(str(p) for p in self.predicates)
+        return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return "<hunter._predicates.And: predicates=%r>" % (self.predicates,)
+        return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -552,10 +552,10 @@ cdef class Or:
         self.predicates = predicates
 
     def __str__(self):
-        return "Or(%s)" % ', '.join(str(p) for p in self.predicates)
+        return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return "<hunter._predicates.Or: predicates=%r>" % (self.predicates,)
+        return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -629,10 +629,10 @@ cdef class Not:
         self.predicate = predicate
 
     def __str__(self):
-        return "Not(%s)" % self.predicate
+        return 'Not(%s)' % self.predicate
 
     def __repr__(self):
-        return "<hunter._predicates.Not: predicate=%r>" % self.predicate
+        return '<hunter._predicates.Not: predicate=%r>' % self.predicate
 
     def __call__(self, event):
         """
