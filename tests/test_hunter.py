@@ -881,7 +881,7 @@ def test_debugger(LineMatcher):
         module="test_hunter",
         function="foo",
         actions=[CodePrinter,
-                 VarsPrinter("a", "node", "foo", "test_debugger", globals=True, stream=out),
+                 VarsPrinter("a", "node", "foo", "test_debugger", stream=out),
                  Debugger(klass=FakePDB, foobar=2)]
     ):
         def foo():
@@ -1151,7 +1151,6 @@ def test_perf_actions(tracer_impl, benchmark):
                 ),
                 VarsPrinter(
                     'line',
-                    globals=True,
                     stream=output
                 )
             ]
