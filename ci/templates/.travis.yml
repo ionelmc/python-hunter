@@ -12,7 +12,6 @@ env:
     - SEGFAULT_SIGNALS=all
     - SETUPPY_CFLAGS=-DCYTHON_TRACE=1
     - PYTEST_ADDOPTS=--benchmark-disable
-    - COVERALLS_PARALLEL=true
   matrix:
     - TOXENV=check
     - TOXENV=docs
@@ -43,7 +42,7 @@ matrix:
     - python: '{{ env.split("-")[0] if env.startswith("pypy") else "{0[2]}.{0[3]}".format(env) }}'
 {% endif %}
       env:
-        - TOXENV={{ env }}{% if "cover" in env %},coveralls{% endif %}
+        - TOXENV={{ env }}{% if "cover" in env %},codecov{% endif %}
 {%- if "pypy" in env %}{{ '' }}
         - TOXPYTHON={{ env.split("-")[0] }}
 {%- elif "cython-nocov" in env and not env.startswith("py38") %}{{ '' }}

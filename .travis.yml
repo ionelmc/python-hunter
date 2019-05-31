@@ -12,7 +12,6 @@ env:
     - SEGFAULT_SIGNALS=all
     - SETUPPY_CFLAGS=-DCYTHON_TRACE=1
     - PYTEST_ADDOPTS=--benchmark-disable
-    - COVERALLS_PARALLEL=true
   matrix:
     - TOXENV=check
     - TOXENV=docs
@@ -34,7 +33,7 @@ matrix:
           )
     - python: '2.7'
       env:
-        - TOXENV=py27-pure-cover,coveralls
+        - TOXENV=py27-pure-cover,codecov
     - os: osx
       language: generic
       cache:
@@ -58,7 +57,7 @@ matrix:
         - SETUPPY_CFLAGS=
     - python: '2.7'
       env:
-        - TOXENV=py27-cython-cover,coveralls
+        - TOXENV=py27-cython-cover,codecov
     - os: osx
       language: generic
       cache:
@@ -85,13 +84,13 @@ matrix:
         - WHEEL_PATH=.tox/dist
     - python: '3.5'
       env:
-        - TOXENV=py35-pure-cover,coveralls
+        - TOXENV=py35-pure-cover,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-pure-nocov
     - python: '3.5'
       env:
-        - TOXENV=py35-cython-cover,coveralls
+        - TOXENV=py35-cython-cover,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-cython-nocov
@@ -99,13 +98,13 @@ matrix:
         - WHEEL_PATH=wheelhouse
     - python: '3.6'
       env:
-        - TOXENV=py36-pure-cover,coveralls
+        - TOXENV=py36-pure-cover,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-pure-nocov
     - python: '3.6'
       env:
-        - TOXENV=py36-cython-cover,coveralls
+        - TOXENV=py36-cython-cover,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-cython-nocov
@@ -113,7 +112,7 @@ matrix:
         - WHEEL_PATH=wheelhouse
     - python: '3.7'
       env:
-        - TOXENV=py37-pure-cover,coveralls
+        - TOXENV=py37-pure-cover,codecov
     - os: osx
       language: generic
       cache:
@@ -137,7 +136,7 @@ matrix:
         - SETUPPY_CFLAGS=
     - python: '3.7'
       env:
-        - TOXENV=py37-cython-cover,coveralls
+        - TOXENV=py37-cython-cover,codecov
     - os: osx
       language: generic
       cache:
@@ -164,19 +163,19 @@ matrix:
         - WHEEL_PATH=.tox/dist
     - python: '3.8-dev'
       env:
-        - TOXENV=py38-pure-cover,coveralls
+        - TOXENV=py38-pure-cover,codecov
     - python: '3.8-dev'
       env:
         - TOXENV=py38-pure-nocov
     - python: '3.8-dev'
       env:
-        - TOXENV=py38-cython-cover,coveralls
+        - TOXENV=py38-cython-cover,codecov
     - python: '3.8-dev'
       env:
         - TOXENV=py38-cython-nocov
     - python: 'pypy2.7-6.0'
       env:
-        - TOXENV=pypy-pure-cover,coveralls
+        - TOXENV=pypy-pure-cover,codecov
         - TOXPYTHON=pypy
     - python: 'pypy2.7-6.0'
       env:
@@ -184,7 +183,7 @@ matrix:
         - TOXPYTHON=pypy
     - python: 'pypy2.7-6.0'
       env:
-        - TOXENV=pypy-cython-cover,coveralls
+        - TOXENV=pypy-cython-cover,codecov
         - TOXPYTHON=pypy
     - python: 'pypy2.7-6.0'
       env:
@@ -192,7 +191,7 @@ matrix:
         - TOXPYTHON=pypy
     - python: 'pypy3.5-6.0'
       env:
-        - TOXENV=pypy3-pure-cover,coveralls
+        - TOXENV=pypy3-pure-cover,codecov
         - TOXPYTHON=pypy3
     - python: 'pypy3.5-6.0'
       env:
@@ -200,7 +199,7 @@ matrix:
         - TOXPYTHON=pypy3
     - python: 'pypy3.5-6.0'
       env:
-        - TOXENV=pypy3-cython-cover,coveralls
+        - TOXENV=pypy3-cython-cover,codecov
         - TOXPYTHON=pypy3
     - python: 'pypy3.5-6.0'
       env:

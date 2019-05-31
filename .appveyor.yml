@@ -2,9 +2,6 @@ version: '{branch}-{build}'
 build: off
 environment:
   global:
-    COVERALLS_PARALLEL: true
-    COVERALLS_REPO_TOKEN:
-      secure: 1FnQ1slZatdVqT63JCuf/ALH3jviE6zwCwmiE7JSV8MD2M5KhktvLOgmhbwwXp4+
     TWINE_PASSWORD:
       secure: fDwCnDhQiptm9a4ZcFpgyQ==
     TWINE_USERNAME: ionel
@@ -14,12 +11,12 @@ environment:
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py27-pure-cover,coveralls'
+    - TOXENV: 'py27-pure-cover,codecov'
       TOXPYTHON: C:\Python27\python.exe
       PYTHON_HOME: C:\Python27
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py27-pure-cover,coveralls'
+    - TOXENV: 'py27-pure-cover,codecov'
       TOXPYTHON: C:\Python27-x64\python.exe
       WINDOWS_SDK_VERSION: v7.0
       PYTHON_HOME: C:\Python27-x64
@@ -36,12 +33,12 @@ environment:
       PYTHON_HOME: C:\Python27-x64
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '64'
-    - TOXENV: 'py27-cython-cover,coveralls'
+    - TOXENV: 'py27-cython-cover,codecov'
       TOXPYTHON: C:\Python27\python.exe
       PYTHON_HOME: C:\Python27
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py27-cython-cover,coveralls'
+    - TOXENV: 'py27-cython-cover,codecov'
       TOXPYTHON: C:\Python27-x64\python.exe
       WINDOWS_SDK_VERSION: v7.0
       PYTHON_HOME: C:\Python27-x64
@@ -60,12 +57,12 @@ environment:
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
-    - TOXENV: 'py35-pure-cover,coveralls'
+    - TOXENV: 'py35-pure-cover,codecov'
       TOXPYTHON: C:\Python35\python.exe
       PYTHON_HOME: C:\Python35
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py35-pure-cover,coveralls'
+    - TOXENV: 'py35-pure-cover,codecov'
       TOXPYTHON: C:\Python35-x64\python.exe
       PYTHON_HOME: C:\Python35-x64
       PYTHON_VERSION: '3.5'
@@ -80,12 +77,12 @@ environment:
       PYTHON_HOME: C:\Python35-x64
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '64'
-    - TOXENV: 'py35-cython-cover,coveralls'
+    - TOXENV: 'py35-cython-cover,codecov'
       TOXPYTHON: C:\Python35\python.exe
       PYTHON_HOME: C:\Python35
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py35-cython-cover,coveralls'
+    - TOXENV: 'py35-cython-cover,codecov'
       TOXPYTHON: C:\Python35-x64\python.exe
       PYTHON_HOME: C:\Python35-x64
       PYTHON_VERSION: '3.5'
@@ -102,12 +99,12 @@ environment:
       PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
-    - TOXENV: 'py36-pure-cover,coveralls'
+    - TOXENV: 'py36-pure-cover,codecov'
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py36-pure-cover,coveralls'
+    - TOXENV: 'py36-pure-cover,codecov'
       TOXPYTHON: C:\Python36-x64\python.exe
       PYTHON_HOME: C:\Python36-x64
       PYTHON_VERSION: '3.6'
@@ -122,12 +119,12 @@ environment:
       PYTHON_HOME: C:\Python36-x64
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '64'
-    - TOXENV: 'py36-cython-cover,coveralls'
+    - TOXENV: 'py36-cython-cover,codecov'
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py36-cython-cover,coveralls'
+    - TOXENV: 'py36-cython-cover,codecov'
       TOXPYTHON: C:\Python36-x64\python.exe
       PYTHON_HOME: C:\Python36-x64
       PYTHON_VERSION: '3.6'
@@ -144,12 +141,12 @@ environment:
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
-    - TOXENV: 'py37-pure-cover,coveralls'
+    - TOXENV: 'py37-pure-cover,codecov'
       TOXPYTHON: C:\Python37\python.exe
       PYTHON_HOME: C:\Python37
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py37-pure-cover,coveralls'
+    - TOXENV: 'py37-pure-cover,codecov'
       TOXPYTHON: C:\Python37-x64\python.exe
       PYTHON_HOME: C:\Python37-x64
       PYTHON_VERSION: '3.7'
@@ -164,12 +161,12 @@ environment:
       PYTHON_HOME: C:\Python37-x64
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '64'
-    - TOXENV: 'py37-cython-cover,coveralls'
+    - TOXENV: 'py37-cython-cover,codecov'
       TOXPYTHON: C:\Python37\python.exe
       PYTHON_HOME: C:\Python37
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '32'
-    - TOXENV: 'py37-cython-cover,coveralls'
+    - TOXENV: 'py37-cython-cover,codecov'
       TOXPYTHON: C:\Python37-x64\python.exe
       PYTHON_HOME: C:\Python37-x64
       PYTHON_VERSION: '3.7'
