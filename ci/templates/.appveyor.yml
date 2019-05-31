@@ -2,6 +2,7 @@ version: '{branch}-{build}'
 build: off
 environment:
   global:
+    COVERALLS_PARALLEL: true
     COVERALLS_REPO_TOKEN:
       secure: 1FnQ1slZatdVqT63JCuf/ALH3jviE6zwCwmiE7JSV8MD2M5KhktvLOgmhbwwXp4+
     TWINE_PASSWORD:
@@ -13,7 +14,7 @@ environment:
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-{%- for env in tox_environments %}{% if env.startswith(('py2', 'py3')) %}{{ '' }}
+{%- for env in tox_environments %}{% if env.startswith(('py2', 'py3')) and not env.startswith('py38') %}{{ '' }}
     - TOXENV: '{{ env }}{% if 'cover' in env %},coveralls{% endif %}'
       TOXPYTHON: C:\Python{{ env[2:4] }}\python.exe
       PYTHON_HOME: C:\Python{{ env[2:4] }}

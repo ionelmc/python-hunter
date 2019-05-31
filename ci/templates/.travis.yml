@@ -12,6 +12,7 @@ env:
     - SEGFAULT_SIGNALS=all
     - SETUPPY_CFLAGS=-DCYTHON_TRACE=1
     - PYTEST_ADDOPTS=--benchmark-disable
+    - COVERALLS_PARALLEL=true
   matrix:
     - TOXENV=check
     - TOXENV=docs
