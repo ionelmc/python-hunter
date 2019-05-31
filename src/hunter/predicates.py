@@ -29,13 +29,6 @@ ALLOWED_OPERATORS = (
 )
 
 
-def _sloppy_hash(obj):
-    try:
-        return hash(obj)
-    except TypeError:
-        return 'id(%x)' % id(obj)
-
-
 class Query(object):
     """
     A query class.
