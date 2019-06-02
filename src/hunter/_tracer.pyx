@@ -22,6 +22,14 @@ from ._predicates cimport Or
 from ._predicates cimport Query
 from ._predicates cimport When
 
+from ._actions cimport CodePrinter
+from ._actions cimport CallPrinter
+from ._actions cimport VarsPrinter
+
+from ._actions cimport fast_CodePrinter_call
+from ._actions cimport fast_CallPrinter_call
+from ._actions cimport fast_VarsPrinter_call
+
 __all__ = 'Tracer',
 
 cdef tuple KIND_NAMES = ('call', 'exception', 'line', 'return', 'c_call', 'c_exception', 'c_return')
@@ -38,20 +46,28 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     if kind == 3 and self.depth > 0:
         self.depth -= 1
 
+    cdef Event event = Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self)
+
     if type(handler) is When:
-        fast_When_call(<When>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_When_call(<When>handler, event)
+    elif type(handler) is CallPrinter:
+        fast_CallPrinter_call(<CallPrinter>handler, event)
+    elif type(handler) is CodePrinter:
+        fast_CodePrinter_call(<CodePrinter>handler, event)
     elif type(handler) is Query:
-        fast_Query_call(<Query>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_Query_call(<Query>handler, event)
     elif type(handler) is From:
-        fast_From_call(<From>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_From_call(<From>handler, event)
     elif type(handler) is And:
-        fast_And_call(<And>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_And_call(<And>handler, event)
     elif type(handler) is Or:
-        fast_Or_call(<Or>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_Or_call(<Or>handler, event)
     elif type(handler) is Not:
-        fast_Not_call(<Not>handler, Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        fast_Not_call(<Not>handler, event)
+    elif type(handler) is VarsPrinter:
+        fast_VarsPrinter_call(<VarsPrinter>handler, event)
     elif handler is not None:
-        handler(Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self))
+        handler(event)
 
     if kind == 0:
         self.depth += 1

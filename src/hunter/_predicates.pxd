@@ -3,6 +3,7 @@ cimport cython
 
 from ._event cimport Event
 
+
 @cython.final
 cdef class Query:
     cdef:
@@ -47,9 +48,9 @@ cdef class From:
         readonly int depth
         readonly int watermark
 
-cdef fast_And_call(And self, event)
+cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)
-cdef fast_Not_call(Not self, event)
-cdef fast_Or_call(Or self, event)
-cdef fast_Query_call(Query self, event)
-cdef fast_When_call(When self, event)
+cdef fast_Not_call(Not self, Event event)
+cdef fast_Or_call(Or self, Event event)
+cdef fast_Query_call(Query self, Event event)
+cdef fast_When_call(When self, Event event)

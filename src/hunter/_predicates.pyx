@@ -10,8 +10,13 @@ from cpython.object cimport PyObject_RichCompare
 from cpython.object cimport Py_EQ
 from cpython.object cimport Py_NE
 
-from .actions import Action
-
+from ._actions cimport Action
+from ._actions cimport CallPrinter
+from ._actions cimport CodePrinter
+from ._actions cimport VarsPrinter
+from ._actions cimport fast_CallPrinter_call
+from ._actions cimport fast_CodePrinter_call
+from ._actions cimport fast_VarsPrinter_call
 from ._event cimport Event
 
 __all__ = (
@@ -170,7 +175,7 @@ cdef class Query:
             ] if mapping
         )
 
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles event. Returns True if all criteria matched.
         """
@@ -235,7 +240,7 @@ cdef class Query:
             self.query_regex
         ))
 
-cdef fast_Query_call(Query self, event):
+cdef fast_Query_call(Query self, Event event):
     for key, value in self.query_eq:
         evalue = event[key]
         if evalue != value:
@@ -305,7 +310,7 @@ cdef class When:
     def __repr__(self):
         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
 
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles the event.
         """
@@ -343,7 +348,7 @@ cdef class When:
     def __hash__(self):
         return hash((self.condition, self.actions))
 
-cdef inline fast_When_call(When self, event):
+cdef inline fast_When_call(When self, Event event):
     cdef object result
     condition = self.condition
 
@@ -364,7 +369,15 @@ cdef inline fast_When_call(When self, event):
 
     if result:
         for action in self.actions:
-            action(event)
+            if type(action) is CallPrinter:
+                fast_CallPrinter_call(<CallPrinter>action, <Event>event)
+            elif type(action) is CodePrinter:
+                fast_CodePrinter_call(<CodePrinter>action, <Event>event)
+            elif type(action) is VarsPrinter:
+                fast_VarsPrinter_call(<VarsPrinter>action, <Event>event)
+            else:
+                print(repr(action))
+                action(event)
 
     return result
 
@@ -397,11 +410,11 @@ cdef class From:
             and self.condition == other.condition
             and self.predicate == other.predicate
         )
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles the event.
         """
-        return fast_From_call(self, <Event?> event)
+        return fast_From_call(self, event)
 
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)
@@ -478,7 +491,7 @@ cdef class And:
     def __repr__(self):
         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
 
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles the event.
         """
@@ -515,7 +528,7 @@ cdef class And:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_And_call(And self, event):
+cdef inline fast_And_call(And self, Event event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if not fast_Query_call(<Query> predicate, event):
@@ -533,7 +546,7 @@ cdef inline fast_And_call(And self, event):
             if not fast_When_call(<When> predicate, event):
                 return False
         elif type(predicate) is From:
-            if not fast_From_call(<From> predicate, <Event?> event):
+            if not fast_From_call(<From> predicate, event):
                 return False
         else:
             if not predicate(event):
@@ -557,7 +570,7 @@ cdef class Or:
     def __repr__(self):
         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
 
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles the event.
         """
@@ -594,7 +607,7 @@ cdef class Or:
     def __hash__(self):
         return hash(frozenset(self.predicates))
 
-cdef inline fast_Or_call(Or self, event):
+cdef inline fast_Or_call(Or self, Event event):
     for predicate in self.predicates:
         if type(predicate) is Query:
             if fast_Query_call(<Query> predicate, event):
@@ -612,7 +625,7 @@ cdef inline fast_Or_call(Or self, event):
             if fast_When_call(<When> predicate, event):
                 return True
         elif type(predicate) is From:
-            if fast_From_call(<From> predicate, <Event?> event):
+            if fast_From_call(<From> predicate, event):
                 return True
         else:
             if predicate(event):
@@ -634,7 +647,7 @@ cdef class Not:
     def __repr__(self):
         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
 
-    def __call__(self, event):
+    def __call__(self, Event event):
         """
         Handles the event.
         """
@@ -683,7 +696,7 @@ cdef class Not:
     def __hash__(self):
         return hash(self.predicate)
 
-cdef inline fast_Not_call(Not self, event):
+cdef inline fast_Not_call(Not self, Event event):
     predicate = self.predicate
 
     if type(predicate) is Query:
@@ -697,6 +710,6 @@ cdef inline fast_Not_call(Not self, event):
     elif type(predicate) is When:
         return not fast_When_call(<When> predicate, event)
     elif type(predicate) is From:
-        return not fast_From_call(<From> predicate, <Event?> event)
+        return not fast_From_call(<From> predicate, event)
     else:
         return not predicate(event)

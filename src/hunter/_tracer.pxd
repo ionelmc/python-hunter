@@ -19,13 +19,10 @@ cdef extern from "frameobject.h":
 
     void PyEval_SetTrace(Py_tracefunc func, PyObject *obj)
 
-
 cdef extern from "pystate.h":
     ctypedef struct PyThreadState:
         PyObject *c_traceobj
         Py_tracefunc c_tracefunc
-
-
 
 @cython.final
 cdef class Tracer:
