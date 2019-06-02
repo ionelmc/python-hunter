@@ -78,10 +78,10 @@ class Default(object):
         return DEFAULTS.get(self.key, self.fallback_value)
 
     def __str__(self):
-        return str(self.value)
+        return str(self.fallback_value)
 
     def __repr__(self):
-        return repr(self.value)
+        return repr(self.fallback_value)
 
 
 def resolve_default(value):
