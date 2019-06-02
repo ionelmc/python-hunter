@@ -187,5 +187,14 @@ setup(
         )
         for root, _, _ in os.walk('src')
         for path in glob(join(root, '*.pyx' if Cython else '*.c'))
+        # chain(
+        #     ,
+        #     ['src/hunter/util.{}'.format('py' if Cython else 'c')]
+        # )
+    # ] + [
+    #     Extension(
+    #         'hunter._actions',
+    #         sources=[join('src', 'hunter', 'actions.py')],
+    #     )
     ],
 )
