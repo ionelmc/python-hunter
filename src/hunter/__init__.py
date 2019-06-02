@@ -6,12 +6,6 @@ import inspect
 import os
 import weakref
 
-from .actions import Action
-from .actions import CallPrinter
-from .actions import CodePrinter
-from .actions import Debugger
-from .actions import Manhole
-from .actions import VarsPrinter
 from .config import THREADING_SUPPORT_ALIASES
 from .config import load_config
 
@@ -19,6 +13,12 @@ try:
     if os.environ.get("PUREPYTHONHUNTER"):
         raise ImportError("Cython speedups are disabled")
 
+    from ._actions import Action
+    from ._actions import CallPrinter
+    from ._actions import CodePrinter
+    from ._actions import Debugger
+    from ._actions import Manhole
+    from ._actions import VarsPrinter
     from ._event import Event
     from ._predicates import And as _And
     from ._predicates import From
@@ -28,6 +28,12 @@ try:
     from ._predicates import Query
     from ._tracer import Tracer
 except ImportError:
+    from .actions import Action
+    from .actions import CallPrinter
+    from .actions import CodePrinter
+    from .actions import Debugger
+    from .actions import Manhole
+    from .actions import VarsPrinter
     from .event import Event  # noqa
     from .predicates import And as _And
     from .predicates import From

@@ -7,8 +7,12 @@ from socket import socket
 
 import py
 
-from hunter.util import hasdict
-from hunter.util import safe_repr
+try:
+    from hunter._actions import hasdict
+    from hunter._actions import safe_repr
+except ImportError:
+    from hunter.actions import hasdict
+    from hunter.actions import safe_repr
 
 
 class Dict(dict):

@@ -22,6 +22,8 @@ from .util import NO_COLORS
 from .util import STRING_TYPES
 from .util import builtins
 
+from ._event cimport Event
+
 try:
     from threading import get_ident
 except ImportError:
@@ -31,50 +33,69 @@ except ImportError:
 __all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
 
 
-def safe_repr(obj, maxdepth=5):
+cpdef inline safe_repr(obj, int maxdepth=5):
     if not maxdepth:
         return '...'
     obj_type = type(obj)
-    newdepth = maxdepth - 1
+    cdef int newdepth = maxdepth - 1
+    cdef list items
 
     # specifically handle few of the container builtins that would normally do repr on contained values
     if isinstance(obj, dict):
+        items = []
+        for k, v in obj.items():
+            items.append('%s: %s' % (
+                safe_repr(k, maxdepth),
+                safe_repr(v, newdepth)
+            ))
         if obj_type is not dict:
             return '%s({%s})' % (
                 obj_type.__name__,
-                ', '.join('%s: %s' % (
-                    safe_repr(k, maxdepth),
-                    safe_repr(v, newdepth)
-                ) for k, v in obj.items()))
+                ', '.join(items))
         else:
-            return '{%s}' % ', '.join('%s: %s' % (
-                safe_repr(k, maxdepth),
-                safe_repr(v, newdepth)
-            ) for k, v in obj.items())
+            return '{%s}' % ', '.join(items)
     elif isinstance(obj, list):
+        items = []
+        for i in obj:
+            items.append(safe_repr(i, newdepth))
         if obj_type is not list:
-            return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+            return '%s([%s])' % (obj_type.__name__, ', '.join(items))
         else:
-            return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
+            return '[%s]' % ', '.join(items)
     elif isinstance(obj, tuple):
+        items = []
+        for i in obj:
+            items.append(safe_repr(i, newdepth))
         if obj_type is not tuple:
             return '%s(%s%s)' % (
                 obj_type.__name__,
-                ', '.join(safe_repr(i, newdepth) for i in obj),
+                ', '.join(items),
                 ',' if len(obj) == 1 else '')
         else:
-            return '(%s%s)' % (', '.join(safe_repr(i, newdepth) for i in obj), ',' if len(obj) == 1 else '')
+            return '(%s%s)' % (', '.join(items), ',' if len(obj) == 1 else '')
     elif isinstance(obj, set):
+        items = []
+        for i in obj:
+            items.append(safe_repr(i, newdepth))
         if obj_type is not set:
-            return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+            return '%s({%s})' % (obj_type.__name__, ', '.join(items))
         else:
-            return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
+            return '{%s}' % ', '.join(items)
     elif isinstance(obj, frozenset):
-        return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        items = []
+        for i in obj:
+            items.append(safe_repr(i, newdepth))
+        return '%s({%s})' % (obj_type.__name__, ', '.join(items))
     elif isinstance(obj, deque):
-        return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        items = []
+        for i in obj:
+            items.append(safe_repr(i, newdepth))
+        return '%s([%s])' % (obj_type.__name__, ', '.join(items))
     elif isinstance(obj, BaseException):
-        return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
+        items = []
+        for i in obj.args:
+            items.append(safe_repr(i, newdepth))
+        return '%s(%s)' % (obj_type.__name__, ', '.join(items))
     elif obj_type in (type, types.ModuleType,
                       types.FunctionType, types.MethodType,
                       types.BuiltinFunctionType, types.BuiltinMethodType,
@@ -95,7 +116,7 @@ BUILTIN_REPR_FUNCS = {
 }
 
 
-def hasdict(obj_type, obj, tolerance=25):
+cpdef inline hasdict(obj_type, obj, tolerance=25):
     """
     A contrived mess to check that object doesn't have a __dit__ but avoid checking it if any ancestor is evil enough to
     explicitly define __dict__ (like apipkg.ApiModule has __dict__ as a property).
@@ -113,12 +134,12 @@ def hasdict(obj_type, obj, tolerance=25):
     return hasattr(obj, '__dict__')
 
 
-class Action(object):
+cdef class Action:
     def __call__(self, event):
         raise NotImplementedError()
 
 
-class Debugger(Action):
+cdef class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
@@ -146,7 +167,7 @@ class Debugger(Action):
         self.klass(**self.kwargs).set_trace(event.frame)
 
 
-class Manhole(Action):
+cdef class Manhole(Action):
     def __init__(self, **options):
         self.options = options
 
@@ -167,13 +188,9 @@ class Manhole(Action):
 
 DEFAULT_STREAM = sys.stderr
 
+cdef dict ColorStreamAction_STREAM_CACHE = {}
 
-class ColorStreamAction(Action):
-    _stream_cache = {}
-    _stream = None
-    _tty = None
-    _repr_func = None
-
+cdef class ColorStreamAction(Action):
     def __init__(self,
                  stream=Default('stream', None),
                  force_colors=Default('force_colors', False),
@@ -225,10 +242,10 @@ class ColorStreamAction(Action):
     @stream.setter
     def stream(self, value):
         if isinstance(value, STRING_TYPES):
-            if value in self._stream_cache:
-                value = self._stream_cache[value]
+            if value in ColorStreamAction_STREAM_CACHE:
+                value = ColorStreamAction_STREAM_CACHE[value]
             else:
-                value = self._stream_cache[value] = open(value, 'a', buffering=0)
+                value = ColorStreamAction_STREAM_CACHE[value] = open(value, 'a', buffering=0)
 
         isatty = getattr(value, 'isatty', None)
         if self.force_colors or (isatty and isatty() and os.name != 'java'):
@@ -255,10 +272,15 @@ class ColorStreamAction(Action):
         else:
             raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
 
-    def _try_repr(self, obj):
+    cdef inline _try_repr(self, obj):
+        cdef str s
         limit = self.repr_limit
         try:
-            s = self.repr_func(obj)
+            repr_func = self.repr_func
+            if repr_func is safe_repr:
+                s = safe_repr(obj)
+            else:
+                s = repr_func(obj)
             s = s.replace('\n', r'\n')
             if len(s) > limit:
                 cutoff = limit // 2
@@ -269,7 +291,7 @@ class ColorStreamAction(Action):
             return '{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}'.format(exc, **self.event_colors)
 
 
-class CodePrinter(ColorStreamAction):
+cdef class CodePrinter(ColorStreamAction):
     """
     An action that just prints the code being executed.
 
@@ -303,6 +325,9 @@ class CodePrinter(ColorStreamAction):
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
+        fast_CodePrinter_call(self, event)
+
+cdef inline fast_CodePrinter_call(CodePrinter self, Event event):
         lines = self._safe_source(event)
         self.seen_threads.add(get_ident())
         if event.tracer.threading_support is False:
@@ -361,7 +386,7 @@ class CodePrinter(ColorStreamAction):
                     **self.event_colors))
 
 
-class CallPrinter(CodePrinter):
+cdef class CallPrinter(CodePrinter):
     """
     An action that just prints the code being executed, but unlike :obj:`hunter.CodePrinter` it indents based on
     callstack depth and it also shows ``repr()`` of function arguments.
@@ -386,6 +411,9 @@ class CallPrinter(CodePrinter):
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
+        fast_CallPrinter_call(self, event)
+
+cdef inline fast_CallPrinter_call(CallPrinter self, Event event):
         filename = self._format_filename(event)
         ident = event.module, event.function
 
@@ -479,7 +507,7 @@ class CallPrinter(CodePrinter):
                 ))
 
 
-class VarsPrinter(ColorStreamAction):
+cdef class VarsPrinter(ColorStreamAction):
     """
     An action that prints local variables and optionally global variables visible from the current executing frame.
 
@@ -521,6 +549,9 @@ class VarsPrinter(ColorStreamAction):
         """
         Handle event and print the specified variables.
         """
+        fast_VarsPrinter_call(self, event)
+
+cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
         first = True
         frame_symbols = set(event.locals)
         frame_symbols.update(BUILTIN_SYMBOLS)
