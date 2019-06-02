@@ -63,150 +63,149 @@ cdef class Event:
         self._threadidn = UNSET
         self._threadname = UNSET
 
-    property threadid:
-        def __get__(self):
-            cdef long current
+    @property
+    def threadid(self):
+        cdef long current
 
-            if self._threadidn is UNSET:
-                current = PyThread_get_thread_ident()
-                main = get_main_thread()
-                if main is not None and current == main.ident:
-                    self._threadidn = None
-                else:
-                    self._threadidn = current
-            return self._threadidn
+        if self._threadidn is UNSET:
+            current = PyThread_get_thread_ident()
+            main = get_main_thread()
+            if main is not None and current == main.ident:
+                self._threadidn = None
+            else:
+                self._threadidn = current
+        return self._threadidn
 
-    property threadname:
-        def __get__(self):
-            if self._threadname is UNSET:
-                if self._thread is UNSET:
-                    self._thread = current_thread()
-                self._threadname = self._thread.name
-            return self._threadname
-
-    property thread:
-        def __get__(self):
+    @property
+    def threadname(self):
+        if self._threadname is UNSET:
             if self._thread is UNSET:
                 self._thread = current_thread()
-            return self._thread
+            self._threadname = self._thread.name
+        return self._threadname
 
+    @property
+    def thread(self):
+        if self._thread is UNSET:
+            self._thread = current_thread()
+        return self._thread
 
-    property locals:
-        def __get__(self):
-            return self._get_locals()
+    @property
+    def locals(self):
+        return self._get_locals()
 
     cdef object _get_locals(self):
         PyFrame_FastToLocals(self.frame)
         return self.frame.f_locals
 
-    property globals:
-        def __get__(self):
-            return self._get_globals()
+    @property
+    def globals(self):
+        return self._get_globals()
 
     cdef object _get_globals(self):
         return self.frame.f_globals
 
-    property function:
-        def __get__(self):
-            return self.frame.f_code.co_name
+    @property
+    def function(self):
+        return self.frame.f_code.co_name
 
-    property module:
-        def __get__(self):
-            if self._module is UNSET:
-                module = self.frame.f_globals.get('__name__', '')
-                if module is None:
-                    module = ''
+    @property
+    def module(self):
+        if self._module is UNSET:
+            module = self.frame.f_globals.get('__name__', '')
+            if module is None:
+                module = ''
 
-                self._module = module
-            return self._module
+            self._module = module
+        return self._module
 
-    property filename:
-        def __get__(self):
-            if self._filename is UNSET:
-                filename = self.frame.f_code.co_filename
-                if not filename:
-                    filename = self.frame.f_globals.get('__file__')
-                if not filename:
-                    filename = ''
-                elif filename.endswith(('.pyc', '.pyo')):
-                    filename = filename[:-1]
-                elif filename.endswith(('.so', '.pyd')):
-                    basename = CYTHON_SUFFIX_RE.sub('', filename)
-                    for ext in ('.pyx', '.py'):
-                        cyfilename = basename + ext
-                        if exists(cyfilename):
-                            filename = cyfilename
-                            break
+    @property
+    def filename(self):
+        if self._filename is UNSET:
+            filename = self.frame.f_code.co_filename
+            if not filename:
+                filename = self.frame.f_globals.get('__file__')
+            if not filename:
+                filename = ''
+            elif filename.endswith(('.pyc', '.pyo')):
+                filename = filename[:-1]
+            elif filename.endswith(('.so', '.pyd')):
+                basename = CYTHON_SUFFIX_RE.sub('', filename)
+                for ext in ('.pyx', '.py'):
+                    cyfilename = basename + ext
+                    if exists(cyfilename):
+                        filename = cyfilename
+                        break
 
-                self._filename = filename
-            return self._filename
+            self._filename = filename
+        return self._filename
 
-    property lineno:
-        def __get__(self):
-            if self._lineno is UNSET:
-                self._lineno = self.frame.f_lineno
-            return self._lineno
+    @property
+    def lineno(self):
+        if self._lineno is UNSET:
+            self._lineno = self.frame.f_lineno
+        return self._lineno
 
-    property code:
-        def __get__(self):
-            return self.frame.f_code
+    @property
+    def code(self):
+        return self.frame.f_code
 
-    property stdlib:
-        def __get__(self):
-            if self._stdlib is UNSET:
-                module_parts = self.module.split('.')
-                if 'pkg_resources' in module_parts:
-                    self._stdlib = True
-                elif self.filename == '<frozen importlib._bootstrap>':
-                    self._stdlib = True
-                elif self.filename.startswith(SITE_PACKAGES_PATHS):
-                    # if it's in site-packages then its definitely not stdlib
-                    self._stdlib = False
-                elif self.filename.startswith(SYS_PREFIX_PATHS):
-                    self._stdlib = True
-                else:
-                    self._stdlib = False
-            return self._stdlib
+    @property
+    def stdlib(self):
+        if self._stdlib is UNSET:
+            module_parts = self.module.split('.')
+            if 'pkg_resources' in module_parts:
+                self._stdlib = True
+            elif self.filename == '<frozen importlib._bootstrap>':
+                self._stdlib = True
+            elif self.filename.startswith(SITE_PACKAGES_PATHS):
+                # if it's in site-packages then its definitely not stdlib
+                self._stdlib = False
+            elif self.filename.startswith(SYS_PREFIX_PATHS):
+                self._stdlib = True
+            else:
+                self._stdlib = False
+        return self._stdlib
 
-    property fullsource:
-        def __get__(self):
-            if self._fullsource is UNSET:
-                try:
-                    self._fullsource = self._raw_fullsource
-                except Exception as exc:
-                    self._fullsource = "??? NO SOURCE: {!r}".format(exc)
+    @property
+    def fullsource(self):
+        if self._fullsource is UNSET:
+            try:
+                self._fullsource = self._raw_fullsource
+            except Exception as exc:
+                self._fullsource = "??? NO SOURCE: {!r}".format(exc)
 
-            return self._fullsource
+        return self._fullsource
 
-    property source:
-        def __get__(self):
-            if self._source is UNSET:
-                if self.filename.endswith(('.so', '.pyd')):
-                    self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
-                try:
-                    self._source = getline(self.filename, self.lineno)
-                except Exception as exc:
-                    self._source = "??? NO SOURCE: {!r}".format(exc)
+    @property
+    def source(self):
+        if self._source is UNSET:
+            if self.filename.endswith(('.so', '.pyd')):
+                self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
+            try:
+                self._source = getline(self.filename, self.lineno)
+            except Exception as exc:
+                self._source = "??? NO SOURCE: {!r}".format(exc)
 
-            return self._source
+        return self._source
 
-    property _raw_fullsource:
-        def __get__(self):
-            cdef list lines
+    @property
+    def _raw_fullsource(self):
+        cdef list lines
 
-            if self.kind == 'call' and self.code.co_name != "<module>":
-                lines = []
-                try:
-                    for _, token, _, _, line in generate_tokens(partial(
-                        next,
-                        yield_lines(self.filename, self.lineno - 1, lines)
-                    )):
-                        if token in ("def", "class", "lambda"):
-                            return ''.join(lines)
-                except TokenError:
-                    pass
+        if self.kind == 'call' and self.code.co_name != "<module>":
+            lines = []
+            try:
+                for _, token, _, _, line in generate_tokens(partial(
+                    next,
+                    yield_lines(self.filename, self.lineno - 1, lines)
+                )):
+                    if token in ("def", "class", "lambda"):
+                        return ''.join(lines)
+            except TokenError:
+                pass
 
-            return getline(self.filename, self.lineno)
+        return getline(self.filename, self.lineno)
 
     def __getitem__(self, item):
         return getattr(self, item)
