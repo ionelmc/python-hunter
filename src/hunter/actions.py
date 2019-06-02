@@ -12,8 +12,7 @@ from os import getpid
 
 from colorama import AnsiToWin32
 
-from .config import Default
-from .config import resolve_default
+from . import config
 from .util import BUILTIN_SYMBOLS
 from .util import CODE_COLORS
 from .util import EVENT_COLORS
@@ -122,8 +121,8 @@ class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
-    def __init__(self, klass=Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
-        self.klass = resolve_default(klass)
+    def __init__(self, klass=config.Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
+        self.klass = config.resolve(klass)
         self.kwargs = kwargs
 
     def __eq__(self, other):
@@ -165,9 +164,6 @@ class Manhole(Action):
         inst.handle_oneshot()
 
 
-DEFAULT_STREAM = sys.stderr
-
-
 class ColorStreamAction(Action):
     _stream_cache = {}
     _stream = None
@@ -175,22 +171,22 @@ class ColorStreamAction(Action):
     _repr_func = None
 
     def __init__(self,
-                 stream=Default('stream', None),
-                 force_colors=Default('force_colors', False),
-                 force_pid=Default('force_pid', False),
-                 filename_alignment=Default('filename_alignment', 40),
-                 thread_alignment=Default('thread_alignment', 12),
-                 pid_alignment=Default('pid_alignment', 9),
-                 repr_limit=Default('repr_limit', 1024),
-                 repr_func=Default('repr_func', 'safe_repr')):
-        self.force_colors = resolve_default(force_colors)
-        self.force_pid = resolve_default(force_pid)
-        self.stream = DEFAULT_STREAM if resolve_default(stream) is None else stream
-        self.filename_alignment = resolve_default(filename_alignment)
-        self.thread_alignment = resolve_default(thread_alignment)
-        self.pid_alignment = resolve_default(pid_alignment)
-        self.repr_limit = resolve_default(repr_limit)
-        self.repr_func = resolve_default(repr_func)
+                 stream=config.Default('stream', None),
+                 force_colors=config.Default('force_colors', False),
+                 force_pid=config.Default('force_pid', False),
+                 filename_alignment=config.Default('filename_alignment', 40),
+                 thread_alignment=config.Default('thread_alignment', 12),
+                 pid_alignment=config.Default('pid_alignment', 9),
+                 repr_limit=config.Default('repr_limit', 1024),
+                 repr_func=config.Default('repr_func', 'safe_repr')):
+        self.force_colors = config.resolve(force_colors)
+        self.force_pid = config.resolve(force_pid)
+        self.stream = config.DEFAULT_STREAM if config.resolve(stream) is None else stream
+        self.filename_alignment = config.resolve(filename_alignment)
+        self.thread_alignment = config.resolve(thread_alignment)
+        self.pid_alignment = config.resolve(pid_alignment)
+        self.repr_limit = config.resolve(repr_limit)
+        self.repr_func = config.resolve(repr_func)
         self.seen_threads = set()
         self.seen_pid = getpid()
 

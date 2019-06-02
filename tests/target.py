@@ -1,9 +1,10 @@
+import os
 import sys
 import time
 
 
 def stuff():
-    print('Doing stuff ...')
+    print('Doing stuff ...', os.getpid())
     time.sleep(1)
 
 

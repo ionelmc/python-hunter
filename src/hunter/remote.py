@@ -21,9 +21,9 @@ else:
     from manhole import get_peercred
     from manhole.cli import parse_signal
 
-    from . import actions
     from . import stop
     from . import trace
+    from . import config
 
 __all__ = 'install',
 
@@ -115,7 +115,7 @@ def connect_manhole(pid, timeout, signal):
 
 
 def activate(sink_path, isatty, encoding, options):
-    stream = actions.DEFAULT_STREAM = RemoteStream(sink_path, isatty, encoding)
+    stream = config.DEFAULT_STREAM = RemoteStream(sink_path, isatty, encoding)
     try:
         stream.write('Output stream active. Starting tracer ...\n\n')
         eval('trace({})'.format(options))
@@ -124,15 +124,15 @@ def activate(sink_path, isatty, encoding, options):
             exc,
             'Tracer options where: {}.'.format(options) if options else 'No tracer options.'
         ))
-        actions.DEFAULT_STREAM = sys.stderr
+        config.DEFAULT_STREAM = sys.stderr
         raise
 
 
-trace  # used in eval above
+trace,  # used in eval above
 
 
 def deactivate():
-    actions.DEFAULT_STREAM = sys.stderr
+    config.DEFAULT_STREAM = sys.stderr
     stop()
 
 

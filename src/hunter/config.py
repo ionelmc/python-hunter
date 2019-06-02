@@ -8,10 +8,12 @@ THREADING_SUPPORT_ALIASES = (
 )
 
 DEFAULTS = {}
+DEFAULT_STREAM = sys.stderr
 
 
 def load_config(predicates, options):
-    from . import Q, And, Or, Not, CallPrinter, CodePrinter, Debugger, VarsPrinter, When  # noqa
+    from . import Q, And, Or, Not, CallPrinter, CodePrinter, Manhole, Debugger, VarsPrinter, When  # noqa
+    Q, And, Or, Not, CallPrinter, CodePrinter, Manhole, Debugger, VarsPrinter, When,
     try:
         config_predicates, config_options = eval("_prepare({})".format(os.environ.get("PYTHONHUNTERCONFIG", '')))
     except Exception as exc:
@@ -75,6 +77,7 @@ class Default(object):
         self.fallback_value = fallback_value
 
     def resolve(self):
+        print('resolving', self.key, DEFAULTS.get(self.key))
         return DEFAULTS.get(self.key, self.fallback_value)
 
     def __str__(self):
@@ -84,7 +87,7 @@ class Default(object):
         return repr(self.fallback_value)
 
 
-def resolve_default(value):
+def resolve(value):
     if isinstance(value, Default):
         return value.resolve()
     else:
