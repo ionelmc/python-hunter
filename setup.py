@@ -39,13 +39,6 @@ def read(*names, **kwargs):
         return fh.read()
 
 
-# Enable code coverage for C code: we can't use CFLAGS=-coverage in tox.ini, since that may mess with compiling
-# dependencies (e.g. numpy). Therefore we set SETUPPY_CFLAGS=-coverage in tox.ini and copy it to CFLAGS here (after
-# deps have been safely installed).
-if 'TOXENV' in os.environ and 'SETUPPY_CFLAGS' in os.environ:
-    os.environ['CFLAGS'] = os.environ['SETUPPY_CFLAGS']
-
-
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
@@ -189,6 +182,7 @@ setup(
         Extension(
             splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
             sources=[path],
+            extra_compile_args=os.environ.get('SETUPPY_CFLAGS', '').split(),
             include_dirs=[dirname(path)]
         )
         for root, _, _ in os.walk('src')
