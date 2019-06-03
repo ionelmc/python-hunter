@@ -87,6 +87,8 @@ script:
     if [[ -n ${WHEEL_MANYLINUX1:-} ]]; then
       docker run --rm --user $UID -itv $(pwd):/code ionelmc/manylinux $WHEEL_MANYLINUX1
       tox --installpkg $WHEEL_PATH/*.whl -v
+    elif [[ -n ${WHEEL_PATH:-} ]]; then
+      tox -v --wheel
     else
       tox -v
     fi
