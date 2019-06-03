@@ -1,12 +1,6 @@
-[paths]
-source =
-   src/hunter
-   */site-packages/hunter
-
 [run]
 branch = true
-source =
-    hunter
+source = src
 parallel = true
 plugins = Cython.Coverage
 
