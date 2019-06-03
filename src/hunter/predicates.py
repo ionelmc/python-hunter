@@ -8,7 +8,6 @@ from .actions import Action
 from .event import Event
 from .util import STRING_TYPES
 
-
 __all__ = (
     'And',
     'From',

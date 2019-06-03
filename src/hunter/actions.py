@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import ast
 import io
 import os
-import sys
 import threading
 import types
 from collections import defaultdict
@@ -87,6 +86,7 @@ def safe_repr(obj, maxdepth=5):
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
         #  with side-effects will be going on in __repr__ - use the default instead (object.__repr__)
         return object.__repr__(obj)
+
 
 BUILTIN_REPR_FUNCS = {
     'repr': repr,
