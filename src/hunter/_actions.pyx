@@ -1,9 +1,9 @@
+# cython: linetrace=True, language_level=3str
 from __future__ import absolute_import
 
 import ast
 import io
 import os
-import sys
 import threading
 import types
 from collections import defaultdict

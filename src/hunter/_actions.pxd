@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3str
+# cython: language_level=3str
 from ._event cimport Event
 
 
