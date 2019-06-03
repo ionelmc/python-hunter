@@ -523,13 +523,13 @@ cdef class VarsPrinter(ColorStreamAction):
         if not names:
             raise TypeError('VarsPrinter requires at least one variable name/expression.')
         self.names = {
-            name: set(self._iter_symbols(name))
+            name: VarsPrinter._get_symbols(name)
             for name in names
         }
         super(VarsPrinter, self).__init__(**options)
 
     @staticmethod
-    def _iter_symbols(code):
+    cdef _get_symbols(code):
         """
         Iterate all the variable names in the given expression.
 
@@ -538,9 +538,11 @@ cdef class VarsPrinter(ColorStreamAction):
         * ``self.foobar`` yields ``self``
         * ``self[foobar]`` yields `self`` and ``foobar``
         """
+        symbols = set()
         for node in ast.walk(ast.parse(code)):
             if isinstance(node, ast.Name):
-                yield node.id
+                symbols.add(node.id)
+        return symbols
 
     def __call__(self, event):
         """

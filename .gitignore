@@ -71,3 +71,6 @@ src/*/_version.py
 
 # test stuff
 tests/*.c
+
+# cython annotations
+src/*/*.html
