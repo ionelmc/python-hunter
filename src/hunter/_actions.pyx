@@ -528,22 +528,6 @@ cdef class VarsPrinter(ColorStreamAction):
         }
         super(VarsPrinter, self).__init__(**options)
 
-    @staticmethod
-    cdef _get_symbols(code):
-        """
-        Iterate all the variable names in the given expression.
-
-        Example:
-
-        * ``self.foobar`` yields ``self``
-        * ``self[foobar]`` yields `self`` and ``foobar``
-        """
-        symbols = set()
-        for node in ast.walk(ast.parse(code)):
-            if isinstance(node, ast.Name):
-                symbols.add(node.id)
-        return symbols
-
     def __call__(self, event):
         """
         Handle event and print the specified variables.
@@ -598,3 +582,18 @@ cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
                     )
                 )
                 first = False
+
+cdef _get_symbols(code):
+    """
+    Iterate all the variable names in the given expression.
+
+    Example:
+
+    * ``self.foobar`` yields ``self``
+    * ``self[foobar]`` yields `self`` and ``foobar``
+    """
+    symbols = set()
+    for node in ast.walk(ast.parse(code)):
+        if isinstance(node, ast.Name):
+            symbols.add(node.id)
+    return symbols

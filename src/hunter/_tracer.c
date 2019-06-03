@@ -1145,7 +1145,6 @@ static struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter *__pyx_vtabptr_6hun
 
 struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter {
   struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction __pyx_base;
-  PyObject *(*_get_symbols)(struct __pyx_obj_6hunter_8_actions_VarsPrinter *);
 };
 static struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter *__pyx_vtabptr_6hunter_8_actions_VarsPrinter;
 

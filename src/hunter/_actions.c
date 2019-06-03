@@ -1104,7 +1104,6 @@ static struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter *__pyx_vtabptr_6hun
 
 struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter {
   struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction __pyx_base;
-  PyObject *(*_get_symbols)(struct __pyx_obj_6hunter_8_actions_VarsPrinter *);
 };
 static struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter *__pyx_vtabptr_6hunter_8_actions_VarsPrinter;
 
@@ -1880,7 +1879,6 @@ static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *s
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static PyObject *__pyx_f_6hunter_8_actions_17ColorStreamAction__try_repr(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *__pyx_v_self, PyObject *__pyx_v_obj); /* proto*/
-static PyObject *__pyx_f_6hunter_8_actions_11VarsPrinter__get_symbols(struct __pyx_obj_6hunter_8_actions_VarsPrinter *__pyx_v_code); /* proto*/
 
 /* Module declarations from 'cython' */
 
@@ -2090,6 +2088,7 @@ static const char __pyx_k_co_argcount[] = "co_argcount";
 static const char __pyx_k_co_varnames[] = "co_varnames";
 static const char __pyx_k_collections[] = "collections";
 static const char __pyx_k_defaultdict[] = "defaultdict";
+static const char __pyx_k_get_symbols[] = "_get_symbols";
 static const char __pyx_k_safe_source[] = "_safe_source";
 static const char __pyx_k_EVENT_COLORS[] = "EVENT_COLORS";
 static const char __pyx_k_FunctionType[] = "FunctionType";
@@ -2250,6 +2249,7 @@ static PyObject *__pyx_n_s_function;
 static PyObject *__pyx_n_s_genexpr;
 static PyObject *__pyx_n_s_get;
 static PyObject *__pyx_n_s_get_ident;
+static PyObject *__pyx_n_s_get_symbols;
 static PyObject *__pyx_n_s_getpid;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_globals;
@@ -14470,6 +14470,8 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
   PyObject *__pyx_t_4 = NULL;
   Py_ssize_t __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
   /* "hunter/_actions.pyx":523
@@ -14542,9 +14544,23 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
  *             for name in names
  *         }
  */
-      if (!(likely(((__pyx_8genexpr1__pyx_v_name) == Py_None) || likely(__Pyx_TypeTest(__pyx_8genexpr1__pyx_v_name, __pyx_ptype_6hunter_8_actions_VarsPrinter))))) __PYX_ERR(0, 526, __pyx_L6_error)
-      __pyx_t_6 = __pyx_f_6hunter_8_actions_11VarsPrinter__get_symbols(((struct __pyx_obj_6hunter_8_actions_VarsPrinter *)__pyx_8genexpr1__pyx_v_name)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 526, __pyx_L6_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6hunter_8_actions_VarsPrinter), __pyx_n_s_get_symbols); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 526, __pyx_L6_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_8 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_8);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
+        }
+      }
+      __pyx_t_6 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_8, __pyx_8genexpr1__pyx_v_name) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_8genexpr1__pyx_v_name);
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 526, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (unlikely(PyDict_SetItem(__pyx_t_3, (PyObject*)__pyx_8genexpr1__pyx_v_name, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 526, __pyx_L6_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
@@ -14583,7 +14599,7 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
  *         }
  *         super(VarsPrinter, self).__init__(**options)             # <<<<<<<<<<<<<<
  * 
- *     @staticmethod
+ *     def __call__(self, event):
  */
   __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 529, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -14619,6 +14635,8 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("hunter._actions.VarsPrinter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -14627,221 +14645,8 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
   return __pyx_r;
 }
 
-/* "hunter/_actions.pyx":532
- * 
- *     @staticmethod
- *     cdef _get_symbols(code):             # <<<<<<<<<<<<<<
- *         """
- *         Iterate all the variable names in the given expression.
- */
-
-static PyObject *__pyx_f_6hunter_8_actions_11VarsPrinter__get_symbols(struct __pyx_obj_6hunter_8_actions_VarsPrinter *__pyx_v_code) {
-  PyObject *__pyx_v_symbols = NULL;
-  PyObject *__pyx_v_node = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  int __pyx_t_8;
-  int __pyx_t_9;
-  int __pyx_t_10;
-  __Pyx_RefNannySetupContext("_get_symbols", 0);
-
-  /* "hunter/_actions.pyx":541
- *         * ``self[foobar]`` yields `self`` and ``foobar``
- *         """
- *         symbols = set()             # <<<<<<<<<<<<<<
- *         for node in ast.walk(ast.parse(code)):
- *             if isinstance(node, ast.Name):
- */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_symbols = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "hunter/_actions.pyx":542
- *         """
- *         symbols = set()
- *         for node in ast.walk(ast.parse(code)):             # <<<<<<<<<<<<<<
- *             if isinstance(node, ast.Name):
- *                 symbols.add(node.id)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_ast); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_walk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_ast); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_parse); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, ((PyObject *)__pyx_v_code)) : __Pyx_PyObject_CallOneArg(__pyx_t_5, ((PyObject *)__pyx_v_code));
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 542, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 542, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 542, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 542, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_7(__pyx_t_3);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 542, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_1);
-    __pyx_t_1 = 0;
-
-    /* "hunter/_actions.pyx":543
- *         symbols = set()
- *         for node in ast.walk(ast.parse(code)):
- *             if isinstance(node, ast.Name):             # <<<<<<<<<<<<<<
- *                 symbols.add(node.id)
- *         return symbols
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ast); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 543, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 543, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = PyObject_IsInstance(__pyx_v_node, __pyx_t_2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 543, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = (__pyx_t_8 != 0);
-    if (__pyx_t_9) {
-
-      /* "hunter/_actions.pyx":544
- *         for node in ast.walk(ast.parse(code)):
- *             if isinstance(node, ast.Name):
- *                 symbols.add(node.id)             # <<<<<<<<<<<<<<
- *         return symbols
- * 
- */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_node, __pyx_n_s_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 544, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_10 = PySet_Add(__pyx_v_symbols, __pyx_t_2); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 544, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-      /* "hunter/_actions.pyx":543
- *         symbols = set()
- *         for node in ast.walk(ast.parse(code)):
- *             if isinstance(node, ast.Name):             # <<<<<<<<<<<<<<
- *                 symbols.add(node.id)
- *         return symbols
- */
-    }
-
-    /* "hunter/_actions.pyx":542
- *         """
- *         symbols = set()
- *         for node in ast.walk(ast.parse(code)):             # <<<<<<<<<<<<<<
- *             if isinstance(node, ast.Name):
- *                 symbols.add(node.id)
- */
-  }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "hunter/_actions.pyx":545
- *             if isinstance(node, ast.Name):
- *                 symbols.add(node.id)
- *         return symbols             # <<<<<<<<<<<<<<
- * 
- *     def __call__(self, event):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_symbols);
-  __pyx_r = __pyx_v_symbols;
-  goto __pyx_L0;
-
-  /* "hunter/_actions.pyx":532
- * 
- *     @staticmethod
- *     cdef _get_symbols(code):             # <<<<<<<<<<<<<<
- *         """
- *         Iterate all the variable names in the given expression.
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("hunter._actions.VarsPrinter._get_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_symbols);
-  __Pyx_XDECREF(__pyx_v_node);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "hunter/_actions.pyx":547
- *         return symbols
+/* "hunter/_actions.pyx":531
+ *         super(VarsPrinter, self).__init__(**options)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -14878,7 +14683,7 @@ static PyObject *__pyx_pw_6hunter_8_actions_11VarsPrinter_3__call__(PyObject *__
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__call__") < 0)) __PYX_ERR(0, 547, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__call__") < 0)) __PYX_ERR(0, 531, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -14889,7 +14694,7 @@ static PyObject *__pyx_pw_6hunter_8_actions_11VarsPrinter_3__call__(PyObject *__
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__call__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 547, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__call__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 531, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._actions.VarsPrinter.__call__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14908,20 +14713,20 @@ static PyObject *__pyx_pf_6hunter_8_actions_11VarsPrinter_2__call__(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__call__", 0);
 
-  /* "hunter/_actions.pyx":551
+  /* "hunter/_actions.pyx":535
  *         Handle event and print the specified variables.
  *         """
  *         fast_VarsPrinter_call(self, event)             # <<<<<<<<<<<<<<
  * 
  * cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
  */
-  if (!(likely(((__pyx_v_event) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_event, __pyx_ptype_6hunter_6_event_Event))))) __PYX_ERR(0, 551, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_6hunter_8_actions_fast_VarsPrinter_call(__pyx_v_self, ((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_event)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 551, __pyx_L1_error)
+  if (!(likely(((__pyx_v_event) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_event, __pyx_ptype_6hunter_6_event_Event))))) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_8_actions_fast_VarsPrinter_call(__pyx_v_self, ((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_event)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hunter/_actions.pyx":547
- *         return symbols
+  /* "hunter/_actions.pyx":531
+ *         super(VarsPrinter, self).__init__(**options)
  * 
  *     def __call__(self, event):             # <<<<<<<<<<<<<<
  *         """
@@ -14946,7 +14751,7 @@ static PyObject *__pyx_pf_6hunter_8_actions_11VarsPrinter_2__call__(struct __pyx
  *     cdef:
  *         public dict names             # <<<<<<<<<<<<<<
  * 
- *     @staticmethod
+ * cdef _get_symbols(code)
  */
 
 /* Python wrapper */
@@ -15439,7 +15244,7 @@ static PyObject *__pyx_pf_6hunter_8_actions_11VarsPrinter_6__setstate_cython__(s
   return __pyx_r;
 }
 
-/* "hunter/_actions.pyx":553
+/* "hunter/_actions.pyx":537
  *         fast_VarsPrinter_call(self, event)
  * 
  * cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):             # <<<<<<<<<<<<<<
@@ -15490,7 +15295,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   PyObject *__pyx_t_26 = NULL;
   __Pyx_RefNannySetupContext("fast_VarsPrinter_call", 0);
 
-  /* "hunter/_actions.pyx":554
+  /* "hunter/_actions.pyx":538
  * 
  * cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
  *         first = True             # <<<<<<<<<<<<<<
@@ -15499,50 +15304,50 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
  */
   __pyx_v_first = 1;
 
-  /* "hunter/_actions.pyx":555
+  /* "hunter/_actions.pyx":539
  * cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
  *         first = True
  *         frame_symbols = set(event.locals)             # <<<<<<<<<<<<<<
  *         frame_symbols.update(BUILTIN_SYMBOLS)
  *         frame_symbols.update(event.globals)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_locals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 555, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_locals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PySet_New(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
+  __pyx_t_2 = PySet_New(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 539, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_frame_symbols = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":556
+  /* "hunter/_actions.pyx":540
  *         first = True
  *         frame_symbols = set(event.locals)
  *         frame_symbols.update(BUILTIN_SYMBOLS)             # <<<<<<<<<<<<<<
  *         frame_symbols.update(event.globals)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_BUILTIN_SYMBOLS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 556, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_BUILTIN_SYMBOLS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 540, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySet_Type_update, __pyx_v_frame_symbols, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 556, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySet_Type_update, __pyx_v_frame_symbols, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 540, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hunter/_actions.pyx":557
+  /* "hunter/_actions.pyx":541
  *         frame_symbols = set(event.locals)
  *         frame_symbols.update(BUILTIN_SYMBOLS)
  *         frame_symbols.update(event.globals)             # <<<<<<<<<<<<<<
  * 
  *         self.seen_threads.add(get_ident())
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_globals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 557, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_globals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySet_Type_update, __pyx_v_frame_symbols, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 557, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySet_Type_update, __pyx_v_frame_symbols, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":559
+  /* "hunter/_actions.pyx":543
  *         frame_symbols.update(event.globals)
  * 
  *         self.seen_threads.add(get_ident())             # <<<<<<<<<<<<<<
@@ -15551,9 +15356,9 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
  */
   if (unlikely(__pyx_v_self->__pyx_base.seen_threads == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "add");
-    __PYX_ERR(0, 559, __pyx_L1_error)
+    __PYX_ERR(0, 543, __pyx_L1_error)
   }
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_get_ident); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 559, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_get_ident); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -15567,13 +15372,13 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 559, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = PySet_Add(__pyx_v_self->__pyx_base.seen_threads, __pyx_t_2); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 559, __pyx_L1_error)
+  __pyx_t_4 = PySet_Add(__pyx_v_self->__pyx_base.seen_threads, __pyx_t_2); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 543, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":560
+  /* "hunter/_actions.pyx":544
  * 
  *         self.seen_threads.add(get_ident())
  *         if event.tracer.threading_support is False:             # <<<<<<<<<<<<<<
@@ -15584,7 +15389,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "hunter/_actions.pyx":561
+    /* "hunter/_actions.pyx":545
  *         self.seen_threads.add(get_ident())
  *         if event.tracer.threading_support is False:
  *             threading_support = False             # <<<<<<<<<<<<<<
@@ -15594,7 +15399,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     __Pyx_INCREF(Py_False);
     __pyx_v_threading_support = Py_False;
 
-    /* "hunter/_actions.pyx":560
+    /* "hunter/_actions.pyx":544
  * 
  *         self.seen_threads.add(get_ident())
  *         if event.tracer.threading_support is False:             # <<<<<<<<<<<<<<
@@ -15604,17 +15409,17 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     goto __pyx_L3;
   }
 
-  /* "hunter/_actions.pyx":562
+  /* "hunter/_actions.pyx":546
  *         if event.tracer.threading_support is False:
  *             threading_support = False
  *         elif event.tracer.threading_support:             # <<<<<<<<<<<<<<
  *             threading_support = True
  *         else:
  */
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_event->tracer->threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 562, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_event->tracer->threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 546, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "hunter/_actions.pyx":563
+    /* "hunter/_actions.pyx":547
  *             threading_support = False
  *         elif event.tracer.threading_support:
  *             threading_support = True             # <<<<<<<<<<<<<<
@@ -15624,7 +15429,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     __Pyx_INCREF(Py_True);
     __pyx_v_threading_support = Py_True;
 
-    /* "hunter/_actions.pyx":562
+    /* "hunter/_actions.pyx":546
  *         if event.tracer.threading_support is False:
  *             threading_support = False
  *         elif event.tracer.threading_support:             # <<<<<<<<<<<<<<
@@ -15634,7 +15439,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     goto __pyx_L3;
   }
 
-  /* "hunter/_actions.pyx":565
+  /* "hunter/_actions.pyx":549
  *             threading_support = True
  *         else:
  *             threading_support = len(self.seen_threads) > 1             # <<<<<<<<<<<<<<
@@ -15646,29 +15451,29 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     __Pyx_INCREF(__pyx_t_2);
     if (unlikely(__pyx_t_2 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 565, __pyx_L1_error)
+      __PYX_ERR(0, 549, __pyx_L1_error)
     }
-    __pyx_t_7 = PySet_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 565, __pyx_L1_error)
+    __pyx_t_7 = PySet_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 549, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyBool_FromLong((__pyx_t_7 > 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 565, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBool_FromLong((__pyx_t_7 > 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 549, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_threading_support = __pyx_t_2;
     __pyx_t_2 = 0;
   }
   __pyx_L3:;
 
-  /* "hunter/_actions.pyx":566
+  /* "hunter/_actions.pyx":550
  *         else:
  *             threading_support = len(self.seen_threads) > 1
  *         thread_name = threading.current_thread().name if threading_support else ''             # <<<<<<<<<<<<<<
  *         thread_align = self.thread_alignment if threading_support else ''
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 550, __pyx_L1_error)
   if (__pyx_t_6) {
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 566, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 550, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_current_thread); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 566, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_current_thread); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 550, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -15683,10 +15488,10 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 566, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 550, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 566, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 550, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_2 = __pyx_t_8;
@@ -15698,16 +15503,16 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   __pyx_v_thread_name = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":567
+  /* "hunter/_actions.pyx":551
  *             threading_support = len(self.seen_threads) > 1
  *         thread_name = threading.current_thread().name if threading_support else ''
  *         thread_align = self.thread_alignment if threading_support else ''             # <<<<<<<<<<<<<<
  * 
  *         pid = getpid()
  */
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 567, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 551, __pyx_L1_error)
   if (__pyx_t_6) {
-    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.thread_alignment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 567, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.thread_alignment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 551, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_2 = __pyx_t_8;
     __pyx_t_8 = 0;
@@ -15718,14 +15523,14 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   __pyx_v_thread_align = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":569
+  /* "hunter/_actions.pyx":553
  *         thread_align = self.thread_alignment if threading_support else ''
  * 
  *         pid = getpid()             # <<<<<<<<<<<<<<
  *         if self.force_pid or self.seen_pid != pid:
  *             pid = '[{}] '.format(pid)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_getpid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_getpid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 553, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
@@ -15739,13 +15544,13 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   }
   __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 569, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 553, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_v_pid = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_actions.pyx":570
+  /* "hunter/_actions.pyx":554
  * 
  *         pid = getpid()
  *         if self.force_pid or self.seen_pid != pid:             # <<<<<<<<<<<<<<
@@ -15758,24 +15563,24 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     __pyx_t_6 = __pyx_t_5;
     goto __pyx_L5_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.seen_pid); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 570, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.seen_pid); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_8 = PyObject_RichCompare(__pyx_t_2, __pyx_v_pid, Py_NE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 570, __pyx_L1_error)
+  __pyx_t_8 = PyObject_RichCompare(__pyx_t_2, __pyx_v_pid, Py_NE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 554, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 570, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_6 = __pyx_t_5;
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "hunter/_actions.pyx":571
+    /* "hunter/_actions.pyx":555
  *         pid = getpid()
  *         if self.force_pid or self.seen_pid != pid:
  *             pid = '[{}] '.format(pid)             # <<<<<<<<<<<<<<
  *             pid_align = self.pid_alignment
  *         else:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__18, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 571, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__18, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -15789,25 +15594,25 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     }
     __pyx_t_8 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_1, __pyx_v_pid) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_pid);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 571, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 555, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF_SET(__pyx_v_pid, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "hunter/_actions.pyx":572
+    /* "hunter/_actions.pyx":556
  *         if self.force_pid or self.seen_pid != pid:
  *             pid = '[{}] '.format(pid)
  *             pid_align = self.pid_alignment             # <<<<<<<<<<<<<<
  *         else:
  *             pid = pid_align = ''
  */
-    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.pid_alignment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 572, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.pid_alignment); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 556, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_v_pid_align = __pyx_t_8;
     __pyx_t_8 = 0;
 
-    /* "hunter/_actions.pyx":570
+    /* "hunter/_actions.pyx":554
  * 
  *         pid = getpid()
  *         if self.force_pid or self.seen_pid != pid:             # <<<<<<<<<<<<<<
@@ -15817,7 +15622,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     goto __pyx_L4;
   }
 
-  /* "hunter/_actions.pyx":574
+  /* "hunter/_actions.pyx":558
  *             pid_align = self.pid_alignment
  *         else:
  *             pid = pid_align = ''             # <<<<<<<<<<<<<<
@@ -15832,7 +15637,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   }
   __pyx_L4:;
 
-  /* "hunter/_actions.pyx":576
+  /* "hunter/_actions.pyx":560
  *             pid = pid_align = ''
  * 
  *         for code, symbols in self.names.items():             # <<<<<<<<<<<<<<
@@ -15842,9 +15647,9 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   __pyx_t_7 = 0;
   if (unlikely(__pyx_v_self->names == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
-    __PYX_ERR(0, 576, __pyx_L1_error)
+    __PYX_ERR(0, 560, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_self->names, 1, __pyx_n_s_items, (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 576, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_self->names, 1, __pyx_n_s_items, (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 560, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_8);
   __pyx_t_8 = __pyx_t_2;
@@ -15852,7 +15657,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_8, __pyx_t_9, &__pyx_t_7, &__pyx_t_2, &__pyx_t_1, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 576, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 560, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_code, __pyx_t_2);
@@ -15860,7 +15665,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
     __Pyx_XDECREF_SET(__pyx_v_symbols, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "hunter/_actions.pyx":577
+    /* "hunter/_actions.pyx":561
  * 
  *         for code, symbols in self.names.items():
  *             try:             # <<<<<<<<<<<<<<
@@ -15876,45 +15681,45 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __Pyx_XGOTREF(__pyx_t_14);
       /*try:*/ {
 
-        /* "hunter/_actions.pyx":578
+        /* "hunter/_actions.pyx":562
  *         for code, symbols in self.names.items():
  *             try:
  *                 obj = eval(code, dict(vars(builtins), **event.globals), event.locals)             # <<<<<<<<<<<<<<
  *             except AttributeError:
  *                 continue
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_builtins); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_builtins); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_vars, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_vars, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_2);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
         __pyx_t_2 = 0;
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_globals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_globals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_3);
         if (unlikely(__pyx_t_3 == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "argument after ** must be a mapping, not NoneType");
-          __PYX_ERR(0, 578, __pyx_L9_error)
+          __PYX_ERR(0, 562, __pyx_L9_error)
         }
         if (likely(PyDict_CheckExact(__pyx_t_3))) {
-          __pyx_t_2 = PyDict_Copy(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 578, __pyx_L9_error)
+          __pyx_t_2 = PyDict_Copy(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L9_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else {
-          __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 578, __pyx_L9_error)
+          __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L9_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
-        __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyDict_Type)), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyDict_Type)), __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_locals); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_event), __pyx_n_s_locals); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_v_code);
         __Pyx_GIVEREF(__pyx_v_code);
@@ -15925,13 +15730,13 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
         PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_t_2);
         __pyx_t_3 = 0;
         __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_eval, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 578, __pyx_L9_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_eval, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L9_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_XDECREF_SET(__pyx_v_obj, __pyx_t_2);
         __pyx_t_2 = 0;
 
-        /* "hunter/_actions.pyx":577
+        /* "hunter/_actions.pyx":561
  * 
  *         for code, symbols in self.names.items():
  *             try:             # <<<<<<<<<<<<<<
@@ -15940,7 +15745,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
  */
       }
 
-      /* "hunter/_actions.pyx":584
+      /* "hunter/_actions.pyx":568
  *                 printout = '{internal-failure}FAILED EVAL: {internal-detail}{!r}'.format(exc, **self.event_colors)
  *             else:
  *                 printout = self._try_repr(obj)             # <<<<<<<<<<<<<<
@@ -15948,7 +15753,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
  *             if frame_symbols >= symbols:
  */
       /*else:*/ {
-        __pyx_t_2 = ((struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter *)__pyx_v_self->__pyx_base.__pyx_vtab)->__pyx_base._try_repr(((struct __pyx_obj_6hunter_8_actions_ColorStreamAction *)__pyx_v_self), __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 584, __pyx_L11_except_error)
+        __pyx_t_2 = ((struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter *)__pyx_v_self->__pyx_base.__pyx_vtab)->__pyx_base._try_repr(((struct __pyx_obj_6hunter_8_actions_ColorStreamAction *)__pyx_v_self), __pyx_v_obj); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 568, __pyx_L11_except_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_XDECREF_SET(__pyx_v_printout, __pyx_t_2);
         __pyx_t_2 = 0;
@@ -15962,7 +15767,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "hunter/_actions.pyx":579
+      /* "hunter/_actions.pyx":563
  *             try:
  *                 obj = eval(code, dict(vars(builtins), **event.globals), event.locals)
  *             except AttributeError:             # <<<<<<<<<<<<<<
@@ -15972,12 +15777,12 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __pyx_t_11 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_AttributeError);
       if (__pyx_t_11) {
         __Pyx_AddTraceback("hunter._actions.fast_VarsPrinter_call", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_1, &__pyx_t_3) < 0) __PYX_ERR(0, 579, __pyx_L11_except_error)
+        if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_1, &__pyx_t_3) < 0) __PYX_ERR(0, 563, __pyx_L11_except_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GOTREF(__pyx_t_3);
 
-        /* "hunter/_actions.pyx":580
+        /* "hunter/_actions.pyx":564
  *                 obj = eval(code, dict(vars(builtins), **event.globals), event.locals)
  *             except AttributeError:
  *                 continue             # <<<<<<<<<<<<<<
@@ -15992,7 +15797,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
         goto __pyx_L15_try_continue;
       }
 
-      /* "hunter/_actions.pyx":581
+      /* "hunter/_actions.pyx":565
  *             except AttributeError:
  *                 continue
  *             except Exception as exc:             # <<<<<<<<<<<<<<
@@ -16002,7 +15807,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __pyx_t_11 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
       if (__pyx_t_11) {
         __Pyx_AddTraceback("hunter._actions.fast_VarsPrinter_call", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_1, &__pyx_t_2) < 0) __PYX_ERR(0, 581, __pyx_L11_except_error)
+        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_1, &__pyx_t_2) < 0) __PYX_ERR(0, 565, __pyx_L11_except_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GOTREF(__pyx_t_2);
@@ -16010,25 +15815,25 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
         __pyx_v_exc = __pyx_t_1;
         /*try:*/ {
 
-          /* "hunter/_actions.pyx":582
+          /* "hunter/_actions.pyx":566
  *                 continue
  *             except Exception as exc:
  *                 printout = '{internal-failure}FAILED EVAL: {internal-detail}{!r}'.format(exc, **self.event_colors)             # <<<<<<<<<<<<<<
  *             else:
  *                 printout = self._try_repr(obj)
  */
-          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_internal_failure_FAILED_EVAL_in, __pyx_n_s_format); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 582, __pyx_L24_error)
+          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_internal_failure_FAILED_EVAL_in, __pyx_n_s_format); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 566, __pyx_L24_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 582, __pyx_L24_error)
+          __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 566, __pyx_L24_error)
           __Pyx_GOTREF(__pyx_t_16);
           __Pyx_INCREF(__pyx_v_exc);
           __Pyx_GIVEREF(__pyx_v_exc);
           PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_v_exc);
           if (unlikely(__pyx_v_self->__pyx_base.event_colors == Py_None)) {
             PyErr_SetString(PyExc_TypeError, "argument after ** must be a mapping, not NoneType");
-            __PYX_ERR(0, 582, __pyx_L24_error)
+            __PYX_ERR(0, 566, __pyx_L24_error)
           }
-          __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_16, __pyx_v_self->__pyx_base.event_colors); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 582, __pyx_L24_error)
+          __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_16, __pyx_v_self->__pyx_base.event_colors); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 566, __pyx_L24_error)
           __Pyx_GOTREF(__pyx_t_17);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
@@ -16036,7 +15841,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
           __pyx_t_17 = 0;
         }
 
-        /* "hunter/_actions.pyx":581
+        /* "hunter/_actions.pyx":565
  *             except AttributeError:
  *                 continue
  *             except Exception as exc:             # <<<<<<<<<<<<<<
@@ -16094,7 +15899,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       goto __pyx_L11_except_error;
       __pyx_L11_except_error:;
 
-      /* "hunter/_actions.pyx":577
+      /* "hunter/_actions.pyx":561
  * 
  *         for code, symbols in self.names.items():
  *             try:             # <<<<<<<<<<<<<<
@@ -16120,42 +15925,42 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __pyx_L16_try_end:;
     }
 
-    /* "hunter/_actions.pyx":586
+    /* "hunter/_actions.pyx":570
  *                 printout = self._try_repr(obj)
  * 
  *             if frame_symbols >= symbols:             # <<<<<<<<<<<<<<
  *                 self.stream.write(
  *                     '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
  */
-    __pyx_t_2 = PyObject_RichCompare(__pyx_v_frame_symbols, __pyx_v_symbols, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 586, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 586, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_v_frame_symbols, __pyx_v_symbols, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 570, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 570, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_6) {
 
-      /* "hunter/_actions.pyx":587
+      /* "hunter/_actions.pyx":571
  * 
  *             if frame_symbols >= symbols:
  *                 self.stream.write(             # <<<<<<<<<<<<<<
  *                     '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
  *                     '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(
  */
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stream); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 587, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stream); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 571, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_write); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 587, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_write); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 571, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "hunter/_actions.pyx":589
+      /* "hunter/_actions.pyx":573
  *                 self.stream.write(
  *                     '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
  *                     '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(             # <<<<<<<<<<<<<<
  *                         '',
  *                         'vars' if first else '...',
  */
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_pid_pid_align_thread_thread_ali_8, __pyx_n_s_format); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 589, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_pid_pid_align_thread_thread_ali_8, __pyx_n_s_format); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 573, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "hunter/_actions.pyx":591
+      /* "hunter/_actions.pyx":575
  *                     '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(
  *                         '',
  *                         'vars' if first else '...',             # <<<<<<<<<<<<<<
@@ -16170,14 +15975,14 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
         __pyx_t_17 = __pyx_kp_s__2;
       }
 
-      /* "hunter/_actions.pyx":589
+      /* "hunter/_actions.pyx":573
  *                 self.stream.write(
  *                     '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
  *                     '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(             # <<<<<<<<<<<<<<
  *                         '',
  *                         'vars' if first else '...',
  */
-      __pyx_t_16 = PyTuple_New(4); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 589, __pyx_L1_error)
+      __pyx_t_16 = PyTuple_New(4); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 573, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_INCREF(__pyx_kp_s__5);
       __Pyx_GIVEREF(__pyx_kp_s__5);
@@ -16192,43 +15997,43 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       PyTuple_SET_ITEM(__pyx_t_16, 3, __pyx_v_printout);
       __pyx_t_17 = 0;
 
-      /* "hunter/_actions.pyx":594
+      /* "hunter/_actions.pyx":578
  *                         code,
  *                         printout,
  *                         pid=pid, pid_align=pid_align,             # <<<<<<<<<<<<<<
  *                         thread=thread_name, thread_align=thread_align,
  *                         align=self.filename_alignment,
  */
-      __pyx_t_15 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 594, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 578, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
-      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_pid, __pyx_v_pid) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
-      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_pid_align, __pyx_v_pid_align) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_pid, __pyx_v_pid) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_pid_align, __pyx_v_pid_align) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
 
-      /* "hunter/_actions.pyx":595
+      /* "hunter/_actions.pyx":579
  *                         printout,
  *                         pid=pid, pid_align=pid_align,
  *                         thread=thread_name, thread_align=thread_align,             # <<<<<<<<<<<<<<
  *                         align=self.filename_alignment,
  *                         **self.event_colors
  */
-      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_thread, __pyx_v_thread_name) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
-      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_thread_align, __pyx_v_thread_align) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_thread, __pyx_v_thread_name) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_thread_align, __pyx_v_thread_align) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
 
-      /* "hunter/_actions.pyx":596
+      /* "hunter/_actions.pyx":580
  *                         pid=pid, pid_align=pid_align,
  *                         thread=thread_name, thread_align=thread_align,
  *                         align=self.filename_alignment,             # <<<<<<<<<<<<<<
  *                         **self.event_colors
  *                     )
  */
-      __pyx_t_26 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.filename_alignment); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 596, __pyx_L1_error)
+      __pyx_t_26 = __Pyx_PyInt_From_int(__pyx_v_self->__pyx_base.filename_alignment); if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 580, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_26);
-      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_align, __pyx_t_26) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_align, __pyx_t_26) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_26); __pyx_t_26 = 0;
       __pyx_t_17 = __pyx_t_15;
       __pyx_t_15 = 0;
 
-      /* "hunter/_actions.pyx":597
+      /* "hunter/_actions.pyx":581
  *                         thread=thread_name, thread_align=thread_align,
  *                         align=self.filename_alignment,
  *                         **self.event_colors             # <<<<<<<<<<<<<<
@@ -16237,18 +16042,18 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
  */
       if (unlikely(__pyx_v_self->__pyx_base.event_colors == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "argument after ** must be a mapping, not NoneType");
-        __PYX_ERR(0, 597, __pyx_L1_error)
+        __PYX_ERR(0, 581, __pyx_L1_error)
       }
-      if (__Pyx_MergeKeywords(__pyx_t_17, __pyx_v_self->__pyx_base.event_colors) < 0) __PYX_ERR(0, 597, __pyx_L1_error)
+      if (__Pyx_MergeKeywords(__pyx_t_17, __pyx_v_self->__pyx_base.event_colors) < 0) __PYX_ERR(0, 581, __pyx_L1_error)
 
-      /* "hunter/_actions.pyx":589
+      /* "hunter/_actions.pyx":573
  *                 self.stream.write(
  *                     '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
  *                     '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(             # <<<<<<<<<<<<<<
  *                         '',
  *                         'vars' if first else '...',
  */
-      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_16, __pyx_t_17); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 589, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_16, __pyx_t_17); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 573, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
@@ -16266,19 +16071,21 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
       __pyx_t_2 = (__pyx_t_17) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_17, __pyx_t_15) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_15);
       __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 587, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 571, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "hunter/_actions.pyx":600
+      /* "hunter/_actions.pyx":584
  *                     )
  *                 )
  *                 first = False             # <<<<<<<<<<<<<<
+ * 
+ * cdef _get_symbols(code):
  */
       __pyx_v_first = 0;
 
-      /* "hunter/_actions.pyx":586
+      /* "hunter/_actions.pyx":570
  *                 printout = self._try_repr(obj)
  * 
  *             if frame_symbols >= symbols:             # <<<<<<<<<<<<<<
@@ -16290,7 +16097,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "hunter/_actions.pyx":553
+  /* "hunter/_actions.pyx":537
  *         fast_VarsPrinter_call(self, event)
  * 
  * cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):             # <<<<<<<<<<<<<<
@@ -16324,6 +16131,216 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(s
   __Pyx_XDECREF(__pyx_v_obj);
   __Pyx_XDECREF(__pyx_v_exc);
   __Pyx_XDECREF(__pyx_v_printout);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hunter/_actions.pyx":586
+ *                 first = False
+ * 
+ * cdef _get_symbols(code):             # <<<<<<<<<<<<<<
+ *     """
+ *     Iterate all the variable names in the given expression.
+ */
+
+static PyObject *__pyx_f_6hunter_8_actions__get_symbols(PyObject *__pyx_v_code) {
+  PyObject *__pyx_v_symbols = NULL;
+  PyObject *__pyx_v_node = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  Py_ssize_t __pyx_t_6;
+  PyObject *(*__pyx_t_7)(PyObject *);
+  int __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_t_10;
+  __Pyx_RefNannySetupContext("_get_symbols", 0);
+
+  /* "hunter/_actions.pyx":595
+ *     * ``self[foobar]`` yields `self`` and ``foobar``
+ *     """
+ *     symbols = set()             # <<<<<<<<<<<<<<
+ *     for node in ast.walk(ast.parse(code)):
+ *         if isinstance(node, ast.Name):
+ */
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_symbols = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hunter/_actions.pyx":596
+ *     """
+ *     symbols = set()
+ *     for node in ast.walk(ast.parse(code)):             # <<<<<<<<<<<<<<
+ *         if isinstance(node, ast.Name):
+ *             symbols.add(node.id)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_ast); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_walk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_ast); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_parse); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_v_code) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_code);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 596, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
+    __pyx_t_7 = NULL;
+  } else {
+    __pyx_t_6 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 596, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_7 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 596, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_7)) {
+      if (likely(PyList_CheckExact(__pyx_t_3))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 596, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 596, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 596, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 596, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_7(__pyx_t_3);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 596, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "hunter/_actions.pyx":597
+ *     symbols = set()
+ *     for node in ast.walk(ast.parse(code)):
+ *         if isinstance(node, ast.Name):             # <<<<<<<<<<<<<<
+ *             symbols.add(node.id)
+ *     return symbols
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ast); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 597, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 597, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_8 = PyObject_IsInstance(__pyx_v_node, __pyx_t_2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 597, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_9 = (__pyx_t_8 != 0);
+    if (__pyx_t_9) {
+
+      /* "hunter/_actions.pyx":598
+ *     for node in ast.walk(ast.parse(code)):
+ *         if isinstance(node, ast.Name):
+ *             symbols.add(node.id)             # <<<<<<<<<<<<<<
+ *     return symbols
+ */
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_node, __pyx_n_s_id); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 598, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_10 = PySet_Add(__pyx_v_symbols, __pyx_t_2); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 598, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "hunter/_actions.pyx":597
+ *     symbols = set()
+ *     for node in ast.walk(ast.parse(code)):
+ *         if isinstance(node, ast.Name):             # <<<<<<<<<<<<<<
+ *             symbols.add(node.id)
+ *     return symbols
+ */
+    }
+
+    /* "hunter/_actions.pyx":596
+ *     """
+ *     symbols = set()
+ *     for node in ast.walk(ast.parse(code)):             # <<<<<<<<<<<<<<
+ *         if isinstance(node, ast.Name):
+ *             symbols.add(node.id)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "hunter/_actions.pyx":599
+ *         if isinstance(node, ast.Name):
+ *             symbols.add(node.id)
+ *     return symbols             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_symbols);
+  __pyx_r = __pyx_v_symbols;
+  goto __pyx_L0;
+
+  /* "hunter/_actions.pyx":586
+ *                 first = False
+ * 
+ * cdef _get_symbols(code):             # <<<<<<<<<<<<<<
+ *     """
+ *     Iterate all the variable names in the given expression.
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("hunter._actions._get_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_symbols);
+  __Pyx_XDECREF(__pyx_v_node);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -21015,6 +21032,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_genexpr, __pyx_k_genexpr, sizeof(__pyx_k_genexpr), 0, 0, 1, 1},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {&__pyx_n_s_get_ident, __pyx_k_get_ident, sizeof(__pyx_k_get_ident), 0, 0, 1, 1},
+  {&__pyx_n_s_get_symbols, __pyx_k_get_symbols, sizeof(__pyx_k_get_symbols), 0, 0, 1, 1},
   {&__pyx_n_s_getpid, __pyx_k_getpid, sizeof(__pyx_k_getpid), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_globals, __pyx_k_globals, sizeof(__pyx_k_globals), 0, 0, 1, 1},
@@ -21140,9 +21158,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_open = __Pyx_GetBuiltinName(__pyx_n_s_open); if (!__pyx_builtin_open) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 270, __pyx_L1_error)
   __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 403, __pyx_L1_error)
-  __pyx_builtin_eval = __Pyx_GetBuiltinName(__pyx_n_s_eval); if (!__pyx_builtin_eval) __PYX_ERR(0, 578, __pyx_L1_error)
-  __pyx_builtin_vars = __Pyx_GetBuiltinName(__pyx_n_s_vars); if (!__pyx_builtin_vars) __PYX_ERR(0, 578, __pyx_L1_error)
-  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_builtin_eval = __Pyx_GetBuiltinName(__pyx_n_s_eval); if (!__pyx_builtin_eval) __PYX_ERR(0, 562, __pyx_L1_error)
+  __pyx_builtin_vars = __Pyx_GetBuiltinName(__pyx_n_s_vars); if (!__pyx_builtin_vars) __PYX_ERR(0, 562, __pyx_L1_error)
+  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 563, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -21366,6 +21384,7 @@ static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("_get_symbols", (void (*)(void))__pyx_f_6hunter_8_actions__get_symbols, "PyObject *(PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("fast_CodePrinter_call", (void (*)(void))__pyx_f_6hunter_8_actions_fast_CodePrinter_call, "PyObject *(struct __pyx_obj_6hunter_8_actions_CodePrinter *, struct __pyx_obj_6hunter_6_event_Event *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("fast_CallPrinter_call", (void (*)(void))__pyx_f_6hunter_8_actions_fast_CallPrinter_call, "PyObject *(struct __pyx_obj_6hunter_8_actions_CallPrinter *, struct __pyx_obj_6hunter_6_event_Event *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("fast_VarsPrinter_call", (void (*)(void))__pyx_f_6hunter_8_actions_fast_VarsPrinter_call, "PyObject *(struct __pyx_obj_6hunter_8_actions_VarsPrinter *, struct __pyx_obj_6hunter_6_event_Event *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -21474,7 +21493,6 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_6hunter_8_actions_CallPrinter = &__pyx_type_6hunter_8_actions_CallPrinter;
   __pyx_vtabptr_6hunter_8_actions_VarsPrinter = &__pyx_vtable_6hunter_8_actions_VarsPrinter;
   __pyx_vtable_6hunter_8_actions_VarsPrinter.__pyx_base = *__pyx_vtabptr_6hunter_8_actions_ColorStreamAction;
-  __pyx_vtable_6hunter_8_actions_VarsPrinter._get_symbols = (PyObject *(*)(struct __pyx_obj_6hunter_8_actions_VarsPrinter *))__pyx_f_6hunter_8_actions_11VarsPrinter__get_symbols;
   __pyx_type_6hunter_8_actions_VarsPrinter.tp_base = __pyx_ptype_6hunter_8_actions_ColorStreamAction;
   if (PyType_Ready(&__pyx_type_6hunter_8_actions_VarsPrinter) < 0) __PYX_ERR(0, 507, __pyx_L1_error)
   __pyx_type_6hunter_8_actions_VarsPrinter.tp_print = 0;

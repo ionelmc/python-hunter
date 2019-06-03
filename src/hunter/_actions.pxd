@@ -48,8 +48,7 @@ cdef class VarsPrinter(ColorStreamAction):
     cdef:
         public dict names
 
-    @staticmethod
-    cdef _get_symbols(code)
+cdef _get_symbols(code)
 
 cdef fast_CodePrinter_call(CodePrinter self, Event event)
 cdef fast_CallPrinter_call(CallPrinter self, Event event)
