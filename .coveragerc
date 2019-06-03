@@ -7,4 +7,3 @@ plugins = Cython.Coverage
 [report]
 show_missing = true
 precision = 2
-omit = *migrations*
