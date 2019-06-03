@@ -1918,6 +1918,7 @@ static PyTypeObject *__pyx_ptype_6hunter_8_actions_VarsPrinter = 0;
 static PyTypeObject *__pyx_ptype_6hunter_8_actions___pyx_scope_struct____pyx_f_6hunter_8_actions_fast_CallPrinter_call = 0;
 static PyTypeObject *__pyx_ptype_6hunter_8_actions___pyx_scope_struct_1_genexpr = 0;
 static PyObject *__pyx_v_6hunter_8_actions_ColorStreamAction_STREAM_CACHE = 0;
+static PyObject *__pyx_f_6hunter_8_actions__get_symbols(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_CodePrinter_call(struct __pyx_obj_6hunter_8_actions_CodePrinter *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_CallPrinter_call(struct __pyx_obj_6hunter_8_actions_CallPrinter *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_8_actions_fast_VarsPrinter_call(struct __pyx_obj_6hunter_8_actions_VarsPrinter *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
@@ -2088,7 +2089,6 @@ static const char __pyx_k_co_argcount[] = "co_argcount";
 static const char __pyx_k_co_varnames[] = "co_varnames";
 static const char __pyx_k_collections[] = "collections";
 static const char __pyx_k_defaultdict[] = "defaultdict";
-static const char __pyx_k_get_symbols[] = "_get_symbols";
 static const char __pyx_k_safe_source[] = "_safe_source";
 static const char __pyx_k_EVENT_COLORS[] = "EVENT_COLORS";
 static const char __pyx_k_FunctionType[] = "FunctionType";
@@ -2249,7 +2249,6 @@ static PyObject *__pyx_n_s_function;
 static PyObject *__pyx_n_s_genexpr;
 static PyObject *__pyx_n_s_get;
 static PyObject *__pyx_n_s_get_ident;
-static PyObject *__pyx_n_s_get_symbols;
 static PyObject *__pyx_n_s_getpid;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_globals;
@@ -14470,8 +14469,6 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
   PyObject *__pyx_t_4 = NULL;
   Py_ssize_t __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
   /* "hunter/_actions.pyx":523
@@ -14490,7 +14487,7 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
  *         if not names:
  *             raise TypeError('VarsPrinter requires at least one variable name/expression.')             # <<<<<<<<<<<<<<
  *         self.names = {
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  */
     __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 524, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -14511,7 +14508,7 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
  *         if not names:
  *             raise TypeError('VarsPrinter requires at least one variable name/expression.')
  *         self.names = {             # <<<<<<<<<<<<<<
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  *             for name in names
  */
   { /* enter inner scope */
@@ -14520,7 +14517,7 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
 
     /* "hunter/_actions.pyx":527
  *         self.names = {
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  *             for name in names             # <<<<<<<<<<<<<<
  *         }
  *         super(VarsPrinter, self).__init__(**options)
@@ -14540,33 +14537,18 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
       /* "hunter/_actions.pyx":526
  *             raise TypeError('VarsPrinter requires at least one variable name/expression.')
  *         self.names = {
- *             name: VarsPrinter._get_symbols(name)             # <<<<<<<<<<<<<<
+ *             name: _get_symbols(name)             # <<<<<<<<<<<<<<
  *             for name in names
  *         }
  */
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6hunter_8_actions_VarsPrinter), __pyx_n_s_get_symbols); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 526, __pyx_L6_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-        if (likely(__pyx_t_8)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-          __Pyx_INCREF(__pyx_t_8);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
-        }
-      }
-      __pyx_t_6 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_8, __pyx_8genexpr1__pyx_v_name) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_8genexpr1__pyx_v_name);
-      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 526, __pyx_L6_error)
+      __pyx_t_6 = __pyx_f_6hunter_8_actions__get_symbols(__pyx_8genexpr1__pyx_v_name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 526, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (unlikely(PyDict_SetItem(__pyx_t_3, (PyObject*)__pyx_8genexpr1__pyx_v_name, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 526, __pyx_L6_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
       /* "hunter/_actions.pyx":527
  *         self.names = {
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  *             for name in names             # <<<<<<<<<<<<<<
  *         }
  *         super(VarsPrinter, self).__init__(**options)
@@ -14585,7 +14567,7 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
  *         if not names:
  *             raise TypeError('VarsPrinter requires at least one variable name/expression.')
  *         self.names = {             # <<<<<<<<<<<<<<
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  *             for name in names
  */
   __Pyx_GIVEREF(__pyx_t_3);
@@ -14635,8 +14617,6 @@ static int __pyx_pf_6hunter_8_actions_11VarsPrinter___init__(struct __pyx_obj_6h
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("hunter._actions.VarsPrinter.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -21032,7 +21012,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_genexpr, __pyx_k_genexpr, sizeof(__pyx_k_genexpr), 0, 0, 1, 1},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {&__pyx_n_s_get_ident, __pyx_k_get_ident, sizeof(__pyx_k_get_ident), 0, 0, 1, 1},
-  {&__pyx_n_s_get_symbols, __pyx_k_get_symbols, sizeof(__pyx_k_get_symbols), 0, 0, 1, 1},
   {&__pyx_n_s_getpid, __pyx_k_getpid, sizeof(__pyx_k_getpid), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_globals, __pyx_k_globals, sizeof(__pyx_k_globals), 0, 0, 1, 1},
@@ -21197,7 +21176,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         if not names:
  *             raise TypeError('VarsPrinter requires at least one variable name/expression.')             # <<<<<<<<<<<<<<
  *         self.names = {
- *             name: VarsPrinter._get_symbols(name)
+ *             name: _get_symbols(name)
  */
   __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_VarsPrinter_requires_at_least_on); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 524, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);

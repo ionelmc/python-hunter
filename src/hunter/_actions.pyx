@@ -523,7 +523,7 @@ cdef class VarsPrinter(ColorStreamAction):
         if not names:
             raise TypeError('VarsPrinter requires at least one variable name/expression.')
         self.names = {
-            name: VarsPrinter._get_symbols(name)
+            name: _get_symbols(name)
             for name in names
         }
         super(VarsPrinter, self).__init__(**options)
