@@ -77,7 +77,6 @@ class Default(object):
         self.fallback_value = fallback_value
 
     def resolve(self):
-        print('resolving', self.key, DEFAULTS.get(self.key))
         return DEFAULTS.get(self.key, self.fallback_value)
 
     def __str__(self):
