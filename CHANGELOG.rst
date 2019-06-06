@@ -2,6 +2,21 @@
 Changelog
 =========
 
+3.0.0 (2019-06-??)
+------------------
+
+* The package now uses setuptools-scm for development builds (available at https://test.pypi.org/project/hunter/). As a
+  consequence installing the sdist will download setuptools-scm.
+* The ``hunter.actions`` was fully cythonized. Not a world shattering change but a modest ~20% improvement (because the
+  rest of hunter was already cythonized).
+* Recompiled cython modules with Cython 0.29.9. Hunter can be installed without any cython, as before.
+* Refactored some of the cython modules to have more typing information and not use deprecated property syntax.
+* Replaced ``unsafe_repr`` option with ``repr_func``. Now you can use your custom repr function in the builtin actions.
+* Fixed buggy filename handling when using Hunter in ipython/jupyter. Source code should be properly displayed now.
+* Removed ``globals`` option from ``VarsPrinter`` action. Globals are now always looked up. **BACKWARDS INCOMPATIBLE**
+* Added support for locals in ``VarsPrinter`` action. Now you can do ``VarsPrinter('len(foobar)')``.
+* Various other minor dead code cleanup, style and docstring fixing.
+
 2.2.1 (2019-01-19)
 ------------------
 
