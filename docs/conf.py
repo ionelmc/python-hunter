@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import os
+import traceback
 
 
 extensions = [
@@ -26,7 +27,13 @@ project = 'Hunter'
 year = '2015-2019'
 author = 'Ionel Cristian Mărieș'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '2.2.1'
+
+try:
+    from pkg_resources import get_distribution
+    version = release = get_distribution('hunter').version
+except Exception:
+    traceback.print_exc()
+    version = release = '2.2.1'
 
 pygments_style = 'trac'
 templates_path = ['.']
