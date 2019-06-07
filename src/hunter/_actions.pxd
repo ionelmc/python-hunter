@@ -35,10 +35,10 @@ cdef class ColorStreamAction(Action):
         public dict code_colors
 
     cdef _try_repr(self, obj)
+    cdef _format_filename(self, event)
 
 cdef class CodePrinter(ColorStreamAction):
-    cdef:
-        pass
+    cdef _safe_source(self, event)
 
 cdef class CallPrinter(CodePrinter):
     cdef:

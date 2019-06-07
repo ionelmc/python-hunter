@@ -1,4 +1,4 @@
-# cython: linetrace=True
+# cython: linetrace=True, language_level=3
 foo = bar = lambda x: x
 
 @foo

@@ -175,18 +175,18 @@ def test_pth_sample2(LineMatcher):
         "*tests*sample2.py:* line              'a*',",
         "*tests*sample2.py:* line              'b'",
         '*tests*sample2.py:* call                  @functools.wraps(func)',
-        '*                 *    |                  def wrapper(*args):',
+        '*                 *    [*]                  def wrapper(*args):',
         '*tests*sample2.py:* line                      return func(*args)',
         '*tests*sample2.py:* call                  @functools.wraps(func)',
-        '*                 *    |                  def wrapper(*args):',
+        '*                 *    [*]                  def wrapper(*args):',
         '*tests*sample2.py:* line                      return func(*args)',
         '*tests*sample2.py:* call                  @functools.wraps(func)',
-        '*                 *    |                  def wrapper(*args):',
+        '*                 *    [*]                  def wrapper(*args):',
         '*tests*sample2.py:* line                      return func(*args)',
         '*tests*sample2.py:* call          @deco(1)',
         '*                 *    |          @deco(2)',
         '*                 *    |          @deco(3)',
-        '*                 *    |          def foo(*args):',
+        '*                 *    [*]          def foo(*args):',
         '*tests*sample2.py:* line              return args',
         '*tests*sample2.py:* return            return args',
         "*                 * ...       return value: ('a*', 'b')",
@@ -427,13 +427,13 @@ def test_threading_support(LineMatcher):
     assert any(name.startswith('Thread-') for name in names)
     lm.fnmatch_lines_random([
         'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
-        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call      [[]a => 1[]]',
         'Thread-*   *test_hunter.py:*   call         => foo(a=1)',
-        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call      [[]a => 1[]]',
         'MainThread *test_hunter.py:*   call              def foo(a=1):',
-        'MainThread *                   vars      a => 1',
+        'MainThread *test_hunter.py:*   call      [[]a => 1[]]',
         'MainThread *test_hunter.py:*   call         => foo(a=1)',
-        'MainThread *                   vars      a => 1',
+        'MainThread *test_hunter.py:*   call      [[]a => 1[]]',
     ])
 
 
@@ -471,9 +471,9 @@ def test_thread_filtering(LineMatcher, query):
     pprint(lm.lines)
     lm.fnmatch_lines_random([
         'Thread-*   *test_hunter.py:*   call              def foo(a=1):',
-        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call      [[]a => 1[]]',
         'Thread-*   *test_hunter.py:*   call         => foo(a=1)',
-        'Thread-*   *                   vars      a => 1',
+        'Thread-*   *test_hunter.py:*   call      [[]a => 1[]]',
     ])
 
 
@@ -500,6 +500,7 @@ def test_tracing_printing_failures(LineMatcher):
         except Exception as exc:
             pass
     lm = LineMatcher(lines.getvalue().splitlines())
+    print(lines.getvalue())
     lm.fnmatch_lines([
         """*tests*test_hunter.py:* call              class Bad(object):""",
         """*tests*test_hunter.py:* line              class Bad(object):""",
@@ -509,20 +510,17 @@ def test_tracing_printing_failures(LineMatcher):
         """*tests*test_hunter.py:* call              def a():""",
         """*tests*test_hunter.py:* line                  x = Bad()""",
         """*tests*test_hunter.py:* line                  return x""",
-        """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
+        """*tests*test_hunter.py:* line      [[]x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)[]]""",
         """*tests*test_hunter.py:* return                return x""",
         """* ...       return value: !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
-        """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
         """*tests*test_hunter.py:* call              def b():""",
         """*tests*test_hunter.py:* line                  x = Bad()""",
         """*tests*test_hunter.py:* line                  raise Exception(x)""",
-        """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
+        """*tests*test_hunter.py:* line      [[]x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)[]]""",
         """*tests*test_hunter.py:* exception             raise Exception(x)""",
         """* ...       exception value: !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
-        """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
         """*tests*test_hunter.py:* return                raise Exception(x)""",
         """* ...       return value: None""",
-        """* vars      x => !!! FAILED REPR: RuntimeError("I'm a bad class!"*)""",
     ])
 
 
@@ -545,13 +543,13 @@ def test_tracing_vars(LineMatcher):
     lm.fnmatch_lines([
         "*test_hunter.py* call              def a():",
         "*test_hunter.py* line                  b = 1",
-        "* vars      b => 1",
+        "*test_hunter.py* line      [[]b => 1[]]",
         "*test_hunter.py* line                  b = 2",
-        "* vars      b => 2",
+        "*test_hunter.py* line      [[]b => 2[]]",
         "*test_hunter.py* line                  return 1",
-        "* vars      b => 2",
+        "*test_hunter.py* return    [[]b => 2[]]",
         "*test_hunter.py* return                return 1",
-        "* ...       return value: 1",
+        "*                ...       return value: 1",
     ])
 
 
@@ -566,10 +564,10 @@ def test_tracing_vars_expressions(LineMatcher):
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines_random([
-        '*      Foo.bar => 1',
-        '*      vars(Foo) => *',
-        '*      len(range(2)) => 2',
-        '*      Foo.__dict__[[]"bar"[]] => 1',
+        '*    [[]Foo.bar => 1[]]',
+        '*    [[]vars(Foo) => *[]]',
+        '*    [[]len(range(2)) => 2[]]',
+        '*    [[]Foo.__dict__[[]"bar"[]] => 1[]]',
     ])
 
 
@@ -662,7 +660,7 @@ def test_fullsource_decorator_issue(LineMatcher):
     lm.fnmatch_lines([
         '* call              @foo',
         '*    |              @bar',
-        '*    |              def foo():',
+        '*    *              def foo():',
     ])
 
 
@@ -902,9 +900,9 @@ def test_debugger(LineMatcher):
     lm = LineMatcher(out.getvalue().splitlines())
     pprint(lm.lines)
     lm.fnmatch_lines_random([
-        "*      test_debugger => <function test_debugger at *",
-        "*      node => 'Foobar'",
-        "*      a => 1",
+        "*      [[]test_debugger => <function test_debugger at *[]]",
+        "*      [[]node => 'Foobar'[]]",
+        "*      [[]a => 1[]]",
     ])
 
 
@@ -1190,10 +1188,10 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
     lm.fnmatch_lines_random([
         prefix + "MainThread  *test_hunter.py:*  line * a = 1",
         prefix + "MainThread  *test_hunter.py:*  line * if pid:",
-        prefix + "MainThread  *               *  vars * a => 1",
+        prefix + "MainThread  *test_hunter.py:*  line * [[]a => 1[]]",
         prefix + "MainThread  *test_hunter.py:*  line * os.waitpid(pid, 0)",
         "[[]*[]] *MainThread  *test_hunter.py:*  line * os._exit(0)  # child",
-        "[[]*[]] *MainThread  *               *  vars * a => 1",
+        "[[]*[]] *MainThread  *test_hunter.py:*  line * [[]a => 1[]]",
     ])
 
 

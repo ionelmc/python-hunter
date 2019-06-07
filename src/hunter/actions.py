@@ -264,6 +264,12 @@ class ColorStreamAction(Action):
         except Exception as exc:
             return '{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}'.format(exc, **self.event_colors)
 
+    def _format_filename(self, event):
+        filename = event.filename or '<???>'
+        if len(filename) > self.filename_alignment:
+            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+        return filename
+
 
 class CodePrinter(ColorStreamAction):
     """
@@ -287,12 +293,6 @@ class CodePrinter(ColorStreamAction):
                        'Source code string for module {!r} is empty.'.format(event.module, **self.event_colors),
         except Exception as exc:
             return '{source-failure}??? NO SOURCE: {source-detail}{!r}'.format(exc, **self.event_colors),
-
-    def _format_filename(self, event):
-        filename = event.filename or '<???>'
-        if len(filename) > self.filename_alignment:
-            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-        return filename
 
     def __call__(self, event):
         """
@@ -329,13 +329,23 @@ class CodePrinter(ColorStreamAction):
                 align=self.filename_alignment,
                 code=self.code_colors[event.kind],
                 **self.event_colors))
-
-        for line in lines[1:]:
+        if len(lines) > 1:
+            for line in lines[1:-1]:
+                self.stream.write(
+                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
+                        '',
+                        '   |',
+                        line,
+                        pid=pid, pid_align=pid_align,
+                        thread=thread_name, thread_align=thread_align,
+                        align=self.filename_alignment,
+                        code=self.code_colors[event.kind],
+                        **self.event_colors))
             self.stream.write(
                 '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
                     '',
-                    r'   |',
-                    line,
+                    '   *',
+                    lines[-1],
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
@@ -517,6 +527,7 @@ class VarsPrinter(ColorStreamAction):
         """
         Handle event and print the specified variables.
         """
+        filename = self._format_filename(event)
         first = True
         frame_symbols = set(event.locals)
         frame_symbols.update(BUILTIN_SYMBOLS)
@@ -550,17 +561,32 @@ class VarsPrinter(ColorStreamAction):
                 printout = self._try_repr(obj)
 
             if frame_symbols >= symbols:
-                self.stream.write(
-                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
-                    '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(
-                        '',
-                        'vars' if first else '...',
-                        code,
-                        printout,
-                        pid=pid, pid_align=pid_align,
-                        thread=thread_name, thread_align=thread_align,
-                        align=self.filename_alignment,
-                        **self.event_colors
+                if first:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
+                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
+                            filename,
+                            event.lineno,
+                            event.kind,
+                            code,
+                            printout,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
                     )
-                )
+                else:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
+                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
+                            '',
+                            code,
+                            printout,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
                 first = False

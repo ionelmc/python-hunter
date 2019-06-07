@@ -287,6 +287,12 @@ cdef class ColorStreamAction(Action):
         except Exception as exc:
             return '{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}'.format(exc, **self.event_colors)
 
+    cdef inline _format_filename(self, event):
+        filename = event.filename or '<???>'
+        if len(filename) > self.filename_alignment:
+            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+        return filename
+
 
 cdef class CodePrinter(ColorStreamAction):
     """
@@ -300,7 +306,7 @@ cdef class CodePrinter(ColorStreamAction):
         repr_func (string or callable): Function to use instead of ``repr``.
             If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
     """
-    def _safe_source(self, event):
+    cdef inline _safe_source(self, event):
         try:
             lines = event._raw_fullsource.rstrip().splitlines()
             if lines:
@@ -310,12 +316,6 @@ cdef class CodePrinter(ColorStreamAction):
                        'Source code string for module {!r} is empty.'.format(event.module, **self.event_colors),
         except Exception as exc:
             return '{source-failure}??? NO SOURCE: {source-detail}{!r}'.format(exc, **self.event_colors),
-
-    def _format_filename(self, event):
-        filename = event.filename or '<???>'
-        if len(filename) > self.filename_alignment:
-            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-        return filename
 
     def __call__(self, event):
         """
@@ -355,13 +355,23 @@ cdef inline fast_CodePrinter_call(CodePrinter self, Event event):
                 align=self.filename_alignment,
                 code=self.code_colors[event.kind],
                 **self.event_colors))
-
-        for line in lines[1:]:
+        if len(lines) > 1:
+            for line in lines[1:-1]:
+                self.stream.write(
+                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
+                        '',
+                        '   |',
+                        line,
+                        pid=pid, pid_align=pid_align,
+                        thread=thread_name, thread_align=thread_align,
+                        align=self.filename_alignment,
+                        code=self.code_colors[event.kind],
+                        **self.event_colors))
             self.stream.write(
                 '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
                     '',
-                    r'   |',
-                    line,
+                    '   *',
+                    lines[-1],
                     pid=pid, pid_align=pid_align,
                     thread=thread_name, thread_align=thread_align,
                     align=self.filename_alignment,
@@ -381,7 +391,6 @@ cdef inline fast_CodePrinter_call(CodePrinter self, Event event):
                     align=self.filename_alignment,
                     color=self.event_colors[event.kind],
                     **self.event_colors))
-
 
 cdef class CallPrinter(CodePrinter):
     """
@@ -535,6 +544,7 @@ cdef class VarsPrinter(ColorStreamAction):
         fast_VarsPrinter_call(self, event)
 
 cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
+        filename = self._format_filename(event)
         first = True
         frame_symbols = set(event.locals)
         frame_symbols.update(BUILTIN_SYMBOLS)
@@ -568,19 +578,34 @@ cdef inline fast_VarsPrinter_call(VarsPrinter self, Event event):
                 printout = self._try_repr(obj)
 
             if frame_symbols >= symbols:
-                self.stream.write(
-                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       '
-                    '{vars}{:9} {vars-name}{} {vars}=> {reset}{}{reset}\n'.format(
-                        '',
-                        'vars' if first else '...',
-                        code,
-                        printout,
-                        pid=pid, pid_align=pid_align,
-                        thread=thread_name, thread_align=thread_align,
-                        align=self.filename_alignment,
-                        **self.event_colors
+                if first:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
+                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
+                            filename,
+                            event.lineno,
+                            event.kind,
+                            code,
+                            printout,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
                     )
-                )
+                else:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
+                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
+                            '',
+                            code,
+                            printout,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
                 first = False
 
 cdef _get_symbols(code):

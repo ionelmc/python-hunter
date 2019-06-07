@@ -957,12 +957,12 @@ struct __pyx_obj_6hunter_8_actions_ColorStreamAction {
 };
 
 
-/* "_actions.pxd":39
- *     cdef _try_repr(self, obj)
+/* "_actions.pxd":40
+ *     cdef _format_filename(self, event)
  * 
  * cdef class CodePrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
- *     cdef:
- *         pass
+ *     cdef _safe_source(self, event)
+ * 
  */
 struct __pyx_obj_6hunter_8_actions_CodePrinter {
   struct __pyx_obj_6hunter_8_actions_ColorStreamAction __pyx_base;
@@ -970,7 +970,7 @@ struct __pyx_obj_6hunter_8_actions_CodePrinter {
 
 
 /* "_actions.pxd":43
- *         pass
+ *     cdef _safe_source(self, event)
  * 
  * cdef class CallPrinter(CodePrinter):             # <<<<<<<<<<<<<<
  *     cdef:
@@ -1300,26 +1300,28 @@ static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_ev
 
 struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction {
   PyObject *(*_try_repr)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *);
+  PyObject *(*_format_filename)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *);
 };
 static struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction *__pyx_vtabptr_6hunter_8_actions_ColorStreamAction;
 
 
-/* "_actions.pxd":39
- *     cdef _try_repr(self, obj)
+/* "_actions.pxd":40
+ *     cdef _format_filename(self, event)
  * 
  * cdef class CodePrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
- *     cdef:
- *         pass
+ *     cdef _safe_source(self, event)
+ * 
  */
 
 struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter {
   struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction __pyx_base;
+  PyObject *(*_safe_source)(struct __pyx_obj_6hunter_8_actions_CodePrinter *, PyObject *);
 };
 static struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter *__pyx_vtabptr_6hunter_8_actions_CodePrinter;
 
 
 /* "_actions.pxd":43
- *         pass
+ *     cdef _safe_source(self, event)
  * 
  * cdef class CallPrinter(CodePrinter):             # <<<<<<<<<<<<<<
  *     cdef:
@@ -24955,8 +24957,8 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_6hunter_8_actions_ColorStreamAction) __PYX_ERR(6, 18, __pyx_L1_error)
   __pyx_vtabptr_6hunter_8_actions_ColorStreamAction = (struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_ColorStreamAction->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_ColorStreamAction)) __PYX_ERR(6, 18, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_CodePrinter = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "CodePrinter", sizeof(struct __pyx_obj_6hunter_8_actions_CodePrinter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_8_actions_CodePrinter) __PYX_ERR(6, 39, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_8_actions_CodePrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CodePrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CodePrinter)) __PYX_ERR(6, 39, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_8_actions_CodePrinter) __PYX_ERR(6, 40, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_8_actions_CodePrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CodePrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CodePrinter)) __PYX_ERR(6, 40, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_CallPrinter = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "CallPrinter", sizeof(struct __pyx_obj_6hunter_8_actions_CallPrinter), __Pyx_ImportType_CheckSize_Warn);
    if (!__pyx_ptype_6hunter_8_actions_CallPrinter) __PYX_ERR(6, 43, __pyx_L1_error)
   __pyx_vtabptr_6hunter_8_actions_CallPrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CallPrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CallPrinter)) __PYX_ERR(6, 43, __pyx_L1_error)
