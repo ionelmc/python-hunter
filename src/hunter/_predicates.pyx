@@ -376,7 +376,6 @@ cdef inline fast_When_call(When self, Event event):
             elif type(action) is VarsPrinter:
                 fast_VarsPrinter_call(<VarsPrinter>action, <Event>event)
             else:
-                print(repr(action))
                 action(event)
 
     return result
