@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import os
 import traceback
 
+os.environ['PUREPYTHONHUNTER'] = 'yes'
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -16,7 +17,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
 ]
-if os.getenv('SPELLCHECK'):
+if os.environ.get('SPELLCHECK'):
     extensions += 'sphinxcontrib.spelling',
     spelling_show_suggestions = True
     spelling_lang = 'en_US'
