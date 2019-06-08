@@ -246,8 +246,16 @@ def wrap(function_to_trace=None, **trace_options):
             predicates = []
             local = trace_options.pop('local', False)
             if local:
-                predicates.append(Q(depth_lt=2))
-            predicates.append(~When(Q(calls_gt=0, depth=0) & ~Q(kind='return'), Stop))
+                predicates.append(Query(depth_lt=2))
+            predicates.append(
+                From(
+                    Query(kind="call"),
+                    Not(When(
+                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
+                        Stop
+                    ))
+                )
+            )
             local_tracer = trace(*predicates, **trace_options)
             try:
                 return func(*args, **kwargs)
