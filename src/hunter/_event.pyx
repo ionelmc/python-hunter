@@ -183,7 +183,7 @@ cdef class Event:
             if self.filename.endswith(('.so', '.pyd')):
                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
             try:
-                self._source = getline(self.filename, self.lineno)
+                self._source = getline(self.filename, self.lineno, self.frame.f_globals)
             except Exception as exc:
                 self._source = "??? NO SOURCE: {!r}".format(exc)
 
@@ -198,24 +198,24 @@ cdef class Event:
             try:
                 for _, token, _, _, line in generate_tokens(partial(
                     next,
-                    yield_lines(self.filename, self.lineno - 1, lines)
+                    yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
                 )):
                     if token in ("def", "class", "lambda"):
                         return ''.join(lines)
             except TokenError:
                 pass
 
-        return getline(self.filename, self.lineno)
+        return getline(self.filename, self.lineno, self.frame.f_globals)
 
     def __getitem__(self, item):
         return getattr(self, item)
 
 
-def yield_lines(filename, start, list collector,
+def yield_lines(filename, module_globals, start, list collector,
                 limit=10):
     dedent = None
     amount = 0
-    for line in getlines(filename)[start:start + limit]:
+    for line in getlines(filename, module_globals)[start:start + limit]:
         if dedent is None:
             dedent = LEADING_WHITESPACE_RE.findall(line)
             dedent = dedent[0] if dedent else ""

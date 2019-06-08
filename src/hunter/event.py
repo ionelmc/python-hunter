@@ -262,7 +262,7 @@ class Event(object):
         if self.filename.endswith(('.so', '.pyd')):
             return '??? NO SOURCE: not reading {} file'.format(splitext(basename(self.filename))[1])
         try:
-            return linecache.getline(self.filename, self.lineno)
+            return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
             return '??? NO SOURCE: {!r}'.format(exc)
 
@@ -273,24 +273,24 @@ class Event(object):
             try:
                 for _, token, _, _, line in tokenize.generate_tokens(partial(
                     next,
-                    yield_lines(self.filename, self.lineno - 1, lines.append)
+                    yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines.append)
                 )):
                     if token in ('def', 'class', 'lambda'):
                         return ''.join(lines)
             except tokenize.TokenError:
                 pass
 
-        return linecache.getline(self.filename, self.lineno)
+        return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
 
     __getitem__ = object.__getattribute__
 
 
-def yield_lines(filename, start, collector,
+def yield_lines(filename, module_globals, start, collector,
                 limit=10,
                 leading_whitespace_re=LEADING_WHITESPACE_RE):
     dedent = None
     amount = 0
-    for line in linecache.getlines(filename)[start:start + limit]:
+    for line in linecache.getlines(filename, module_globals)[start:start + limit]:
         if dedent is None:
             dedent = leading_whitespace_re.findall(line)
             dedent = dedent[0] if dedent else ""
