@@ -128,8 +128,8 @@ example.
 The use-case is that you'd like to trace a huge application and running a tracer (even a cython one) would have a too
 great impact. To solve this you'd start the tracer only in placer where it's actually needed.
 
-To make this work you'd monkeypatch the function that needs the tracing. This example uses aspectlib instead of tricking
-the mock library to do arbitrary monkeypatching:
+To make this work you'd monkeypatch the function that needs the tracing. This example uses `aspectlib
+<https://python-aspectlib.readthedocs.io/>`_:
 
 .. sourcecode:: python
 
@@ -141,7 +141,7 @@ the mock library to do arbitrary monkeypatching:
                 # - loading PYTHONHUNTERCONFIG
                 # - setting up the clear_env_var or thread_support options
                 # - atexit cleanup registration
-                with hunter.Tracer().trace(hunter.When(hunter.Query(**filters), actions)):
+                with hunter.Tracer().trace(hunter.When(hunter.Query(**filters), *actions)):
                     return func(*args, **kwargs)
 
             return tracing_wrapper
@@ -171,13 +171,8 @@ just:
         aspectlib.weave(qualname, functools.partial(hunter.wrap, actions=actions, **kwargs))
 
 It will work the same, ``hunter.wrap`` being a decorator. However, while ``hunter.wrap`` will enable this convenience
-to trace just inside the target function (``local`` mode):
-
-.. sourcecode:: python
-
-    probe('module.func', local=True)
-
-... it will also add a lot of extra filtering to trim irrelevant events from around the function (like return from
-tracer setup, and the internals of the decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight.
+to trace just inside the target function (``probe('module.func', local=True)``) it will also add a lot of extra
+filtering to trim irrelevant events from around the function (like return from tracer setup, and the internals of the
+decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight.
 
 
