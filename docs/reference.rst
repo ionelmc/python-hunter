@@ -1,61 +1,143 @@
 Reference
 =========
 
-.. contents::
-    :local:
-    :backlinks: none
+.. autosummary::
 
-Functions
----------
+.. highlights:: :ref:`reference:Helpers`
+
+.. autosummary::
+
+    hunter.trace
+    hunter.stop
+    hunter.wrap
+    hunter.And
+    hunter.Not
+    hunter.Or
+    hunter.Q
+
+.. warning::
+
+    The following (Predicates, Actions and Internals) have Cython implementations in modules prefixed with "_".
+    Should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
+
+.. highlights:: :ref:`reference:Predicates`
+
+.. autosummary::
+
+    hunter.predicates.Query
+    hunter.predicates.From
+    hunter.predicates.When
+    hunter.predicates.And
+    hunter.predicates.Not
+    hunter.predicates.Or
+    hunter.predicates.Query
+
+.. highlights:: :ref:`reference:Actions`
+
+.. autosummary::
+
+    hunter.actions.CallPrinter
+    hunter.actions.CodePrinter
+    hunter.actions.Debugger
+    hunter.actions.Manhole
+    hunter.actions.VarsPrinter
+
+.. highlights:: :ref:`reference:Internals`
+
+.. autosummary::
+
+    hunter.event.Event
+    hunter.tracer.Tracer
+
+|
+|
+|
+
+----
+
+Helpers
+-------
 
 .. autofunction:: hunter.trace(*predicates, clear_env_var=False, action=CodePrinter, actions=[], **kwargs)
 
 .. autofunction:: hunter.stop()
 
+.. autofunction:: hunter.wrap
+
+.. autofunction:: hunter.And
+
+.. autofunction:: hunter.Not
+
+.. autofunction:: hunter.Or
+
 .. autofunction:: hunter.Q
 
-.. autofunction:: hunter.wrap
+----
 
 Predicates
 ----------
 
-.. autoclass:: hunter.Query
+.. autoclass:: hunter.predicates.Query
     :members:
-    :special-members:
+    :special-members: __call__
 
-.. autoclass:: hunter.When
+.. autoclass:: hunter.predicates.When
     :members:
-    :special-members:
+    :special-members: __call__
 
-.. autofunction:: hunter.And
+.. autoclass:: hunter.predicates.From
+    :members:
+    :special-members: __call__
 
-.. autofunction:: hunter.Or
+.. autoclass:: hunter.predicates.And
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.Or
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.Not
+    :members:
+    :special-members: __call__
+
+----
 
 Actions
 -------
 
-.. autoclass:: hunter.CallPrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.CallPrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
     :members:
     :special-members:
 
-.. autoclass:: hunter.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
     :members:
     :special-members:
 
-.. autoclass:: hunter.Debugger(klass=pdb.Pdb, **kwargs)
+.. autoclass:: hunter.actions.Debugger(klass=pdb.Pdb, **kwargs)
     :members:
     :special-members:
 
-.. autoclass:: hunter.VarsPrinter(name, [name, [name, [...]]], globals=False, stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.Manhole(**options)
     :members:
     :special-members:
 
-Objects
--------
-
-.. autoclass:: hunter.Event
+.. autoclass:: hunter.actions.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
     :members:
+    :special-members:
 
-.. autoclass:: hunter.Tracer
+----
+
+Internals
+---------
+
+Normally these are not used directly. Perhaps just the :class:`hunter.tracer.Tracer` may be used directly for
+performance reasons.
+
+.. autoclass:: hunter.event.Event
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.tracer.Tracer
     :members:
     :special-members: __call__, __enter__, __exit__

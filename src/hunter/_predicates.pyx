@@ -44,7 +44,7 @@ cdef class Query:
     """
     A query class.
 
-    See :class:`hunter.Event` for fields that can be filtered on.
+    See :class:`hunter.event.Event` for fields that can be filtered on.
     """
     def __init__(self, **query):
         """

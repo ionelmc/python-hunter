@@ -19,8 +19,8 @@ The :obj:`hunter.trace` function can take 2 types of arguments:
   filters).
 * Callbacks that take an ``event`` argument:
 
-  * Builtin predicates like: :class:`hunter.Query`, :class:`hunter.When`, :class:`hunter.And` or :class:`hunter.Or`.
-  * Actions like: :class:`hunter.CodePrinter`, :class:`hunter.Debugger` or :class:`hunter.VarsPrinter`
+  * Builtin predicates like: :class:`hunter.predicates.Query`, :class:`hunter.When`, :class:`hunter.And` or :class:`hunter.Or`.
+  * Actions like: :class:`hunter.actions.CodePrinter`, :class:`hunter.actions.Debugger` or :class:`hunter.actions.VarsPrinter`
   * Any function. Or a disgusting lambda.
 
 Note that :obj:`hunter.trace` will use :obj:`hunter.Q` when you pass multiple positional arguments or keyword arguments.
@@ -28,7 +28,7 @@ Note that :obj:`hunter.trace` will use :obj:`hunter.Q` when you pass multiple po
 The ``Q`` function
 ==================
 
-The :obj:`hunter.Q` function provides a convenience API for you:
+The :func:`hunter.Q` function provides a convenience API for you:
 
 * ``Q(module='foobar')`` is converted to ``Query(module='foobar')``.
 * ``Q(module='foobar', action=Debugger)`` is converted to ``When(Query(module='foobar'), Debugger)``.
@@ -37,12 +37,13 @@ The :obj:`hunter.Q` function provides a convenience API for you:
 * ``Q(Q(module='foo'), Q(module='bar'))`` is converted to ``And(Q(module='foo'), Q(module='bar'))``.
 * ``Q(your_own_callback, module='foo')`` is converted to ``And(your_own_callback, Q(module='foo'))``.
 
-Note that the default junction :obj:`hunter.Q` uses is :obj:`hunter.And`.
+Note that the default junction :func:`hunter.Q` uses is :class:`hunter.predicates.And`.
 
 Composing
 =========
 
-All the builtin predicates (:class:`hunter.Query`, :class:`hunter.When`, :class:`hunter.And` and :class:`hunter.Or`) support
+All the builtin predicates (:class:`hunter.predicates.Query`, :class:`hunter.predicates.When`,
+:class:`hunter.predicates.And`, :class:`hunter.predicates.Not` and :class:`hunter.predicates.Or`) support
 the ``|``, ``&`` and ``~`` operators:
 
 * ``Query(module='foo') | Query(module='bar')`` is converted to ``Or(Query(module='foo'), Query(module='bar'))``

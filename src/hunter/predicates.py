@@ -32,7 +32,7 @@ class Query(object):
     """
     A query class.
 
-    See :class:`hunter.Event` for fields that can be filtered on.
+    See :class:`hunter.event.Event` for fields that can be filtered on.
     """
     def __init__(self, **query):
         """
@@ -300,7 +300,17 @@ class When(object):
 
 class From(object):
     """
-    Keep running ``predicates`` after ``condition(event)`` is ``True``.
+    From-point filtering mechanism. Switches on to running the predicate after condition maches, and switches off when
+    the depth returns to the same level.
+
+    After ``condition(event)`` returns ``True`` the ``event.depth`` will be saved and calling this object with an
+    ``event`` will return ``predicate(event)`` until ``event.depth - watermark`` is equal to the depth that was saved.
+
+    Args:
+        condition (callable): A callable that returns True/False or a :class:`hunter.predicates.Query` object.
+        predicate (callable): Optional callable that returns True/False or a :class:`hunter.predicates.Query` object to
+            run after ``condition`` first returns ``True``.
+        watermark (int): Depth difference to switch off and wait again on ``condition``.
     """
 
     def __init__(self, condition, predicate=None, watermark=0):
@@ -361,7 +371,7 @@ class From(object):
 
 class And(object):
     """
-    `And` predicate. Exits at the first sub-predicate that returns ``False``.
+    Returns ``False`` at the first sub-predicate that returns ``False``, otherwise returns ``True``.
     """
 
     def __init__(self, *predicates):
@@ -407,7 +417,7 @@ class And(object):
 
 class Or(object):
     """
-    `Or` predicate. Exits at first sub-predicate that returns ``True``.
+    Returns ``True`` after the first sub-predicate that returns ``True``.
     """
 
     def __init__(self, *predicates):
@@ -453,7 +463,7 @@ class Or(object):
 
 class Not(object):
     """
-    `Not` predicate.
+    Simply returns ``not predicate(event)``.
     """
     def __init__(self, predicate):
         self.predicate = predicate

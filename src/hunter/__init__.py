@@ -22,7 +22,7 @@ try:
     from ._event import Event
     from ._predicates import And as _And
     from ._predicates import From
-    from ._predicates import Not
+    from ._predicates import Not as _Not
     from ._predicates import Or as _Or
     from ._predicates import When
     from ._predicates import Query
@@ -37,7 +37,7 @@ except ImportError:
     from .event import Event  # noqa
     from .predicates import And as _And
     from .predicates import From
-    from .predicates import Not
+    from .predicates import Not as _Not
     from .predicates import Or as _Or
     from .predicates import When
     from .predicates import Query
@@ -71,8 +71,8 @@ _default_config = {}
 
 def Q(*predicates, **query):
     """
-    Handles situations where :class:`hunter.Query` objects (or other callables) are passed in as positional arguments.
-    Conveniently converts that to an :class:`hunter.And` predicate.
+    Handles situations where :class:`hunter.predicates.Query` objects (or other callables) are passed in as positional
+    arguments. Conveniently converts that to an :class:`hunter.predicates.And` predicate.
     """
     optional_actions = query.pop("actions", [])
     if "action" in query:
@@ -129,7 +129,15 @@ def _flatten(cls, predicate, *predicates):
 
 def And(*predicates, **kwargs):
     """
-    `And` predicate. Returns ``False`` at the first sub-predicate that returns ``False``.
+    Helper that flattens out ``predicates`` in a single :class:`hunter.predicates.And` object if possible.
+    As a convenience it converts ``kwargs`` to a single :class:`hunter.predicates.Query` instance.
+
+    Args:
+        *predicates: callables
+        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+
+    Returns: A :class:`hunter.predicates.And` instance.
+
     """
     if kwargs:
         predicates += Query(**kwargs),
@@ -138,11 +146,39 @@ def And(*predicates, **kwargs):
 
 def Or(*predicates, **kwargs):
     """
-    `Or` predicate. Returns ``True`` at the first sub-predicate that returns ``True``.
+    Helper that flattens out ``predicates`` in a single :class:`hunter.predicates.Or` object if possible.
+    As a convenience it converts ``kwargs`` to multiple :class:`hunter.predicates.Query` instances.
+
+    Args:
+        *predicates: callables
+        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+
+    Returns: A :class:`hunter.predicates.Or` instance.
+
     """
     if kwargs:
         predicates += tuple(Query(**{k: v}) for k, v in kwargs.items())
     return _flatten(_Or, *predicates)
+
+
+def Not(*predicates, **kwargs):
+    """
+    Helper that flattens out ``predicates`` in a single :class:`hunter.predicates.And` object if possible.
+    As a convenience it converts ``kwargs`` to multiple :class:`hunter.predicates.Query` instances.
+
+    Args:
+        *predicates: callables
+        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+
+    Returns: A :class:`hunter.predicates.Not` instance (possibly containing a :class:`hunter.predicates.And` instance).
+
+    """
+    if kwargs:
+        predicates += Query(**kwargs),
+    if len(predicates) > 1:
+        return _Not(_flatten(_And, *predicates))
+    else:
+        return _Not(*predicates)
 
 
 def stop():

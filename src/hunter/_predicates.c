@@ -2696,7 +2696,7 @@ static PyObject *__pyx_codeobj__11;
 /* Late includes */
 
 /* "hunter/_predicates.pyx":49
- *     See :class:`hunter.Event` for fields that can be filtered on.
+ *     See :class:`hunter.event.Event` for fields that can be filtered on.
  *     """
  *     def __init__(self, **query):             # <<<<<<<<<<<<<<
  *         """
@@ -4098,7 +4098,7 @@ static int __pyx_pf_6hunter_11_predicates_5Query___init__(struct __pyx_obj_6hunt
   __pyx_t_5 = 0;
 
   /* "hunter/_predicates.pyx":49
- *     See :class:`hunter.Event` for fields that can be filtered on.
+ *     See :class:`hunter.event.Event` for fields that can be filtered on.
  *     """
  *     def __init__(self, **query):             # <<<<<<<<<<<<<<
  *         """
@@ -22007,7 +22007,7 @@ static PyTypeObject __pyx_type_6hunter_11_predicates_Query = {
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "\n    A query class.\n\n    See :class:`hunter.Event` for fields that can be filtered on.\n    ", /*tp_doc*/
+  "\n    A query class.\n\n    See :class:`hunter.event.Event` for fields that can be filtered on.\n    ", /*tp_doc*/
   __pyx_tp_traverse_6hunter_11_predicates_Query, /*tp_traverse*/
   __pyx_tp_clear_6hunter_11_predicates_Query, /*tp_clear*/
   __pyx_pw_6hunter_11_predicates_5Query_19__richcmp__, /*tp_richcompare*/
