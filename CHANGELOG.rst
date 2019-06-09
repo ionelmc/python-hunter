@@ -16,7 +16,7 @@ Changelog
 * Removed ``globals`` option from ``VarsPrinter`` action. Globals are now always looked up. **BACKWARDS INCOMPATIBLE**
 * Added support for locals in ``VarsPrinter`` action. Now you can do ``VarsPrinter('len(foobar)')``.
 * Always pass module_globals dict to linecache methods. Source code from PEP-302 loaders is now printed properly.
-* Various other minor dead code cleanup, style and docstring fixing.
+* Various code cleanup, style and docstring fixing.
 
 2.2.1 (2019-01-19)
 ------------------
