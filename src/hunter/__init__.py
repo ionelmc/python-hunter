@@ -253,7 +253,8 @@ def wrap(function_to_trace=None, **trace_options):
                     Not(When(
                         Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
                         Stop
-                    ))
+                    )),
+                    watermark=-1
                 )
             )
             local_tracer = trace(*predicates, **trace_options)
