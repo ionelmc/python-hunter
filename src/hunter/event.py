@@ -37,10 +37,12 @@ class Event(object):
     Provides few convenience properties.
 
     Args:
-        frame (Frame):
-        kind (str):
-        arg:
-        tracer (:obj:`hunter.Tracer`):
+        frame (Frame): A python `Frame <https://docs.python.org/3/reference/datamodel.html#frame-objects>`_ object.
+        kind (str): A string like ``'call'``, ``'line'``, ``'return'`` or ``'exception'``.
+        arg: A value that depends on ``kind``. Usually is ``None`` but for ``'return'`` or ``'exception'`` other values
+            may be expected.
+        tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
+            Needed for the ``calls`` and ``depth`` fields.
     """
     frame = None
     kind = None
@@ -56,7 +58,7 @@ class Event(object):
         #:
         #: .. note::
         #:
-        #:  Not allowed in the builtin predicates (it's the actual Thread object).
+        #:  Not allowed in the builtin predicates (it's the actual Frame object).
         #:  You may access it from your custom predicate though.
         self.frame = frame
 
@@ -83,10 +85,10 @@ class Event(object):
         #:
         #: .. note::
         #:
-        #:  Not allowed in the builtin predicates (it's the actual Thread object).
+        #:  Not allowed in the builtin predicates (it's the actual :class:`~hunter.tracer.Tracer` object).
         #:  You may access it from your custom predicate though.
         #:
-        #: :type: :obj:`hunter.Tracer`
+        #: :type: :class:`hunter.tracer.Tracer`
         self.tracer = tracer
 
     def __eq__(self, other):

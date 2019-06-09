@@ -40,10 +40,12 @@ cdef class Event:
     Provides few convenience properties.
 
     Args:
-        frame (Frame):
-        kind (str):
-        arg:
-        tracer (:obj:`hunter.Tracer`):
+        frame (Frame): A python `Frame <https://docs.python.org/3/reference/datamodel.html#frame-objects>`_ object.
+        kind (str): A string like ``'call'``, ``'line'``, ``'return'`` or ``'exception'``.
+        arg: A value that depends on ``kind``. Usually is ``None`` but for ``'return'`` or ``'exception'`` other values
+            may be expected.
+        tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
+            Needed for the ``calls`` and ``depth`` fields.
     """
     def __cinit__(self, FrameType frame, str kind, object arg, Tracer tracer):
         self.arg = arg
