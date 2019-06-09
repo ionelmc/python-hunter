@@ -16,6 +16,7 @@ Changelog
 * Removed ``globals`` option from ``VarsPrinter`` action. Globals are now always looked up. **BACKWARDS INCOMPATIBLE**
 * Added support for locals in ``VarsPrinter`` action. Now you can do ``VarsPrinter('len(foobar)')``.
 * Always pass module_globals dict to linecache methods. Source code from PEP-302 loaders is now printed properly.
+  Contributed by Mikhail Borisov in `#65 <https://github.com/ionelmc/python-hunter/pull/65>`_.
 * Various code cleanup, style and docstring fixing.
 
 2.2.1 (2019-01-19)
@@ -194,8 +195,10 @@ Changelog
 0.4.0 (2015-03-29)
 ------------------
 
-* Disabled colors for Jython (contributed by Claudiu Popa in `#12 <https://github.com/ionelmc/python-hunter/pull/12>`_).
-* Test suite fixes for Windows (contributed by Claudiu Popa in `#11 <https://github.com/ionelmc/python-hunter/pull/11>`_).
+* Disabled colors for Jython.
+  Contributed by Claudiu Popa in `#12 <https://github.com/ionelmc/python-hunter/pull/12>`_.
+* Test suite fixes for Windows.
+  Contributed by Claudiu Popa in `#11 <https://github.com/ionelmc/python-hunter/pull/11>`_.
 * Added an introduction section in the docs.
 * Implemented a prettier fallback for when no sources are available for that frame.
 * Implemented fixups in cases where you use action classes as a predicates.
