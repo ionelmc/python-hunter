@@ -1,9 +1,7 @@
 from __future__ import absolute_import
 
 import linecache
-import re
 import tokenize
-import weakref
 from functools import partial
 from os.path import basename
 from os.path import exists
@@ -12,22 +10,14 @@ from threading import current_thread
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
+from .util import CYTHON_SUFFIX_RE
+from .util import LEADING_WHITESPACE_RE
 from .util import cached_property
-
-try:
-    from threading import main_thread
-except ImportError:
-    from threading import _shutdown
-    get_main_thread = weakref.ref(
-        _shutdown.__self__ if hasattr(_shutdown, '__self__') else _shutdown.im_self)
-    del _shutdown
-else:
-    get_main_thread = weakref.ref(main_thread())
+from .util import get_func_in_mro
+from .util import get_main_thread
+from .util import if_same_code
 
 __all__ = 'Event',
-
-CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
-LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
 
 
 class Event(object):
@@ -162,6 +152,44 @@ class Event(object):
         :type: str
         """
         return self.code.co_name
+
+    @cached_property
+    def function_object(self):
+        """
+        The function instance.
+
+        .. warning:: Use with prudence.
+
+            * Will be ``None`` for decorated functions on Python 2 (methods may still work tho).
+            * May be ``None`` if tracing functions or classes not defined at module level.
+            * May be very slow if tracing modules with lots of variables.
+
+        :type: function or None
+        """
+        # Based on MonkeyType's get_func
+        code = self.frame.f_code
+        if code.co_name is None:
+            return None
+        # First, try to find the function in globals
+        candidate = self.frame.f_globals.get(code.co_name, None)
+        func = if_same_code(candidate, code)
+        # If that failed, as will be the case with class and instance methods, try
+        # to look up the function from the first argument. In the case of class/instance
+        # methods, this should be the class (or an instance of the class) on which our
+        # method is defined.
+        if func is None and code.co_argcount >= 1:
+            first_arg = self.frame.f_locals.get(code.co_varnames[0])
+            func = get_func_in_mro(first_arg, code)
+        # If we still can't find the function, as will be the case with static methods,
+        # try looking at classes in global scope.
+        if func is None:
+            for v in self.frame.f_globals.values():
+                if not isinstance(v, type):
+                    continue
+                func = get_func_in_mro(v, code)
+                if func is not None:
+                    break
+        return func
 
     @cached_property
     def module(self):
@@ -301,3 +329,4 @@ def yield_lines(filename, module_globals, start, collector,
             break
         collector(line)
         yield line[amount:]
+

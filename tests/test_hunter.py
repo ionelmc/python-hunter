@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import functools
 import inspect
 import os
 import platform
@@ -33,6 +34,8 @@ except ImportError:
     from itertools import zip_longest as izip_longest
 
 pytest_plugins = 'pytester',
+
+PY3 = sys.version_info[0] == 3
 
 
 class FakeCallable(object):
@@ -1319,3 +1322,149 @@ def test_from_predicate_line_no_predicate(LineMatcher):
     assert 'three' not in output
     assert 'two' not in output
     assert 'one' not in output
+
+
+def decorator(func):
+    @functools.wraps(func)
+    def wrapper(*a, **k):
+        return func(*a, **k)
+
+    return wrapper
+
+
+def gf(_):
+    pass
+
+
+@decorator
+def dgf(_):
+    pass
+
+
+class Old:
+    @staticmethod
+    def old_sm(_):
+        pass
+
+    @classmethod
+    def old_cm(cls, _):
+        pass
+
+    def old_m(self, _):
+        pass
+
+
+class Desc(object):
+    def __init__(self, func):
+        self.func = func
+
+    def __get__(self, instance, owner):
+        return self.func
+
+
+class New(object):
+    @staticmethod
+    def new_sm(_):
+        pass
+
+    @classmethod
+    def new_cm(cls, _):
+        pass
+
+    def new_m(self, _):
+        pass
+
+    new_dm = Desc(gf)
+    new_ddm = Desc(dgf)
+
+
+def test_function_object(LineMatcher):
+    def lf(_):
+        pass
+
+    @decorator
+    def dlf(_):
+        pass
+
+    class Local(object):
+        @staticmethod
+        def local_sm(_):
+            pass
+
+        @classmethod
+        def local_cm(cls, _):
+            pass
+
+        def local_m(self, _):
+            pass
+
+        local_dm = Desc(lf)
+        local_ddm = Desc(dlf)
+        global_dm = Desc(gf)
+        global_ddm = Desc(dgf)
+
+    buff = StringIO()
+    with trace(actions=[
+        hunter.CallPrinter(stream=buff),
+        lambda event: buff.write(
+            "{0.function}({1})|{2}|{0.kind}\n".format(
+                event,
+                event.locals.get('_'),
+                getattr(event.function_object, '__name__', 'missing')))
+    ]):
+        gf(1)
+        dgf(2)
+        lf(3)
+        dlf(4)
+        Old.old_sm(5)
+        Old.old_cm(6)
+        Old().old_sm(7)
+        Old().old_cm(8)
+        Old().old_m(9)
+        New.new_sm(10)
+        New.new_cm(11)
+        New().new_sm(12)
+        New().new_cm(13)
+        New().new_m(14)
+        New().new_dm(15)
+        New().new_ddm(16)
+        Local.local_sm(17)
+        Local.local_cm(18)
+        Local().local_sm(19)
+        Local().local_cm(20)
+        Local().local_m(21)
+        Local().local_dm(22)
+        Local().local_ddm(23)
+        Local().global_dm(24)
+        Local().global_ddm(25)
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "gf(1)|gf|call",
+        "dgf(2)|{}|call".format('dgf' if PY3 else 'missing'),
+        "lf(3)|missing|call",
+        "dlf(4)|missing|call",
+        "old_sm(5)|{}|call".format('old_sm' if PY3 else 'missing'),
+        "old_cm(6)|old_cm|call",
+        "old_sm(7)|{}|call".format('old_sm' if PY3 else 'missing'),
+        "old_cm(8)|old_cm|call",
+        "old_m(9)|old_m|call",
+        "new_sm(10)|new_sm|call",
+        "new_cm(11)|new_cm|call",
+        "new_sm(12)|new_sm|call",
+        "new_cm(13)|new_cm|call",
+        "new_m(14)|new_m|call",
+        "gf(15)|gf|call",
+        "dgf(16)|{}|call".format('dgf' if PY3 else 'missing'),
+        "local_sm(17)|missing|call",
+        "local_cm(18)|local_cm|call",
+        "local_sm(19)|missing|call",
+        "local_cm(20)|local_cm|call",
+        "local_m(21)|local_m|call",
+        "lf(22)|missing|call",
+        "dlf(23)|missing|call",
+        "gf(24)|gf|call",
+        "dgf(25)|{}|call".format('dgf' if PY3 else 'missing'),
+    ])

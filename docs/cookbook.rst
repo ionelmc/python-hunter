@@ -173,6 +173,4 @@ just:
 It will work the same, ``hunter.wrap`` being a decorator. However, while ``hunter.wrap`` will enable this convenience
 to trace just inside the target function (``probe('module.func', local=True)``) it will also add a lot of extra
 filtering to trim irrelevant events from around the function (like return from tracer setup, and the internals of the
-decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight.
-
-
+decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight...
