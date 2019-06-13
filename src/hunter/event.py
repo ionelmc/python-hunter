@@ -329,4 +329,3 @@ def yield_lines(filename, module_globals, start, collector,
             break
         collector(line)
         yield line[amount:]
-

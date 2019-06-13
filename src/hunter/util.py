@@ -103,5 +103,3 @@ def if_same_code(func, code):
         # Attempt to find the decorated function
         func = getattr(func, '__wrapped__', None)
     return None
-
-

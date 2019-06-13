@@ -38,7 +38,7 @@ def _shadowed_dict_newstyle(klass):
         except KeyError:
             pass
         else:
-            if not (type(class_dict) is types.GetSetDescriptorType and
+            if not (type(class_dict) is types.GetSetDescriptorType and  # noqa
                     class_dict.__name__ == "__dict__" and
                     class_dict.__objclass__ is entry):
                 return class_dict
@@ -133,8 +133,7 @@ def getattr_static(obj, attr, default=_sentinel):
     if not _is_type(obj):
         klass = _get_type(obj)
         dict_attr = _shadowed_dict(klass)
-        if (dict_attr is _sentinel or
-            type(dict_attr) is types.MemberDescriptorType):
+        if dict_attr is _sentinel or type(dict_attr) is types.MemberDescriptorType:  # noqa
             instance_result = _check_instance(obj, attr)
     else:
         klass = obj
@@ -144,9 +143,6 @@ def getattr_static(obj, attr, default=_sentinel):
     if instance_result is not _sentinel and klass_result is not _sentinel:
         if _safe_hasattr(klass_result, '__get__') and _safe_is_data_descriptor(klass_result):
             return klass_result
-        # if (_check_class(type(klass_result), '__get__') is not _sentinel and
-        #     _check_class(type(klass_result), '__set__') is not _sentinel):
-        #     return klass_result
 
     if instance_result is not _sentinel:
         return instance_result
