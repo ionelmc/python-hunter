@@ -19,6 +19,7 @@ try:
     from ._actions import Debugger
     from ._actions import Manhole
     from ._actions import VarsPrinter
+    from ._actions import VarsSnooper
     from ._event import Event
     from ._predicates import And as _And
     from ._predicates import From
@@ -34,6 +35,7 @@ except ImportError:
     from .actions import Debugger
     from .actions import Manhole
     from .actions import VarsPrinter
+    from .actions import VarsSnooper
     from .event import Event  # noqa
     from .predicates import And as _And
     from .predicates import From
@@ -60,6 +62,7 @@ __all__ = (
     'Q',
     'Query',
     'VarsPrinter',
+    'VarsSnooper',
     'When',
 
     'stop',

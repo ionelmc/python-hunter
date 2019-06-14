@@ -1,3 +1,4 @@
+import ast
 import re
 import sys
 import weakref
@@ -103,3 +104,17 @@ def if_same_code(func, code):
         # Attempt to find the decorated function
         func = getattr(func, '__wrapped__', None)
     return None
+
+
+def iter_symbols(code):
+    """
+    Iterate all the variable names in the given expression.
+
+    Example:
+
+    * ``self.foobar`` yields ``self``
+    * ``self[foobar]`` yields `self`` and ``foobar``
+    """
+    for node in ast.walk(ast.parse(code)):
+        if isinstance(node, ast.Name):
+            yield node.id

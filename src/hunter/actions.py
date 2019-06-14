@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import ast
 import io
 import os
 import threading
@@ -19,6 +18,7 @@ from .util import MISSING
 from .util import NO_COLORS
 from .util import STRING_TYPES
 from .util import builtins
+from .util import iter_symbols
 
 try:
     from threading import get_ident
@@ -504,24 +504,11 @@ class VarsPrinter(ColorStreamAction):
         if not names:
             raise TypeError('VarsPrinter requires at least one variable name/expression.')
         self.names = {
-            name: set(self._iter_symbols(name))
+            name: set(iter_symbols(name))
             for name in names
         }
         super(VarsPrinter, self).__init__(**options)
 
-    @staticmethod
-    def _iter_symbols(code):
-        """
-        Iterate all the variable names in the given expression.
-
-        Example:
-
-        * ``self.foobar`` yields ``self``
-        * ``self[foobar]`` yields `self`` and ``foobar``
-        """
-        for node in ast.walk(ast.parse(code)):
-            if isinstance(node, ast.Name):
-                yield node.id
 
     def __call__(self, event):
         """
@@ -576,6 +563,7 @@ class VarsPrinter(ColorStreamAction):
                             **self.event_colors
                         )
                     )
+                    first = False
                 else:
                     self.stream.write(
                         '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
@@ -589,4 +577,108 @@ class VarsPrinter(ColorStreamAction):
                             **self.event_colors
                         )
                     )
-                first = False
+
+
+class VarsSnooper(ColorStreamAction):
+    def __init__(self, **options):
+        super(VarsSnooper, self).__init__(**options)
+        self.stored_reprs = defaultdict(dict)
+
+    def __call__(self, event):
+        """
+        Handle event and print the specified variables.
+        """
+        filename = self._format_filename(event)
+        first = True
+
+        self.seen_threads.add(get_ident())
+        if event.tracer.threading_support is False:
+            threading_support = False
+        elif event.tracer.threading_support:
+            threading_support = True
+        else:
+            threading_support = len(self.seen_threads) > 1
+        thread_name = threading.current_thread().name if threading_support else ''
+        thread_align = self.thread_alignment if threading_support else ''
+
+        pid = getpid()
+        if self.force_pid or self.seen_pid != pid:
+            pid = '[{}] '.format(pid)
+            pid_align = self.pid_alignment
+        else:
+            pid = pid_align = ''
+
+        current_reprs = {
+            name: self._try_repr(value)
+            for name, value in event.locals.items()
+        }
+        scope_key = event.code or event.function
+        scope = self.stored_reprs[scope_key]
+        for name, current_repr in sorted(current_reprs.items()):
+            previous_repr = scope.get(name)
+            if previous_repr is None:
+                scope[name] = current_repr
+                if first:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
+                        '{vars-name}{} {vars}:= {reset}{}{vars}]{reset}\n'.format(
+                            filename,
+                            event.lineno,
+                            event.kind,
+                            name,
+                            current_repr,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
+                    first = False
+                else:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
+                        '{vars-name}{} {vars}:= {reset}{}{vars}]{reset}\n'.format(
+                            '',
+                            name,
+                            current_repr,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
+            elif previous_repr != current_repr:
+                scope[name] = current_repr
+                if first:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
+                        '{vars-name}{} {vars}: {reset}{}{vars} => {reset}{}{vars}]{reset}\n'.format(
+                            filename,
+                            event.lineno,
+                            event.kind,
+                            name,
+                            previous_repr,
+                            current_repr,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
+                    first = False
+                else:
+                    self.stream.write(
+                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
+                        '{vars-name}{} {vars}: {reset}{}{vars} => {reset}{}{vars}]{reset}\n'.format(
+                            '',
+                            name,
+                            previous_repr,
+                            current_repr,
+                            pid=pid, pid_align=pid_align,
+                            thread=thread_name, thread_align=thread_align,
+                            align=self.filename_alignment,
+                            **self.event_colors
+                        )
+                    )
+        if event.kind == 'return':
+            del self.stored_reprs[scope_key]

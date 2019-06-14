@@ -14,9 +14,11 @@ from ._actions cimport Action
 from ._actions cimport CallPrinter
 from ._actions cimport CodePrinter
 from ._actions cimport VarsPrinter
+from ._actions cimport VarsSnooper
 from ._actions cimport fast_CallPrinter_call
 from ._actions cimport fast_CodePrinter_call
 from ._actions cimport fast_VarsPrinter_call
+from ._actions cimport fast_VarsSnooper_call
 from ._event cimport Event
 
 __all__ = (
@@ -375,6 +377,8 @@ cdef inline fast_When_call(When self, Event event):
                 fast_CodePrinter_call(<CodePrinter>action, <Event>event)
             elif type(action) is VarsPrinter:
                 fast_VarsPrinter_call(<VarsPrinter>action, <Event>event)
+            elif type(action) is VarsSnooper:
+                fast_VarsSnooper_call(<VarsSnooper>action, <Event>event)
             else:
                 action(event)
 

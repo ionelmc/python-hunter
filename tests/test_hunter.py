@@ -22,6 +22,7 @@ from hunter import Or
 from hunter import Q
 from hunter import Query
 from hunter import VarsPrinter
+from hunter import VarsSnooper
 from hunter import When
 
 try:
@@ -1468,3 +1469,38 @@ def test_function_object(LineMatcher):
         "gf(24)|gf|call",
         "dgf(25)|{}|call".format('dgf' if PY3 else 'missing'),
     ])
+
+
+def test_varssnooper(LineMatcher):
+    lines = StringIO()
+    snooper = VarsSnooper(stream=lines)
+
+    @hunter.wrap(actions=[snooper, CodePrinter(stream=lines)])
+    def a():
+        foo = bar = b = 1
+        b = 2
+        foo = 3
+        foo = bar = 4
+        return b
+
+    a()
+
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*test_hunter.py*  line              foo = bar = b = 1",
+        "*test_hunter.py*  line      [[]b := 1[]]",
+        "*              *  ...       [[]bar := 1[]]",
+        "*              *  ...       [[]foo := 1[]]",
+        "*test_hunter.py*  line              b = 2",
+        "*test_hunter.py*  line      [[]b : 1 => 2[]]",
+        "*test_hunter.py*  line              foo = 3",
+        "*test_hunter.py*  line      [[]foo : 1 => 3[]]",
+        "*test_hunter.py*  line              foo = bar = 4",
+        "*test_hunter.py*  line      [[]bar : 1 => 4[]]",
+        "*              *  ...       [[]foo : 3 => 4[]]",
+        "*test_hunter.py*  line              return b",
+        "*test_hunter.py*  return            return b",
+        "*              *  ...       return value: 2",
+    ])
+    assert snooper.stored_reprs == {}

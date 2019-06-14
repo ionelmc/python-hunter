@@ -48,8 +48,11 @@ cdef class VarsPrinter(ColorStreamAction):
     cdef:
         public dict names
 
-cdef _get_symbols(code)
+cdef class VarsSnooper(ColorStreamAction):
+    cdef:
+        public object stored_reprs
 
 cdef fast_CodePrinter_call(CodePrinter self, Event event)
 cdef fast_CallPrinter_call(CallPrinter self, Event event)
 cdef fast_VarsPrinter_call(VarsPrinter self, Event event)
+cdef fast_VarsSnooper_call(VarsSnooper self, Event event)
