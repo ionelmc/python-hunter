@@ -509,7 +509,6 @@ class VarsPrinter(ColorStreamAction):
         }
         super(VarsPrinter, self).__init__(**options)
 
-
     def __call__(self, event):
         """
         Handle event and print the specified variables.
