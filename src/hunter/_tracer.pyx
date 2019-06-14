@@ -54,18 +54,8 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         fast_CallPrinter_call(<CallPrinter>handler, event)
     elif type(handler) is CodePrinter:
         fast_CodePrinter_call(<CodePrinter>handler, event)
-    elif type(handler) is Query:
-        fast_Query_call(<Query>handler, event)
     elif type(handler) is From:
         fast_From_call(<From>handler, event)
-    elif type(handler) is And:
-        fast_And_call(<And>handler, event)
-    elif type(handler) is Or:
-        fast_Or_call(<Or>handler, event)
-    elif type(handler) is Not:
-        fast_Not_call(<Not>handler, event)
-    elif type(handler) is VarsPrinter:
-        fast_VarsPrinter_call(<VarsPrinter>handler, event)
     elif handler is not None:
         handler(event)
 
