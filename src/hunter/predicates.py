@@ -321,10 +321,7 @@ class From(object):
         self.depth = -1
 
     def __str__(self):
-        return 'From(%s, %s)' % (
-            self.condition,
-            self.predicate
-        )
+        return 'From(%s, %s)' % (self.condition, self.predicate)
 
     def __repr__(self):
         return '<hunter.predicates.From: condition=%r, predicate=%r>' % (self.condition, self.predicate)
