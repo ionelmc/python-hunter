@@ -579,6 +579,15 @@ class VarsPrinter(ColorStreamAction):
 
 
 class VarsSnooper(ColorStreamAction):
+    """
+    A PySnooper-inspired action, similar to :class:`~hunter.actions.VarsPrinter`, but only show variable changes.
+
+    .. warning: Should be considered experimental. Use judiciously.
+
+        * It stores reprs for all seen variables, therefore it can use lots of memory.
+        * Will leak memory if you filter the return events (eg: ``~Q(kind="return")``).
+        * Not thoroughly tested. May misbehave on code with closures/nonlocal variables.
+    """
     def __init__(self, **options):
         super(VarsSnooper, self).__init__(**options)
         self.stored_reprs = defaultdict(dict)
