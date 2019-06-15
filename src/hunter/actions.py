@@ -87,6 +87,9 @@ class Manhole(Action):
 
 
 class ColorStreamAction(Action):
+    """
+    Baseclass for your custom action. Just implement your own ``__call__``.
+    """
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -177,6 +180,13 @@ class ColorStreamAction(Action):
             raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
 
     def try_repr(self, obj):
+        """
+        Safely call ``self.repr_func(obj)``. Failures will have special colored output and output is trimmed according
+        to ``self.repr_limit``.
+
+        Returns: string
+
+        """
         limit = self.repr_limit
         try:
             s = self.repr_func(obj)
@@ -190,6 +200,11 @@ class ColorStreamAction(Action):
             return '{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}'.format(exc, **self.other_colors)
 
     def try_source(self, event, full=False):
+        """
+        Get a failure-colorized source for the given ``event``.
+
+        Return: string
+        """
         source = event.fullsource if full else event.source
         if source.startswith('??? NO SOURCE: '):
             return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}'.format(source[15:], **self.other_colors),
@@ -200,6 +215,11 @@ class ColorStreamAction(Action):
                 event.module, **self.other_colors)
 
     def filename_prefix(self, event=None):
+        """
+        Get an aligned and trimmed filename prefix for the given ``event``.
+
+        Returns: string
+        """
         if event:
             filename = event.filename or '<???>'
             if len(filename) > self.filename_alignment:
@@ -210,6 +230,9 @@ class ColorStreamAction(Action):
             return '{:>{}}       '.format('', self.filename_alignment)
 
     def pid_prefix(self):
+        """
+        Get an aligned and trimmed pid prefix.
+        """
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
             pid = '[{}]'.format(pid)
@@ -219,6 +242,9 @@ class ColorStreamAction(Action):
         return '{:{}}'.format(pid, pid_align)
 
     def thread_prefix(self, event):
+        """
+        Get an aligned and trimmed thread prefix for the given ``event``.
+        """
         self.seen_threads.add(get_ident())
         if event.threading_support is False:
             threading_support = False
@@ -231,6 +257,16 @@ class ColorStreamAction(Action):
         return '{:{}}'.format(thread_name, thread_align)
 
     def output(self, format_str, *args, **kwargs):
+        """
+        Write ``format_str.format(*args, **self.other_color, **kwargs)`` to ``self.stream``.
+
+        Args:
+            format_str: a PEP-3101 format string
+            *args:
+            **kwargs:
+
+        Returns: string
+        """
         self.stream.write(format_str.format(
             *args,
             **dict(self.other_colors, **kwargs)

@@ -38,6 +38,7 @@ Reference
 
     hunter.actions.CallPrinter
     hunter.actions.CodePrinter
+    hunter.actions.ColorStreamAction
     hunter.actions.Debugger
     hunter.actions.Manhole
     hunter.actions.VarsPrinter
@@ -106,11 +107,15 @@ Predicates
 Actions
 -------
 
-.. autoclass:: hunter.actions.CallPrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.ColorStreamAction(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
 
-.. autoclass:: hunter.actions.CodePrinter(stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.CallPrinter(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.actions.CodePrinter(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
 
@@ -122,7 +127,7 @@ Actions
     :members:
     :special-members:
 
-.. autoclass:: hunter.actions.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, filename_alignment=40, force_colors=False, repr_limit=512)
+.. autoclass:: hunter.actions.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
 

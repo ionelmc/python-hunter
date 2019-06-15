@@ -7,17 +7,33 @@ Changelog
 
 * The package now uses setuptools-scm for development builds (available at https://test.pypi.org/project/hunter/). As a
   consequence installing the sdist will download setuptools-scm.
-* The ``hunter.actions`` was fully cythonized. Not a world shattering change but a modest ~20% improvement (because the
-  rest of hunter was already cythonized).
-* Recompiled cython modules with Cython 0.29.9. Hunter can be installed without any cython, as before.
+* Recompiled cython modules with latest Cython. Hunter can be installed without any Cython, as before.
 * Refactored some of the cython modules to have more typing information and not use deprecated property syntax.
 * Replaced ``unsafe_repr`` option with ``repr_func``. Now you can use your custom repr function in the builtin actions.
+  **BACKWARDS INCOMPATIBLE**
 * Fixed buggy filename handling when using Hunter in ipython/jupyter. Source code should be properly displayed now.
 * Removed ``globals`` option from ``VarsPrinter`` action. Globals are now always looked up. **BACKWARDS INCOMPATIBLE**
 * Added support for locals in ``VarsPrinter`` action. Now you can do ``VarsPrinter('len(foobar)')``.
 * Always pass module_globals dict to linecache methods. Source code from PEP-302 loaders is now printed properly.
   Contributed by Mikhail Borisov in `#65 <https://github.com/ionelmc/python-hunter/pull/65>`_.
 * Various code cleanup, style and docstring fixing.
+* Added :func:`hunter.From` helper to allow passing in filters directly as keyword arguments.
+* Added :meth:`hunter.event.Event.detach` for storing events without leaks or side-effects (due to prolonged references
+  to Frame objects, local or global variables).
+* Refactored the internals of actions for easier subclassing.
+
+  Added the
+  :meth:`~hunter.actions.ColorStreamAction.filename_prefix`,
+  :meth:`~hunter.actions.ColorStreamAction.output`,
+  :meth:`~hunter.actions.ColorStreamAction.pid_prefix`,
+  :meth:`~hunter.actions.ColorStreamAction.thread_prefix`,
+  :meth:`~hunter.actions.ColorStreamAction.try_repr` and
+  :meth:`~hunter.actions.ColorStreamAction.try_source` methods
+  to the :class:`hunter.actions.ColorStreamAction` baseclass.
+* Added :class:`hunter.actions.VarsSnooper` - a PySnooper-inspired variant of :class:`~hunter.actions.VarsPrinter`. It
+  will record and show variable changes, with the risk of leaking or using too much memory of course :)
+* Fixed tracers to log error and automatically stop if there's an internal failure. Previously error may have been
+  silently dropped in some situations.
 
 2.2.1 (2019-01-19)
 ------------------
@@ -28,8 +44,8 @@ Changelog
 2.2.0 (2019-01-19)
 ------------------
 
-* Added ``From`` predicate for tracing from a specific point. It stop after returning back to the same call depth with
-  a configurable offset.
+* Added :class:`hunter.predicates.From` predicate for tracing from a specific point. It stop after returning back to the
+  same call depth with a configurable offset.
 * Fixed ``PYTHONHUNTERCONFIG`` not working in some situations (config values were resolved at the wrong time).
 * Made tests in CI test the wheel that will eventually be published to PyPI
   (`tox-wheel <https://pypi.org/project/tox-wheel/>`_).
@@ -54,7 +70,7 @@ Changelog
 2.0.2 (2017-11-24)
 ------------------
 
-* Fixed indentation in ``CallPrinter`` action (shoudln't deindent on exception).
+* Fixed indentation in :class:`hunter.actions.CallPrinter` action (shouldn't deindent on exception).
 * Fixed option filtering in Cython Query implementation (filtering on ``tracer`` was allowed by mistake).
 * Various fixes to docstrings and docs.
 
@@ -66,14 +82,15 @@ Changelog
 2.0.0 (2017-09-02)
 ------------------
 
-* Added the ``Event.count`` and ``Event.calls`` attributes.
+* Added the :attr:`hunter.event.Event.count` and :attr:`hunter.event.Event.calls`` attributes.
 * Added the ``lt``/``lte``/``gt``/``gte`` lookups.
 * Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``), ``contains`` (``has``)
   and ``regex`` (``rx``).
-* Added a convenience ``hunter.wrap`` decorator to start tracing around a function.
+* Added a convenience :func:`hunter.wrap` decorator to start tracing around a function.
 * Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
-* Changed the default action to ``CallPrinter``. You'll need to use ``action=CodePrinter`` if you want the old output.
+* Changed the default action to :class:`hunter.actions.CallPrinter`.
+  You'll need to use ``action=CodePrinter`` if you want the old output.
 
 1.4.1 (2016-09-24)
 ------------------
@@ -89,13 +106,15 @@ Changelog
 1.3.0 (2016-04-14)
 ------------------
 
-* Added ``Event.thread``.
-* Added ``Event.threadid`` and ``Event.threadname`` (available for filtering with ``Q`` objects).
-* Added ``threading_support`` argument to ``hunter.trace``: makes new threads be traced and changes action output to include
-  threadname.
-* Added support for using `pdb++ <https://pypi.python.org/pypi/pdbpp>`_ in the ``Debugger`` action.
-* Added support for using `manhole <https://pypi.python.org/pypi/manhole>`_ via a new ``Manhole`` action.
-* Made the ``handler`` a public but readonly property of ``Tracer`` objects.
+* Added :attr:`hunter.event.Event.thread`.
+* Added :attr:`hunter.event.Event.threadid` and :attr:`hunter.event.Event.threadname`
+  (available for filtering with :func:`hunter.Q`).
+* Added :attr:`hunter.event.Event.threading_support` argument to :func:`hunter.trace`.
+  It makes new threads be traced and changes action output to include thread name.
+* Added support for using `pdb++ <https://pypi.python.org/pypi/pdbpp>`_ in the :class:`hunter.actions.Debugger` action.
+* Added support for using `manhole <https://pypi.python.org/pypi/manhole>`_ via a new :class:`hunter.actions.Manhole`
+  action.
+* Made the :attr:`hunter.event.Event.handler` a public but readonly property.
 
 
 1.2.2 (2016-01-28)
@@ -107,15 +126,16 @@ Changelog
 1.2.1 (2016-01-27)
 ------------------
 
-* Fix "KeyError: 'normal'" bug in ``CallPrinter``. Create the NO_COLORS dict from the COLOR dicts. Some keys were missing.
+* Fix "KeyError: 'normal'" bug in :class:`hunter.actions.CallPrinter`. Create the NO_COLORS dict from the COLOR dicts.
+  Some keys were missing.
 
 1.2.0 (2016-01-24)
 ------------------
 
-* Fixed printouts of objects that return very large string in ``__repr__()``. Trimmed to 512. Configurable in actions with the
-  ``repr_limit`` option.
-* Improved validation of ``VarsPrinter``'s initializer.
-* Added a ``CallPrinter`` action.
+* Fixed printouts of objects that return very large string in ``__repr__()``. Trimmed to 512. Configurable in actions
+  with the ``repr_limit`` option.
+* Improved validation of :class:`hunter.actions.VarsPrinter`'s initializer.
+* Added a :class:`hunter.actions.CallPrinter` action.
 
 1.1.0 (2016-01-21)
 ------------------
@@ -162,8 +182,9 @@ Changelog
 ------------------
 
 * Added a ``clear_env_var`` option on the tracer (disables tracing in subprocess).
-* Added ``force_colors`` option on :class:`VarsPrinter` and :class:`CodePrinter`.
-* Allowed setting the `stream` to a file name (option on :class:`VarsPrinter` and :class:`CodePrinter`).
+* Added ``force_colors`` option on :class:`hunter.actions.VarsPrinter` and :class:`hunter.actions.CodePrinter`.
+* Allowed setting the `stream` to a file name (option on :class:`hunter.actions.VarsPrinter` and
+  :class:`hunter.actions.CodePrinter`).
 * Bumped up the filename alignment to 40 cols.
 * If not merging then `self` is not kept as a previous tracer anymore.
   Closes `#16 <https://github.com/ionelmc/python-hunter/issues/16>`_.
@@ -179,18 +200,18 @@ Changelog
 0.5.1 (2015-04-15)
 ------------------
 
-* Fixed :obj:`Event.globals` to actually be the dict of global vars (it was just the locals).
+* Fixed :attr:`hunter.event.Event.globals` to actually be the dict of global vars (it was just the locals).
 
 0.5.0 (2015-04-06)
 ------------------
 
-* Fixed :class:`And` and :class:`Or` "single argument unwrapping".
+* Fixed :func:`hunter.And` and :func:`hunter.Or` "single argument unwrapping".
 * Implemented predicate compression. Example: ``Or(Or(a, b), c)`` is converted to ``Or(a, b, c)``.
-* Renamed the :obj:`Event.source` to :obj:`Event.fullsource`.
-* Added :obj:`Event.source` that doesn't do any fancy sourcecode tokenization.
-* Fixed :obj:`Event.fullsource` return value for situations where the tokenizer would fail.
+* Renamed :attr:`hunter.event.Event.source` to :attr:`hunter.event.Event.fullsource`.
+* Added :attr:`hunter.event.Event.source` that doesn't do any fancy sourcecode tokenization.
+* Fixed :attr:`hunter.event.Event.fullsource` return value for situations where the tokenizer would fail.
 * Made the print function available in the ``PYTHONHUNTER`` env var payload.
-* Added a __repr__ for :class:`Event`.
+* Added a __repr__ for :class:`hunter.event.Event`.
 
 0.4.0 (2015-03-29)
 ------------------
@@ -221,20 +242,21 @@ Changelog
 ------------------
 
 * Added missing color entry for exception events.
-* Added :obj:`Event.line` property. It returns the source code for the line being run.
+* Added :attr:`hunter.event.Event.line` property. It returns the source code for the line being run.
 
 0.2.0 (2015-03-27)
 ------------------
 
 * Added color support (and ``colorama`` as dependency).
-* Added support for expressions in :class:`VarsPrinter`.
+* Added support for expressions in :class:`hunter.actions.VarsPrinter`.
 * Breaking changes:
 
-  * Renamed ``F`` to :obj:`Q`. And :obj:`Q` is now just a convenience wrapper for :class:`Query`.
+  * Renamed ``F`` to :func:`hunter.Q`. And :func:`hunter.Q` is now just a convenience wrapper for
+    :class:`hunter.predicates.Query`.
   * Renamed the ``PYTHON_HUNTER`` env variable to ``PYTHONHUNTER``.
-  * Changed :class:`When` to take positional arguments.
+  * Changed :class:`hunter.predicates.When` to take positional arguments.
   * Changed output to show 2 path components (still not configurable).
-  * Changed :class:`VarsPrinter` to take positional arguments for the names.
+  * Changed :class:`hunter.actions.VarsPrinter` to take positional arguments for the names.
 * Improved error reporting for env variable activation (``PYTHONHUNTER``).
 * Fixed env var activator (the ``.pth`` file) installation with ``setup.py install`` (the "egg installs") and
   ``setup.py develop``/``pip install -e`` (the "egg links").

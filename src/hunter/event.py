@@ -68,7 +68,7 @@ class Event(object):
         #: :type: int
         self.calls = tracer.calls
 
-        #: A copy of the :ref:`hunter.tracer.Tracer.threading_support` flag.
+        #: A copy of the :attr:`hunter.tracer.Tracer.threading_support` flag.
         #:
         #: .. note::
         #:
