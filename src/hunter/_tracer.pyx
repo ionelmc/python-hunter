@@ -1,5 +1,6 @@
 # cython: linetrace=True, language_level=3str
 import threading
+import traceback
 
 from cpython cimport pystate
 from cpython.ref cimport Py_INCREF
@@ -8,27 +9,19 @@ from cpython.pystate cimport PyThreadState_Get
 
 from ._event cimport Event
 
-from ._predicates cimport fast_And_call
 from ._predicates cimport fast_From_call
-from ._predicates cimport fast_Not_call
-from ._predicates cimport fast_Or_call
-from ._predicates cimport fast_Query_call
 from ._predicates cimport fast_When_call
 
-from ._predicates cimport And
 from ._predicates cimport From
-from ._predicates cimport Not
-from ._predicates cimport Or
-from ._predicates cimport Query
 from ._predicates cimport When
 
 from ._actions cimport CodePrinter
 from ._actions cimport CallPrinter
-from ._actions cimport VarsPrinter
 
 from ._actions cimport fast_CodePrinter_call
 from ._actions cimport fast_CallPrinter_call
-from ._actions cimport fast_VarsPrinter_call
+
+from . import config
 
 __all__ = 'Tracer',
 
@@ -48,16 +41,23 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
 
     cdef Event event = Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self)
 
-    if type(handler) is When:
-        fast_When_call(<When>handler, event)
-    elif type(handler) is CallPrinter:
-        fast_CallPrinter_call(<CallPrinter>handler, event)
-    elif type(handler) is CodePrinter:
-        fast_CodePrinter_call(<CodePrinter>handler, event)
-    elif type(handler) is From:
-        fast_From_call(<From>handler, event)
-    elif handler is not None:
-        handler(event)
+    try:
+        if type(handler) is When:
+            fast_When_call(<When>handler, event)
+        elif type(handler) is CallPrinter:
+            fast_CallPrinter_call(<CallPrinter>handler, event)
+        elif type(handler) is CodePrinter:
+            fast_CodePrinter_call(<CodePrinter>handler, event)
+        elif type(handler) is From:
+            fast_From_call(<From>handler, event)
+        elif handler is not None:
+            handler(event)
+    except Exception as exc:
+        traceback.print_exc(file=config.DEFAULT_STREAM)
+        config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+            handler, exc))
+        self.stop()
+        return 0
 
     if kind == 0:
         self.depth += 1

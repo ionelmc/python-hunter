@@ -1504,3 +1504,8 @@ def test_varssnooper(LineMatcher):
         "*              *  ...       return value: 2",
     ])
     assert snooper.stored_reprs == {}
+
+
+def test_tracer_autostop():
+    with hunter.trace(lambda: garbage) as tracer:
+        assert sys.gettrace() is None

@@ -2,8 +2,10 @@ from __future__ import absolute_import
 
 import sys
 import threading
+import traceback
 
 from .event import Event
+from . import config
 
 __all__ = 'Tracer',
 
@@ -71,7 +73,14 @@ class Tracer(object):
         if self._handler is not None:
             if kind == 'return' and self.depth > 0:
                 self.depth -= 1
-            self._handler(Event(frame, kind, arg, self))
+            try:
+                self._handler(Event(frame, kind, arg, self))
+            except Exception as exc:
+                traceback.print_exc(file=config.DEFAULT_STREAM)
+                config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+                    self._handler, exc))
+                self.stop()
+                return
             if kind == 'call':
                 self.depth += 1
                 self.calls += 1
