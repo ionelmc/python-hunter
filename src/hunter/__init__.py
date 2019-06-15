@@ -22,7 +22,7 @@ try:
     from ._actions import VarsSnooper
     from ._event import Event
     from ._predicates import And as _And
-    from ._predicates import From
+    from ._predicates import From as _From
     from ._predicates import Not as _Not
     from ._predicates import Or as _Or
     from ._predicates import When
@@ -38,7 +38,7 @@ except ImportError:
     from .actions import VarsSnooper
     from .event import Event  # noqa
     from .predicates import And as _And
-    from .predicates import From
+    from .predicates import From as _From
     from .predicates import Not as _Not
     from .predicates import Or as _Or
     from .predicates import When
@@ -182,6 +182,19 @@ def Not(*predicates, **kwargs):
         return _Not(_flatten(_And, *predicates))
     else:
         return _Not(*predicates)
+
+
+def From(predicate=None, condition=None, watermark=0, **kwargs):
+    """
+    Helper that converts keyword arguments to a ``From(Q(**kwargs))``.
+    """
+    if predicate is None and condition is None and watermark == 0:
+        return _From(Q(**kwargs))
+    else:
+        if kwargs:
+            raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
+                kwargs.keys()))
+        return _From(predicate, condition, watermark)
 
 
 def stop():

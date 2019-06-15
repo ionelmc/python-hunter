@@ -1506,6 +1506,13 @@ def test_varssnooper(LineMatcher):
     assert snooper.stored_reprs == {}
 
 
+def test_from_typeerror():
+    pytest.raises(TypeError, From, 1, 2, kind=3)
+    From(1, 2, 3)
+    From(kind=1, function=2)
+    pytest.raises(TypeError, From, junk=1)
+
+
 def test_tracer_autostop():
     with hunter.trace(lambda: garbage) as tracer:
         assert sys.gettrace() is None
