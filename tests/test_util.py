@@ -7,11 +7,10 @@ from socket import socket
 
 import py
 
+from hunter.util import has_dict
 try:
-    from hunter._actions import hasdict
     from hunter._actions import safe_repr
 except ImportError:
-    from hunter.actions import hasdict
     from hunter.actions import safe_repr
 
 
@@ -67,18 +66,18 @@ def test_rudimentary_repr():
     print(safe_repr([[[[[data]]]]]))
 
 
-def test_hasdict():
-    assert hasdict(type(py.io), py.io) is True
+def test_has_dict():
+    assert has_dict(type(py.io), py.io) is True
 
     sock = socket()
-    assert hasdict(type(sock), sock) is False
+    assert has_dict(type(sock), sock) is False
 
     class Foo(object):
         pass
 
-    assert hasdict(Foo, Foo()) is True
+    assert has_dict(Foo, Foo()) is True
 
     class Bar:
         pass
 
-    assert hasdict(Bar, Bar()) is True
+    assert has_dict(Bar, Bar()) is True

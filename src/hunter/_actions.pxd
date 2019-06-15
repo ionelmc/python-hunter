@@ -32,10 +32,12 @@ cdef class ColorStreamAction(Action):
         bint _tty
         object _stream
         public dict event_colors
-        public dict code_colors
+        public dict other_colors
 
-    cdef _try_repr(self, obj)
-    cdef _format_filename(self, event)
+    cpdef try_repr(self, obj)
+    cpdef pid_prefix(self)
+    cpdef thread_prefix(self, event)
+    cpdef filename_prefix(self, event=?)
 
 cdef class CodePrinter(ColorStreamAction):
     cdef _safe_source(self, event)

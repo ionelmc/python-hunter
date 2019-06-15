@@ -1515,4 +1515,7 @@ def test_from_typeerror():
 
 def test_tracer_autostop():
     with hunter.trace(lambda: garbage) as tracer:
-        assert sys.gettrace() is None
+        if os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1":
+            assert sys.gettrace() is not tracer
+        else:
+            assert sys.gettrace() is None

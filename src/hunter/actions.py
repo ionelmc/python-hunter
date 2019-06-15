@@ -12,12 +12,13 @@ from colorama import AnsiToWin32
 
 from . import config
 from .util import BUILTIN_SYMBOLS
+from .util import CALL_COLORS
 from .util import CODE_COLORS
-from .util import EVENT_COLORS
 from .util import MISSING
-from .util import NO_COLORS
+from .util import OTHER_COLORS
 from .util import STRING_TYPES
 from .util import builtins
+from .util import has_dict
 from .util import iter_symbols
 
 try:
@@ -80,7 +81,7 @@ def safe_repr(obj, maxdepth=5):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
-    elif not hasdict(obj_type, obj):
+    elif not has_dict(obj_type, obj):
         return repr(obj)
     else:
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
@@ -92,24 +93,6 @@ BUILTIN_REPR_FUNCS = {
     'repr': repr,
     'safe_repr': safe_repr
 }
-
-
-def hasdict(obj_type, obj, tolerance=25):
-    """
-    A contrived mess to check that object doesn't have a __dit__ but avoid checking it if any ancestor is evil enough to
-    explicitly define __dict__ (like apipkg.ApiModule has __dict__ as a property).
-    """
-    ancestor_types = deque()
-    while obj_type is not type and tolerance:
-        ancestor_types.appendleft(obj_type)
-        obj_type = type(obj_type)
-        tolerance -= 1
-    for ancestor in ancestor_types:
-        __dict__ = getattr(ancestor, '__dict__', None)
-        if __dict__ is not None:
-            if '__dict__' in __dict__:
-                return True
-    return hasattr(obj, '__dict__')
 
 
 class Action(object):
@@ -169,6 +152,9 @@ class ColorStreamAction(Action):
     _stream = None
     _tty = None
     _repr_func = None
+
+    OTHER_COLORS = OTHER_COLORS
+    EVENT_COLORS = CODE_COLORS
 
     def __init__(self,
                  stream=config.Default('stream', None),
@@ -230,13 +216,13 @@ class ColorStreamAction(Action):
         if self.force_colors or (isatty and isatty() and os.name != 'java'):
             self._stream = AnsiToWin32(value, strip=False)
             self._tty = True
-            self.event_colors = EVENT_COLORS
-            self.code_colors = CODE_COLORS
+            self.event_colors = self.EVENT_COLORS
+            self.other_colors = self.OTHER_COLORS
         else:
             self._tty = False
             self._stream = value
-            self.event_colors = NO_COLORS
-            self.code_colors = NO_COLORS
+            self.event_colors = {key: '' for key in self.EVENT_COLORS}
+            self.other_colors = {key: '' for key in self.OTHER_COLORS}
 
     @property
     def repr_func(self):
@@ -251,24 +237,55 @@ class ColorStreamAction(Action):
         else:
             raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
 
-    def _try_repr(self, obj):
+    def try_repr(self, obj):
         limit = self.repr_limit
         try:
             s = self.repr_func(obj)
             s = s.replace('\n', r'\n')
             if len(s) > limit:
                 cutoff = limit // 2
-                return '{} {continuation}[...]{reset} {}'.format(s[:cutoff], s[-cutoff:], **self.event_colors)
+                return '{} {CONT}[...]{RESET} {}'.format(s[:cutoff], s[-cutoff:], **self.other_colors)
             else:
                 return s
         except Exception as exc:
-            return '{internal-failure}!!! FAILED REPR: {internal-detail}{!r}{reset}'.format(exc, **self.event_colors)
+            return '{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}'.format(exc, **self.other_colors)
 
-    def _format_filename(self, event):
-        filename = event.filename or '<???>'
-        if len(filename) > self.filename_alignment:
-            filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-        return filename
+    def filename_prefix(self, event=None):
+        if event:
+            filename = event.filename or '<???>'
+            if len(filename) > self.filename_alignment:
+                filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
+            return '{:>{}}{COLON}:{LINENO}{:<5} '.format(
+                filename, self.filename_alignment, event.lineno, **self.other_colors)
+        else:
+            return '{:>{}}       '.format('', self.filename_alignment)
+
+    def pid_prefix(self):
+        pid = getpid()
+        if self.force_pid or self.seen_pid != pid:
+            pid = '[{}]'.format(pid)
+            pid_align = self.pid_alignment
+        else:
+            pid = pid_align = ''
+        return '{:{}}'.format(pid, pid_align)
+
+    def thread_prefix(self, event):
+        self.seen_threads.add(get_ident())
+        if event.tracer.threading_support is False:
+            threading_support = False
+        elif event.tracer.threading_support:
+            threading_support = True
+        else:
+            threading_support = len(self.seen_threads) > 1
+        thread_name = threading.current_thread().name if threading_support else ''
+        thread_align = self.thread_alignment if threading_support else ''
+        return '{:{}}'.format(thread_name, thread_align)
+
+    def output(self, format_str, *args, **kwargs):
+        self.stream.write(format_str.format(
+            *args,
+            **dict(self.other_colors, **kwargs)
+        ))
 
 
 class CodePrinter(ColorStreamAction):
@@ -289,10 +306,10 @@ class CodePrinter(ColorStreamAction):
             if lines:
                 return lines
             else:
-                return '{source-failure}??? NO SOURCE: {source-detail}' \
-                       'Source code string for module {!r} is empty.'.format(event.module, **self.event_colors),
+                return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}' \
+                       'Source code string for module {!r} is empty.'.format(event.module, **self.other_colors),
         except Exception as exc:
-            return '{source-failure}??? NO SOURCE: {source-detail}{!r}'.format(exc, **self.event_colors),
+            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{!r}'.format(exc, **self.other_colors),
 
     def __call__(self, event):
         """
@@ -300,71 +317,52 @@ class CodePrinter(ColorStreamAction):
         prints values.
         """
         lines = self._safe_source(event)
-        self.seen_threads.add(get_ident())
-        if event.tracer.threading_support is False:
-            threading_support = False
-        elif event.tracer.threading_support:
-            threading_support = True
-        else:
-            threading_support = len(self.seen_threads) > 1
-        thread_name = threading.current_thread().name if threading_support else ''
-        thread_align = self.thread_alignment if threading_support else ''
+        pid_prefix = self.pid_prefix()
+        thread_prefix = self.thread_prefix(event)
+        filename_prefix = self.filename_prefix(event)
 
-        pid = getpid()
-        if self.force_pid or self.seen_pid != pid:
-            pid = '[{}] '.format(pid)
-            pid_align = self.pid_alignment
-        else:
-            pid = pid_align = ''
-
-        self.stream.write(
-            '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
-            '{code}{}{reset}\n'.format(
-                self._format_filename(event),
-                event.lineno,
-                event.kind,
-                lines[0],
-                pid=pid, pid_align=pid_align,
-                thread=thread_name, thread_align=thread_align,
-                align=self.filename_alignment,
-                code=self.code_colors[event.kind],
-                **self.event_colors))
+        self.output(
+            '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+            pid_prefix,
+            thread_prefix,
+            filename_prefix,
+            event.kind,
+            lines[0],
+            COLOR=self.event_colors.get(event.kind),
+        )
         if len(lines) > 1:
+            empty_filename_prefix = self.filename_prefix()
             for line in lines[1:-1]:
-                self.stream.write(
-                    '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
-                        '',
-                        '   |',
-                        line,
-                        pid=pid, pid_align=pid_align,
-                        thread=thread_name, thread_align=thread_align,
-                        align=self.filename_alignment,
-                        code=self.code_colors[event.kind],
-                        **self.event_colors))
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {kind}{:9} {code}{}{reset}\n'.format(
-                    '',
-                    '   *',
-                    lines[-1],
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    code=self.code_colors[event.kind],
-                    **self.event_colors))
+                self.output(
+                    '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    empty_filename_prefix,
+                    '   |',
+                    line,
+                    COLOR=self.event_colors.get(event.kind),
+                )
+            self.output(
+                '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+                pid_prefix,
+                thread_prefix,
+                empty_filename_prefix,
+                '   *',
+                lines[-1],
+                COLOR=self.event_colors.get(event.kind),
+            )
 
         if event.kind in ('return', 'exception'):
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}{:9} {color}{} '
-                'value: {detail}{}{reset}\n'.format(
-                    '',
-                    '...',
-                    event.kind,
-                    self._try_repr(event.arg),
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    color=self.event_colors[event.kind],
-                    **self.event_colors))
+            self.output(
+                '{}{}{}{CONT}{:9} {COLOR}{} value: {NORMAL}{}{RESET}\n',
+                pid_prefix,
+                thread_prefix,
+                self.filename_prefix(),
+                '...',
+                event.kind,
+                self.try_repr(event.arg),
+                COLOR=self.event_colors.get(event.kind),
+            )
 
 
 class CallPrinter(CodePrinter):
@@ -382,6 +380,7 @@ class CallPrinter(CodePrinter):
 
     .. versionadded:: 1.2.0
     """
+    EVENT_COLORS = CALL_COLORS
 
     def __init__(self, **options):
         super(CallPrinter, self).__init__(**options)
@@ -392,97 +391,70 @@ class CallPrinter(CodePrinter):
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
-        filename = self._format_filename(event)
         ident = event.module, event.function
 
-        self.seen_threads.add(get_ident())
-        if event.tracer.threading_support is False:
-            threading_support = False
-        elif event.tracer.threading_support:
-            threading_support = True
-        else:
-            threading_support = len(self.seen_threads) > 1
         thread = threading.current_thread()
-        thread_name = thread.name if threading_support else ''
-        thread_align = self.thread_alignment if threading_support else ''
         stack = self.locals[thread.ident]
 
-        pid = getpid()
-        if self.force_pid or self.seen_pid != pid:
-            pid = '[{}] '.format(pid)
-            pid_align = self.pid_alignment
-        else:
-            pid = pid_align = ''
+        pid_prefix = self.pid_prefix()
+        thread_prefix = self.thread_prefix(event)
+        filename_prefix = self.filename_prefix(event)
 
         if event.kind == 'call':
             code = event.code
             stack.append(ident)
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
-                '{}{call}=>{normal} {}({}{call}{normal}){reset}\n'.format(
-                    filename,
-                    event.lineno,
-                    event.kind,
-                    '   ' * (len(stack) - 1),
-                    event.function,
-                    ', '.join('{vars}{vars-name}{0}{vars}={reset}{1}'.format(
-                        var,
-                        self._try_repr(event.locals.get(var, MISSING)),
-                        **self.event_colors
-                    ) for var in code.co_varnames[:code.co_argcount]),
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    **self.event_colors
-                ))
+            self.output(
+                '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}({}{COLOR}{NORMAL}){RESET}\n',
+                pid_prefix,
+                thread_prefix,
+                filename_prefix,
+                event.kind,
+                '   ' * (len(stack) - 1),
+                event.function,
+                ', '.join('{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}'.format(
+                    var,
+                    self.try_repr(event.locals.get(var, MISSING)),
+                    **self.other_colors
+                ) for var in code.co_varnames[:code.co_argcount]),
+                COLOR=self.event_colors.get(event.kind),
+            )
         elif event.kind == 'exception':
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
-                '{exception}{} !{normal} {}: {reset}{}\n'.format(
-                    filename,
-                    event.lineno,
-                    event.kind,
-                    '   ' * (len(stack) - 1),
-                    event.function,
-                    self._try_repr(event.arg),
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    **self.event_colors
-                ))
+            self.output(
+                '{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n',
+                pid_prefix,
+                thread_prefix,
+                filename_prefix,
+                event.kind,
+                '   ' * (len(stack) - 1),
+                event.function,
+                self.try_repr(event.arg),
+                COLOR=self.event_colors.get(event.kind),
+            )
 
         elif event.kind == 'return':
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
-                '{return}{}<={normal} {}: {reset}{}\n'.format(
-                    filename,
-                    event.lineno,
-                    event.kind,
-                    '   ' * (len(stack) - 1),
-                    event.function,
-                    self._try_repr(event.arg),
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    **self.event_colors
-                ))
+            self.output(
+                '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}: {RESET}{}\n',
+                pid_prefix,
+                thread_prefix,
+                filename_prefix,
+                event.kind,
+                '   ' * (len(stack) - 1),
+                event.function,
+                self.try_repr(event.arg),
+                COLOR=self.event_colors.get(event.kind),
+            )
             if stack and stack[-1] == ident:
                 stack.pop()
         else:
-            self.stream.write(
-                '{pid:{pid_align}}{thread:{thread_align}}{filename}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} '
-                '{reset}{}{}\n'.format(
-                    filename,
-                    event.lineno,
-                    event.kind,
-                    '   ' * len(stack),
-                    event.source.strip(),
-                    pid=pid, pid_align=pid_align,
-                    thread=thread_name, thread_align=thread_align,
-                    align=self.filename_alignment,
-                    code=self.code_colors[event.kind],
-                    **self.event_colors
-                ))
+            self.output(
+                '{}{}{}{KIND}{:9} {RESET}{}{}\n',
+                pid_prefix,
+                thread_prefix,
+                filename_prefix,
+                event.kind,
+                '   ' * len(stack),
+                event.source.strip(),
+            )
 
 
 class VarsPrinter(ColorStreamAction):
@@ -513,28 +485,16 @@ class VarsPrinter(ColorStreamAction):
         """
         Handle event and print the specified variables.
         """
-        filename = self._format_filename(event)
         first = True
+
         frame_symbols = set(event.locals)
         frame_symbols.update(BUILTIN_SYMBOLS)
         frame_symbols.update(event.globals)
 
-        self.seen_threads.add(get_ident())
-        if event.tracer.threading_support is False:
-            threading_support = False
-        elif event.tracer.threading_support:
-            threading_support = True
-        else:
-            threading_support = len(self.seen_threads) > 1
-        thread_name = threading.current_thread().name if threading_support else ''
-        thread_align = self.thread_alignment if threading_support else ''
-
-        pid = getpid()
-        if self.force_pid or self.seen_pid != pid:
-            pid = '[{}] '.format(pid)
-            pid_align = self.pid_alignment
-        else:
-            pid = pid_align = ''
+        pid_prefix = self.pid_prefix()
+        thread_prefix = self.thread_prefix(event)
+        filename_prefix = self.filename_prefix(event)
+        empty_filename_prefix = self.filename_prefix()
 
         for code, symbols in self.names.items():
             try:
@@ -542,39 +502,30 @@ class VarsPrinter(ColorStreamAction):
             except AttributeError:
                 continue
             except Exception as exc:
-                printout = '{internal-failure}FAILED EVAL: {internal-detail}{!r}'.format(exc, **self.event_colors)
+                printout = '{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}'.format(exc, **self.other_colors)
             else:
-                printout = self._try_repr(obj)
+                printout = self.try_repr(obj)
 
             if frame_symbols >= symbols:
                 if first:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
-                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
-                            filename,
-                            event.lineno,
-                            event.kind,
-                            code,
-                            printout,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        filename_prefix,
+                        event.kind,
+                        code,
+                        printout,
                     )
                     first = False
                 else:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
-                        '{vars-name}{} {vars}=> {reset}{}{vars}]{reset}\n'.format(
-                            '',
-                            code,
-                            printout,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{CONT}...       {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        empty_filename_prefix,
+                        code,
+                        printout,
                     )
 
 
@@ -596,28 +547,15 @@ class VarsSnooper(ColorStreamAction):
         """
         Handle event and print the specified variables.
         """
-        filename = self._format_filename(event)
         first = True
 
-        self.seen_threads.add(get_ident())
-        if event.tracer.threading_support is False:
-            threading_support = False
-        elif event.tracer.threading_support:
-            threading_support = True
-        else:
-            threading_support = len(self.seen_threads) > 1
-        thread_name = threading.current_thread().name if threading_support else ''
-        thread_align = self.thread_alignment if threading_support else ''
-
-        pid = getpid()
-        if self.force_pid or self.seen_pid != pid:
-            pid = '[{}] '.format(pid)
-            pid_align = self.pid_alignment
-        else:
-            pid = pid_align = ''
+        pid_prefix = self.pid_prefix()
+        thread_prefix = self.thread_prefix(event)
+        filename_prefix = self.filename_prefix(event)
+        empty_filename_prefix = self.filename_prefix()
 
         current_reprs = {
-            name: self._try_repr(value)
+            name: self.try_repr(value)
             for name, value in event.locals.items()
         }
         scope_key = event.code or event.function
@@ -627,66 +565,50 @@ class VarsSnooper(ColorStreamAction):
             if previous_repr is None:
                 scope[name] = current_repr
                 if first:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
-                        '{vars-name}{} {vars}:= {reset}{}{vars}]{reset}\n'.format(
-                            filename,
-                            event.lineno,
-                            event.kind,
-                            name,
-                            current_repr,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        filename_prefix,
+                        event.kind,
+                        name,
+                        current_repr,
                     )
                     first = False
                 else:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
-                        '{vars-name}{} {vars}:= {reset}{}{vars}]{reset}\n'.format(
-                            '',
-                            name,
-                            current_repr,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        empty_filename_prefix,
+                        '...',
+                        name,
+                        current_repr,
                     )
             elif previous_repr != current_repr:
                 scope[name] = current_repr
                 if first:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}{colon}:{lineno}{:<5} {kind}{:9} {vars}['
-                        '{vars-name}{} {vars}: {reset}{}{vars} => {reset}{}{vars}]{reset}\n'.format(
-                            filename,
-                            event.lineno,
-                            event.kind,
-                            name,
-                            previous_repr,
-                            current_repr,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        filename_prefix,
+                        event.kind,
+                        name,
+                        previous_repr,
+                        current_repr,
                     )
                     first = False
                 else:
-                    self.stream.write(
-                        '{pid:{pid_align}}{thread:{thread_align}}{:>{align}}       {continuation}...       {vars}['
-                        '{vars-name}{} {vars}: {reset}{}{vars} => {reset}{}{vars}]{reset}\n'.format(
-                            '',
-                            name,
-                            previous_repr,
-                            current_repr,
-                            pid=pid, pid_align=pid_align,
-                            thread=thread_name, thread_align=thread_align,
-                            align=self.filename_alignment,
-                            **self.event_colors
-                        )
+                    self.output(
+                        '{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n',
+                        pid_prefix,
+                        thread_prefix,
+                        empty_filename_prefix,
+                        '...',
+                        name,
+                        previous_repr,
+                        current_repr,
                     )
         if event.kind == 'return':
             del self.stored_reprs[scope_key]

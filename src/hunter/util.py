@@ -2,6 +2,7 @@ import ast
 import re
 import sys
 import weakref
+from collections import deque
 from itertools import chain
 
 from colorama import Back
@@ -35,24 +36,32 @@ if PY3:
 else:
     STRING_TYPES = basestring,  # noqa
 
-EVENT_COLORS = {
-    'reset': Style.RESET_ALL,
-    'normal': Style.NORMAL,
-    'filename': '',
-    'colon': Style.BRIGHT + Fore.BLACK,
-    'lineno': Style.RESET_ALL,
-    'kind': Fore.CYAN,
-    'continuation': Style.BRIGHT + Fore.BLACK,
+OTHER_COLORS = {
+    'COLON': Style.BRIGHT + Fore.BLACK,
+    'LINENO': Style.RESET_ALL,
+    'KIND': Fore.CYAN,
+    'CONT': Style.BRIGHT + Fore.BLACK,
+    'VARS': Style.BRIGHT + Fore.MAGENTA,
+    'VARS-NAME': Style.NORMAL + Fore.MAGENTA,
+    'INTERNAL-FAILURE': Style.BRIGHT + Back.RED + Fore.RED,
+    'INTERNAL-DETAIL': Fore.WHITE,
+    'SOURCE-FAILURE': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
+    'SOURCE-DETAIL': Fore.WHITE,
+
+    'RESET': Style.RESET_ALL,
+}
+for name, group in [
+    ('', Style),
+    ('fore', Fore),
+    ('back', Back),
+]:
+    for key in dir(group):
+        OTHER_COLORS['{}({})'.format(name, key) if name else key] = getattr(group, key)
+CALL_COLORS = {
     'call': Style.BRIGHT + Fore.BLUE,
+    'line': Fore.RESET,
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
-    'detail': Style.NORMAL,
-    'vars': Style.BRIGHT + Fore.MAGENTA,
-    'vars-name': Style.NORMAL + Fore.MAGENTA,
-    'internal-failure': Style.BRIGHT + Back.RED + Fore.RED,
-    'internal-detail': Fore.WHITE,
-    'source-failure': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
-    'source-detail': Fore.WHITE,
 }
 CODE_COLORS = {
     'call': Fore.RESET + Style.BRIGHT,
@@ -60,7 +69,6 @@ CODE_COLORS = {
     'return': Fore.YELLOW,
     'exception': Fore.RED,
 }
-NO_COLORS = {key: '' for key in chain(CODE_COLORS, EVENT_COLORS)}
 MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
 BUILTIN_SYMBOLS = set(vars(builtins))
 CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
@@ -118,3 +126,21 @@ def iter_symbols(code):
     for node in ast.walk(ast.parse(code)):
         if isinstance(node, ast.Name):
             yield node.id
+
+
+def has_dict(obj_type, obj, tolerance=25):
+    """
+    A contrived mess to check that object doesn't have a __dit__ but avoid checking it if any ancestor is evil enough to
+    explicitly define __dict__ (like apipkg.ApiModule has __dict__ as a property).
+    """
+    ancestor_types = deque()
+    while obj_type is not type and tolerance:
+        ancestor_types.appendleft(obj_type)
+        obj_type = type(obj_type)
+        tolerance -= 1
+    for ancestor in ancestor_types:
+        __dict__ = getattr(ancestor, '__dict__', None)
+        if __dict__ is not None:
+            if '__dict__' in __dict__:
+                return True
+    return hasattr(obj, '__dict__')

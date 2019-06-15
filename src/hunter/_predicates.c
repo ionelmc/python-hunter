@@ -844,6 +844,19 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_9___str__;
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_10_genexpr;
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_11___str__;
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_12_genexpr;
+struct __pyx_opt_args_6hunter_8_actions_17ColorStreamAction_filename_prefix;
+
+/* "_actions.pxd":40
+ *     cpdef pid_prefix(self)
+ *     cpdef thread_prefix(self, event)
+ *     cpdef filename_prefix(self, event=?)             # <<<<<<<<<<<<<<
+ * 
+ * cdef class CodePrinter(ColorStreamAction):
+ */
+struct __pyx_opt_args_6hunter_8_actions_17ColorStreamAction_filename_prefix {
+  int __pyx_n;
+  PyObject *event;
+};
 
 /* "_tracer.pxd":28
  * 
@@ -954,12 +967,12 @@ struct __pyx_obj_6hunter_8_actions_ColorStreamAction {
   int _tty;
   PyObject *_stream;
   PyObject *event_colors;
-  PyObject *code_colors;
+  PyObject *other_colors;
 };
 
 
-/* "_actions.pxd":40
- *     cdef _format_filename(self, event)
+/* "_actions.pxd":42
+ *     cpdef filename_prefix(self, event=?)
  * 
  * cdef class CodePrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
  *     cdef _safe_source(self, event)
@@ -970,7 +983,7 @@ struct __pyx_obj_6hunter_8_actions_CodePrinter {
 };
 
 
-/* "_actions.pxd":43
+/* "_actions.pxd":45
  *     cdef _safe_source(self, event)
  * 
  * cdef class CallPrinter(CodePrinter):             # <<<<<<<<<<<<<<
@@ -983,7 +996,7 @@ struct __pyx_obj_6hunter_8_actions_CallPrinter {
 };
 
 
-/* "_actions.pxd":47
+/* "_actions.pxd":49
  *         public object locals
  * 
  * cdef class VarsPrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
@@ -996,7 +1009,7 @@ struct __pyx_obj_6hunter_8_actions_VarsPrinter {
 };
 
 
-/* "_actions.pxd":51
+/* "_actions.pxd":53
  *         public dict names
  * 
  * cdef class VarsSnooper(ColorStreamAction):             # <<<<<<<<<<<<<<
@@ -1313,14 +1326,16 @@ static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_ev
  */
 
 struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction {
-  PyObject *(*_try_repr)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *);
-  PyObject *(*_format_filename)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *);
+  PyObject *(*try_repr)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*pid_prefix)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, int __pyx_skip_dispatch);
+  PyObject *(*thread_prefix)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*filename_prefix)(struct __pyx_obj_6hunter_8_actions_ColorStreamAction *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_8_actions_17ColorStreamAction_filename_prefix *__pyx_optional_args);
 };
 static struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction *__pyx_vtabptr_6hunter_8_actions_ColorStreamAction;
 
 
-/* "_actions.pxd":40
- *     cdef _format_filename(self, event)
+/* "_actions.pxd":42
+ *     cpdef filename_prefix(self, event=?)
  * 
  * cdef class CodePrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
  *     cdef _safe_source(self, event)
@@ -1334,7 +1349,7 @@ struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter {
 static struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter *__pyx_vtabptr_6hunter_8_actions_CodePrinter;
 
 
-/* "_actions.pxd":43
+/* "_actions.pxd":45
  *     cdef _safe_source(self, event)
  * 
  * cdef class CallPrinter(CodePrinter):             # <<<<<<<<<<<<<<
@@ -1348,7 +1363,7 @@ struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter {
 static struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter *__pyx_vtabptr_6hunter_8_actions_CallPrinter;
 
 
-/* "_actions.pxd":47
+/* "_actions.pxd":49
  *         public object locals
  * 
  * cdef class VarsPrinter(ColorStreamAction):             # <<<<<<<<<<<<<<
@@ -1362,7 +1377,7 @@ struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter {
 static struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter *__pyx_vtabptr_6hunter_8_actions_VarsPrinter;
 
 
-/* "_actions.pxd":51
+/* "_actions.pxd":53
  *         public dict names
  * 
  * cdef class VarsSnooper(ColorStreamAction):             # <<<<<<<<<<<<<<
@@ -25096,17 +25111,17 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_6hunter_8_actions_ColorStreamAction) __PYX_ERR(6, 18, __pyx_L1_error)
   __pyx_vtabptr_6hunter_8_actions_ColorStreamAction = (struct __pyx_vtabstruct_6hunter_8_actions_ColorStreamAction*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_ColorStreamAction->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_ColorStreamAction)) __PYX_ERR(6, 18, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_CodePrinter = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "CodePrinter", sizeof(struct __pyx_obj_6hunter_8_actions_CodePrinter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_8_actions_CodePrinter) __PYX_ERR(6, 40, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_8_actions_CodePrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CodePrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CodePrinter)) __PYX_ERR(6, 40, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_8_actions_CodePrinter) __PYX_ERR(6, 42, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_8_actions_CodePrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CodePrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CodePrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CodePrinter)) __PYX_ERR(6, 42, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_CallPrinter = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "CallPrinter", sizeof(struct __pyx_obj_6hunter_8_actions_CallPrinter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_8_actions_CallPrinter) __PYX_ERR(6, 43, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_8_actions_CallPrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CallPrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CallPrinter)) __PYX_ERR(6, 43, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_8_actions_CallPrinter) __PYX_ERR(6, 45, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_8_actions_CallPrinter = (struct __pyx_vtabstruct_6hunter_8_actions_CallPrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_CallPrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_CallPrinter)) __PYX_ERR(6, 45, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_VarsPrinter = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "VarsPrinter", sizeof(struct __pyx_obj_6hunter_8_actions_VarsPrinter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_8_actions_VarsPrinter) __PYX_ERR(6, 47, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_8_actions_VarsPrinter = (struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_VarsPrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_VarsPrinter)) __PYX_ERR(6, 47, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_8_actions_VarsPrinter) __PYX_ERR(6, 49, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_8_actions_VarsPrinter = (struct __pyx_vtabstruct_6hunter_8_actions_VarsPrinter*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_VarsPrinter->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_VarsPrinter)) __PYX_ERR(6, 49, __pyx_L1_error)
   __pyx_ptype_6hunter_8_actions_VarsSnooper = __Pyx_ImportType(__pyx_t_2, "hunter._actions", "VarsSnooper", sizeof(struct __pyx_obj_6hunter_8_actions_VarsSnooper), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_8_actions_VarsSnooper) __PYX_ERR(6, 51, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_8_actions_VarsSnooper = (struct __pyx_vtabstruct_6hunter_8_actions_VarsSnooper*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_VarsSnooper->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_VarsSnooper)) __PYX_ERR(6, 51, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_8_actions_VarsSnooper) __PYX_ERR(6, 53, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_8_actions_VarsSnooper = (struct __pyx_vtabstruct_6hunter_8_actions_VarsSnooper*)__Pyx_GetVtable(__pyx_ptype_6hunter_8_actions_VarsSnooper->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_8_actions_VarsSnooper)) __PYX_ERR(6, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
