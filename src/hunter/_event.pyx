@@ -11,6 +11,8 @@ from tokenize import generate_tokens
 
 from cpython.pythread cimport PyThread_get_thread_ident
 
+from ._tracer cimport Tracer
+
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import CYTHON_SUFFIX_RE
@@ -18,8 +20,6 @@ from .util import LEADING_WHITESPACE_RE
 from .util import get_func_in_mro
 from .util import get_main_thread
 from .util import if_same_code
-
-from ._tracer cimport Tracer
 
 __all__ = 'Event',
 
@@ -40,23 +40,70 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __cinit__(self, FrameType frame, str kind, object arg, Tracer tracer):
+    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer):
         self.arg = arg
         self.frame = frame
         self.kind = kind
         self.depth = tracer.depth
         self.calls = tracer.calls
-        self.tracer = tracer
+        self.threading_support = tracer.threading_support
 
+        self._code = UNSET
         self._filename = UNSET
         self._fullsource = UNSET
+        self._function_object = UNSET
+        self._function = UNSET
+        self._globals = UNSET
         self._lineno = UNSET
+        self._locals = UNSET
         self._module = UNSET
         self._source = UNSET
         self._stdlib = UNSET
-        self._thread = UNSET
         self._threadidn = UNSET
         self._threadname = UNSET
+        self._thread = UNSET
+
+    def detach(self):
+        """
+        Return a copy of the event with references to live objects (like the frame) removed. You should use this if you
+        want to store or use the event outside the handler.
+
+        You should use this if you want to avoid memory leaks or side-effects when storing the events.
+
+        .. note::
+
+            The ``arg``, ``thread``, ``globals`` and ``locals`` will be emptied. Save them if really necessary.
+
+            Suggestion (if you're in a :class:`~hunter.actions.ColorStreamAction` subclass):
+
+            .. sourcecode::
+
+                self.try_repr(event.arg)
+        """
+        event = <Event>Event.__new__(Event)
+
+        event._code = self.code
+        event._filename = self.filename
+        event._fullsource = self.fullsource
+        event._function = self.function
+        event._lineno = self.lineno
+        event._module = self.module
+        event._source = self.source
+        event._stdlib = self.stdlib
+        event._threadidn = self.threadid
+        event._threadname = self.threadname
+
+        event._function_object = None
+        event._globals = {}
+        event._locals = {}
+        event._thread = None
+
+        event.threading_support = self.threading_support
+        event.calls = self.calls
+        event.depth = self.depth
+        event.kind = self.kind
+
+        return event
 
     @property
     def threadid(self):
@@ -87,48 +134,50 @@ cdef class Event:
 
     @property
     def locals(self):
-        return self._get_locals()
-
-    cdef object _get_locals(self):
-        PyFrame_FastToLocals(self.frame)
-        return self.frame.f_locals
+        if self._locals is UNSET:
+            PyFrame_FastToLocals(self.frame)
+            self._locals = self.frame.f_locals
+        return self._locals
 
     @property
     def globals(self):
-        return self._get_globals()
-
-    cdef object _get_globals(self):
-        return self.frame.f_globals
+        if self._globals is UNSET:
+            self._globals = self.frame.f_globals
+        return self._globals
 
     @property
     def function(self):
-        return self.frame.f_code.co_name
+        if self._function is UNSET:
+            self._function = self.frame.f_code.co_name
+        return self._function
 
     @property
     def function_object(self):
-        code = self.frame.f_code
-        if code.co_name is None:
-            return None
-        # First, try to find the function in globals
-        candidate = self.frame.f_globals.get(code.co_name, None)
-        func = if_same_code(candidate, code)
-        # If that failed, as will be the case with class and instance methods, try
-        # to look up the function from the first argument. In the case of class/instance
-        # methods, this should be the class (or an instance of the class) on which our
-        # method is defined.
-        if func is None and code.co_argcount >= 1:
-            first_arg = self.frame.f_locals.get(code.co_varnames[0])
-            func = get_func_in_mro(first_arg, code)
-        # If we still can't find the function, as will be the case with static methods,
-        # try looking at classes in global scope.
-        if func is None:
-            for v in self.frame.f_globals.values():
-                if not isinstance(v, type):
-                    continue
-                func = get_func_in_mro(v, code)
-                if func is not None:
-                    break
-        return func
+        if self._function_object is UNSET:
+            code = self.frame.f_code
+            if code.co_name is None:
+                return None
+            # First, try to find the function in globals
+            candidate = self.frame.f_globals.get(code.co_name, None)
+            func = if_same_code(candidate, code)
+            # If that failed, as will be the case with class and instance methods, try
+            # to look up the function from the first argument. In the case of class/instance
+            # methods, this should be the class (or an instance of the class) on which our
+            # method is defined.
+            if func is None and code.co_argcount >= 1:
+                first_arg = self.frame.f_locals.get(code.co_varnames[0])
+                func = get_func_in_mro(first_arg, code)
+            # If we still can't find the function, as will be the case with static methods,
+            # try looking at classes in global scope.
+            if func is None:
+                for v in self.frame.f_globals.values():
+                    if not isinstance(v, type):
+                        continue
+                    func = get_func_in_mro(v, code)
+                    if func is not None:
+                        break
+            self._function_object = func
+        return self._function_object
 
     @property
     def module(self):
@@ -169,7 +218,10 @@ cdef class Event:
 
     @property
     def code(self):
-        return self.frame.f_code
+        if self._code is UNSET:
+            return self.frame.f_code
+        else:
+            return self._code
 
     @property
     def stdlib(self):
@@ -190,12 +242,28 @@ cdef class Event:
 
     @property
     def fullsource(self):
+        cdef list lines
+
         if self._fullsource is UNSET:
             try:
-                self._fullsource = self._raw_fullsource
+                self._fullsource = None
+
+                if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
+                    lines = []
+                    try:
+                        for _, token, _, _, line in generate_tokens(partial(
+                                next,
+                                yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
+                        )):
+                            if token in ("def", "class", "lambda"):
+                                self._fullsource = ''.join(lines)
+                                break
+                    except TokenError:
+                        pass
+                if self._fullsource is None:
+                    self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
             except Exception as exc:
                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
-
         return self._fullsource
 
     @property
@@ -209,24 +277,6 @@ cdef class Event:
                 self._source = "??? NO SOURCE: {!r}".format(exc)
 
         return self._source
-
-    @property
-    def _raw_fullsource(self):
-        cdef list lines
-
-        if self.kind == 'call' and self.code.co_name != "<module>":
-            lines = []
-            try:
-                for _, token, _, _, line in generate_tokens(partial(
-                    next,
-                    yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
-                )):
-                    if token in ("def", "class", "lambda"):
-                        return ''.join(lines)
-            except TokenError:
-                pass
-
-        return getline(self.filename, self.lineno, self.frame.f_globals)
 
     def __getitem__(self, item):
         return getattr(self, item)

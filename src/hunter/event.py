@@ -37,9 +37,6 @@ class Event(object):
     frame = None
     kind = None
     arg = None
-    tracer = None
-    threadid = None
-    threadname = None
     depth = None
     calls = None
 
@@ -71,15 +68,14 @@ class Event(object):
         #: :type: int
         self.calls = tracer.calls
 
-        #: A reference to the Tracer object.
+        #: A copy of the :ref:`hunter.tracer.Tracer.threading_support` flag.
         #:
         #: .. note::
         #:
-        #:  Not allowed in the builtin predicates (it's the actual :class:`~hunter.tracer.Tracer` object).
-        #:  You may access it from your custom predicate though.
+        #:  Not allowed in the builtin predicates. You may access it from your custom predicate though.
         #:
-        #: :type: :class:`hunter.tracer.Tracer`
-        self.tracer = tracer
+        #: :type: bool or None
+        self.threading_support = tracer.threading_support
 
     def __eq__(self, other):
         return (
@@ -90,6 +86,48 @@ class Event(object):
             self.module == other.module and
             self.filename == other.filename
         )
+
+    def detach(self):
+        """
+        Return a copy of the event with references to live objects (like the frame) removed. You should use this if you
+        want to store or use the event outside the handler.
+
+        You should use this if you want to avoid memory leaks or side-effects when storing the events.
+
+        .. note::
+
+            The ``arg``, ``thread``, ``globals`` and ``locals`` will be emptied. Save them if really necessary.
+
+            Suggestion (if you're in a :class:`~hunter.actions.ColorStreamAction` subclass):
+
+            .. sourcecode::
+
+                self.try_repr(event.arg)
+        """
+        event = Event.__new__(Event)
+
+        event.__dict__['code'] = self.code
+        event.__dict__['filename'] = self.filename
+        event.__dict__['fullsource'] = self.fullsource
+        event.__dict__['function'] = self.function
+        event.__dict__['lineno'] = self.lineno
+        event.__dict__['module'] = self.module
+        event.__dict__['source'] = self.source
+        event.__dict__['stdlib'] = self.stdlib
+        event.__dict__['threadid'] = self.threadid
+        event.__dict__['threadname'] = self.threadname
+
+        event.__dict__['function_object'] = None
+        event.__dict__['globals'] = {}
+        event.__dict__['locals'] = {}
+        event.__dict__['thread'] = None
+
+        event.threading_support = self.threading_support
+        event.calls = self.calls
+        event.depth = self.depth
+        event.kind = self.kind
+
+        return event
 
     @cached_property
     def threadid(self):
@@ -276,7 +314,19 @@ class Event(object):
         :type: str
         """
         try:
-            return self._raw_fullsource
+            if self.kind == 'call' and self.code.co_name != '<module>':
+                lines = []
+                try:
+                    for _, token, _, _, line in tokenize.generate_tokens(partial(
+                        next,
+                        yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines.append)
+                    )):
+                        if token in ('def', 'class', 'lambda'):
+                            return ''.join(lines)
+                except tokenize.TokenError:
+                    pass
+
+            return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
             return '??? NO SOURCE: {!r}'.format(exc)
 
@@ -290,27 +340,11 @@ class Event(object):
         :type: str
         """
         if self.filename.endswith(('.so', '.pyd')):
-            return '??? NO SOURCE: not reading {} file'.format(splitext(basename(self.filename))[1])
+            return '??? NO SOURCE: not reading binary {} file'.format(splitext(basename(self.filename))[1])
         try:
             return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
             return '??? NO SOURCE: {!r}'.format(exc)
-
-    @cached_property
-    def _raw_fullsource(self):
-        if self.kind == 'call' and self.code.co_name != '<module>':
-            lines = []
-            try:
-                for _, token, _, _, line in tokenize.generate_tokens(partial(
-                    next,
-                    yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines.append)
-                )):
-                    if token in ('def', 'class', 'lambda'):
-                        return ''.join(lines)
-            except tokenize.TokenError:
-                pass
-
-        return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
 
     __getitem__ = object.__getattribute__
 

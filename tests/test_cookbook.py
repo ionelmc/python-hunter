@@ -1,5 +1,6 @@
 import contextlib
 import functools
+import opcode
 import os
 import sys
 from logging import getLogger
@@ -99,7 +100,10 @@ def silenced4():
 
 
 def notsilenced():
-    error()
+    try:
+        error()
+    except Exception as exc:
+        raise ValueError(exc)
 
 
 class DumpExceptions(hunter.CodePrinter):
@@ -113,21 +117,53 @@ class DumpExceptions(hunter.CodePrinter):
             self.should_trace = True
             self.depth = event.depth
             self.count = 0
-            self.output("{fore(YELLOW)}{} tracing on exception ({}){RESET_ALL}\n",
+            self.output("{BRIGHT}{fore(BLUE)}{} tracing on exception: {}{RESET}\n",
                         ">" * 46, self.try_repr(event.arg[1]))
             super(DumpExceptions, self).__call__(event)
         elif self.should_trace:
             super(DumpExceptions, self).__call__(event)
             if event.kind == 'return':  # stop if function returned
                 self.should_trace = False
-                self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET_ALL}\n",
+                self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
                             "-" * 46)
             elif event.depth > self.depth + 1:  # too many details
                 return
             elif self.count > 10:  # bail out on too many lines
                 self.should_trace = False
-                self.output("{BRIGHT}{fore(BLACK)}{:>46} too many lines{RESET_ALL}\n",
+                self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
                             "-" * 46)
+
+
+class DumpExceptions(hunter.CodePrinter):
+    events = None
+    depth = 0
+    count = 0
+
+    def __call__(self, event):
+        self.count += 1
+        if event.kind == 'exception':  # something interesting happened ;)
+            self.events = [event.detach()]
+            self.exc = self.try_repr(event.arg[1])
+            self.depth = event.depth
+            self.count = 0
+        elif self.events:
+            if event.kind == 'return':  # stop if function returned
+                if event.arg or opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
+                    self.output("{BRIGHT}{fore(BLUE)}{} trace of exception: {}{RESET}\n",
+                                ">" * 46, self.exc)
+                    for event in self.events:
+                        super(DumpExceptions, self).__call__(event)
+                    if self.count > 10:
+                        self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
+                                    "-" * 46)
+                    else:
+                        self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
+                                    "-" * 46)
+                self.events = []
+            elif event.depth > self.depth + 1:  # too many details
+                return
+            elif self.count < 10:
+                self.events.append(event.detach())
 
 
 def test_dump_exceptions():
@@ -154,7 +190,7 @@ def test_dump_exceptions():
         try:
             notsilenced()
             print("Done not silenced")
-        except Exception:
+        except ValueError:
             pass
 
 

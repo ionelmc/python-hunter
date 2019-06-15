@@ -865,16 +865,20 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  */
 struct __pyx_obj_6hunter_6_event_Event {
   PyObject_HEAD
-  struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtab;
   PyFrameObject *frame;
   PyObject *kind;
   PyObject *arg;
   int depth;
   int calls;
-  struct __pyx_obj_6hunter_7_tracer_Tracer *tracer;
+  int threading_support;
+  PyObject *_code;
   PyObject *_filename;
   PyObject *_fullsource;
+  PyObject *_function;
+  PyObject *_function_object;
+  PyObject *_globals;
   PyObject *_lineno;
+  PyObject *_locals;
   PyObject *_module;
   PyObject *_source;
   PyObject *_stdlib;
@@ -1162,21 +1166,6 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_12_genexpr {
   Py_ssize_t __pyx_t_1;
 };
 
-
-
-/* "_event.pxd":11
- * 
- * @cython.final
- * cdef class Event:             # <<<<<<<<<<<<<<
- *     cdef:
- *         readonly FrameType frame
- */
-
-struct __pyx_vtabstruct_6hunter_6_event_Event {
-  PyObject *(*_get_globals)(struct __pyx_obj_6hunter_6_event_Event *);
-  PyObject *(*_get_locals)(struct __pyx_obj_6hunter_6_event_Event *);
-};
-static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_event_Event;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1826,9 +1815,6 @@ enum __Pyx_ImportType_CheckSize {
 static PyTypeObject *__Pyx_ImportType(PyObject* module, const char *module_name, const char *class_name, size_t size, enum __Pyx_ImportType_CheckSize check_size);
 #endif
 
-/* GetVTable.proto */
-static void* __Pyx_GetVtable(PyObject *dict);
-
 /* PatchModuleWithCoroutine.proto */
 static PyObject* __Pyx_Coroutine_patch_module(PyObject* module, const char* py_code);
 
@@ -2169,7 +2155,6 @@ static const char __pyx_k_endswith_2[] = "_endswith";
 static const char __pyx_k_fullsource[] = "fullsource";
 static const char __pyx_k_predicates[] = "predicates";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
-static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_query_eq_r[] = "query_eq=%r";
 static const char __pyx_k_query_gt_r[] = "query_gt=%r";
 static const char __pyx_k_query_in_r[] = "query_in=%r";
@@ -2323,7 +2308,6 @@ static PyObject *__pyx_n_s_pyx_unpickle_Not;
 static PyObject *__pyx_n_s_pyx_unpickle_Or;
 static PyObject *__pyx_n_s_pyx_unpickle_Query;
 static PyObject *__pyx_n_s_pyx_unpickle_When;
-static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_kp_s_query_contains_r;
 static PyObject *__pyx_kp_s_query_endswith_r;
 static PyObject *__pyx_kp_s_query_eq_r;
@@ -24248,7 +24232,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_unpickle_Or, __pyx_k_pyx_unpickle_Or, sizeof(__pyx_k_pyx_unpickle_Or), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_Query, __pyx_k_pyx_unpickle_Query, sizeof(__pyx_k_pyx_unpickle_Query), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_When, __pyx_k_pyx_unpickle_When, sizeof(__pyx_k_pyx_unpickle_When), 0, 0, 1, 1},
-  {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_kp_s_query_contains_r, __pyx_k_query_contains_r, sizeof(__pyx_k_query_contains_r), 0, 0, 1, 0},
   {&__pyx_kp_s_query_endswith_r, __pyx_k_query_endswith_r, sizeof(__pyx_k_query_endswith_r), 0, 0, 1, 0},
   {&__pyx_kp_s_query_eq_r, __pyx_k_query_eq_r, sizeof(__pyx_k_query_eq_r), 0, 0, 1, 0},
@@ -24738,7 +24721,6 @@ static int __Pyx_modinit_type_import_code(void) {
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_6hunter_6_event_Event = __Pyx_ImportType(__pyx_t_2, "hunter._event", "Event", sizeof(struct __pyx_obj_6hunter_6_event_Event), __Pyx_ImportType_CheckSize_Warn);
    if (!__pyx_ptype_6hunter_6_event_Event) __PYX_ERR(5, 11, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) __PYX_ERR(5, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -27216,26 +27198,6 @@ bad:
     return NULL;
 }
 #endif
-
-/* GetVTable */
-static void* __Pyx_GetVtable(PyObject *dict) {
-    void* ptr;
-    PyObject *ob = PyObject_GetItem(dict, __pyx_n_s_pyx_vtable);
-    if (!ob)
-        goto bad;
-#if PY_VERSION_HEX >= 0x02070000
-    ptr = PyCapsule_GetPointer(ob, 0);
-#else
-    ptr = PyCObject_AsVoidPtr(ob);
-#endif
-    if (!ptr && !PyErr_Occurred())
-        PyErr_SetString(PyExc_RuntimeError, "invalid vtable found for imported type");
-    Py_DECREF(ob);
-    return ptr;
-bad:
-    Py_XDECREF(ob);
-    return NULL;
-}
 
 /* PatchModuleWithCoroutine */
 static PyObject* __Pyx_Coroutine_patch_module(PyObject* module, const char* py_code) {

@@ -835,16 +835,20 @@ struct __pyx_obj_6hunter_7_tracer_Tracer;
  */
 struct __pyx_obj_6hunter_6_event_Event {
   PyObject_HEAD
-  struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtab;
   PyFrameObject *frame;
   PyObject *kind;
   PyObject *arg;
   int depth;
   int calls;
-  struct __pyx_obj_6hunter_7_tracer_Tracer *tracer;
+  int threading_support;
+  PyObject *_code;
   PyObject *_filename;
   PyObject *_fullsource;
+  PyObject *_function;
+  PyObject *_function_object;
+  PyObject *_globals;
   PyObject *_lineno;
+  PyObject *_locals;
   PyObject *_module;
   PyObject *_source;
   PyObject *_stdlib;
@@ -965,21 +969,6 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
   Py_tracefunc _previousfunc;
 };
 
-
-
-/* "_event.pxd":11
- * 
- * @cython.final
- * cdef class Event:             # <<<<<<<<<<<<<<
- *     cdef:
- *         readonly FrameType frame
- */
-
-struct __pyx_vtabstruct_6hunter_6_event_Event {
-  PyObject *(*_get_globals)(struct __pyx_obj_6hunter_6_event_Event *);
-  PyObject *(*_get_locals)(struct __pyx_obj_6hunter_6_event_Event *);
-};
-static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_event_Event;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1540,9 +1529,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
 
-/* GetVTable.proto */
-static void* __Pyx_GetVtable(PyObject *dict);
-
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
@@ -1761,7 +1747,6 @@ static const char __pyx_k_print_exc[] = "print_exc";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_threading[] = "threading";
 static const char __pyx_k_traceback[] = "traceback";
-static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_trace_hook[] = "_trace_hook";
 static const char __pyx_k_c_exception[] = "c_exception";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
@@ -1805,7 +1790,6 @@ static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_kp_s_previous;
 static PyObject *__pyx_n_s_print_exc;
-static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
@@ -4494,7 +4478,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_kp_s_previous, __pyx_k_previous, sizeof(__pyx_k_previous), 0, 0, 1, 0},
   {&__pyx_n_s_print_exc, __pyx_k_print_exc, sizeof(__pyx_k_print_exc), 0, 0, 1, 1},
-  {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
@@ -4683,7 +4666,6 @@ static int __Pyx_modinit_type_import_code(void) {
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_6_event_Event = __Pyx_ImportType(__pyx_t_1, "hunter._event", "Event", sizeof(struct __pyx_obj_6hunter_6_event_Event), __Pyx_ImportType_CheckSize_Warn);
    if (!__pyx_ptype_6hunter_6_event_Event) __PYX_ERR(6, 11, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) __PYX_ERR(6, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("hunter._predicates"); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6604,26 +6586,6 @@ GOOD:
     Py_XDECREF(setstate);
     Py_XDECREF(setstate_cython);
     return ret;
-}
-
-/* GetVTable */
-static void* __Pyx_GetVtable(PyObject *dict) {
-    void* ptr;
-    PyObject *ob = PyObject_GetItem(dict, __pyx_n_s_pyx_vtable);
-    if (!ob)
-        goto bad;
-#if PY_VERSION_HEX >= 0x02070000
-    ptr = PyCapsule_GetPointer(ob, 0);
-#else
-    ptr = PyCObject_AsVoidPtr(ob);
-#endif
-    if (!ptr && !PyErr_Occurred())
-        PyErr_SetString(PyExc_RuntimeError, "invalid vtable found for imported type");
-    Py_DECREF(ob);
-    return ptr;
-bad:
-    Py_XDECREF(ob);
-    return NULL;
 }
 
 /* Import */

@@ -189,6 +189,16 @@ class ColorStreamAction(Action):
         except Exception as exc:
             return '{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}'.format(exc, **self.other_colors)
 
+    def try_source(self, event, full=False):
+        source = event.fullsource if full else event.source
+        if source.startswith('??? NO SOURCE: '):
+            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}'.format(source[15:], **self.other_colors),
+        elif source:
+            return source
+        else:
+            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for module {!r} is empty.'.format(
+                event.module, **self.other_colors)
+
     def filename_prefix(self, event=None):
         if event:
             filename = event.filename or '<???>'
@@ -210,9 +220,9 @@ class ColorStreamAction(Action):
 
     def thread_prefix(self, event):
         self.seen_threads.add(get_ident())
-        if event.tracer.threading_support is False:
+        if event.threading_support is False:
             threading_support = False
-        elif event.tracer.threading_support:
+        elif event.threading_support:
             threading_support = True
         else:
             threading_support = len(self.seen_threads) > 1
@@ -239,23 +249,13 @@ class CodePrinter(ColorStreamAction):
         repr_func (string or callable): Function to use instead of ``repr``.
             If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
     """
-    def _safe_source(self, event):
-        try:
-            lines = event._raw_fullsource.rstrip().splitlines()
-            if lines:
-                return lines
-            else:
-                return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}' \
-                       'Source code string for module {!r} is empty.'.format(event.module, **self.other_colors),
-        except Exception as exc:
-            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{!r}'.format(exc, **self.other_colors),
 
     def __call__(self, event):
         """
         Handle event and print filename, line number and source code. If event.kind is a `return` or `exception` also
         prints values.
         """
-        lines = self._safe_source(event)
+        lines = self.try_source(event, full=True).splitlines()
         pid_prefix = self.pid_prefix()
         thread_prefix = self.thread_prefix(event)
         filename_prefix = self.filename_prefix(event)
@@ -392,7 +392,7 @@ class CallPrinter(CodePrinter):
                 filename_prefix,
                 event.kind,
                 '   ' * len(stack),
-                event.source.strip(),
+                self.try_source(event),
             )
 
 

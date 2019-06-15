@@ -15,18 +15,19 @@ cdef class Event:
         readonly object arg
         readonly int depth
         readonly int calls
-        readonly Tracer tracer
+        readonly bint threading_support
 
+        object _code
         object _filename
         object _fullsource
+        object _function
+        object _function_object
+        object _globals
         object _lineno
+        object _locals
         object _module
         object _source
         object _stdlib
         object _thread
         object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
-
-    cdef object _get_globals(self)
-
-    cdef object _get_locals(self)
