@@ -15,12 +15,6 @@ from ._predicates cimport fast_When_call
 from ._predicates cimport From
 from ._predicates cimport When
 
-from ._actions cimport CodePrinter
-from ._actions cimport CallPrinter
-
-from ._actions cimport fast_CodePrinter_call
-from ._actions cimport fast_CallPrinter_call
-
 from . import config
 
 __all__ = 'Tracer',
@@ -44,10 +38,6 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     try:
         if type(handler) is When:
             fast_When_call(<When>handler, event)
-        elif type(handler) is CallPrinter:
-            fast_CallPrinter_call(<CallPrinter>handler, event)
-        elif type(handler) is CodePrinter:
-            fast_CodePrinter_call(<CodePrinter>handler, event)
         elif type(handler) is From:
             fast_From_call(<From>handler, event)
         elif handler is not None:

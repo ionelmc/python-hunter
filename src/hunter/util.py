@@ -1,6 +1,8 @@
 import ast
+import io
 import re
 import sys
+import types
 import weakref
 from collections import deque
 
@@ -143,3 +145,62 @@ def has_dict(obj_type, obj, tolerance=25):
             if '__dict__' in __dict__:
                 return True
     return hasattr(obj, '__dict__')
+
+
+def safe_repr(obj, maxdepth=5):
+    if not maxdepth:
+        return '...'
+    obj_type = type(obj)
+    newdepth = maxdepth - 1
+
+    # specifically handle few of the container builtins that would normally do repr on contained values
+    if isinstance(obj, dict):
+        if obj_type is not dict:
+            return '%s({%s})' % (
+                obj_type.__name__,
+                ', '.join('%s: %s' % (
+                    safe_repr(k, maxdepth),
+                    safe_repr(v, newdepth)
+                ) for k, v in obj.items()))
+        else:
+            return '{%s}' % ', '.join('%s: %s' % (
+                safe_repr(k, maxdepth),
+                safe_repr(v, newdepth)
+            ) for k, v in obj.items())
+    elif isinstance(obj, list):
+        if obj_type is not list:
+            return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        else:
+            return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
+    elif isinstance(obj, tuple):
+        if obj_type is not tuple:
+            return '%s(%s%s)' % (
+                obj_type.__name__,
+                ', '.join(safe_repr(i, newdepth) for i in obj),
+                ',' if len(obj) == 1 else '')
+        else:
+            return '(%s%s)' % (', '.join(safe_repr(i, newdepth) for i in obj), ',' if len(obj) == 1 else '')
+    elif isinstance(obj, set):
+        if obj_type is not set:
+            return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        else:
+            return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
+    elif isinstance(obj, frozenset):
+        return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+    elif isinstance(obj, deque):
+        return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+    elif isinstance(obj, BaseException):
+        return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
+    elif obj_type in (type, types.ModuleType,
+                      types.FunctionType, types.MethodType,
+                      types.BuiltinFunctionType, types.BuiltinMethodType,
+                      io.IOBase):
+        # hardcoded list of safe things. note that isinstance ain't used
+        # (we don't trust subclasses to do the right thing in __repr__)
+        return repr(obj)
+    elif not has_dict(obj_type, obj):
+        return repr(obj)
+    else:
+        # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
+        #  with side-effects will be going on in __repr__ - use the default instead (object.__repr__)
+        return object.__repr__(obj)

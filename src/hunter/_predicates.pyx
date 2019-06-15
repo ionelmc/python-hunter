@@ -10,16 +10,9 @@ from cpython.object cimport PyObject_RichCompare
 from cpython.object cimport Py_EQ
 from cpython.object cimport Py_NE
 
-from ._actions cimport Action
-from ._actions cimport CallPrinter
-from ._actions cimport CodePrinter
-from ._actions cimport VarsPrinter
-from ._actions cimport VarsSnooper
-from ._actions cimport fast_CallPrinter_call
-from ._actions cimport fast_CodePrinter_call
-from ._actions cimport fast_VarsPrinter_call
-from ._actions cimport fast_VarsSnooper_call
 from ._event cimport Event
+
+from .actions import Action
 
 __all__ = (
     'And',
@@ -371,16 +364,7 @@ cdef inline fast_When_call(When self, Event event):
 
     if result:
         for action in self.actions:
-            if type(action) is CallPrinter:
-                fast_CallPrinter_call(<CallPrinter>action, <Event>event)
-            elif type(action) is CodePrinter:
-                fast_CodePrinter_call(<CodePrinter>action, <Event>event)
-            elif type(action) is VarsPrinter:
-                fast_VarsPrinter_call(<VarsPrinter>action, <Event>event)
-            elif type(action) is VarsSnooper:
-                fast_VarsSnooper_call(<VarsSnooper>action, <Event>event)
-            else:
-                action(event)
+            action(event)
 
     return result
 
