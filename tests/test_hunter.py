@@ -1100,19 +1100,24 @@ def _bulky_func_that_use_stdlib():
 
 
 def test_perf_filter(tracer_impl, benchmark):
-    t = tracer_impl()
+    impl = tracer_impl()
 
+    class Counter(object):
+        calls = 0
+
+    def inc(_):
+        Counter.calls += 1
+
+    handler = Q(
+        Q(module='does-not-exist') | Q(module='does not exist'.split()),
+        action=inc
+    )
     @benchmark
     def run():
-        output = StringIO()
-        with t.trace(Q(
-            Q(module='does-not-exist') | Q(module='does not exist'.split()),
-            action=CodePrinter(stream=output)
-        )):
+        with impl.trace(handler):
             _bulky_func_that_use_stdlib()
-        return output
 
-    assert run.getvalue() == ''
+    assert Counter.calls == 0
 
 
 def test_perf_stdlib(tracer_impl, benchmark):
