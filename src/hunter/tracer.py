@@ -4,8 +4,8 @@ import sys
 import threading
 import traceback
 
-from .event import Event
 from . import config
+from .event import Event
 
 __all__ = 'Tracer',
 

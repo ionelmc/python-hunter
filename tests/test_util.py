@@ -8,11 +8,11 @@ from socket import socket
 import py
 
 from hunter.util import has_dict
+
 try:
     from hunter._actions import safe_repr
 except ImportError:
     from hunter.actions import safe_repr
-
 
 class Dict(dict):
     pass

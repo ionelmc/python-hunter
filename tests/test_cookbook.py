@@ -2,6 +2,7 @@ import contextlib
 import functools
 import os
 import sys
+from logging import getLogger
 
 import aspectlib
 import pytest
@@ -11,6 +12,7 @@ from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import VarsSnooper
 
+logger = getLogger(__name__)
 
 def nothin(x):
     return x
@@ -59,11 +61,6 @@ def no_probe(*args, **kwargs):
 def test_probe(impl, benchmark):
     with impl('%s.baz' % __name__, hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')), kind="return", depth=0):
         benchmark(bar)
-
-
-from logging import getLogger
-
-logger = getLogger(__name__)
 
 
 def error():

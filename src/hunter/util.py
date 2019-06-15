@@ -3,7 +3,6 @@ import re
 import sys
 import weakref
 from collections import deque
-from itertools import chain
 
 from colorama import Back
 from colorama import Fore
