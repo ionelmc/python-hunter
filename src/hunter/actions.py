@@ -428,7 +428,7 @@ class CallPrinter(CodePrinter):
                 filename_prefix,
                 event.kind,
                 '   ' * len(stack),
-                self.try_source(event),
+                self.try_source(event).strip(),
             )
 
 
