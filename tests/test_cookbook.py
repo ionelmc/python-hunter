@@ -1,11 +1,15 @@
 import contextlib
 import functools
 import os
+import sys
 
 import aspectlib
 import pytest
 
 import hunter
+from hunter import CallPrinter
+from hunter import CodePrinter
+from hunter import VarsSnooper
 
 
 def nothin(x):
@@ -55,3 +59,117 @@ def no_probe(*args, **kwargs):
 def test_probe(impl, benchmark):
     with impl('%s.baz' % __name__, hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')), kind="return", depth=0):
         benchmark(bar)
+
+
+from logging import getLogger
+
+logger = getLogger(__name__)
+
+
+def error():
+    raise RuntimeError()
+
+
+def silenced1():
+    try:
+        error()
+    except Exception:
+        pass
+
+
+def silenced2():
+    try:
+        error()
+    except Exception as exc:
+        print(exc)
+        for i in range(25):
+            print(i)
+    return 'x'
+
+
+def silenced3():
+    try:
+        error()
+    finally:
+        return "mwhahaha"
+
+
+def silenced4():
+    try:
+        error()
+    except Exception as exc:
+        logger.info(repr(exc))
+
+
+def notsilenced():
+    error()
+
+
+class DumpExceptions(hunter.CodePrinter):
+    should_trace = False
+    depth = 0
+    count = 0
+
+    def __call__(self, event):
+        self.count += 1
+        if event.kind == 'exception':  # something interesting happened ;)
+            self.should_trace = True
+            self.depth = event.depth
+            self.count = 0
+            self.output("{fore(YELLOW)}{} tracing on exception ({}){RESET_ALL}\n",
+                        ">" * 46, self.try_repr(event.arg[1]))
+            super(DumpExceptions, self).__call__(event)
+        elif self.should_trace:
+            super(DumpExceptions, self).__call__(event)
+            if event.kind == 'return':  # stop if function returned
+                self.should_trace = False
+                self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET_ALL}\n",
+                            "-" * 46)
+            elif event.depth > self.depth + 1:  # too many details
+                return
+            elif self.count > 10:  # bail out on too many lines
+                self.should_trace = False
+                self.output("{BRIGHT}{fore(BLACK)}{:>46} too many lines{RESET_ALL}\n",
+                            "-" * 46)
+
+
+def test_dump_exceptions():
+    # print(DumpExceptions(
+    #     force_colors=True
+    # )(SimpleNamespace(
+    #     kind='exception',
+    #     depth=0,
+    #     arg=[1, 2, 3],
+    #     filename='foobar',
+    #     lineno=123,
+    #     tracer=SimpleNamespace(
+    #         depth=1,
+    #         threading_support=False
+    #     )
+    # )))
+    with hunter.trace(stdlib=False, action=DumpExceptions(force_colors=1, stream=sys.stdout)):
+        silenced1()
+        silenced2()
+        silenced3()
+        silenced4()
+
+        print("Done silenced")
+        try:
+            notsilenced()
+            print("Done not silenced")
+        except Exception:
+            pass
+
+
+def test_examples():
+    print("""
+    CodePrinter
+    """)
+    with hunter.trace(stdlib=False, actions=[CodePrinter, VarsSnooper]):
+        os.path.join(*map(str, range(10)))
+
+    print("""
+    CallPrinter
+    """)
+    with hunter.trace(stdlib=False, actions=[CallPrinter, VarsSnooper]):
+        os.path.join(*map(str, range(10)))
