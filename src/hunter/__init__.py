@@ -6,8 +6,6 @@ import inspect
 import os
 import weakref
 
-from .config import THREADING_SUPPORT_ALIASES
-from .config import load_config
 from .actions import Action
 from .actions import CallPrinter
 from .actions import CodePrinter
@@ -15,10 +13,12 @@ from .actions import Debugger
 from .actions import Manhole
 from .actions import VarsPrinter
 from .actions import VarsSnooper
+from .config import THREADING_SUPPORT_ALIASES
+from .config import load_config
 
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
-        raise ImportError("Cython speedups are disabled")
+        raise ImportError("Cython speedups are disabled.")
 
     from ._event import Event
     from ._predicates import And as _And

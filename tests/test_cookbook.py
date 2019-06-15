@@ -15,6 +15,7 @@ from hunter import VarsSnooper
 
 logger = getLogger(__name__)
 
+
 def nothin(x):
     return x
 

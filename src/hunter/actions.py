@@ -18,7 +18,6 @@ from .util import builtins
 from .util import iter_symbols
 from .util import safe_repr
 
-
 try:
     from threading import get_ident
 except ImportError:
