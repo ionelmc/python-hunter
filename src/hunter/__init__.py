@@ -68,8 +68,9 @@ _default_config = {}
 
 def Q(*predicates, **query):
     """
-    Handles situations where :class:`hunter.predicates.Query` objects (or other callables) are passed in as positional
-    arguments. Conveniently converts that to an :class:`hunter.predicates.And` predicate.
+    Helper that handles situations where :class:`hunter.predicates.Query` objects (or other callables)
+    are passed in as positional arguments - it conveniently converts those to a
+    :class:`hunter.predicates.And` predicate.
     """
     optional_actions = query.pop("actions", [])
     if "action" in query:
@@ -130,8 +131,8 @@ def And(*predicates, **kwargs):
     As a convenience it converts ``kwargs`` to a single :class:`hunter.predicates.Query` instance.
 
     Args:
-        *predicates: callables
-        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+        *predicates (callables): Callables that returns True/False or :class:`hunter.predicates.Query` objects.
+        **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`
 
     Returns: A :class:`hunter.predicates.And` instance.
 
@@ -147,8 +148,8 @@ def Or(*predicates, **kwargs):
     As a convenience it converts ``kwargs`` to multiple :class:`hunter.predicates.Query` instances.
 
     Args:
-        *predicates: callables
-        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+        *predicates (callables): Callables that returns True/False or :class:`hunter.predicates.Query` objects.
+        **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`.
 
     Returns: A :class:`hunter.predicates.Or` instance.
 
@@ -164,11 +165,10 @@ def Not(*predicates, **kwargs):
     As a convenience it converts ``kwargs`` to multiple :class:`hunter.predicates.Query` instances.
 
     Args:
-        *predicates: callables
-        **kwargs: arguments that may be passed to :class:`hunter.predicates.Query`
+        *predicates (callables): Callables that returns True/False or :class:`hunter.predicates.Query` objects.
+        **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`.
 
     Returns: A :class:`hunter.predicates.Not` instance (possibly containing a :class:`hunter.predicates.And` instance).
-
     """
     if kwargs:
         predicates += Query(**kwargs),
@@ -181,6 +181,13 @@ def Not(*predicates, **kwargs):
 def From(predicate=None, condition=None, watermark=0, **kwargs):
     """
     Helper that converts keyword arguments to a ``From(Q(**kwargs))``.
+
+    Args:
+        condition (callable): A callable that returns True/False or a :class:`hunter.predicates.Query` object.
+        predicate (callable): Optional callable that returns True/False or a :class:`hunter.predicates.Query` object to
+            run after ``condition`` first returns ``True``.
+        watermark (int): Depth difference to switch off and wait again on ``condition``.
+        **kwargs: Arguments that are passed to :func:`hunter.Q`
     """
     if predicate is None and condition is None and watermark == 0:
         return _From(Q(**kwargs))
