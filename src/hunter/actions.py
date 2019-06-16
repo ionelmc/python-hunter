@@ -334,7 +334,7 @@ class CodePrinter(ColorStreamAction):
                 self.filename_prefix(),
                 '...',
                 event.kind,
-                self.try_repr(event.arg),
+                event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
 
@@ -387,7 +387,7 @@ class CallPrinter(CodePrinter):
                 event.function,
                 ', '.join('{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}'.format(
                     var,
-                    self.try_repr(event.locals.get(var, MISSING)),
+                    event.locals.get(var, MISSING) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
                     **self.other_colors
                 ) for var in code.co_varnames[:code.co_argcount]),
                 COLOR=self.event_colors.get(event.kind),
@@ -401,7 +401,7 @@ class CallPrinter(CodePrinter):
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                self.try_repr(event.arg),
+                event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
 
@@ -414,7 +414,7 @@ class CallPrinter(CodePrinter):
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                self.try_repr(event.arg),
+                event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
             if stack and stack[-1] == ident:
@@ -478,7 +478,7 @@ class VarsPrinter(ColorStreamAction):
             except Exception as exc:
                 printout = '{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}'.format(exc, **self.other_colors)
             else:
-                printout = self.try_repr(obj)
+                printout = obj if event.detached else self.try_repr(obj)
 
             if frame_symbols >= symbols:
                 if first:
@@ -529,7 +529,7 @@ class VarsSnooper(ColorStreamAction):
         empty_filename_prefix = self.filename_prefix()
 
         current_reprs = {
-            name: self.try_repr(value)
+            name: value if event.detached else self.try_repr(value)
             for name, value in event.locals.items()
         }
         scope_key = event.code or event.function

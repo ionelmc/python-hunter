@@ -77,6 +77,11 @@ class Event(object):
         #: :type: bool or None
         self.threading_support = tracer.threading_support
 
+        #: Flag that is ``True`` if the event was created with :meth:`~hunter.event.Event.detach`.
+        #:
+        #: :type: bool
+        self.detached = False
+
     def __eq__(self, other):
         return (
             type(self) == type(other) and
@@ -87,22 +92,29 @@ class Event(object):
             self.filename == other.filename
         )
 
-    def detach(self):
+    def detach(self, object_filter=None):
         """
         Return a copy of the event with references to live objects (like the frame) removed. You should use this if you
         want to store or use the event outside the handler.
 
         You should use this if you want to avoid memory leaks or side-effects when storing the events.
 
-        .. note::
+        Args:
+            object_filter:
+                Optional callable that takes two arguments: ``field`` and ``value``.
 
-            The ``arg``, ``thread``, ``globals`` and ``locals`` will be emptied. Save them if really necessary.
+                Note that ``field`` will be one of ``"arg"``, ``"global"`` or ``"local"``. Yes, not a typo (singular,
+                not plural). The callable will be called for each global or local value.
 
-            Suggestion (if you're in a :class:`~hunter.actions.ColorStreamAction` subclass):
+                If not specified then the ``arg``, ``globals`` and ``locals`` fields will be ``None``.
 
-            .. sourcecode::
+        Example usage in a :class:`~hunter.actions.ColorStreamAction` subclass:
 
-                self.try_repr(event.arg)
+        .. sourcecode:: python
+
+            def __call__(self, event):
+                self.events = [event.detach(lambda field, value: self.try_repr(value))]
+
         """
         event = Event.__new__(Event)
 
@@ -117,15 +129,21 @@ class Event(object):
         event.__dict__['threadid'] = self.threadid
         event.__dict__['threadname'] = self.threadname
 
-        event.__dict__['function_object'] = None
-        event.__dict__['globals'] = {}
-        event.__dict__['locals'] = {}
-        event.__dict__['thread'] = None
+        if object_filter:
+            event.__dict__['arg'] = object_filter('arg', self.arg)
+            event.__dict__['globals'] = {key: object_filter('global', value) for key, value in self.globals.items()}
+            event.__dict__['locals'] = {key: object_filter('local', value) for key, value in self.locals.items()}
+        else:
+            event.__dict__['globals'] = {}
+            event.__dict__['locals'] = {}
+            event.__dict__['arg'] = None
 
         event.threading_support = self.threading_support
         event.calls = self.calls
         event.depth = self.depth
         event.kind = self.kind
+
+        event.detached = True
 
         return event
 
@@ -136,7 +154,7 @@ class Event(object):
 
         :type: int or None
         """
-        current = self.thread.ident
+        current = self._thread.ident
         main = get_main_thread()
         if main is None:
             return current
@@ -150,18 +168,10 @@ class Event(object):
 
         :type: str
         """
-        return self.thread.name
+        return self._thread.name
 
     @cached_property
-    def thread(self):
-        """
-        Current thread object.
-
-        .. note::
-
-            Not allowed in the builtin predicates (it's the actual Thread object).
-            You may access it from your custom predicate though.
-        """
+    def _thread(self):
         return current_thread()
 
     @cached_property
@@ -205,23 +215,23 @@ class Event(object):
         :type: function or None
         """
         # Based on MonkeyType's get_func
-        code = self.frame.f_code
+        code = self.code
         if code.co_name is None:
             return None
         # First, try to find the function in globals
-        candidate = self.frame.f_globals.get(code.co_name, None)
+        candidate = self.globals.get(code.co_name, None)
         func = if_same_code(candidate, code)
         # If that failed, as will be the case with class and instance methods, try
         # to look up the function from the first argument. In the case of class/instance
         # methods, this should be the class (or an instance of the class) on which our
         # method is defined.
         if func is None and code.co_argcount >= 1:
-            first_arg = self.frame.f_locals.get(code.co_varnames[0])
+            first_arg = self.locals.get(code.co_varnames[0])
             func = get_func_in_mro(first_arg, code)
         # If we still can't find the function, as will be the case with static methods,
         # try looking at classes in global scope.
         if func is None:
-            for v in self.frame.f_globals.values():
+            for v in self.globals.values():
                 if not isinstance(v, type):
                     continue
                 func = get_func_in_mro(v, code)

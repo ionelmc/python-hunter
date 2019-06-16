@@ -47,6 +47,7 @@ cdef class Event:
         self.depth = tracer.depth
         self.calls = tracer.calls
         self.threading_support = tracer.threading_support
+        self.detached = False
 
         self._code = UNSET
         self._filename = UNSET
@@ -63,23 +64,7 @@ cdef class Event:
         self._threadname = UNSET
         self._thread = UNSET
 
-    def detach(self):
-        """
-        Return a copy of the event with references to live objects (like the frame) removed. You should use this if you
-        want to store or use the event outside the handler.
-
-        You should use this if you want to avoid memory leaks or side-effects when storing the events.
-
-        .. note::
-
-            The ``arg``, ``thread``, ``globals`` and ``locals`` will be emptied. Save them if really necessary.
-
-            Suggestion (if you're in a :class:`~hunter.actions.ColorStreamAction` subclass):
-
-            .. sourcecode::
-
-                self.try_repr(event.arg)
-        """
+    def detach(self, object_filter=None):
         event = <Event>Event.__new__(Event)
 
         event._code = self.code
@@ -93,15 +78,20 @@ cdef class Event:
         event._threadidn = self.threadid
         event._threadname = self.threadname
 
-        event._function_object = None
-        event._globals = {}
-        event._locals = {}
-        event._thread = None
+        if object_filter:
+            event._globals = {key: object_filter('global', value) for key, value in self.globals.items()}
+            event._locals = {key: object_filter('local', value) for key, value in self.locals.items()}
+            event.arg = object_filter('arg', self.arg)
+        else:
+            event._globals = {}
+            event._locals = {}
 
         event.threading_support = self.threading_support
         event.calls = self.calls
         event.depth = self.depth
         event.kind = self.kind
+
+        event.detached = True
 
         return event
 
@@ -127,12 +117,6 @@ cdef class Event:
         return self._threadname
 
     @property
-    def thread(self):
-        if self._thread is UNSET:
-            self._thread = current_thread()
-        return self._thread
-
-    @property
     def locals(self):
         if self._locals is UNSET:
             PyFrame_FastToLocals(self.frame)
@@ -154,23 +138,23 @@ cdef class Event:
     @property
     def function_object(self):
         if self._function_object is UNSET:
-            code = self.frame.f_code
+            code = self.code
             if code.co_name is None:
                 return None
             # First, try to find the function in globals
-            candidate = self.frame.f_globals.get(code.co_name, None)
+            candidate = self.globals.get(code.co_name, None)
             func = if_same_code(candidate, code)
             # If that failed, as will be the case with class and instance methods, try
             # to look up the function from the first argument. In the case of class/instance
             # methods, this should be the class (or an instance of the class) on which our
             # method is defined.
             if func is None and code.co_argcount >= 1:
-                first_arg = self.frame.f_locals.get(code.co_varnames[0])
+                first_arg = self.locals.get(code.co_varnames[0])
                 func = get_func_in_mro(first_arg, code)
             # If we still can't find the function, as will be the case with static methods,
             # try looking at classes in global scope.
             if func is None:
-                for v in self.frame.f_globals.values():
+                for v in self.globals.values():
                     if not isinstance(v, type):
                         continue
                     func = get_func_in_mro(v, code)

@@ -841,6 +841,7 @@ struct __pyx_obj_6hunter_6_event_Event {
   int depth;
   int calls;
   int threading_support;
+  int detached;
   PyObject *_code;
   PyObject *_filename;
   PyObject *_fullsource;
