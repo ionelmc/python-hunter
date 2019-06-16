@@ -143,7 +143,7 @@ class DumpExceptions(hunter.CodePrinter):
     def __call__(self, event):
         self.count += 1
         if event.kind == 'exception':  # something interesting happened ;)
-            self.events = [event.detach(lambda field, value: self.try_repr(value))]
+            self.events = [event.detach(self.try_repr)]
             self.exc = self.try_repr(event.arg[1])
             self.depth = event.depth
             self.count = 0

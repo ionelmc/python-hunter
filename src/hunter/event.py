@@ -92,7 +92,7 @@ class Event(object):
             self.filename == other.filename
         )
 
-    def detach(self, object_filter=None):
+    def detach(self, value_filter=None):
         """
         Return a copy of the event with references to live objects (like the frame) removed. You should use this if you
         want to store or use the event outside the handler.
@@ -100,11 +100,8 @@ class Event(object):
         You should use this if you want to avoid memory leaks or side-effects when storing the events.
 
         Args:
-            object_filter:
-                Optional callable that takes two arguments: ``field`` and ``value``.
-
-                Note that ``field`` will be one of ``"arg"``, ``"global"`` or ``"local"``. Yes, not a typo (singular,
-                not plural). The callable will be called for each global or local value.
+            value_filter:
+                Optional callable that takes one argument: ``value``.
 
                 If not specified then the ``arg``, ``globals`` and ``locals`` fields will be ``None``.
 
@@ -129,10 +126,10 @@ class Event(object):
         event.__dict__['threadid'] = self.threadid
         event.__dict__['threadname'] = self.threadname
 
-        if object_filter:
-            event.__dict__['arg'] = object_filter('arg', self.arg)
-            event.__dict__['globals'] = {key: object_filter('global', value) for key, value in self.globals.items()}
-            event.__dict__['locals'] = {key: object_filter('local', value) for key, value in self.locals.items()}
+        if value_filter:
+            event.__dict__['arg'] = value_filter(self.arg)
+            event.__dict__['globals'] = {key: value_filter(value) for key, value in self.globals.items()}
+            event.__dict__['locals'] = {key: value_filter(value) for key, value in self.locals.items()}
         else:
             event.__dict__['globals'] = {}
             event.__dict__['locals'] = {}

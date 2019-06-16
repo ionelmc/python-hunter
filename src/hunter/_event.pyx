@@ -64,7 +64,7 @@ cdef class Event:
         self._threadname = UNSET
         self._thread = UNSET
 
-    def detach(self, object_filter=None):
+    def detach(self, value_filter=None):
         event = <Event>Event.__new__(Event)
 
         event._code = self.code
@@ -78,10 +78,10 @@ cdef class Event:
         event._threadidn = self.threadid
         event._threadname = self.threadname
 
-        if object_filter:
-            event._globals = {key: object_filter('global', value) for key, value in self.globals.items()}
-            event._locals = {key: object_filter('local', value) for key, value in self.locals.items()}
-            event.arg = object_filter('arg', self.arg)
+        if value_filter:
+            event._globals = {key: value_filter(value) for key, value in self.globals.items()}
+            event._locals = {key: value_filter(value) for key, value in self.locals.items()}
+            event.arg = value_filter(self.arg)
         else:
             event._globals = {}
             event._locals = {}
