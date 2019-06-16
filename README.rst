@@ -184,32 +184,37 @@ That would result in:
 .. sourcecode:: pycon
 
     >>> os.path.join('a', 'b')
-             /usr/lib/python3.6/posixpath.py:75    call      => join(a='a')
-             /usr/lib/python3.6/posixpath.py:75    call      [a := 'a']
-                                                   ...       [p := ('b',)]
-             /usr/lib/python3.6/posixpath.py:80    line         a = os.fspath(a)
-             /usr/lib/python3.6/posixpath.py:81    line         sep = _get_sep(a)
-             /usr/lib/python3.6/posixpath.py:41    call         => _get_sep(path='a')
-             /usr/lib/python3.6/posixpath.py:41    call      [path := 'a']
-             /usr/lib/python3.6/posixpath.py:42    line            if isinstance(path, bytes):
-             /usr/lib/python3.6/posixpath.py:45    line            return '/'
-             /usr/lib/python3.6/posixpath.py:45    return       <= _get_sep: '/'
-             /usr/lib/python3.6/posixpath.py:82    line         path = a
-             /usr/lib/python3.6/posixpath.py:82    line      [sep := '/']
-             /usr/lib/python3.6/posixpath.py:83    line         try:
-             /usr/lib/python3.6/posixpath.py:83    line      [path := 'a']
-             /usr/lib/python3.6/posixpath.py:84    line         if not p:
-             /usr/lib/python3.6/posixpath.py:86    line         for b in map(os.fspath, p):
-             /usr/lib/python3.6/posixpath.py:87    line         if b.startswith(sep):
-             /usr/lib/python3.6/posixpath.py:87    line      [b := 'b']
-             /usr/lib/python3.6/posixpath.py:89    line         elif not path or path.endswith(sep):
-             /usr/lib/python3.6/posixpath.py:92    line         path += sep + b
-             /usr/lib/python3.6/posixpath.py:86    line         for b in map(os.fspath, p):
-             /usr/lib/python3.6/posixpath.py:86    line      [path : 'a' => 'a/b']
-             /usr/lib/python3.6/posixpath.py:96    line         return path
-             /usr/lib/python3.6/posixpath.py:96    return    <= join: 'a/b'
+         /usr/lib/python3.6/posixpath.py:75    call      => join(a='a')
+         /usr/lib/python3.6/posixpath.py:80    line         a = os.fspath(a)
+         /usr/lib/python3.6/posixpath.py:81    line         sep = _get_sep(a)
+         /usr/lib/python3.6/posixpath.py:41    call      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:41    call         => _get_sep(path='a')
+         /usr/lib/python3.6/posixpath.py:42    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:42    line            if isinstance(path, bytes):
+         /usr/lib/python3.6/posixpath.py:45    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:45    line            return '/'
+         /usr/lib/python3.6/posixpath.py:45    return    [path => 'a']
+         /usr/lib/python3.6/posixpath.py:45    return       <= _get_sep: '/'
+         /usr/lib/python3.6/posixpath.py:82    line         path = a
+         /usr/lib/python3.6/posixpath.py:83    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:83    line         try:
+         /usr/lib/python3.6/posixpath.py:84    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:84    line         if not p:
+         /usr/lib/python3.6/posixpath.py:86    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:86    line         for b in map(os.fspath, p):
+         /usr/lib/python3.6/posixpath.py:87    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:87    line         if b.startswith(sep):
+         /usr/lib/python3.6/posixpath.py:89    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:89    line         elif not path or path.endswith(sep):
+         /usr/lib/python3.6/posixpath.py:92    line      [path => 'a']
+         /usr/lib/python3.6/posixpath.py:92    line         path += sep + b
+         /usr/lib/python3.6/posixpath.py:86    line      [path => 'a/b']
+         /usr/lib/python3.6/posixpath.py:86    line         for b in map(os.fspath, p):
+         /usr/lib/python3.6/posixpath.py:96    line      [path => 'a/b']
+         /usr/lib/python3.6/posixpath.py:96    line         return path
+         /usr/lib/python3.6/posixpath.py:96    return    [path => 'a/b']
+         /usr/lib/python3.6/posixpath.py:96    return    <= join: 'a/b'
     'a/b'
-
 
 In a terminal it would look like:
 
