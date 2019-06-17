@@ -42,6 +42,7 @@ Reference
     hunter.actions.Debugger
     hunter.actions.Manhole
     hunter.actions.VarsPrinter
+    hunter.actions.VarsSnooper
 
 .. highlights:: :ref:`reference:Internals`
 
@@ -128,6 +129,10 @@ Actions
     :special-members:
 
 .. autoclass:: hunter.actions.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.actions.hunter.actions.VarsSnooper(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
 
