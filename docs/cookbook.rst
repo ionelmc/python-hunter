@@ -174,3 +174,69 @@ It will work the same, ``hunter.wrap`` being a decorator. However, while ``hunte
 to trace just inside the target function (``probe('module.func', local=True)``) it will also add a lot of extra
 filtering to trim irrelevant events from around the function (like return from tracer setup, and the internals of the
 decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight...
+
+Silenced exception runtime analysis
+===================================
+
+Finding code that discards exceptions is sometimes really hard.
+
+While this is easy to find with a ``grep "except:" -R .``:
+
+.. code-block:: python
+
+    def silenced_easy():
+        try:
+            error()
+        except:
+            pass
+
+Variants of this ain't easy to grep:
+
+.. code-block:: python
+
+    def silenced_easy():
+        try:
+            error()
+        except Exception:
+            pass
+
+If you can't simply review all the sourcecode then runtime analysis is one way to tackle this:
+
+.. code-block:: python
+
+    class DumpExceptions(hunter.CodePrinter):
+        events = None
+        depth = 0
+        count = 0
+
+        def __init__(self, max_count=10, **kwargs):
+            self.max_count = max_count
+            super(DumpExceptions, self).__init__(**kwargs)
+
+        def __call__(self, event):
+            self.count += 1
+            if event.kind == 'exception':  # something interesting happened ;)
+                self.events = [event.detach(self.try_repr)]
+                self.exc = self.try_repr(event.arg[1])
+                self.depth = event.depth
+                self.count = 0
+            elif self.events:
+                if event.kind == 'return':  # stop if function returned
+                    if opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
+                        self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
+                                    ">" * 46, event.function, self.exc)
+                        for event in self.events:
+                            super(DumpExceptions, self).__call__(event)
+                        if self.count > 10:
+                            self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
+                                        "-" * 46)
+                        else:
+                            self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
+                                        "-" * 46)
+                    self.events = []
+                elif event.depth > self.depth + 1:  # too many details
+                    return
+                elif self.count < self.max_count:
+                    self.events.append(event.detach(self.try_repr))
+
+Take about the use of :meth:`~hunter.event.Event.detach` and :meth:`~hunter.actions.ColorStreamAction.output`.

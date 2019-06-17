@@ -259,6 +259,31 @@ class ColorStreamAction(Action):
         """
         Write ``format_str.format(*args, **self.other_color, **kwargs)`` to ``self.stream``.
 
+        For ANSI coloring you can place these in the ``format_str``:
+
+        * ``{BRIGHT}``
+        * ``{DIM}``
+        * ``{NORMAL}``
+        * ``{RESET}``
+        * ``{fore(BLACK)}``
+        * ``{fore(RED)}``
+        * ``{fore(GREEN)}``
+        * ``{fore(YELLOW)}``
+        * ``{fore(BLUE)}``
+        * ``{fore(MAGENTA)}``
+        * ``{fore(CYAN)}``
+        * ``{fore(WHITE)}``
+        * ``{fore(RESET)}``
+        * ``{back(BLACK)}``
+        * ``{back(RED)}``
+        * ``{back(GREEN)}``
+        * ``{back(YELLOW)}``
+        * ``{back(BLUE)}``
+        * ``{back(MAGENTA)}``
+        * ``{back(CYAN)}``
+        * ``{back(WHITE)}``
+        * ``{back(RESET)}``
+
         Args:
             format_str: a PEP-3101 format string
             *args:

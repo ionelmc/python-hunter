@@ -2,7 +2,6 @@ import contextlib
 import functools
 import opcode
 import os
-import sys
 from logging import getLogger
 
 import aspectlib
@@ -13,7 +12,14 @@ from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import VarsSnooper
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 logger = getLogger(__name__)
+
+pytest_plugins = 'pytester',
 
 
 def nothin(x):
@@ -108,37 +114,13 @@ def notsilenced():
 
 
 class DumpExceptions(hunter.CodePrinter):
-    should_trace = False
-    depth = 0
-    count = 0
-
-    def __call__(self, event):
-        self.count += 1
-        if event.kind == 'exception':  # something interesting happened ;)
-            self.should_trace = True
-            self.depth = event.depth
-            self.count = 0
-            self.output("{BRIGHT}{fore(BLUE)}{} tracing on exception: {}{RESET}\n",
-                        ">" * 46, self.try_repr(event.arg[1]))
-            super(DumpExceptions, self).__call__(event)
-        elif self.should_trace:
-            super(DumpExceptions, self).__call__(event)
-            if event.kind == 'return':  # stop if function returned
-                self.should_trace = False
-                self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
-                            "-" * 46)
-            elif event.depth > self.depth + 1:  # too many details
-                return
-            elif self.count > 10:  # bail out on too many lines
-                self.should_trace = False
-                self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
-                            "-" * 46)
-
-
-class DumpExceptions(hunter.CodePrinter):
     events = None
     depth = 0
     count = 0
+
+    def __init__(self, max_count=10, **kwargs):
+        self.max_count = max_count
+        super(DumpExceptions, self).__init__(**kwargs)
 
     def __call__(self, event):
         self.count += 1
@@ -149,9 +131,9 @@ class DumpExceptions(hunter.CodePrinter):
             self.count = 0
         elif self.events:
             if event.kind == 'return':  # stop if function returned
-                if event.arg or opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
-                    self.output("{BRIGHT}{fore(BLUE)}{} trace of exception: {}{RESET}\n",
-                                ">" * 46, self.exc)
+                if opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
+                    self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
+                                ">" * 46, event.function, self.exc)
                     for event in self.events:
                         super(DumpExceptions, self).__call__(event)
                     if self.count > 10:
@@ -163,25 +145,13 @@ class DumpExceptions(hunter.CodePrinter):
                 self.events = []
             elif event.depth > self.depth + 1:  # too many details
                 return
-            elif self.count < 10:
-                self.events.append(event.detach())
+            elif self.count < self.max_count:
+                self.events.append(event.detach(self.try_repr))
 
 
-def test_dump_exceptions():
-    # print(DumpExceptions(
-    #     force_colors=True
-    # )(SimpleNamespace(
-    #     kind='exception',
-    #     depth=0,
-    #     arg=[1, 2, 3],
-    #     filename='foobar',
-    #     lineno=123,
-    #     tracer=SimpleNamespace(
-    #         depth=1,
-    #         threading_support=False
-    #     )
-    # )))
-    with hunter.trace(stdlib=False, action=DumpExceptions(force_colors=1, stream=sys.stdout)):
+def test_dump_exceptions(LineMatcher):
+    stream = StringIO()
+    with hunter.trace(stdlib=False, action=DumpExceptions(stream=stream)):
         silenced1()
         silenced2()
         silenced3()
@@ -193,6 +163,40 @@ def test_dump_exceptions():
             print("Done not silenced")
         except ValueError:
             pass
+
+    lm = LineMatcher(stream.getvalue().splitlines())
+    lm.fnmatch_lines([
+        '*>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on RuntimeError()',
+        '*test_cookbook.py:***   exception         error()',
+        '*                 ***   ...       exception value: *RuntimeError*',
+        '*test_cookbook.py:***   line          except Exception:',
+        '*test_cookbook.py:***   line              pass',
+        '*---------------------- function exit',
+        '*>>>>>>>>>>>>>>>>>>>>>> tracing silenced2 on RuntimeError()',
+        '*test_cookbook.py:***   exception         error()',
+        '*                       ...       exception value: *RuntimeError*',
+        '*test_cookbook.py:***   line          except Exception as exc:',
+        '*test_cookbook.py:***   line              print(exc)',
+        '*test_cookbook.py:***   line              for i in range(25):',
+        '*test_cookbook.py:***   line                  print(i)',
+        '*test_cookbook.py:***   line              for i in range(25):',
+        '*test_cookbook.py:***   line                  print(i)',
+        '*test_cookbook.py:***   line              for i in range(25):',
+        '*test_cookbook.py:***   line                  print(i)',
+        '*test_cookbook.py:***   line              for i in range(25):',
+        '*---------------------- too many lines',
+        '*>>>>>>>>>>>>>>>>>>>>>> tracing silenced3 on RuntimeError()',
+        '*test_cookbook.py:***   exception         error()',
+        '*                       ...       exception value: *RuntimeError*',
+        '*test_cookbook.py:***   line              return "mwhahaha"',
+        '*---------------------- function exit',
+        '*>>>>>>>>>>>>>>>>>>>>>> tracing silenced4 on RuntimeError()',
+        '*test_cookbook.py:***   exception         error()',
+        '*                       ...       exception value: *RuntimeError*',
+        '*test_cookbook.py:***   line          except Exception as exc:',
+        '*test_cookbook.py:***   line              logger.info(repr(exc))',
+        '*---------------------- function exit',
+    ])
 
 
 def test_examples():
