@@ -92,7 +92,7 @@ class Tracer(object):
         Starts tracing with the given callable.
 
         Args:
-            predicate (callable that accepts a single :obj:`hunter.Event` argument):
+            predicate (callable that accepts a single :obj:`~hunter.event.Event` argument):
         Return:
             self
         """
@@ -106,7 +106,7 @@ class Tracer(object):
 
     def stop(self):
         """
-        Stop tracing. Reinstalls the :obj:`hunter.Tracer.previous` tracer.
+        Stop tracing. Reinstalls the :attr:`~hunter.tracer.Tracer.previous` tracer.
         """
         if self._handler is not None:
             sys.settrace(self._previous)
@@ -117,7 +117,7 @@ class Tracer(object):
 
     def __enter__(self):
         """
-        Does nothing. Users are expected to call :func:`hunter.Tracer.trace`.
+        Does nothing. Users are expected to call :meth:`~hunter.tracer.Tracer.trace`.
 
         Returns: self
         """
@@ -125,6 +125,6 @@ class Tracer(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Wrapper around :func:`hunter.Tracer.stop`. Does nothing with the arguments.
+        Wrapper around :meth:`~hunter.tracer.Tracer.stop`. Does nothing with the arguments.
         """
         self.stop()

@@ -55,9 +55,6 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
 
 
 cdef class Tracer:
-    """
-    Tracer object.
-    """
     def __cinit__(self, threading_support=None):
         self.handler = None
         self.previous = None
@@ -83,28 +80,12 @@ cdef class Tracer:
         )
 
     def __call__(self, frame, kind, arg):
-        """
-        The settrace function.
-
-        .. note::
-
-            This always returns self (drills down) - as opposed to only drilling down when ``predicate(event)`` is True
-            because it might match further inside.
-        """
         trace_func(self, frame, KIND_NAMES.index(kind), <PyObject *> arg)
         if kind == 'call':
             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
         return self
 
     def trace(self, predicate):
-        """
-        Starts tracing with the given callable.
-
-        Args:
-            predicate (callable that accepts a single :obj:`hunter.Event` argument):
-        Return:
-            self
-        """
         cdef PyThreadState *state = PyThreadState_Get()
         self.handler = predicate
         if self.threading_support is None or self.threading_support:
@@ -120,9 +101,6 @@ cdef class Tracer:
         return self
 
     def stop(self):
-        """
-        Stop tracing. Reinstalls the :ref:`hunter.Tracer.previous` tracer.
-        """
         if self.handler is not None:
             if self.previous is None:
                 PyEval_SetTrace(NULL, NULL)
@@ -135,15 +113,7 @@ cdef class Tracer:
                 self._threading_previous = None
 
     def __enter__(self):
-        """
-        Does nothing. Users are expected to call :func:`hunter.Tracer.trace`.
-
-        Returns: self
-        """
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Wrapper around :func:`hunter.Tracer.stop`. Does nothing with the arguments.
-        """
         self.stop()

@@ -15,9 +15,21 @@ Reference
     hunter.Or
     hunter.Q
 
+.. highlights:: :ref:`reference:Actions`
+
+.. autosummary::
+
+    hunter.actions.CallPrinter
+    hunter.actions.CodePrinter
+    hunter.actions.ColorStreamAction
+    hunter.actions.Debugger
+    hunter.actions.Manhole
+    hunter.actions.VarsPrinter
+    hunter.actions.VarsSnooper
+
 .. warning::
 
-    The following (Predicates, Actions and Internals) have Cython implementations in modules prefixed with "_".
+    The following (Predicates and Internals) have Cython implementations in modules prefixed with "_".
     Should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
 
 .. highlights:: :ref:`reference:Predicates`
@@ -31,18 +43,6 @@ Reference
     hunter.predicates.Not
     hunter.predicates.Or
     hunter.predicates.Query
-
-.. highlights:: :ref:`reference:Actions`
-
-.. autosummary::
-
-    hunter.actions.CallPrinter
-    hunter.actions.CodePrinter
-    hunter.actions.ColorStreamAction
-    hunter.actions.Debugger
-    hunter.actions.Manhole
-    hunter.actions.VarsPrinter
-    hunter.actions.VarsSnooper
 
 .. highlights:: :ref:`reference:Internals`
 
@@ -76,35 +76,6 @@ Helpers
 
 ----
 
-Predicates
-----------
-
-.. autoclass:: hunter.predicates.Query
-    :members:
-    :special-members: __call__
-
-.. autoclass:: hunter.predicates.When
-    :members:
-    :special-members: __call__
-
-.. autoclass:: hunter.predicates.From
-    :members:
-    :special-members: __call__
-
-.. autoclass:: hunter.predicates.And
-    :members:
-    :special-members: __call__
-
-.. autoclass:: hunter.predicates.Or
-    :members:
-    :special-members: __call__
-
-.. autoclass:: hunter.predicates.Not
-    :members:
-    :special-members: __call__
-
-----
-
 Actions
 -------
 
@@ -132,16 +103,55 @@ Actions
     :members:
     :special-members:
 
-.. autoclass:: hunter.actions.hunter.actions.VarsSnooper(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
+.. autoclass:: hunter.actions.VarsSnooper(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
+
+----
+
+Predicates
+----------
+
+.. warning::
+
+    These have Cython implementations in modules prefixed with "_".
+    Should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
+
+.. autoclass:: hunter.predicates.Query
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.When
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.From
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.And
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.Or
+    :members:
+    :special-members: __call__
+
+.. autoclass:: hunter.predicates.Not
+    :members:
+    :special-members: __call__
 
 ----
 
 Internals
 ---------
 
-Normally these are not used directly. Perhaps just the :class:`hunter.tracer.Tracer` may be used directly for
+.. warning::
+
+    These have Cython implementations in modules prefixed with "_".
+    Should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
+
+Normally these are not used directly. Perhaps just the :class:`~hunter.tracer.Tracer` may be used directly for
 performance reasons.
 
 .. autoclass:: hunter.event.Event
