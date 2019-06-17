@@ -112,6 +112,7 @@ def notsilenced():
     except Exception as exc:
         raise ValueError(exc)
 
+
 RETURN_VALUE = opcode.opmap['RETURN_VALUE']
 
 
