@@ -205,24 +205,31 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
 .. code-block:: python
 
     class DumpExceptions(hunter.CodePrinter):
-        events = None
+        events = ()
         depth = 0
         count = 0
+        exc = None
 
         def __init__(self, max_count=10, **kwargs):
             self.max_count = max_count
+            self.backlog = collections.deque(maxlen=5)
             super(DumpExceptions, self).__init__(**kwargs)
 
         def __call__(self, event):
             self.count += 1
             if event.kind == 'exception':  # something interesting happened ;)
-                self.events = [event.detach(self.try_repr)]
+                self.events = list(self.backlog)
+                self.events.append(event.detach(self.try_repr))
                 self.exc = self.try_repr(event.arg[1])
                 self.depth = event.depth
                 self.count = 0
             elif self.events:
-                if event.kind == 'return':  # stop if function returned
-                    if opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
+                if event.depth > self.depth:  # too many details
+                    return
+                elif event.depth < self.depth and event.kind == 'return':  # stop if function returned
+                    op = event.code.co_code[event.frame.f_lasti]
+                    op = op if isinstance(op, int) else ord(op)
+                    if op == RETURN_VALUE:
                         self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
                                     ">" * 46, event.function, self.exc)
                         for event in self.events:
@@ -234,9 +241,12 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
                             self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
                                         "-" * 46)
                     self.events = []
-                elif event.depth > self.depth + 1:  # too many details
-                    return
+                    self.exc = None
                 elif self.count < self.max_count:
                     self.events.append(event.detach(self.try_repr))
+            else:
+                self.backlog.append(event.detach(self.try_repr))
 
-Take about the use of :meth:`~hunter.event.Event.detach` and :meth:`~hunter.actions.ColorStreamAction.output`.
+Take note about the use of :meth:`~hunter.event.Event.detach` and :meth:`~hunter.actions.ColorStreamAction.output`.
+
+

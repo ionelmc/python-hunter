@@ -1,7 +1,9 @@
+import collections
 import contextlib
 import functools
 import opcode
 import os
+import sys
 from logging import getLogger
 
 import aspectlib
@@ -104,6 +106,7 @@ def silenced4():
         error()
     except Exception as exc:
         logger.info(repr(exc))
+        baz()
 
 
 def notsilenced():
@@ -117,26 +120,31 @@ RETURN_VALUE = opcode.opmap['RETURN_VALUE']
 
 
 class DumpExceptions(hunter.CodePrinter):
-    events = None
+    events = ()
     depth = 0
     count = 0
+    exc = None
 
     def __init__(self, max_count=10, **kwargs):
         self.max_count = max_count
+        self.backlog = collections.deque(maxlen=5)
         super(DumpExceptions, self).__init__(**kwargs)
 
     def __call__(self, event):
         self.count += 1
         if event.kind == 'exception':  # something interesting happened ;)
-            self.events = [event.detach(self.try_repr)]
+            self.events = list(self.backlog)
+            self.events.append(event.detach(self.try_repr))
             self.exc = self.try_repr(event.arg[1])
             self.depth = event.depth
             self.count = 0
         elif self.events:
-            if event.kind == 'return':  # stop if function returned
+            if event.depth > self.depth:  # too many details
+                return
+            elif event.depth < self.depth and event.kind == 'return':  # stop if function returned
                 op = event.code.co_code[event.frame.f_lasti]
                 op = op if isinstance(op, int) else ord(op)
-                if event.arg or op == RETURN_VALUE:
+                if op == RETURN_VALUE:
                     self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
                                 ">" * 46, event.function, self.exc)
                     for event in self.events:
@@ -148,10 +156,11 @@ class DumpExceptions(hunter.CodePrinter):
                         self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
                                     "-" * 46)
                 self.events = []
-            elif event.depth > self.depth + 1:  # too many details
-                return
+                self.exc = None
             elif self.count < self.max_count:
                 self.events.append(event.detach(self.try_repr))
+        else:
+            self.backlog.append(event.detach(self.try_repr))
 
 
 def test_dump_exceptions(LineMatcher):
@@ -168,7 +177,6 @@ def test_dump_exceptions(LineMatcher):
             print("Done not silenced")
         except ValueError:
             pass
-
     lm = LineMatcher(stream.getvalue().splitlines())
     lm.fnmatch_lines([
         '*>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on RuntimeError()',
@@ -200,7 +208,7 @@ def test_dump_exceptions(LineMatcher):
         '*                       ...       exception value: *RuntimeError*',
         '*test_cookbook.py:***   line          except Exception as exc:',
         '*test_cookbook.py:***   line              logger.info(repr(exc))',
-        '*---------------------- function exit',
+        '*---------------------- too many lines',
     ])
 
 
