@@ -257,7 +257,7 @@ class ColorStreamAction(Action):
 
     def output(self, format_str, *args, **kwargs):
         """
-        Write ``format_str.format(*args, **self.other_color, **kwargs)`` to ``self.stream``.
+        Write ``format_str.format(*args, **ANSI_COLORS, **kwargs)`` to ``self.stream``.
 
         For ANSI coloring you can place these in the ``format_str``:
 
