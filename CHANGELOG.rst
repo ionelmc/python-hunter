@@ -2,7 +2,7 @@
 Changelog
 =========
 
-3.0.0 (2019-06-??)
+3.0.0 (2019-06-17)
 ------------------
 
 * The package now uses setuptools-scm for development builds (available at https://test.pypi.org/project/hunter/). As a
