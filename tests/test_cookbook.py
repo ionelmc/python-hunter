@@ -112,6 +112,8 @@ def notsilenced():
     except Exception as exc:
         raise ValueError(exc)
 
+RETURN_VALUE = opcode.opmap['RETURN_VALUE']
+
 
 class DumpExceptions(hunter.CodePrinter):
     events = None
@@ -131,7 +133,9 @@ class DumpExceptions(hunter.CodePrinter):
             self.count = 0
         elif self.events:
             if event.kind == 'return':  # stop if function returned
-                if opcode.opname[event.code.co_code[event.frame.f_lasti]] == 'RETURN_VALUE':
+                op = event.code.co_code[event.frame.f_lasti]
+                op = op if isinstance(op, int) else ord(op)
+                if event.arg or op == RETURN_VALUE:
                     self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
                                 ">" * 46, event.function, self.exc)
                     for event in self.events:
