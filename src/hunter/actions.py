@@ -446,7 +446,7 @@ class CallPrinter(CodePrinter):
                 stack.pop()
         else:
             self.output(
-                '{}{}{}{KIND}{:9} {RESET}{}{}\n',
+                '{}{}{}{KIND}{:9} {RESET}{}{}{RESET}\n',
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,

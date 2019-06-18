@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.1 (2019-06-17)
+------------------
+
+* Fixed issue with coloring missing source message (coloring leaked into next line).
+
 3.0.0 (2019-06-17)
 ------------------
 
