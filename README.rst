@@ -39,9 +39,9 @@ Overview
     :alt: PyPI Package latest release
     :target: https://pypi.org/project/hunter
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.0.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.0.1.svg
     :alt: Commits since latest release
-    :target: https://github.com/ionelmc/python-hunter/compare/v3.0.0...master
+    :target: https://github.com/ionelmc/python-hunter/compare/v3.0.1...master
 
 .. |wheel| image:: https://img.shields.io/pypi/wheel/hunter.svg
     :alt: PyPI Wheel
