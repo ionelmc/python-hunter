@@ -11,6 +11,7 @@ Reference
     hunter.stop
     hunter.wrap
     hunter.And
+    hunter.From
     hunter.Not
     hunter.Or
     hunter.Q
@@ -67,6 +68,8 @@ Helpers
 .. autofunction:: hunter.wrap
 
 .. autofunction:: hunter.And
+
+.. autofunction:: hunter.From
 
 .. autofunction:: hunter.Not
 
