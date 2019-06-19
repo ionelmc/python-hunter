@@ -2,7 +2,7 @@
 Cookbook
 ========
 
-.. epigraph::
+.. highlights::
 
     When in doubt, use Hunter.
 
