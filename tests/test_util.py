@@ -8,11 +8,8 @@ from socket import socket
 import py
 
 from hunter.util import has_dict
+from hunter.util import safe_repr
 
-try:
-    from hunter._actions import safe_repr
-except ImportError:
-    from hunter.actions import safe_repr
 
 class Dict(dict):
     pass
@@ -34,11 +31,23 @@ class Foobar(object):
     __repr__ = lambda _: "Foo-bar"
 
 
-class Bad:
-    pass
+class Bad1:
+    def __repr__(self):
+        raise Exception("Bad!")
+
+    def method(self):
+        pass
 
 
-def test_rudimentary_repr():
+class Bad2(object):
+    def __repr__(self):
+        raise Exception("Bad!")
+
+    def method(self):
+        pass
+
+
+def test_safe_repr():
     data = {
         'a': [set('b')],
         ('c',): deque(['d']),
@@ -52,11 +61,12 @@ def test_rudimentary_repr():
             'd': Exception(1, 2, {
                 'a': safe_repr,
                 'b': Foobar,
-                'c': Bad(),
-                'ct': Bad,
+                'c': Bad2(),
+                'ct': Bad2,
             })
         }),
-
+        'bad1': Bad1().method,
+        'bad2': Bad2().method
     }
     print(safe_repr(data))
     print(safe_repr([data]))
