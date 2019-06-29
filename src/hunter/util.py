@@ -199,9 +199,7 @@ def safe_repr(obj, maxdepth=5):
         # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
     elif isinstance(obj, types.MethodType):
-        self = getattr(obj, 'im_self', None)
-        if self is None:
-            self = getattr(obj, '__self__', None)
+        self = obj.__self__
         name =  getattr(obj, '__qualname__', None)
         if name is None:
             name = obj.__name__
