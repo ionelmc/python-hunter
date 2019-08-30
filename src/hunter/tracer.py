@@ -7,7 +7,7 @@ import traceback
 from . import config
 from .event import Event
 
-__all__ = 'Tracer',
+__all__ = ("Tracer",)
 
 
 class Tracer(object):
@@ -17,6 +17,7 @@ class Tracer(object):
     Args:
         threading_support (bool): Hooks the tracer into ``threading.settrace`` as well if True.
     """
+
     def __init__(self, threading_support=None):
         self._handler = None
         self._previous = None
@@ -52,13 +53,13 @@ class Tracer(object):
         return self._previous
 
     def __repr__(self):
-        return '<hunter.tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
+        return "<hunter.tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>" % (
             id(self),
             self.threading_support,
-            '<stopped>' if self._handler is None else 'handler=',
-            '' if self._handler is None else repr(self._handler),
-            '' if self._previous is None else ', previous=',
-            '' if self._previous is None else repr(self._previous),
+            "<stopped>" if self._handler is None else "handler=",
+            "" if self._handler is None else repr(self._handler),
+            "" if self._previous is None else ", previous=",
+            "" if self._previous is None else repr(self._previous),
         )
 
     def __call__(self, frame, kind, arg):
@@ -71,17 +72,20 @@ class Tracer(object):
             because it might match further inside.
         """
         if self._handler is not None:
-            if kind == 'return' and self.depth > 0:
+            if kind == "return" and self.depth > 0:
                 self.depth -= 1
             try:
                 self._handler(Event(frame, kind, arg, self))
             except Exception as exc:
                 traceback.print_exc(file=config.DEFAULT_STREAM)
-                config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
-                    self._handler, exc))
+                config.DEFAULT_STREAM.write(
+                    "Disabling tracer because handler {} failed ({!r}).\n\n".format(
+                        self._handler, exc
+                    )
+                )
                 self.stop()
                 return
-            if kind == 'call':
+            if kind == "call":
                 self.depth += 1
                 self.calls += 1
 
@@ -98,7 +102,7 @@ class Tracer(object):
         """
         self._handler = predicate
         if self.threading_support is None or self.threading_support:
-            self._threading_previous = getattr(threading, '_trace_hook', None)
+            self._threading_previous = getattr(threading, "_trace_hook", None)
             threading.settrace(self)
         self._previous = sys.gettrace()
         sys.settrace(self)

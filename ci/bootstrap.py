@@ -30,7 +30,7 @@ if __name__ == "__main__":
         subprocess.check_call([join(bin_path, "pip"), "install", "jinja2"])
     python_executable = join(bin_path, "python")
     if not os.path.exists(python_executable):
-        python_executable += '.exe'
+        python_executable += ".exe"
     if not os.path.samefile(python_executable, sys.executable):
         print("Re-executing with: {0}".format(python_executable))
         os.execv(python_executable, [python_executable, __file__])
@@ -43,15 +43,17 @@ if __name__ == "__main__":
         loader=jinja2.FileSystemLoader(join(base_path, "ci", "templates")),
         trim_blocks=True,
         lstrip_blocks=True,
-        keep_trailing_newline=True
+        keep_trailing_newline=True,
     )
 
     tox_environments = [
         line.strip()
         # WARNING: 'tox' must be installed globally or in the project's virtualenv
-        for line in subprocess.check_output(['tox', '--listenvs'], universal_newlines=True).splitlines()
+        for line in subprocess.check_output(
+            ["tox", "--listenvs"], universal_newlines=True
+        ).splitlines()
     ]
-    tox_environments = [line for line in tox_environments if line.startswith('py')]
+    tox_environments = [line for line in tox_environments if line.startswith("py")]
 
     for name in os.listdir(join("ci", "templates")):
         with open(join(base_path, name), "w") as fh:

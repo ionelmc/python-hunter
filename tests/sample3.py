@@ -14,6 +14,7 @@ def b():
     x = Bad()
     raise Exception(x)
 
+
 a()
 try:
     b()

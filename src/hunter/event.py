@@ -17,7 +17,7 @@ from .util import get_func_in_mro
 from .util import get_main_thread
 from .util import if_same_code
 
-__all__ = 'Event',
+__all__ = ("Event",)
 
 
 class Event(object):
@@ -34,6 +34,7 @@ class Event(object):
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
+
     frame = None
     kind = None
     arg = None
@@ -84,12 +85,12 @@ class Event(object):
 
     def __eq__(self, other):
         return (
-            type(self) == type(other) and
-            self.kind == other.kind and
-            self.depth == other.depth and
-            self.function == other.function and
-            self.module == other.module and
-            self.filename == other.filename
+            type(self) == type(other)
+            and self.kind == other.kind
+            and self.depth == other.depth
+            and self.function == other.function
+            and self.module == other.module
+            and self.filename == other.filename
         )
 
     def detach(self, value_filter=None):
@@ -115,25 +116,29 @@ class Event(object):
         """
         event = Event.__new__(Event)
 
-        event.__dict__['code'] = self.code
-        event.__dict__['filename'] = self.filename
-        event.__dict__['fullsource'] = self.fullsource
-        event.__dict__['function'] = self.function
-        event.__dict__['lineno'] = self.lineno
-        event.__dict__['module'] = self.module
-        event.__dict__['source'] = self.source
-        event.__dict__['stdlib'] = self.stdlib
-        event.__dict__['threadid'] = self.threadid
-        event.__dict__['threadname'] = self.threadname
+        event.__dict__["code"] = self.code
+        event.__dict__["filename"] = self.filename
+        event.__dict__["fullsource"] = self.fullsource
+        event.__dict__["function"] = self.function
+        event.__dict__["lineno"] = self.lineno
+        event.__dict__["module"] = self.module
+        event.__dict__["source"] = self.source
+        event.__dict__["stdlib"] = self.stdlib
+        event.__dict__["threadid"] = self.threadid
+        event.__dict__["threadname"] = self.threadname
 
         if value_filter:
-            event.__dict__['arg'] = value_filter(self.arg)
-            event.__dict__['globals'] = {key: value_filter(value) for key, value in self.globals.items()}
-            event.__dict__['locals'] = {key: value_filter(value) for key, value in self.locals.items()}
+            event.__dict__["arg"] = value_filter(self.arg)
+            event.__dict__["globals"] = {
+                key: value_filter(value) for key, value in self.globals.items()
+            }
+            event.__dict__["locals"] = {
+                key: value_filter(value) for key, value in self.locals.items()
+            }
         else:
-            event.__dict__['globals'] = {}
-            event.__dict__['locals'] = {}
-            event.__dict__['arg'] = None
+            event.__dict__["globals"] = {}
+            event.__dict__["locals"] = {}
+            event.__dict__["arg"] = None
 
         event.threading_support = self.threading_support
         event.calls = self.calls
@@ -243,9 +248,9 @@ class Event(object):
 
         :type: str
         """
-        module = self.frame.f_globals.get('__name__', '')
+        module = self.frame.f_globals.get("__name__", "")
         if module is None:
-            module = ''
+            module = ""
 
         return module
 
@@ -259,16 +264,16 @@ class Event(object):
         """
         filename = self.frame.f_code.co_filename
         if not filename:
-            filename = self.frame.f_globals.get('__file__')
+            filename = self.frame.f_globals.get("__file__")
         if not filename:
-            filename = ''
-        if filename.endswith(('.pyc', '.pyo')):
+            filename = ""
+        if filename.endswith((".pyc", ".pyo")):
             filename = filename[:-1]
-        elif filename.endswith('$py.class'):  # Jython
-            filename = filename[:-9] + '.py'
-        elif filename.endswith(('.so', '.pyd')):
-            basename = CYTHON_SUFFIX_RE.sub('', filename)
-            for ext in ('.pyx', '.py'):
+        elif filename.endswith("$py.class"):  # Jython
+            filename = filename[:-9] + ".py"
+        elif filename.endswith((".so", ".pyd")):
+            basename = CYTHON_SUFFIX_RE.sub("", filename)
+            for ext in (".pyx", ".py"):
                 cyfilename = basename + ext
                 if exists(cyfilename):
                     filename = cyfilename
@@ -298,10 +303,10 @@ class Event(object):
 
         :type: bool
         """
-        module_parts = self.module.split('.')
-        if 'pkg_resources' in module_parts:
+        module_parts = self.module.split(".")
+        if "pkg_resources" in module_parts:
             return True
-        elif self.filename == '<frozen importlib._bootstrap>':
+        elif self.filename == "<frozen importlib._bootstrap>":
             return True
         elif self.filename.startswith(SITE_PACKAGES_PATHS):
             # if it's in site-packages then its definitely not stdlib
@@ -321,21 +326,28 @@ class Event(object):
         :type: str
         """
         try:
-            if self.kind == 'call' and self.code.co_name != '<module>':
+            if self.kind == "call" and self.code.co_name != "<module>":
                 lines = []
                 try:
-                    for _, token, _, _, line in tokenize.generate_tokens(partial(
-                        next,
-                        yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines.append)
-                    )):
-                        if token in ('def', 'class', 'lambda'):
-                            return ''.join(lines)
+                    for _, token, _, _, line in tokenize.generate_tokens(
+                        partial(
+                            next,
+                            yield_lines(
+                                self.filename,
+                                self.frame.f_globals,
+                                self.lineno - 1,
+                                lines.append,
+                            ),
+                        )
+                    ):
+                        if token in ("def", "class", "lambda"):
+                            return "".join(lines)
                 except tokenize.TokenError:
                     pass
 
             return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
-            return '??? NO SOURCE: {!r}'.format(exc)
+            return "??? NO SOURCE: {!r}".format(exc)
 
     @cached_property
     def source(self):
@@ -346,22 +358,29 @@ class Event(object):
 
         :type: str
         """
-        if self.filename.endswith(('.so', '.pyd')):
-            return '??? NO SOURCE: not reading binary {} file'.format(splitext(basename(self.filename))[1])
+        if self.filename.endswith((".so", ".pyd")):
+            return "??? NO SOURCE: not reading binary {} file".format(
+                splitext(basename(self.filename))[1]
+            )
         try:
             return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
-            return '??? NO SOURCE: {!r}'.format(exc)
+            return "??? NO SOURCE: {!r}".format(exc)
 
     __getitem__ = object.__getattribute__
 
 
-def yield_lines(filename, module_globals, start, collector,
-                limit=10,
-                leading_whitespace_re=LEADING_WHITESPACE_RE):
+def yield_lines(
+    filename,
+    module_globals,
+    start,
+    collector,
+    limit=10,
+    leading_whitespace_re=LEADING_WHITESPACE_RE,
+):
     dedent = None
     amount = 0
-    for line in linecache.getlines(filename, module_globals)[start:start + limit]:
+    for line in linecache.getlines(filename, module_globals)[start : start + limit]:
         if dedent is None:
             dedent = leading_whitespace_re.findall(line)
             dedent = dedent[0] if dedent else ""

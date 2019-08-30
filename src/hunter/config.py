@@ -2,9 +2,15 @@ import os
 import sys
 
 THREADING_SUPPORT_ALIASES = (
-    "threading_support", "threads_support", "thread_support",
-    "threadingsupport", "threadssupport", "threadsupport",
-    "threading", "threads", "thread",
+    "threading_support",
+    "threads_support",
+    "thread_support",
+    "threadingsupport",
+    "threadssupport",
+    "threadsupport",
+    "threading",
+    "threads",
+    "thread",
 )
 
 DEFAULTS = {}
@@ -12,13 +18,30 @@ DEFAULT_STREAM = sys.stderr
 
 
 def load_config(predicates, options):
-    from . import Q, And, Or, Not, CallPrinter, CodePrinter, Manhole, Debugger, VarsPrinter, When  # noqa
+    from . import (
+        Q,
+        And,
+        Or,
+        Not,
+        CallPrinter,
+        CodePrinter,
+        Manhole,
+        Debugger,
+        VarsPrinter,
+        When,
+    )  # noqa
+
     Q, And, Or, Not, CallPrinter, CodePrinter, Manhole, Debugger, VarsPrinter, When,
     try:
-        config_predicates, config_options = eval("_prepare({})".format(os.environ.get("PYTHONHUNTERCONFIG", '')))
+        config_predicates, config_options = eval(
+            "_prepare({})".format(os.environ.get("PYTHONHUNTERCONFIG", ""))
+        )
     except Exception as exc:
-        sys.stderr.write("Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n".format(
-            os.environ, exc))
+        sys.stderr.write(
+            "Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n".format(
+                os.environ, exc
+            )
+        )
         return predicates, options
     else:
         return predicates + tuple(config_predicates), dict(config_options, **options)
@@ -59,14 +82,20 @@ def _prepare(*args, **kwargs):
             continue
 
         DEFAULTS.pop(key)
-        sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n".format(
-            key, value))
+        sys.stderr.write(
+            "Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n".format(
+                key, value
+            )
+        )
     for position, predicate in enumerate(args):
         if callable(predicate):
             predicates.append(predicate)
         else:
-            sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n".format(
-                predicate, position))
+            sys.stderr.write(
+                "Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n".format(
+                    predicate, position
+                )
+            )
 
     return predicates, options
 

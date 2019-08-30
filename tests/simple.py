@@ -4,16 +4,14 @@
 3
 4
 """  # end
-class Foo(object):
 
+
+class Foo(object):
     @staticmethod
     def a(*args):
         return args
 
-    b = staticmethod(
-        lambda *a:
-            a
-    )
+    b = staticmethod(lambda *a: a)
 
 
 def deco(_):
@@ -28,14 +26,6 @@ def a(*args):
     return args
 
 
-Foo.a(
-    1,
-    2,
-    3,
-)
-Foo.b(
-    1,
-    2,
-    3,
-)
+Foo.a(1, 2, 3)
+Foo.b(1, 2, 3)
 a()

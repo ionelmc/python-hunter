@@ -24,8 +24,10 @@ try:
     from threading import main_thread
 except ImportError:
     from threading import _shutdown
+
     get_main_thread = weakref.ref(
-        _shutdown.__self__ if hasattr(_shutdown, '__self__') else _shutdown.im_self)
+        _shutdown.__self__ if hasattr(_shutdown, "__self__") else _shutdown.im_self
+    )
     del _shutdown
 else:
     get_main_thread = weakref.ref(main_thread())
@@ -33,47 +35,42 @@ else:
 PY3 = sys.version_info[0] == 3
 
 if PY3:
-    STRING_TYPES = str,
+    STRING_TYPES = (str,)
 else:
-    STRING_TYPES = basestring,  # noqa
+    STRING_TYPES = (basestring,)  # noqa
 
 OTHER_COLORS = {
-    'COLON': Style.BRIGHT + Fore.BLACK,
-    'LINENO': Style.RESET_ALL,
-    'KIND': Fore.CYAN,
-    'CONT': Style.BRIGHT + Fore.BLACK,
-    'VARS': Style.BRIGHT + Fore.MAGENTA,
-    'VARS-NAME': Style.NORMAL + Fore.MAGENTA,
-    'INTERNAL-FAILURE': Style.BRIGHT + Back.RED + Fore.RED,
-    'INTERNAL-DETAIL': Fore.WHITE,
-    'SOURCE-FAILURE': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
-    'SOURCE-DETAIL': Fore.WHITE,
-
-    'RESET': Style.RESET_ALL,
+    "COLON": Style.BRIGHT + Fore.BLACK,
+    "LINENO": Style.RESET_ALL,
+    "KIND": Fore.CYAN,
+    "CONT": Style.BRIGHT + Fore.BLACK,
+    "VARS": Style.BRIGHT + Fore.MAGENTA,
+    "VARS-NAME": Style.NORMAL + Fore.MAGENTA,
+    "INTERNAL-FAILURE": Style.BRIGHT + Back.RED + Fore.RED,
+    "INTERNAL-DETAIL": Fore.WHITE,
+    "SOURCE-FAILURE": Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
+    "SOURCE-DETAIL": Fore.WHITE,
+    "RESET": Style.RESET_ALL,
 }
-for name, group in [
-    ('', Style),
-    ('fore', Fore),
-    ('back', Back),
-]:
+for name, group in [("", Style), ("fore", Fore), ("back", Back)]:
     for key in dir(group):
-        OTHER_COLORS['{}({})'.format(name, key) if name else key] = getattr(group, key)
+        OTHER_COLORS["{}({})".format(name, key) if name else key] = getattr(group, key)
 CALL_COLORS = {
-    'call': Style.BRIGHT + Fore.BLUE,
-    'line': Fore.RESET,
-    'return': Style.BRIGHT + Fore.GREEN,
-    'exception': Style.BRIGHT + Fore.RED,
+    "call": Style.BRIGHT + Fore.BLUE,
+    "line": Fore.RESET,
+    "return": Style.BRIGHT + Fore.GREEN,
+    "exception": Style.BRIGHT + Fore.RED,
 }
 CODE_COLORS = {
-    'call': Fore.RESET + Style.BRIGHT,
-    'line': Fore.RESET,
-    'return': Fore.YELLOW,
-    'exception': Fore.RED,
+    "call": Fore.RESET + Style.BRIGHT,
+    "line": Fore.RESET,
+    "return": Fore.YELLOW,
+    "exception": Fore.RED,
 }
-MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
+MISSING = type("MISSING", (), {"__repr__": lambda _: "?"})()
 BUILTIN_SYMBOLS = set(vars(builtins))
-CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
-LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+CYTHON_SUFFIX_RE = re.compile(r"([.].+)?[.](so|pyd)$", re.IGNORECASE)
+LEADING_WHITESPACE_RE = re.compile("(^[ \t]*)(?:[^ \t\n])", re.MULTILINE)
 
 
 class cached_property(object):
@@ -107,11 +104,11 @@ def get_func_in_mro(obj, code):
 
 def if_same_code(func, code):
     while func is not None:
-        func_code = getattr(func, '__code__', None)
+        func_code = getattr(func, "__code__", None)
         if func_code is code:
             return func
         # Attempt to find the decorated function
-        func = getattr(func, '__wrapped__', None)
+        func = getattr(func, "__wrapped__", None)
     return None
 
 
@@ -140,70 +137,98 @@ def has_dict(obj_type, obj, tolerance=25):
         obj_type = type(obj_type)
         tolerance -= 1
     for ancestor in ancestor_types:
-        __dict__ = getattr(ancestor, '__dict__', None)
+        __dict__ = getattr(ancestor, "__dict__", None)
         if __dict__ is not None:
-            if '__dict__' in __dict__:
+            if "__dict__" in __dict__:
                 return True
-    return hasattr(obj, '__dict__')
+    return hasattr(obj, "__dict__")
 
 
 def safe_repr(obj, maxdepth=5):
     if not maxdepth:
-        return '...'
+        return "..."
     obj_type = type(obj)
     newdepth = maxdepth - 1
 
     # specifically handle few of the container builtins that would normally do repr on contained values
     if isinstance(obj, dict):
         if obj_type is not dict:
-            return '%s({%s})' % (
+            return "%s({%s})" % (
                 obj_type.__name__,
-                ', '.join('%s: %s' % (
-                    safe_repr(k, maxdepth),
-                    safe_repr(v, newdepth)
-                ) for k, v in obj.items()))
+                ", ".join(
+                    "%s: %s" % (safe_repr(k, maxdepth), safe_repr(v, newdepth))
+                    for k, v in obj.items()
+                ),
+            )
         else:
-            return '{%s}' % ', '.join('%s: %s' % (
-                safe_repr(k, maxdepth),
-                safe_repr(v, newdepth)
-            ) for k, v in obj.items())
+            return "{%s}" % ", ".join(
+                "%s: %s" % (safe_repr(k, maxdepth), safe_repr(v, newdepth))
+                for k, v in obj.items()
+            )
     elif isinstance(obj, list):
         if obj_type is not list:
-            return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+            return "%s([%s])" % (
+                obj_type.__name__,
+                ", ".join(safe_repr(i, newdepth) for i in obj),
+            )
         else:
-            return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
+            return "[%s]" % ", ".join(safe_repr(i, newdepth) for i in obj)
     elif isinstance(obj, tuple):
         if obj_type is not tuple:
-            return '%s(%s%s)' % (
+            return "%s(%s%s)" % (
                 obj_type.__name__,
-                ', '.join(safe_repr(i, newdepth) for i in obj),
-                ',' if len(obj) == 1 else '')
+                ", ".join(safe_repr(i, newdepth) for i in obj),
+                "," if len(obj) == 1 else "",
+            )
         else:
-            return '(%s%s)' % (', '.join(safe_repr(i, newdepth) for i in obj), ',' if len(obj) == 1 else '')
+            return "(%s%s)" % (
+                ", ".join(safe_repr(i, newdepth) for i in obj),
+                "," if len(obj) == 1 else "",
+            )
     elif isinstance(obj, set):
         if obj_type is not set:
-            return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+            return "%s({%s})" % (
+                obj_type.__name__,
+                ", ".join(safe_repr(i, newdepth) for i in obj),
+            )
         else:
-            return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
+            return "{%s}" % ", ".join(safe_repr(i, newdepth) for i in obj)
     elif isinstance(obj, frozenset):
-        return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        return "%s({%s})" % (
+            obj_type.__name__,
+            ", ".join(safe_repr(i, newdepth) for i in obj),
+        )
     elif isinstance(obj, deque):
-        return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        return "%s([%s])" % (
+            obj_type.__name__,
+            ", ".join(safe_repr(i, newdepth) for i in obj),
+        )
     elif isinstance(obj, BaseException):
-        return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
-    elif obj_type in (type, types.ModuleType,
-                      types.FunctionType,
-                      types.BuiltinFunctionType, types.BuiltinMethodType,
-                      io.IOBase):
+        return "%s(%s)" % (
+            obj_type.__name__,
+            ", ".join(safe_repr(i, newdepth) for i in obj.args),
+        )
+    elif obj_type in (
+        type,
+        types.ModuleType,
+        types.FunctionType,
+        types.BuiltinFunctionType,
+        types.BuiltinMethodType,
+        io.IOBase,
+    ):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
     elif isinstance(obj, types.MethodType):
         self = obj.__self__
-        name =  getattr(obj, '__qualname__', None)
+        name = getattr(obj, "__qualname__", None)
         if name is None:
             name = obj.__name__
-        return '<%sbound method %s of %s>' % ('un' if self is None else '', name, safe_repr(self, newdepth))
+        return "<%sbound method %s of %s>" % (
+            "un" if self is None else "",
+            name,
+            safe_repr(self, newdepth),
+        )
     elif not has_dict(obj_type, obj):
         return repr(obj)
     else:

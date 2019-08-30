@@ -20,21 +20,19 @@ try:
 except ImportError:
     Cython = None
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     setup(
-        package_dir={'': 'tests'},
+        package_dir={"": "tests"},
         zip_safe=False,
-        setup_requires=[
-            'cython',
-        ] if Cython else [],
+        setup_requires=["cython"] if Cython else [],
         ext_modules=[
             Extension(
-                splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
+                splitext(relpath(path, "tests").replace(os.sep, "."))[0],
                 sources=[path],
                 include_dirs=[dirname(path)],
-                define_macros=[('CYTHON_TRACE', '1')]
+                define_macros=[("CYTHON_TRACE", "1")],
             )
-            for root, _, _ in os.walk('tests')
-            for path in glob(join(root, '*.pyx' if Cython else '*.c'))
-            ],
+            for root, _, _ in os.walk("tests")
+            for path in glob(join(root, "*.pyx" if Cython else "*.c"))
+        ],
     )

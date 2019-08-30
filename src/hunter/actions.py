@@ -24,13 +24,10 @@ except ImportError:
     from thread import get_ident
 
 
-__all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
+__all__ = ["Action", "Debugger", "Manhole", "CodePrinter", "CallPrinter", "VarsPrinter"]
 
 
-BUILTIN_REPR_FUNCS = {
-    'repr': repr,
-    'safe_repr': safe_repr
-}
+BUILTIN_REPR_FUNCS = {"repr": repr, "safe_repr": safe_repr}
 
 
 class Action(object):
@@ -42,22 +39,29 @@ class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
-    def __init__(self, klass=config.Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
+
+    def __init__(
+        self,
+        klass=config.Default("klass", lambda **kwargs: __import__("pdb").Pdb(**kwargs)),
+        **kwargs
+    ):
         self.klass = config.resolve(klass)
         self.kwargs = kwargs
 
     def __eq__(self, other):
         return (
-            type(self) is type(other) and
-            self.klass == other.klass and
-            self.kwargs == other.kwargs
+            type(self) is type(other)
+            and self.klass == other.klass
+            and self.kwargs == other.kwargs
         )
 
     def __str__(self):
-        return '{0.__class__.__name__}(klass={0.klass}, kwargs={0.kwargs})'.format(self)
+        return "{0.__class__.__name__}(klass={0.klass}, kwargs={0.kwargs})".format(self)
 
     def __repr__(self):
-        return '{0.__class__.__name__}(klass={0.klass!r}, kwargs={0.kwargs!r})'.format(self)
+        return "{0.__class__.__name__}(klass={0.klass!r}, kwargs={0.kwargs!r})".format(
+            self
+        )
 
     def __call__(self, event):
         """
@@ -74,13 +78,14 @@ class Manhole(Action):
         return type(self) is type(other) and self.options == other.options
 
     def __str__(self):
-        return '{0.__class__.__name__}(options={0.options})'.format(self)
+        return "{0.__class__.__name__}(options={0.options})".format(self)
 
     def __repr__(self):
-        return '{0.__class__.__name__}(options={0.options!r})'.format(self)
+        return "{0.__class__.__name__}(options={0.options!r})".format(self)
 
     def __call__(self, event):
         import manhole
+
         inst = manhole.install(strict=False, thread=False, **self.options)
         inst.handle_oneshot()
 
@@ -89,6 +94,7 @@ class ColorStreamAction(Action):
     """
     Baseclass for your custom action. Just implement your own ``__call__``.
     """
+
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -97,18 +103,22 @@ class ColorStreamAction(Action):
     OTHER_COLORS = OTHER_COLORS
     EVENT_COLORS = CODE_COLORS
 
-    def __init__(self,
-                 stream=config.Default('stream', None),
-                 force_colors=config.Default('force_colors', False),
-                 force_pid=config.Default('force_pid', False),
-                 filename_alignment=config.Default('filename_alignment', 40),
-                 thread_alignment=config.Default('thread_alignment', 12),
-                 pid_alignment=config.Default('pid_alignment', 9),
-                 repr_limit=config.Default('repr_limit', 1024),
-                 repr_func=config.Default('repr_func', 'safe_repr')):
+    def __init__(
+        self,
+        stream=config.Default("stream", None),
+        force_colors=config.Default("force_colors", False),
+        force_pid=config.Default("force_pid", False),
+        filename_alignment=config.Default("filename_alignment", 40),
+        thread_alignment=config.Default("thread_alignment", 12),
+        pid_alignment=config.Default("pid_alignment", 9),
+        repr_limit=config.Default("repr_limit", 1024),
+        repr_func=config.Default("repr_func", "safe_repr"),
+    ):
         self.force_colors = config.resolve(force_colors)
         self.force_pid = config.resolve(force_pid)
-        self.stream = config.DEFAULT_STREAM if config.resolve(stream) is None else stream
+        self.stream = (
+            config.DEFAULT_STREAM if config.resolve(stream) is None else stream
+        )
         self.filename_alignment = config.resolve(filename_alignment)
         self.thread_alignment = config.resolve(thread_alignment)
         self.pid_alignment = config.resolve(pid_alignment)
@@ -130,16 +140,20 @@ class ColorStreamAction(Action):
         )
 
     def __str__(self):
-        return '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, ' \
-               'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, ' \
-               'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, ' \
-               'repr_func={0.repr_func})'.format(self)
+        return (
+            "{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, "
+            "filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, "
+            "pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, "
+            "repr_func={0.repr_func})".format(self)
+        )
 
     def __repr__(self):
-        return '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, ' \
-               'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, ' \
-               'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, ' \
-               'repr_func={0.repr_func!r})'.format(self)
+        return (
+            "{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, "
+            "filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, "
+            "pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, "
+            "repr_func={0.repr_func!r})".format(self)
+        )
 
     @property
     def stream(self):
@@ -151,10 +165,10 @@ class ColorStreamAction(Action):
             if value in self._stream_cache:
                 value = self._stream_cache[value]
             else:
-                value = self._stream_cache[value] = open(value, 'a', buffering=0)
+                value = self._stream_cache[value] = open(value, "a", buffering=0)
 
-        isatty = getattr(value, 'isatty', None)
-        if self.force_colors or (isatty and isatty() and os.name != 'java'):
+        isatty = getattr(value, "isatty", None)
+        if self.force_colors or (isatty and isatty() and os.name != "java"):
             self._stream = AnsiToWin32(value, strip=False)
             self._tty = True
             self.event_colors = self.EVENT_COLORS
@@ -162,8 +176,8 @@ class ColorStreamAction(Action):
         else:
             self._tty = False
             self._stream = value
-            self.event_colors = {key: '' for key in self.EVENT_COLORS}
-            self.other_colors = {key: '' for key in self.OTHER_COLORS}
+            self.event_colors = {key: "" for key in self.EVENT_COLORS}
+            self.other_colors = {key: "" for key in self.OTHER_COLORS}
 
     @property
     def repr_func(self):
@@ -176,7 +190,11 @@ class ColorStreamAction(Action):
         elif value in BUILTIN_REPR_FUNCS:
             self._repr_func = BUILTIN_REPR_FUNCS[value]
         else:
-            raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
+            raise TypeError(
+                'Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(
+                    value
+                )
+            )
 
     def try_repr(self, obj):
         """
@@ -189,14 +207,18 @@ class ColorStreamAction(Action):
         limit = self.repr_limit
         try:
             s = self.repr_func(obj)
-            s = s.replace('\n', r'\n')
+            s = s.replace("\n", r"\n")
             if len(s) > limit:
                 cutoff = limit // 2
-                return '{} {CONT}[...]{RESET} {}'.format(s[:cutoff], s[-cutoff:], **self.other_colors)
+                return "{} {CONT}[...]{RESET} {}".format(
+                    s[:cutoff], s[-cutoff:], **self.other_colors
+                )
             else:
                 return s
         except Exception as exc:
-            return '{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}'.format(exc, **self.other_colors)
+            return "{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}".format(
+                exc, **self.other_colors
+            )
 
     def try_source(self, event, full=False):
         """
@@ -205,13 +227,18 @@ class ColorStreamAction(Action):
         Return: string
         """
         source = event.fullsource if full else event.source
-        if source.startswith('??? NO SOURCE: '):
-            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}'.format(source[15:], **self.other_colors),
+        if source.startswith("??? NO SOURCE: "):
+            return (
+                "{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}".format(
+                    source[15:], **self.other_colors
+                ),
+            )
         elif source:
             return source
         else:
-            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for module {!r} is empty.'.format(
-                event.module, **self.other_colors)
+            return "{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for module {!r} is empty.".format(
+                event.module, **self.other_colors
+            )
 
     def filename_prefix(self, event=None):
         """
@@ -220,13 +247,14 @@ class ColorStreamAction(Action):
         Returns: string
         """
         if event:
-            filename = event.filename or '<???>'
+            filename = event.filename or "<???>"
             if len(filename) > self.filename_alignment:
-                filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-            return '{:>{}}{COLON}:{LINENO}{:<5} '.format(
-                filename, self.filename_alignment, event.lineno, **self.other_colors)
+                filename = "[...]{}".format(filename[5 - self.filename_alignment :])
+            return "{:>{}}{COLON}:{LINENO}{:<5} ".format(
+                filename, self.filename_alignment, event.lineno, **self.other_colors
+            )
         else:
-            return '{:>{}}       '.format('', self.filename_alignment)
+            return "{:>{}}       ".format("", self.filename_alignment)
 
     def pid_prefix(self):
         """
@@ -234,11 +262,11 @@ class ColorStreamAction(Action):
         """
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
-            pid = '[{}]'.format(pid)
+            pid = "[{}]".format(pid)
             pid_align = self.pid_alignment
         else:
-            pid = pid_align = ''
-        return '{:{}}'.format(pid, pid_align)
+            pid = pid_align = ""
+        return "{:{}}".format(pid, pid_align)
 
     def thread_prefix(self, event):
         """
@@ -251,9 +279,9 @@ class ColorStreamAction(Action):
             threading_support = True
         else:
             threading_support = len(self.seen_threads) > 1
-        thread_name = threading.current_thread().name if threading_support else ''
-        thread_align = self.thread_alignment if threading_support else ''
-        return '{:{}}'.format(thread_name, thread_align)
+        thread_name = threading.current_thread().name if threading_support else ""
+        thread_align = self.thread_alignment if threading_support else ""
+        return "{:{}}".format(thread_name, thread_align)
 
     def output(self, format_str, *args, **kwargs):
         """
@@ -291,10 +319,7 @@ class ColorStreamAction(Action):
 
         Returns: string
         """
-        self.stream.write(format_str.format(
-            *args,
-            **dict(self.other_colors, **kwargs)
-        ))
+        self.stream.write(format_str.format(*args, **dict(self.other_colors, **kwargs)))
 
 
 class CodePrinter(ColorStreamAction):
@@ -321,7 +346,7 @@ class CodePrinter(ColorStreamAction):
         filename_prefix = self.filename_prefix(event)
 
         self.output(
-            '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+            "{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n",
             pid_prefix,
             thread_prefix,
             filename_prefix,
@@ -333,31 +358,31 @@ class CodePrinter(ColorStreamAction):
             empty_filename_prefix = self.filename_prefix()
             for line in lines[1:-1]:
                 self.output(
-                    '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+                    "{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n",
                     pid_prefix,
                     thread_prefix,
                     empty_filename_prefix,
-                    '   |',
+                    "   |",
                     line,
                     COLOR=self.event_colors.get(event.kind),
                 )
             self.output(
-                '{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n',
+                "{}{}{}{KIND}{:9} {COLOR}{}{RESET}\n",
                 pid_prefix,
                 thread_prefix,
                 empty_filename_prefix,
-                '   *',
+                "   *",
                 lines[-1],
                 COLOR=self.event_colors.get(event.kind),
             )
 
-        if event.kind in ('return', 'exception'):
+        if event.kind in ("return", "exception"):
             self.output(
-                '{}{}{}{CONT}{:9} {COLOR}{} value: {NORMAL}{}{RESET}\n',
+                "{}{}{}{CONT}{:9} {COLOR}{} value: {NORMAL}{}{RESET}\n",
                 pid_prefix,
                 thread_prefix,
                 self.filename_prefix(),
-                '...',
+                "...",
                 event.kind,
                 event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
@@ -379,6 +404,7 @@ class CallPrinter(CodePrinter):
 
     .. versionadded:: 1.2.0
     """
+
     EVENT_COLORS = CALL_COLORS
 
     def __init__(self, *args, **kwargs):
@@ -399,45 +425,50 @@ class CallPrinter(CodePrinter):
         thread_prefix = self.thread_prefix(event)
         filename_prefix = self.filename_prefix(event)
 
-        if event.kind == 'call':
+        if event.kind == "call":
             code = event.code
             stack.append(ident)
             self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}({}{COLOR}{NORMAL}){RESET}\n',
+                "{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}({}{COLOR}{NORMAL}){RESET}\n",
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,
                 event.kind,
-                '   ' * (len(stack) - 1),
+                "   " * (len(stack) - 1),
                 event.function,
-                ', '.join('{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}'.format(
-                    var,
-                    event.locals.get(var, MISSING) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
-                    **self.other_colors
-                ) for var in code.co_varnames[:code.co_argcount]),
+                ", ".join(
+                    "{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}".format(
+                        var,
+                        event.locals.get(var, MISSING)
+                        if event.detached
+                        else self.try_repr(event.locals.get(var, MISSING)),
+                        **self.other_colors
+                    )
+                    for var in code.co_varnames[: code.co_argcount]
+                ),
                 COLOR=self.event_colors.get(event.kind),
             )
-        elif event.kind == 'exception':
+        elif event.kind == "exception":
             self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n',
+                "{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n",
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,
                 event.kind,
-                '   ' * (len(stack) - 1),
+                "   " * (len(stack) - 1),
                 event.function,
                 event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
 
-        elif event.kind == 'return':
+        elif event.kind == "return":
             self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}: {RESET}{}\n',
+                "{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}: {RESET}{}\n",
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,
                 event.kind,
-                '   ' * (len(stack) - 1),
+                "   " * (len(stack) - 1),
                 event.function,
                 event.arg if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
@@ -446,12 +477,12 @@ class CallPrinter(CodePrinter):
                 stack.pop()
         else:
             self.output(
-                '{}{}{}{KIND}{:9} {RESET}{}{}{RESET}\n',
+                "{}{}{}{KIND}{:9} {RESET}{}{}{RESET}\n",
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,
                 event.kind,
-                '   ' * len(stack),
+                "   " * len(stack),
                 self.try_source(event).strip(),
             )
 
@@ -473,11 +504,10 @@ class VarsPrinter(ColorStreamAction):
 
     def __init__(self, *names, **options):
         if not names:
-            raise TypeError('VarsPrinter requires at least one variable name/expression.')
-        self.names = {
-            name: set(iter_symbols(name))
-            for name in names
-        }
+            raise TypeError(
+                "VarsPrinter requires at least one variable name/expression."
+            )
+        self.names = {name: set(iter_symbols(name)) for name in names}
         super(VarsPrinter, self).__init__(**options)
 
     def __call__(self, event):
@@ -501,14 +531,16 @@ class VarsPrinter(ColorStreamAction):
             except AttributeError:
                 continue
             except Exception as exc:
-                printout = '{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}'.format(exc, **self.other_colors)
+                printout = "{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}".format(
+                    exc, **self.other_colors
+                )
             else:
                 printout = obj if event.detached else self.try_repr(obj)
 
             if frame_symbols >= symbols:
                 if first:
                     self.output(
-                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         filename_prefix,
@@ -519,7 +551,7 @@ class VarsPrinter(ColorStreamAction):
                     first = False
                 else:
                     self.output(
-                        '{}{}{}{CONT}...       {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{CONT}...       {VARS}[{VARS-NAME}{} {VARS}=> {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         empty_filename_prefix,
@@ -538,6 +570,7 @@ class VarsSnooper(ColorStreamAction):
         * Will leak memory if you filter the return events (eg: ``~Q(kind="return")``).
         * Not thoroughly tested. May misbehave on code with closures/nonlocal variables.
     """
+
     def __init__(self, **options):
         super(VarsSnooper, self).__init__(**options)
         self.stored_reprs = defaultdict(dict)
@@ -565,7 +598,7 @@ class VarsSnooper(ColorStreamAction):
                 scope[name] = current_repr
                 if first:
                     self.output(
-                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         filename_prefix,
@@ -576,11 +609,11 @@ class VarsSnooper(ColorStreamAction):
                     first = False
                 else:
                     self.output(
-                        '{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}:= {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         empty_filename_prefix,
-                        '...',
+                        "...",
                         name,
                         current_repr,
                     )
@@ -588,7 +621,7 @@ class VarsSnooper(ColorStreamAction):
                 scope[name] = current_repr
                 if first:
                     self.output(
-                        '{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{KIND}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         filename_prefix,
@@ -600,14 +633,14 @@ class VarsSnooper(ColorStreamAction):
                     first = False
                 else:
                     self.output(
-                        '{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n',
+                        "{}{}{}{CONT}{:9} {VARS}[{VARS-NAME}{} {VARS}: {RESET}{}{VARS} => {RESET}{}{VARS}]{RESET}\n",
                         pid_prefix,
                         thread_prefix,
                         empty_filename_prefix,
-                        '...',
+                        "...",
                         name,
                         previous_repr,
                         current_repr,
                     )
-        if event.kind == 'return':
+        if event.kind == "return":
             del self.stored_reprs[scope_key]

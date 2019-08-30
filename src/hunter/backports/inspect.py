@@ -38,15 +38,17 @@ def _shadowed_dict_newstyle(klass):
         except KeyError:
             pass
         else:
-            if not (type(class_dict) is types.GetSetDescriptorType and  # noqa
-                    class_dict.__name__ == "__dict__" and
-                    class_dict.__objclass__ is entry):
+            if not (
+                type(class_dict) is types.GetSetDescriptorType
+                and class_dict.__name__ == "__dict__"  # noqa
+                and class_dict.__objclass__ is entry
+            ):
                 return class_dict
     return _sentinel
 
 
 def _static_getmro_newstyle(klass):
-    return type.__dict__['__mro__'].__get__(klass)
+    return type.__dict__["__mro__"].__get__(klass)
 
 
 def _shadowed_dict(klass):
@@ -73,7 +75,7 @@ def _shadowed_dict(klass):
     accessing it while oldstyle classes just use getattr.
     """
     if type(klass) is _oldstyle_class_type:
-        return getattr(klass, '__dict__', _sentinel)
+        return getattr(klass, "__dict__", _sentinel)
     return _shadowed_dict_newstyle(klass)
 
 
@@ -86,7 +88,7 @@ _oldstyle_class_type = type(_OldStyleClass)
 
 
 def _get_type(obj):
-    type_ = object.__getattribute__(obj, '__class__')
+    type_ = object.__getattribute__(obj, "__class__")
     if type_ is _oldstyle_instance_type:
         # Somehow for old style classes we need to access it directly.
         return obj.__class__
@@ -95,6 +97,7 @@ def _get_type(obj):
 
 def _static_getmro(klass):
     if type(klass) is _oldstyle_class_type:
+
         def oldstyle_mro(klass):
             """
             Oldstyle mro is a really simplistic way of look up mro:
@@ -115,7 +118,7 @@ def _safe_hasattr(obj, name):
 
 
 def _safe_is_data_descriptor(obj):
-    return _safe_hasattr(obj, '__set__') or _safe_hasattr(obj, '__delete__')
+    return _safe_hasattr(obj, "__set__") or _safe_hasattr(obj, "__delete__")
 
 
 def getattr_static(obj, attr, default=_sentinel):
@@ -133,7 +136,9 @@ def getattr_static(obj, attr, default=_sentinel):
     if not _is_type(obj):
         klass = _get_type(obj)
         dict_attr = _shadowed_dict(klass)
-        if dict_attr is _sentinel or type(dict_attr) is types.MemberDescriptorType:  # noqa
+        if (
+            dict_attr is _sentinel or type(dict_attr) is types.MemberDescriptorType
+        ):  # noqa
             instance_result = _check_instance(obj, attr)
     else:
         klass = obj
@@ -141,7 +146,9 @@ def getattr_static(obj, attr, default=_sentinel):
     klass_result = _check_class(klass, attr)
 
     if instance_result is not _sentinel and klass_result is not _sentinel:
-        if _safe_hasattr(klass_result, '__get__') and _safe_is_data_descriptor(klass_result):
+        if _safe_hasattr(klass_result, "__get__") and _safe_is_data_descriptor(
+            klass_result
+        ):
             return klass_result
 
     if instance_result is not _sentinel:

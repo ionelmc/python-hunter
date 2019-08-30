@@ -23,7 +23,7 @@ class Set(set):
     pass
 
 
-Stuff = namedtuple('Stuff', 'a b')
+Stuff = namedtuple("Stuff", "a b")
 
 
 class Foobar(object):
@@ -49,24 +49,23 @@ class Bad2(object):
 
 def test_safe_repr():
     data = {
-        'a': [set('b')],
-        ('c',): deque(['d']),
-        'e': _socket.socket(),
-        1: array('d', [1, 2]),
-        frozenset('f'): socket(),
-        'g': Dict({
-            'a': List('123'),
-            'b': Set([Decimal('1.0')]),
-            'c': Stuff(1, 2),
-            'd': Exception(1, 2, {
-                'a': safe_repr,
-                'b': Foobar,
-                'c': Bad2(),
-                'ct': Bad2,
-            })
-        }),
-        'bad1': Bad1().method,
-        'bad2': Bad2().method
+        "a": [set("b")],
+        ("c",): deque(["d"]),
+        "e": _socket.socket(),
+        1: array("d", [1, 2]),
+        frozenset("f"): socket(),
+        "g": Dict(
+            {
+                "a": List("123"),
+                "b": Set([Decimal("1.0")]),
+                "c": Stuff(1, 2),
+                "d": Exception(
+                    1, 2, {"a": safe_repr, "b": Foobar, "c": Bad2(), "ct": Bad2}
+                ),
+            }
+        ),
+        "bad1": Bad1().method,
+        "bad2": Bad2().method,
     }
     print(safe_repr(data))
     print(safe_repr([data]))

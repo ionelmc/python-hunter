@@ -33,8 +33,7 @@ except ImportError:
 
 def read(*names, **kwargs):
     with io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8')
+        join(dirname(__file__), *names), encoding=kwargs.get("encoding", "utf8")
     ) as fh:
         return fh.read()
 
@@ -42,14 +41,11 @@ def read(*names, **kwargs):
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
-        src = join(dirname(__file__), 'src', 'hunter.embed')
-        path = join(dirname(__file__), 'src', 'hunter.pth')
+        src = join(dirname(__file__), "src", "hunter.embed")
+        path = join(dirname(__file__), "src", "hunter.pth")
         with open(src) as sh:
-            with open(path, 'w') as fh:
-                fh.write(
-                    'import os, sys;'
-                    'exec(%r)' % sh.read().replace('    ', ' ')
-                )
+            with open(path, "w") as fh:
+                fh.write("import os, sys;" "exec(%r)" % sh.read().replace("    ", " "))
         dest = join(self.build_lib, basename(path))
         self.copy_file(path, dest)
 
@@ -57,7 +53,7 @@ class BuildWithPTH(build):
 class EasyInstallWithPTH(easy_install):
     def run(self):
         easy_install.run(self)
-        path = join(dirname(__file__), 'src', 'hunter.pth')
+        path = join(dirname(__file__), "src", "hunter.pth")
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
 
@@ -65,7 +61,7 @@ class EasyInstallWithPTH(easy_install):
 class InstallLibWithPTH(install_lib):
     def run(self):
         install_lib.run(self)
-        path = join(dirname(__file__), 'src', 'hunter.pth')
+        path = join(dirname(__file__), "src", "hunter.pth")
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
         self.outputs = [dest]
@@ -77,16 +73,17 @@ class InstallLibWithPTH(install_lib):
 class DevelopWithPTH(develop):
     def run(self):
         develop.run(self)
-        path = join(dirname(__file__), 'src', 'hunter.pth')
+        path = join(dirname(__file__), "src", "hunter.pth")
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
 
 
 class OptionalBuildExt(build_ext):
     """Allow the building of C extensions to fail."""
+
     def run(self):
         try:
-            if 'SETUPPY_NOEXT' in os.environ:
+            if "SETUPPY_NOEXT" in os.environ:
                 raise Exception("C extensions disabled (SETUPPY_NOEXT)!")
             build_ext.run(self)
         except Exception as e:
@@ -94,98 +91,91 @@ class OptionalBuildExt(build_ext):
             self.extensions = []  # avoid copying missing files (it would fail).
 
     def _unavailable(self, e):
-        print('*' * 80)
-        print('''WARNING:
+        print("*" * 80)
+        print(
+            """WARNING:
 
     An optional code optimization (C extension) could not be compiled.
 
     Optimizations for this package will not be available!
-        ''')
+        """
+        )
 
-        print('CAUSE:')
-        print('')
-        print('    ' + repr(e))
-        print('*' * 80)
+        print("CAUSE:")
+        print("")
+        print("    " + repr(e))
+        print("*" * 80)
 
 
 setup(
-    name='hunter',
+    name="hunter",
     use_scm_version={
-        'local_scheme': 'dirty-tag',
-        'write_to': 'src/hunter/_version.py',
-        'fallback_version': '3.0.1',
+        "local_scheme": "dirty-tag",
+        "write_to": "src/hunter/_version.py",
+        "fallback_version": "3.0.1",
     },
-    license='BSD 2-Clause License',
-    description='Hunter is a flexible code tracing toolkit.',
-    long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+    license="BSD 2-Clause License",
+    description="Hunter is a flexible code tracing toolkit.",
+    long_description="%s\n%s"
+    % (
+        re.compile("^.. start-badges.*^.. end-badges", re.M | re.S).sub(
+            "", read("README.rst")
+        ),
+        re.sub(":[a-z]+:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst")),
     ),
-    author='Ionel Cristian Mărieș',
-    author_email='contact@ionelmc.ro',
-    url='https://github.com/ionelmc/python-hunter',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    author="Ionel Cristian Mărieș",
+    author_email="contact@ionelmc.ro",
+    url="https://github.com/ionelmc/python-hunter",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     zip_safe=False,
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: Unix',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Utilities',
-        'Topic :: Software Development :: Debuggers',
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: Unix",
+        "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Utilities",
+        "Topic :: Software Development :: Debuggers",
     ],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     project_urls={
-        'Documentation': 'https://python-hunter.readthedocs.io/',
-        'Changelog': 'https://python-hunter.readthedocs.io/en/latest/changelog.html',
-        'Issue Tracker': 'https://github.com/ionelmc/python-hunter/issues'
+        "Documentation": "https://python-hunter.readthedocs.io/",
+        "Changelog": "https://python-hunter.readthedocs.io/en/latest/changelog.html",
+        "Issue Tracker": "https://github.com/ionelmc/python-hunter/issues",
     },
-    keywords=[
-        'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
-    ],
-    install_requires=[
-        'colorama',
-    ],
-    extras_require={
-        ':platform_system != "Windows"': ['manhole >= 1.5'],
-    },
-    entry_points={
-        'console_scripts': [
-            'hunter-trace = hunter.remote:main',
-        ]
-    },
+    keywords=["trace", "tracer", "settrace", "debugger", "debugging", "code", "source"],
+    install_requires=["colorama"],
+    extras_require={':platform_system != "Windows"': ["manhole >= 1.5"]},
+    entry_points={"console_scripts": ["hunter-trace = hunter.remote:main"]},
     cmdclass={
-        'build': BuildWithPTH,
-        'easy_install': EasyInstallWithPTH,
-        'install_lib': InstallLibWithPTH,
-        'develop': DevelopWithPTH,
-        'build_ext': OptionalBuildExt,
+        "build": BuildWithPTH,
+        "easy_install": EasyInstallWithPTH,
+        "install_lib": InstallLibWithPTH,
+        "develop": DevelopWithPTH,
+        "build_ext": OptionalBuildExt,
     },
-    setup_requires=[
-        'cython',
-    ] if Cython else [],
+    setup_requires=["cython"] if Cython else [],
     ext_modules=[
         Extension(
-            splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
+            splitext(relpath(path, "src").replace(os.sep, "."))[0],
             sources=[path],
-            extra_compile_args=os.environ.get('SETUPPY_CFLAGS', '').split(),
-            include_dirs=[dirname(path)]
+            extra_compile_args=os.environ.get("SETUPPY_CFLAGS", "").split(),
+            include_dirs=[dirname(path)],
         )
-        for root, _, _ in os.walk('src')
-        for path in glob(join(root, '*.pyx' if Cython else '*.c'))
+        for root, _, _ in os.walk("src")
+        for path in glob(join(root, "*.pyx" if Cython else "*.c"))
     ],
 )

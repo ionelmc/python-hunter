@@ -42,25 +42,24 @@ except ImportError:
 try:
     from ._version import version as __version__
 except ImportError:
-    __version__ = '3.0.1'
+    __version__ = "3.0.1"
 
 __all__ = (
-    'And',
-    'CallPrinter',
-    'CodePrinter',
-    'Debugger',
-    'From',
-    'Manhole',
-    'Not',
-    'Or',
-    'Q',
-    'Query',
-    'VarsPrinter',
-    'VarsSnooper',
-    'When',
-
-    'stop',
-    'trace',
+    "And",
+    "CallPrinter",
+    "CodePrinter",
+    "Debugger",
+    "From",
+    "Manhole",
+    "Not",
+    "Or",
+    "Q",
+    "Query",
+    "VarsPrinter",
+    "VarsSnooper",
+    "When",
+    "stop",
+    "trace",
 )
 _last_tracer = None
 _default_config = {}
@@ -92,10 +91,12 @@ def Q(*predicates, **query):
         if any(isinstance(p, (CallPrinter, CodePrinter)) for p in predicates):
             # the user provided an action as a filter, remove the action then to prevent double output
             for action in optional_actions:
-                if action in (CallPrinter, CodePrinter) or isinstance(action, (CallPrinter, CodePrinter)):
+                if action in (CallPrinter, CodePrinter) or isinstance(
+                    action, (CallPrinter, CodePrinter)
+                ):
                     optional_actions.remove(action)
         if query:
-            predicates += Query(**query),
+            predicates += (Query(**query),)
 
         result = And(*predicates)
     else:
@@ -138,7 +139,7 @@ def And(*predicates, **kwargs):
 
     """
     if kwargs:
-        predicates += Query(**kwargs),
+        predicates += (Query(**kwargs),)
     return _flatten(_And, *predicates)
 
 
@@ -171,7 +172,7 @@ def Not(*predicates, **kwargs):
     Returns: A :class:`hunter.predicates.Not` instance (possibly containing a :class:`hunter.predicates.And` instance).
     """
     if kwargs:
-        predicates += Query(**kwargs),
+        predicates += (Query(**kwargs),)
     if len(predicates) > 1:
         return _Not(_flatten(_And, *predicates))
     else:
@@ -193,8 +194,11 @@ def From(predicate=None, condition=None, watermark=0, **kwargs):
         return _From(Q(**kwargs))
     else:
         if kwargs:
-            raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
-                kwargs.keys()))
+            raise TypeError(
+                "Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
+                    kwargs.keys()
+                )
+            )
         return _From(predicate, condition, watermark)
 
 
@@ -297,17 +301,18 @@ def wrap(function_to_trace=None, **trace_options):
         @functools.wraps(func)
         def tracing_wrapper(*args, **kwargs):
             predicates = []
-            local = trace_options.pop('local', False)
+            local = trace_options.pop("local", False)
             if local:
                 predicates.append(Query(depth_lt=2))
             predicates.append(
                 From(
                     Query(kind="call"),
-                    Not(When(
-                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
-                        Stop
-                    )),
-                    watermark=-1
+                    Not(
+                        When(
+                            Query(calls_gt=0, depth=0) & Not(Query(kind="return")), Stop
+                        )
+                    ),
+                    watermark=-1,
                 )
             )
             local_tracer = trace(*predicates, **trace_options)
@@ -315,7 +320,9 @@ def wrap(function_to_trace=None, **trace_options):
                 return func(*args, **kwargs)
             finally:
                 local_tracer.stop()
+
         return tracing_wrapper
+
     if function_to_trace is None:
         return tracing_decorator
     else:

@@ -4,12 +4,12 @@ import time
 
 
 def stuff():
-    print('Doing stuff ...', os.getpid())
+    print("Doing stuff ...", os.getpid())
     time.sleep(1)
 
 
-if __name__ == '__main__':
-    if sys.argv[1] == 'manhole':
+if __name__ == "__main__":
+    if sys.argv[1] == "manhole":
         from hunter import remote
 
         remote.install()

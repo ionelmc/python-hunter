@@ -8,23 +8,29 @@ from .actions import Action
 from .event import Event
 from .util import STRING_TYPES
 
-__all__ = (
-    'And',
-    'From',
-    'Not',
-    'Or',
-    'Query',
-    'When',
-)
+__all__ = ("And", "From", "Not", "Or", "Query", "When")
 
-ALLOWED_KEYS = tuple(sorted(
-    i for i in Event.__dict__.keys()
-    if not i.startswith('_') and i not in ('tracer', 'thread', 'frame')
-))
+ALLOWED_KEYS = tuple(
+    sorted(
+        i
+        for i in Event.__dict__.keys()
+        if not i.startswith("_") and i not in ("tracer", "thread", "frame")
+    )
+)
 ALLOWED_OPERATORS = (
-    'startswith', 'endswith', 'in', 'contains', 'regex',
-    'sw', 'ew', 'has', 'rx',
-    'gt', 'gte', 'lt', 'lte',
+    "startswith",
+    "endswith",
+    "in",
+    "contains",
+    "regex",
+    "sw",
+    "ew",
+    "has",
+    "rx",
+    "gt",
+    "gte",
+    "lt",
+    "lte",
 )
 
 
@@ -34,6 +40,7 @@ class Query(object):
 
     See :class:`hunter.event.Event` for fields that can be filtered on.
     """
+
     def __init__(self, **query):
         """
         Args:
@@ -70,49 +77,61 @@ class Query(object):
         query_gte = {}
 
         for key, value in query.items():
-            parts = [p for p in key.split('_') if p]
+            parts = [p for p in key.split("_") if p]
             count = len(parts)
             if count > 2:
-                raise TypeError('Unexpected argument %r. Must be one of %s with optional operators like: %s' % (
-                    key, ALLOWED_KEYS, ALLOWED_OPERATORS
-                ))
+                raise TypeError(
+                    "Unexpected argument %r. Must be one of %s with optional operators like: %s"
+                    % (key, ALLOWED_KEYS, ALLOWED_OPERATORS)
+                )
             elif count == 2:
                 prefix, operator = parts
-                if operator in ('startswith', 'sw'):
+                if operator in ("startswith", "sw"):
                     if not isinstance(value, STRING_TYPES):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(
+                                "Value %r for %r is invalid. Must be a string, list, tuple or set."
+                                % (value, key)
+                            )
                         value = tuple(value)
                     mapping = query_startswith
-                elif operator in ('endswith', 'ew'):
+                elif operator in ("endswith", "ew"):
                     if not isinstance(value, STRING_TYPES):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(
+                                "Value %r for %r is invalid. Must be a string, list, tuple or set."
+                                % (value, key)
+                            )
                         value = tuple(value)
                     mapping = query_endswith
-                elif operator == 'in':
+                elif operator == "in":
                     mapping = query_in
-                elif operator in ('contains', 'has'):
+                elif operator in ("contains", "has"):
                     mapping = query_contains
-                elif operator in ('regex', 'rx'):
+                elif operator in ("regex", "rx"):
                     value = re.compile(value)
                     mapping = query_regex
-                elif operator == 'lt':
+                elif operator == "lt":
                     mapping = query_lt
-                elif operator == 'lte':
+                elif operator == "lte":
                     mapping = query_lte
-                elif operator == 'gt':
+                elif operator == "gt":
                     mapping = query_gt
-                elif operator == 'gte':
+                elif operator == "gte":
                     mapping = query_gte
                 else:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.' % (operator, ALLOWED_OPERATORS))
+                    raise TypeError(
+                        "Unexpected operator %r. Must be one of %s."
+                        % (operator, ALLOWED_OPERATORS)
+                    )
             else:
                 mapping = query_eq
                 prefix = key
 
             if prefix not in ALLOWED_KEYS:
-                raise TypeError('Unexpected argument %r. Must be one of %s.' % (key, ALLOWED_KEYS))
+                raise TypeError(
+                    "Unexpected argument %r. Must be one of %s." % (key, ALLOWED_KEYS)
+                )
 
             mapping[prefix] = value
 
@@ -128,38 +147,41 @@ class Query(object):
         self.query_gte = tuple(sorted(query_gte.items()))
 
     def __str__(self):
-        return 'Query(%s)' % (
-            ', '.join(
-                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping)
+        return "Query(%s)" % (
+            ", ".join(
+                ", ".join("%s%s=%r" % (key, kind, value) for key, value in mapping)
                 for kind, mapping in [
-                    ('', self.query_eq),
-                    ('_in', self.query_in),
-                    ('_contains', self.query_contains),
-                    ('_startswith', self.query_startswith),
-                    ('_endswith', self.query_endswith),
-                    ('_regex', self.query_regex),
-                    ('_lt', self.query_lt),
-                    ('_lte', self.query_lte),
-                    ('_gt', self.query_gt),
-                    ('_gte', self.query_gte),
-                ] if mapping
+                    ("", self.query_eq),
+                    ("_in", self.query_in),
+                    ("_contains", self.query_contains),
+                    ("_startswith", self.query_startswith),
+                    ("_endswith", self.query_endswith),
+                    ("_regex", self.query_regex),
+                    ("_lt", self.query_lt),
+                    ("_lte", self.query_lte),
+                    ("_gt", self.query_gt),
+                    ("_gte", self.query_gte),
+                ]
+                if mapping
             )
         )
 
     def __repr__(self):
-        return '<hunter.predicates.Query: %s>' % ' '.join(
-            fmt % (mapping,) for fmt, mapping in [
-                ('query_eq=%r', self.query_eq),
-                ('query_in=%r', self.query_in),
-                ('query_contains=%r', self.query_contains),
-                ('query_startswith=%r', self.query_startswith),
-                ('query_endswith=%r', self.query_endswith),
-                ('query_regex=%r', self.query_regex),
-                ('query_lt=%r', self.query_lt),
-                ('query_lte=%r', self.query_lte),
-                ('query_gt=%r', self.query_gt),
-                ('query_gte=%r', self.query_gte),
-            ] if mapping
+        return "<hunter.predicates.Query: %s>" % " ".join(
+            fmt % (mapping,)
+            for fmt, mapping in [
+                ("query_eq=%r", self.query_eq),
+                ("query_in=%r", self.query_in),
+                ("query_contains=%r", self.query_contains),
+                ("query_startswith=%r", self.query_startswith),
+                ("query_endswith=%r", self.query_endswith),
+                ("query_regex=%r", self.query_regex),
+                ("query_lt=%r", self.query_lt),
+                ("query_lte=%r", self.query_lte),
+                ("query_gt=%r", self.query_gt),
+                ("query_gte=%r", self.query_gte),
+            ]
+            if mapping
         )
 
     def __eq__(self, other):
@@ -252,20 +274,26 @@ class When(object):
 
     def __init__(self, condition, *actions):
         if not actions:
-            raise TypeError('Must give at least one action.')
+            raise TypeError("Must give at least one action.")
         self.condition = condition
         self.actions = tuple(
-            action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions)
+            action()
+            if inspect.isclass(action) and issubclass(action, Action)
+            else action
+            for action in actions
+        )
 
     def __str__(self):
-        return 'When(%s, %s)' % (
+        return "When(%s, %s)" % (
             self.condition,
-            ', '.join(repr(p) for p in self.actions)
+            ", ".join(repr(p) for p in self.actions),
         )
 
     def __repr__(self):
-        return '<hunter.predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
+        return "<hunter.predicates.When: condition=%r, actions=%r>" % (
+            self.condition,
+            self.actions,
+        )
 
     def __eq__(self, other):
         return (
@@ -321,10 +349,13 @@ class From(object):
         self.depth = -1
 
     def __str__(self):
-        return 'From(%s, %s)' % (self.condition, self.predicate)
+        return "From(%s, %s)" % (self.condition, self.predicate)
 
     def __repr__(self):
-        return '<hunter.predicates.From: condition=%r, predicate=%r>' % (self.condition, self.predicate)
+        return "<hunter.predicates.From: condition=%r, predicate=%r>" % (
+            self.condition,
+            self.predicate,
+        )
 
     def __eq__(self, other):
         return (
@@ -375,10 +406,10 @@ class And(object):
         self.predicates = predicates
 
     def __str__(self):
-        return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
+        return "And(%s)" % ", ".join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter.predicates.And: predicates=%r>' % (self.predicates,)
+        return "<hunter.predicates.And: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -391,16 +422,18 @@ class And(object):
             return True
 
     def __eq__(self, other):
-        return (
-            isinstance(other, And)
-            and self.predicates == other.predicates
-        )
+        return isinstance(other, And) and self.predicates == other.predicates
 
     def __or__(self, other):
         return Or(self, other)
 
     def __and__(self, other):
-        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
+        return And(
+            *chain(
+                self.predicates,
+                other.predicates if isinstance(other, And) else (other,),
+            )
+        )
 
     def __invert__(self):
         return Not(self)
@@ -421,10 +454,10 @@ class Or(object):
         self.predicates = predicates
 
     def __str__(self):
-        return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
+        return "Or(%s)" % ", ".join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter.predicates.Or: predicates=%r>' % (self.predicates,)
+        return "<hunter.predicates.Or: predicates=%r>" % (self.predicates,)
 
     def __call__(self, event):
         """
@@ -437,13 +470,14 @@ class Or(object):
             return False
 
     def __eq__(self, other):
-        return (
-            isinstance(other, Or)
-            and self.predicates == other.predicates
-        )
+        return isinstance(other, Or) and self.predicates == other.predicates
 
     def __or__(self, other):
-        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
+        return Or(
+            *chain(
+                self.predicates, other.predicates if isinstance(other, Or) else (other,)
+            )
+        )
 
     def __and__(self, other):
         return And(self, other)
@@ -462,20 +496,18 @@ class Not(object):
     """
     Simply returns ``not predicate(event)``.
     """
+
     def __init__(self, predicate):
         self.predicate = predicate
 
     def __str__(self):
-        return 'Not(%s)' % self.predicate
+        return "Not(%s)" % self.predicate
 
     def __repr__(self):
-        return '<hunter.predicates.Not: predicate=%r>' % self.predicate
+        return "<hunter.predicates.Not: predicate=%r>" % self.predicate
 
     def __eq__(self, other):
-        return (
-            isinstance(other, Not)
-            and self.predicate == other.predicate
-        )
+        return isinstance(other, Not) and self.predicate == other.predicate
 
     def __call__(self, event):
         """
