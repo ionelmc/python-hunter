@@ -170,10 +170,10 @@ just:
     def probe(qualname, *actions, **kwargs):
         aspectlib.weave(qualname, functools.partial(hunter.wrap, actions=actions, **kwargs))
 
-It will work the same, ``hunter.wrap`` being a decorator. However, while ``hunter.wrap`` will enable this convenience
-to trace just inside the target function (``probe('module.func', local=True)``) it will also add a lot of extra
+It will work the same, :obj:`hunter.wrap` being a decorator. However, while :obj:`hunter.wrap` offers the convenience
+of tracing just inside the target function (eg: ``probe('module.func', local=True)``) it will also add a lot of extra
 filtering to trim irrelevant events from around the function (like return from tracer setup, and the internals of the
-decorator), in addition to what ``hunter.trace`` does. Not exactly lightweight...
+decorator), in addition to what :func:`hunter.trace` does. Not exactly lightweight...
 
 Silenced exception runtime analysis
 ===================================

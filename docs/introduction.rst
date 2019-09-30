@@ -55,9 +55,9 @@ Operators
 
 .. versionadded:: 1.0.0
 
-    You can add ``startswith``, ``endswith``, ``in``, ``contains``, ``regex`` to your keyword arguments, just like in
-    Django. Double underscores are not necessary, but in case you got twitchy fingers it'll just work -
-    ``filename__startswith`` is the same as ``filename_startswith``.
+    You can add ``startswith``, ``endswith``, ``in``, ``contains``, ``regex``, ``lt``, ``lte``, ``gt``, ``gte`` to your
+    keyword arguments, just like in Django. Double underscores are not necessary, but in case you got twitchy fingers
+    it'll just work - ``filename__startswith`` is the same as ``filename_startswith``.
 
 .. versionadded:: 2.0.0
 
