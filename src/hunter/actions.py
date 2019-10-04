@@ -108,7 +108,9 @@ class ColorStreamAction(Action):
                  repr_func=config.Default('repr_func', 'safe_repr')):
         self.force_colors = config.resolve(force_colors)
         self.force_pid = config.resolve(force_pid)
-        self.stream = config.DEFAULT_STREAM if config.resolve(stream) is None else stream
+        self.stream = config.resolve(stream)
+        if self.stream is None:
+            self.stream = config.DEFAULT_STREAM
         self.filename_alignment = config.resolve(filename_alignment)
         self.thread_alignment = config.resolve(thread_alignment)
         self.pid_alignment = config.resolve(pid_alignment)

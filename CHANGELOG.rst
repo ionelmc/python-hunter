@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.2 (2019-10-04)
+------------------
+
+* Fixed setting stream from ``PYTHONHUNTERCONFIG`` environment variable.
+
 3.0.1 (2019-06-17)
 ------------------
 
