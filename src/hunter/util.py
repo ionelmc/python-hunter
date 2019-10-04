@@ -200,7 +200,7 @@ def safe_repr(obj, maxdepth=5):
         return repr(obj)
     elif isinstance(obj, types.MethodType):
         self = obj.__self__
-        name =  getattr(obj, '__qualname__', None)
+        name = getattr(obj, '__qualname__', None)
         if name is None:
             name = obj.__name__
         return '<%sbound method %s of %s>' % ('un' if self is None else '', name, safe_repr(self, newdepth))
