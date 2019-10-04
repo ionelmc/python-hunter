@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 * Fixed setting stream from ``PYTHONHUNTERCONFIG`` environment variable.
+* Fixed a couple minor documentation issues.
 
 3.0.1 (2019-06-17)
 ------------------
