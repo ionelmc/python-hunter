@@ -115,7 +115,7 @@ setup(
         'write_to': 'src/hunter/_version.py',
         'fallback_version': '3.0.2',
     },
-    license='BSD 2-Clause License',
+    license='BSD-2-Clause',
     description='Hunter is a flexible code tracing toolkit.',
     long_description='%s\n%s' % (
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
@@ -148,21 +148,27 @@ setup(
         'Topic :: Utilities',
         'Topic :: Software Development :: Debuggers',
     ],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     project_urls={
         'Documentation': 'https://python-hunter.readthedocs.io/',
         'Changelog': 'https://python-hunter.readthedocs.io/en/latest/changelog.html',
-        'Issue Tracker': 'https://github.com/ionelmc/python-hunter/issues'
+        'Issue Tracker': 'https://github.com/ionelmc/python-hunter/issues',
     },
     keywords=[
         'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
     ],
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     install_requires=[
         'colorama',
     ],
     extras_require={
         ':platform_system != "Windows"': ['manhole >= 1.5'],
     },
+    setup_requires=[
+        'setuptools_scm>=3.3.1',
+        'cython',
+    ] if Cython else [
+        'setuptools_scm>=3.3.1',
+    ],
     entry_points={
         'console_scripts': [
             'hunter-trace = hunter.remote:main',
@@ -175,9 +181,6 @@ setup(
         'develop': DevelopWithPTH,
         'build_ext': OptionalBuildExt,
     },
-    setup_requires=[
-        'cython',
-    ] if Cython else [],
     ext_modules=[
         Extension(
             splitext(relpath(path, 'src').replace(os.sep, '.'))[0],

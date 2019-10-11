@@ -1,5 +1,6 @@
-dist: xenial
 language: python
+dist: xenial
+cache: false
 git:
   depth: false
 addons:
@@ -11,9 +12,7 @@ env:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
     - PYTEST_ADDOPTS=--benchmark-disable
-  matrix:
-    - TOXENV=check
-    - TOXENV=docs
+    - TWINE_USERNAME=ionel
 matrix:
   include:
     - python: '3.6'
@@ -30,180 +29,162 @@ matrix:
             exit 1
           fi
           )
-    - python: '2.7'
+    - python: '3.6'
       env:
-        - TOXENV=py27-pure-cover,codecov
+        - TOXENV=check
+    - python: '3.6'
+      env:
+        - TOXENV=docs
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-pure-cover
         - SETUPPY_CFLAGS=
-    - python: '2.7'
-      env:
-        - TOXENV=py27-pure-nocov
+    - env:
+        - TOXENV=py27-pure-cover,codecov
+      python: '2.7'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-pure-nocov
         - SETUPPY_CFLAGS=
-    - python: '2.7'
-      env:
-        - TOXENV=py27-cython-cover,codecov
+    - env:
+        - TOXENV=py27-pure-nocov
+        - WHEEL_MANYLINUX1=cp27
+        - WHEEL_PATH=wheelhouse
+      python: '2.7'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py27-cython-cover
         - SETUPPY_CFLAGS=
-    - python: '2.7'
+    - env:
+        - TOXENV=py27-cython-cover,codecov
+      python: '2.7'
+    - os: osx
+      language: generic
       env:
+        - TOXENV=py27-cython-nocov
+        - SETUPPY_CFLAGS=
+        - WHEEL_PATH=.tox/dist
+    - env:
         - TOXENV=py27-cython-nocov
         - WHEEL_MANYLINUX1=cp27
         - WHEEL_PATH=wheelhouse
-    - os: osx
-      language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
-      env:
-        - TOXENV=py27-cython-nocov
-        - SETUPPY_CFLAGS=
-        - WHEEL_PATH=.tox/dist
-    - python: '3.5'
-      env:
+      python: '2.7'
+    - env:
         - TOXENV=py35-pure-cover,codecov
-    - python: '3.5'
-      env:
+      python: '3.5'
+    - env:
         - TOXENV=py35-pure-nocov
-    - python: '3.5'
-      env:
+        - WHEEL_MANYLINUX1=cp35
+        - WHEEL_PATH=wheelhouse
+      python: '3.5'
+    - env:
         - TOXENV=py35-cython-cover,codecov
-    - python: '3.5'
-      env:
+      python: '3.5'
+    - env:
         - TOXENV=py35-cython-nocov
         - WHEEL_MANYLINUX1=cp35
         - WHEEL_PATH=wheelhouse
-    - python: '3.6'
-      env:
+      python: '3.5'
+    - env:
         - TOXENV=py36-pure-cover,codecov
-    - python: '3.6'
-      env:
+      python: '3.6'
+    - env:
         - TOXENV=py36-pure-nocov
-    - python: '3.6'
-      env:
+        - WHEEL_MANYLINUX1=cp36
+        - WHEEL_PATH=wheelhouse
+      python: '3.6'
+    - env:
         - TOXENV=py36-cython-cover,codecov
-    - python: '3.6'
-      env:
+      python: '3.6'
+    - env:
         - TOXENV=py36-cython-nocov
         - WHEEL_MANYLINUX1=cp36
         - WHEEL_PATH=wheelhouse
-    - python: '3.7'
-      env:
-        - TOXENV=py37-pure-cover,codecov
+      python: '3.6'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-pure-cover
         - SETUPPY_CFLAGS=
-    - python: '3.7'
-      env:
-        - TOXENV=py37-pure-nocov
+    - env:
+        - TOXENV=py37-pure-cover,codecov
+      python: '3.7'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-pure-nocov
         - SETUPPY_CFLAGS=
-    - python: '3.7'
-      env:
-        - TOXENV=py37-cython-cover,codecov
+    - env:
+        - TOXENV=py37-pure-nocov
+        - WHEEL_MANYLINUX1=cp37
+        - WHEEL_PATH=wheelhouse
+      python: '3.7'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-cython-cover
         - SETUPPY_CFLAGS=
-    - python: '3.7'
-      env:
-        - TOXENV=py37-cython-nocov
-        - WHEEL_MANYLINUX1=cp37
-        - WHEEL_PATH=wheelhouse
+    - env:
+        - TOXENV=py37-cython-cover,codecov
+      python: '3.7'
     - os: osx
       language: generic
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
       env:
         - TOXENV=py37-cython-nocov
         - SETUPPY_CFLAGS=
         - WHEEL_PATH=.tox/dist
-    - python: '3.8-dev'
-      env:
+    - env:
+        - TOXENV=py37-cython-nocov
+        - WHEEL_MANYLINUX1=cp37
+        - WHEEL_PATH=wheelhouse
+      python: '3.7'
+    - env:
         - TOXENV=py38-pure-cover,codecov
-    - python: '3.8-dev'
-      env:
+      python: '3.8'
+    - env:
         - TOXENV=py38-pure-nocov
-    - python: '3.8-dev'
-      env:
+        - WHEEL_MANYLINUX1=cp38
+        - WHEEL_PATH=wheelhouse
+      python: '3.8'
+    - env:
         - TOXENV=py38-cython-cover,codecov
-    - python: '3.8-dev'
-      env:
+      python: '3.8'
+    - env:
         - TOXENV=py38-cython-nocov
-    - python: 'pypy2.7-6.0'
-      env:
+        - WHEEL_MANYLINUX1=cp38
+        - WHEEL_PATH=wheelhouse
+      python: '3.8'
+    - env:
         - TOXENV=pypy-pure-cover,codecov
-        - TOXPYTHON=pypy
-    - python: 'pypy2.7-6.0'
-      env:
+      python: 'pypy'
+    - env:
         - TOXENV=pypy-pure-nocov
-        - TOXPYTHON=pypy
-    - python: 'pypy2.7-6.0'
-      env:
+      python: 'pypy'
+    - env:
         - TOXENV=pypy-cython-cover,codecov
-        - TOXPYTHON=pypy
-    - python: 'pypy2.7-6.0'
-      env:
+      python: 'pypy'
+    - env:
         - TOXENV=pypy-cython-nocov
-        - TOXPYTHON=pypy
-    - python: 'pypy3.5-6.0'
-      env:
+      python: 'pypy'
+    - env:
         - TOXENV=pypy3-pure-cover,codecov
         - TOXPYTHON=pypy3
-    - python: 'pypy3.5-6.0'
-      env:
+      python: 'pypy3'
+    - env:
         - TOXENV=pypy3-pure-nocov
         - TOXPYTHON=pypy3
-    - python: 'pypy3.5-6.0'
-      env:
+      python: 'pypy3'
+    - env:
         - TOXENV=pypy3-cython-cover,codecov
         - TOXPYTHON=pypy3
-    - python: 'pypy3.5-6.0'
-      env:
+      python: 'pypy3'
+    - env:
         - TOXENV=pypy3-cython-nocov
         - TOXPYTHON=pypy3
+      python: 'pypy3'
 before_install:
   - python --version
   - uname -a
@@ -216,7 +197,7 @@ before_install:
       export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
     fi
 install:
-  - pip install --upgrade twine tox-wheel setuptools-scm virtualenv
+  - python -mpip install --progress-bar=off twine tox-wheel -rci/requirements.txt
   - virtualenv --version
   - easy_install --version
   - pip --version

@@ -4,15 +4,14 @@ cookiecutter:
     _extensions:
     -   jinja2_time.TimeExtension
     _template: cookiecutter-pylibrary
+    allow_tests_inside_package: no
     appveyor: yes
     c_extension_function: '-'
     c_extension_module: '-'
     c_extension_optional: yes
     c_extension_support: cython
     c_extension_test_pypi: yes
-    c_extension_test_pypi_appveyor_secret: fDwCnDhQiptm9a4ZcFpgyQ==
-    c_extension_test_pypi_travis_secret: "# The password should be set in https://travis-ci.org/ionelmc/python-hunter/settings\n    # Alternatively you can run this shell oneliner if you got travis gem installed:\n    #\n    #   echo -n \"Password:\"; (read -s p; echo -n TWINE_PASSWORD=$p) | travis encrypt --add=env.global --repo=ionelmc/python-hunter"
-    c_extension_test_pypi_username: ionelmc
+    c_extension_test_pypi_username: ionel
     codacy: no
     codacy_projectid: '-'
     codeclimate: no
@@ -24,25 +23,33 @@ cookiecutter:
     distribution_name: hunter
     email: contact@ionelmc.ro
     full_name: Ionel Cristian Mărieș
-    github_username: ionelmc
     landscape: no
     license: BSD 2-Clause License
     linter: flake8
     package_name: hunter
     project_name: Hunter
     project_short_description: Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation <env-var-activation_>`_).
-    release_date: '2019-01-19'
+    pypi_badge: yes
+    pypi_disable_upload: no
+    release_date: '2019-10-10'
+    repo_hosting: github.com
+    repo_hosting_domain: github.com
     repo_name: python-hunter
+    repo_username: ionelmc
     requiresio: yes
     scrutinizer: no
+    setup_py_uses_setuptools_scm: yes
+    setup_py_uses_test_runner: no
     sphinx_docs: yes
+    sphinx_docs_hosting: https://python-hunter.readthedocs.io/
     sphinx_doctest: no
     sphinx_theme: sphinx-py3doc-enhanced-theme
     test_matrix_configurator: no
     test_matrix_separate_coverage: yes
     test_runner: pytest
     travis: yes
-    version: 2.2.1
+    travis_osx: no
+    version: 3.0.2
     website: https://blog.ionelmc.ro
     year_from: '2015'
     year_to: '2019'

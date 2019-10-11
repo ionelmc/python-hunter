@@ -2,8 +2,6 @@ version: '{branch}-{build}'
 build: off
 environment:
   global:
-    TWINE_PASSWORD:
-      secure: fDwCnDhQiptm9a4ZcFpgyQ==
     TWINE_USERNAME: ionel
   matrix:
     - TOXENV: check
@@ -11,8 +9,9 @@ environment:
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
-{%- for env in tox_environments %}{% if env.startswith(('py2', 'py3')) and not env.startswith('py38') %}{{ '' }}
-    - TOXENV: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
+{% for env in tox_environments %}
+{% if env.startswith(('py2', 'py3')) and not env.startswith('py38') %}
+    - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ '' }}
       TOXPYTHON: C:\Python{{ env[2:4] }}\python.exe
       PYTHON_HOME: C:\Python{{ env[2:4] }}
       PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
@@ -20,24 +19,23 @@ environment:
 {% if "cython-nocov" in env %}
       WHEEL_PATH: .tox/dist
 {% endif %}
-    - TOXENV: '{{ env }}{% if 'cover' in env %},codecov{%- endif %}'
+    - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ '' }}
       TOXPYTHON: C:\Python{{ env[2:4] }}-x64\python.exe
-      {%- if env.startswith(('py2', 'py34')) %}
-
-      WINDOWS_SDK_VERSION: v7.{{ '1' if env.startswith('py3') else '0' }}
-      {%- endif %}
-
       PYTHON_HOME: C:\Python{{ env[2:4] }}-x64
       PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
       PYTHON_ARCH: '64'
-{%- if "cython-nocov" in env %}{{ '' }}
+{% if "cython-nocov" in env %}
       WHEEL_PATH: .tox/dist
-{%- endif %}{%- endif %}{%- endfor %}{{ '' }}
+{% endif %}
+{% if env.startswith('py2') %}
+      WINDOWS_SDK_VERSION: v7.0
+{% endif %}
+{% endif %}{% endfor %}
 init:
-  - ps: Write-Output $Env:TOXENV
-  - ps: Get-ChildItem C:\Python*
+  - ps: echo $env:TOXENV
+  - ps: ls C:\Python*
 install:
-  - python -u ci\appveyor-bootstrap.py
+  - '%PYTHON_HOME%\python -mpip install --progress-bar=off twine tox-wheel -rci/requirements.txt'
   - '%PYTHON_HOME%\Scripts\virtualenv --version'
   - '%PYTHON_HOME%\Scripts\easy_install --version'
   - '%PYTHON_HOME%\Scripts\pip --version'

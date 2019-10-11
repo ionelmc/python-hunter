@@ -18,7 +18,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
 ]
-if os.environ.get('SPELLCHECK'):
+if os.getenv('SPELLCHECK'):
     extensions += 'sphinxcontrib.spelling',
     spelling_show_suggestions = True
     spelling_lang = 'en_US'
@@ -29,7 +29,6 @@ project = 'Hunter'
 year = '2015-2019'
 author = 'Ionel Cristian Mărieș'
 copyright = '{0}, {1}'.format(year, author)
-
 try:
     from pkg_resources import get_distribution
     version = release = get_distribution('hunter').version

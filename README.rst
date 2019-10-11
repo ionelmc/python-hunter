@@ -19,7 +19,7 @@ Overview
     :target: https://readthedocs.org/projects/python-hunter
     :alt: Documentation Status
 
-.. |travis| image:: https://travis-ci.org/ionelmc/python-hunter.svg?branch=master
+.. |travis| image:: https://api.travis-ci.org/ionelmc/python-hunter.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/python-hunter
 
@@ -39,10 +39,6 @@ Overview
     :alt: PyPI Package latest release
     :target: https://pypi.org/project/hunter
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.0.2.svg
-    :alt: Commits since latest release
-    :target: https://github.com/ionelmc/python-hunter/compare/v3.0.2...master
-
 .. |wheel| image:: https://img.shields.io/pypi/wheel/hunter.svg
     :alt: PyPI Wheel
     :target: https://pypi.org/project/hunter
@@ -54,6 +50,11 @@ Overview
 .. |supported-implementations| image:: https://img.shields.io/pypi/implementation/hunter.svg
     :alt: Supported implementations
     :target: https://pypi.org/project/hunter
+
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.0.2.svg
+    :alt: Commits since latest release
+    :target: https://github.com/ionelmc/python-hunter/compare/v3.0.2...master
+
 
 
 .. end-badges
