@@ -143,20 +143,20 @@ matrix:
       python: '3.7'
     - env:
         - TOXENV=py38-pure-cover,codecov
-      python: '3.8'
+      python: '3.8-dev'
     - env:
         - TOXENV=py38-pure-nocov
         - WHEEL_MANYLINUX1=cp38
         - WHEEL_PATH=wheelhouse
-      python: '3.8'
+      python: '3.8-dev'
     - env:
         - TOXENV=py38-cython-cover,codecov
-      python: '3.8'
+      python: '3.8-dev'
     - env:
         - TOXENV=py38-cython-nocov
         - WHEEL_MANYLINUX1=cp38
         - WHEEL_PATH=wheelhouse
-      python: '3.8'
+      python: '3.8-dev'
     - env:
         - TOXENV=pypy-pure-cover,codecov
       python: 'pypy'
