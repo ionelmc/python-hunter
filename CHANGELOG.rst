@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.3 (2019-10-12)
+------------------
+
+* Fixed ``safe_repr`` on pypy so it's safer on method objects.
+
 3.0.2 (2019-10-10)
 ------------------
 

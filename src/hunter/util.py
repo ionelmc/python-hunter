@@ -191,20 +191,20 @@ def safe_repr(obj, maxdepth=5):
         return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
     elif isinstance(obj, BaseException):
         return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
-    elif obj_type in (type, types.ModuleType,
-                      types.FunctionType,
-                      types.BuiltinFunctionType, types.BuiltinMethodType,
-                      io.IOBase):
-        # hardcoded list of safe things. note that isinstance ain't used
-        # (we don't trust subclasses to do the right thing in __repr__)
-        return repr(obj)
     elif isinstance(obj, types.MethodType):
         self = obj.__self__
         name = getattr(obj, '__qualname__', None)
         if name is None:
             name = obj.__name__
         return '<%sbound method %s of %s>' % ('un' if self is None else '', name, safe_repr(self, newdepth))
-    elif not has_dict(obj_type, obj):
+    elif not has_dict(obj_type, obj) or obj_type in (
+        type, types.ModuleType,
+        types.FunctionType,
+        types.BuiltinFunctionType, types.BuiltinMethodType,
+        io.IOBase
+    ):
+        # hardcoded list of safe things. note that isinstance ain't used
+        # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
     else:
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
