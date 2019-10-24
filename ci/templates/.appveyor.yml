@@ -10,8 +10,8 @@ environment:
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
 {% for env in tox_environments %}
-{% if env.startswith(('py2', 'py3')) and not env.startswith('py38') %}
-    - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ '' }}
+{% if env.startswith(('py2', 'py3')) %}
+    - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ "" }}
       TOXPYTHON: C:\Python{{ env[2:4] }}\python.exe
       PYTHON_HOME: C:\Python{{ env[2:4] }}
       PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
@@ -43,6 +43,16 @@ install:
 test_script:
   - ps: |
       Set-PSDebug -Trace 1
+      if ($Env:TOXENV.StartsWith("py38")) {
+        if ($Env:PYTHON_ARCH -eq "64") {
+          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0-amd64.exe"
+        } else {
+          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0.exe"
+        }
+        $dest = "$Env:TEMP\python-installer.exe"
+        Invoke-WebRequest -Uri $url -OutFile $dest
+        & $dest /quiet TargetDir=$Env:PYTHON_HOME"
+      }
       if ($Env:WHEEL_PATH) {
         cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox --wheel
         if ($LastExitCode -eq 0) {

@@ -181,6 +181,48 @@ environment:
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
+    - TOXENV: py38-pure-cover,codecov
+      TOXPYTHON: C:\Python38\python.exe
+      PYTHON_HOME: C:\Python38
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '32'
+    - TOXENV: py38-pure-cover,codecov
+      TOXPYTHON: C:\Python38-x64\python.exe
+      PYTHON_HOME: C:\Python38-x64
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '64'
+    - TOXENV: py38-pure-nocov
+      TOXPYTHON: C:\Python38\python.exe
+      PYTHON_HOME: C:\Python38
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '32'
+    - TOXENV: py38-pure-nocov
+      TOXPYTHON: C:\Python38-x64\python.exe
+      PYTHON_HOME: C:\Python38-x64
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '64'
+    - TOXENV: py38-cython-cover,codecov
+      TOXPYTHON: C:\Python38\python.exe
+      PYTHON_HOME: C:\Python38
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '32'
+    - TOXENV: py38-cython-cover,codecov
+      TOXPYTHON: C:\Python38-x64\python.exe
+      PYTHON_HOME: C:\Python38-x64
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '64'
+    - TOXENV: py38-cython-nocov
+      TOXPYTHON: C:\Python38\python.exe
+      PYTHON_HOME: C:\Python38
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
+    - TOXENV: py38-cython-nocov
+      TOXPYTHON: C:\Python38-x64\python.exe
+      PYTHON_HOME: C:\Python38-x64
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
 init:
   - ps: echo $env:TOXENV
   - ps: ls C:\Python*
@@ -193,6 +235,16 @@ install:
 test_script:
   - ps: |
       Set-PSDebug -Trace 1
+      if ($Env:TOXENV.StartsWith("py38")) {
+        if ($Env:PYTHON_ARCH -eq "64") {
+          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0-amd64.exe"
+        } else {
+          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0.exe"
+        }
+        $dest = "$Env:TEMP\python-installer.exe"
+        Invoke-WebRequest -Uri $url -OutFile $dest
+        & $dest /quiet TargetDir=$Env:PYTHON_HOME"
+      }
       if ($Env:WHEEL_PATH) {
         cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox --wheel
         if ($LastExitCode -eq 0) {
