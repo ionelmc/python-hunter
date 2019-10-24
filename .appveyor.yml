@@ -227,6 +227,15 @@ init:
   - ps: echo $env:TOXENV
   - ps: ls C:\Python*
 install:
+  - ps: |
+      Set-PSDebug -Trace 1
+      if ($Env:TOXENV.StartsWith("py38")) {
+        if ($Env:PYTHON_ARCH -eq "64") {
+          iex "choco install python3 --version=3.8 --no-progress --params /InstallDir:$Env:PYTHON_HOME"
+        } else {
+          iex "choco install python3 --version=3.8 --no-progress --params /InstallDir:$Env:PYTHON_HOME --x86"
+        }
+      }
   - '%PYTHON_HOME%\python -mpip install --progress-bar=off twine tox-wheel -rci/requirements.txt'
   - '%PYTHON_HOME%\Scripts\virtualenv --version'
   - '%PYTHON_HOME%\Scripts\easy_install --version'
@@ -235,16 +244,6 @@ install:
 test_script:
   - ps: |
       Set-PSDebug -Trace 1
-      if ($Env:TOXENV.StartsWith("py38")) {
-        if ($Env:PYTHON_ARCH -eq "64") {
-          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0-amd64.exe"
-        } else {
-          $url = "https://www.python.org/ftp/python/3.8.0/python-3.8.0.exe"
-        }
-        $dest = "$Env:TEMP\python-installer.exe"
-        Invoke-WebRequest -Uri $url -OutFile $dest
-        & $dest /quiet TargetDir=$Env:PYTHON_HOME"
-      }
       if ($Env:WHEEL_PATH) {
         cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox --wheel
         if ($LastExitCode -eq 0) {
