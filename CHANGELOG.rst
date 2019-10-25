@@ -6,16 +6,20 @@ Changelog
 ------------------
 
 * Really fixed ``stream`` setup in actions (using ``force_colors`` without any ``stream`` was broken).
+  See: :obj:`~hunter.actions.ColorStreamAction`.
+* Fixed ``__repr__`` for the :obj:`~hunter.predicates.From` predicate to include ``watermark``.
 
 3.0.3 (2019-10-13)
 ------------------
 
 * Fixed ``safe_repr`` on pypy so it's safer on method objects.
+  See: :obj:`~hunter.actions.ColorStreamAction`.
 
 3.0.2 (2019-10-10)
 ------------------
 
 * Fixed setting ``stream`` from ``PYTHONHUNTERCONFIG`` environment variable.
+  See: :obj:`~hunter.actions.ColorStreamAction`.
 * Fixed a couple minor documentation issues.
 
 3.0.1 (2019-06-17)

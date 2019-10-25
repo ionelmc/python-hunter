@@ -324,7 +324,9 @@ class From(object):
         return 'From(%s, %s)' % (self.condition, self.predicate)
 
     def __repr__(self):
-        return '<hunter.predicates.From: condition=%r, predicate=%r>' % (self.condition, self.predicate)
+        return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (
+            self.condition, self.predicate, self.watermark
+        )
 
     def __eq__(self, other):
         return (
