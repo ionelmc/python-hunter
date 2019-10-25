@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.0.4 (2019-10-25)
+------------------
+
+* Really fixed ``stream`` setup in actions (using ``force_colors`` without any ``stream`` was broken).
+
 3.0.3 (2019-10-13)
 ------------------
 
