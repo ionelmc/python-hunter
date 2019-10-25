@@ -2,12 +2,13 @@
 Changelog
 =========
 
-3.0.4 (2019-10-25)
+3.0.4 (2019-10-26)
 ------------------
 
 * Really fixed ``stream`` setup in actions (using ``force_colors`` without any ``stream`` was broken).
   See: :obj:`~hunter.actions.ColorStreamAction`.
 * Fixed ``__repr__`` for the :obj:`~hunter.predicates.From` predicate to include ``watermark``.
+* Added binary wheels for Python 3.8.
 
 3.0.3 (2019-10-13)
 ------------------
