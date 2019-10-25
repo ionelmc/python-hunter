@@ -68,6 +68,7 @@ before_install:
   - sudo sysctl -w kernel.yama.ptrace_scope=0 || true
   - |
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      brew update-reset
       [[ $TOXENV =~ py3 ]] && brew upgrade python
       [[ $TOXENV =~ py2 ]] && brew install python@2
       export PATH="/usr/local/opt/python/libexec/bin:${PATH}"
