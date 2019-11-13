@@ -6,7 +6,7 @@ from itertools import chain
 
 from .actions import Action
 from .event import Event
-from .util import STRING_TYPES
+from .util import StringType
 
 __all__ = (
     'And',
@@ -79,13 +79,13 @@ class Query(object):
             elif count == 2:
                 prefix, operator = parts
                 if operator in ('startswith', 'sw'):
-                    if not isinstance(value, STRING_TYPES):
+                    if not isinstance(value, StringType):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator in ('endswith', 'ew'):
-                    if not isinstance(value, STRING_TYPES):
+                    if not isinstance(value, StringType):
                         if not isinstance(value, (list, set, tuple)):
                             raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)

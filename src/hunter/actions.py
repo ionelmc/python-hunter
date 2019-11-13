@@ -13,7 +13,7 @@ from .util import CALL_COLORS
 from .util import CODE_COLORS
 from .util import MISSING
 from .util import OTHER_COLORS
-from .util import STRING_TYPES
+from .util import StringType
 from .util import builtins
 from .util import iter_symbols
 from .util import safe_repr
@@ -150,7 +150,7 @@ class ColorStreamAction(Action):
 
     @stream.setter
     def stream(self, value):
-        if isinstance(value, STRING_TYPES):
+        if isinstance(value, StringType):
             if value in self._stream_cache:
                 value = self._stream_cache[value]
             else:

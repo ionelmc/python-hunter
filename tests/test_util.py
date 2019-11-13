@@ -1,14 +1,21 @@
 from array import array
-from collections import deque
+from collections import deque, OrderedDict
 from collections import namedtuple
 from decimal import Decimal
 from socket import _socket
 from socket import socket
 
 import py
+import six
 
-from hunter.util import has_dict
 from hunter.util import safe_repr
+
+try:
+    from inspect import getattr_static
+except ImportError:
+    from hunter.backports.inspect import getattr_static
+
+MyTuple = namedtuple("MyTuple", "a b")
 
 
 class Dict(dict):
@@ -65,6 +72,8 @@ def test_safe_repr():
                 'ct': Bad2,
             })
         }),
+        'od': OrderedDict({'a': 'b'}),
+        'nt': MyTuple(1, 2),
         'bad1': Bad1().method,
         'bad2': Bad2().method
     }
@@ -75,19 +84,149 @@ def test_safe_repr():
     print(safe_repr([[[[data]]]]))
     print(safe_repr([[[[[data]]]]]))
 
+    assert safe_repr(py.io).startswith('<py._vendored_packages.apipkg.ApiModule object at 0x')
 
-def test_has_dict():
-    assert has_dict(type(py.io), py.io) is True
 
-    sock = socket()
-    assert has_dict(type(sock), sock) is False
+def test_reliable_primitives():
+    # establish a baseline for primitives that cannot be messed with descriptors and metaclasses
+    side_effects = []
 
-    class Foo(object):
+    class MetaMeta(type):
+        @property
+        def __mro__(self):
+            side_effects.append('MetaMeta.__mro__')
+            return [Meta, type]
+
+        @property
+        def __class__(self):
+            side_effects.append('MetaMeta.__class__')
+            return MetaMeta
+
+        def __subclasscheck__(self, subclass):
+            side_effects.append('MetaMeta.__subclasscheck__')
+            return True
+
+        def __instancecheck__(self, instance):
+            side_effects.append('MetaMeta.__instancecheck__')
+            return True
+
+    class Meta(six.with_metaclass(MetaMeta, type)):
+        @property
+        def __mro__(self):
+            side_effects.append('Meta.__mro__')
+            return [Foobar, object]
+
+        @property
+        def __class__(self):
+            side_effects.append('Meta.__class__')
+            return Meta
+
+        def __subclasscheck__(self, subclass):
+            side_effects.append('Meta.__subclasscheck__')
+            return True
+
+        def __instancecheck__(self, instance):
+            side_effects.append('Meta.__instancecheck__')
+            return True
+
+        @property
+        def __dict__(self, _={}):
+            side_effects.append('Meta.__dict__')
+            return _
+
+    class Foobar(six.with_metaclass(Meta, object)):
+        @property
+        def __mro__(self):
+            side_effects.append('Foobar.__mro__')
+            return ['?']
+
+        @property
+        def __class__(self):
+            side_effects.append('Foobar.__class__')
+            return Foobar
+
+        def __subclasscheck__(self, subclass):
+            side_effects.append('Foobar.__subclasscheck__')
+            return True
+
+        def __instancecheck__(self, instance):
+            side_effects.append('Foobar.__instancecheck__')
+            return True
+
+        @property
+        def __dict__(self):
+            side_effects.append('Foobar.__dict__')
+            return {}
+
+    class SubFoobar(Foobar):
         pass
 
-    assert has_dict(Foo, Foo()) is True
-
-    class Bar:
+    class Plain(object):
         pass
 
-    assert has_dict(Bar, Bar()) is True
+    del side_effects[:]
+
+    foo = Foobar()
+    assert type(foo) is Foobar
+    assert type(Foobar) is Meta
+    assert type(foo) is Foobar
+    assert Foobar.__bases__
+    assert not side_effects
+    isinstance(type(foo), dict)
+    assert side_effects == ['Meta.__class__']
+
+    isinstance(foo, dict)
+    assert side_effects == ['Meta.__class__', 'Foobar.__class__']
+
+    isinstance(1, Foobar)
+    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__']
+
+    issubclass(type, Foobar)
+    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__']
+
+    assert Foobar.__mro__
+    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__', 'Meta.__mro__']
+
+    del side_effects[:]
+
+    assert Meta.__mro__
+    assert side_effects == ['MetaMeta.__mro__']
+
+    assert getattr_static(Plain, '__mro__') is type.__dict__['__mro__']
+    assert getattr_static(Foobar, '__mro__') is not type.__dict__['__mro__']
+    assert side_effects == ['MetaMeta.__mro__']
+
+    assert issubclass(SubFoobar, Foobar)
+    assert side_effects == ['MetaMeta.__mro__', 'Meta.__subclasscheck__']
+
+    subfoo = SubFoobar()
+    assert isinstance(SubFoobar, Foobar)
+    assert side_effects == ['MetaMeta.__mro__', 'Meta.__subclasscheck__', 'Meta.__instancecheck__']
+
+    issubclass(type(SubFoobar()), Foobar)
+    assert side_effects == ['MetaMeta.__mro__', 'Meta.__subclasscheck__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__']
+
+    del side_effects[:]
+
+    isinstance(Foobar, dict)
+    isinstance(type(Foobar), dict)
+    isinstance(type(type(Foobar)), dict)
+    issubclass(Plain, Foobar)
+    issubclass(Plain, type(Foobar))
+    issubclass(Plain, type(type(Foobar)))
+    assert side_effects == ['Meta.__class__', 'MetaMeta.__class__', 'Meta.__subclasscheck__', 'MetaMeta.__subclasscheck__']
+
+    del side_effects[:]
+
+    issubclass(getattr_static(SubFoobar(), '__class__'), Foobar)
+    assert side_effects[-1] == 'Meta.__subclasscheck__'
+
+    del side_effects[:]
+
+    getattr_static(type(SubFoobar()), '__instancecheck__')
+    getattr_static(type(SubFoobar()), '__subclasscheck__')
+    assert not side_effects
+
+    safe_repr(Foobar())
+    safe_repr(Foobar)
+    assert not side_effects
