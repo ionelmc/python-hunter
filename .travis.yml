@@ -107,7 +107,7 @@ matrix:
     - os: osx
       language: generic
       env:
-        - TOXENV=py37-pure-cover
+        - TOXENV=py3-pure-cover
         - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py37-pure-cover,codecov
@@ -115,7 +115,7 @@ matrix:
     - os: osx
       language: generic
       env:
-        - TOXENV=py37-pure-nocov
+        - TOXENV=py3-pure-nocov
         - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py37-pure-nocov
@@ -125,7 +125,7 @@ matrix:
     - os: osx
       language: generic
       env:
-        - TOXENV=py37-cython-cover
+        - TOXENV=py3-cython-cover
         - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py37-cython-cover,codecov
@@ -133,7 +133,7 @@ matrix:
     - os: osx
       language: generic
       env:
-        - TOXENV=py37-cython-nocov
+        - TOXENV=py3-cython-nocov
         - SETUPPY_CFLAGS=
         - WHEEL_PATH=.tox/dist
     - env:

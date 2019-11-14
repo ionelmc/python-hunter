@@ -40,7 +40,7 @@ matrix:
     - os: osx
       language: generic
       env:
-        - TOXENV={{ env }}
+        - TOXENV={{ env|replace('py37', 'py3') }}
         - SETUPPY_CFLAGS=
 {%- if "cython-nocov" in env %}{{ '' }}
         - WHEEL_PATH=.tox/dist
