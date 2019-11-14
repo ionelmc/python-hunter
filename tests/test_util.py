@@ -1,5 +1,6 @@
 from array import array
-from collections import deque, OrderedDict
+from collections import OrderedDict
+from collections import deque
 from collections import namedtuple
 from decimal import Decimal
 from socket import _socket

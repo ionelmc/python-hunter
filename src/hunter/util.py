@@ -169,7 +169,7 @@ def safe_repr(obj, maxdepth=5):
                 safe_repr(v, newdepth)
             ) for k, v in obj.items())
         )
-    elif obj_type is types.MethodType:
+    elif obj_type is types.MethodType:  # noqa
         self = obj.__self__
         name = getattr(obj, '__qualname__', None)
         if name is None:
