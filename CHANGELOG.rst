@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.0.5 (2019-12-06)
+------------------
+
+* Really fixed ``safe_repr`` so it doesn't cause side-effects (now isinstance/issubclass are avoided - they
+  can cause side-effects in code that abuses descriptors in special attributes/methods).
+
 3.0.4 (2019-10-26)
 ------------------
 
