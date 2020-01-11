@@ -15,7 +15,7 @@ env:
     - TWINE_USERNAME=ionel
 matrix:
   include:
-    - python: '3.6'
+    - python: '3.8'
       env:
         - TOXENV=cythonize
       script:
@@ -29,10 +29,10 @@ matrix:
             exit 1
           fi
           )
-    - python: '3.6'
+    - python: '3.8'
       env:
         - TOXENV=check
-    - python: '3.6'
+    - python: '3.8'
       env:
         - TOXENV=docs
     - os: osx
