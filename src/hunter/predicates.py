@@ -34,6 +34,7 @@ class Query(object):
 
     See :class:`hunter.event.Event` for fields that can be filtered on.
     """
+
     def __init__(self, **query):
         """
         Args:
@@ -300,16 +301,18 @@ class When(object):
 
 class From(object):
     """
-    From-point filtering mechanism. Switches on to running the predicate after condition maches, and switches off when
-    the depth returns to the same level.
+    From-point filtering mechanism. Switches on to running the predicate after condition matches, and switches off when
+    the depth goes lower than the initial level.
 
     After ``condition(event)`` returns ``True`` the ``event.depth`` will be saved and calling this object with an
     ``event`` will return ``predicate(event)`` until ``event.depth - watermark`` is equal to the depth that was saved.
 
     Args:
-        condition (callable): A callable that returns True/False or a :class:`hunter.predicates.Query` object.
-        predicate (callable): Optional callable that returns True/False or a :class:`hunter.predicates.Query` object to
-            run after ``condition`` first returns ``True``.
+        condition (callable): A callable that returns True/False or a :class:`~hunter.predicates.Query` object.
+        predicate (callable): Optional callable that returns True/False or a :class:`~hunter.predicates.Query` object to
+            run after ``condition`` first returns ``True``. Note that this predicate will be called with a event-copy that has adjusted
+            :attr:`~hunter.event.Event.depth` and :attr:`~hunter.event.Event.calls` to the initial point where the ``condition`` matched.
+            In other words they will be relative.
         watermark (int): Depth difference to switch off and wait again on ``condition``.
     """
 
@@ -317,11 +320,13 @@ class From(object):
         self.condition = condition
         self.predicate = predicate
         self.watermark = watermark
-        self.waiting_for_condition = True
-        self.depth = -1
+        self.origin_depth = None
+        self.origin_calls = None
 
     def __str__(self):
-        return 'From(%s, %s)' % (self.condition, self.predicate)
+        return 'From(%s, %s, watermark=%s)' % (
+            self.condition, self.predicate, self.watermark
+        )
 
     def __repr__(self):
         return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (
@@ -339,21 +344,26 @@ class From(object):
         """
         Handles the event.
         """
-        if event.depth - self.watermark <= self.depth:
-            self.waiting_for_condition = True
-            self.depth = -1
-
-        if self.waiting_for_condition:
+        if self.origin_depth is None:
             if self.condition(event):
-                self.waiting_for_condition = False
-                self.depth = event.depth
+                self.origin_depth = event.depth
+                self.origin_calls = event.calls
+                delta_depth = delta_calls = 0
             else:
                 return False
-
+        else:
+            delta_depth = event.depth - self.origin_depth
+            delta_calls = event.calls - self.origin_calls
+            if delta_depth < self.watermark:
+                self.origin_depth = None
+                return False
         if self.predicate is None:
             return True
         else:
-            return self.predicate(event)
+            relative_event = event.clone()
+            relative_event.depth = delta_depth
+            relative_event.calls = delta_calls
+            return self.predicate(relative_event)
 
     def __or__(self, other):
         return From(Or(self.condition, other), self.predicate)
@@ -464,6 +474,7 @@ class Not(object):
     """
     Simply returns ``not predicate(event)``.
     """
+
     def __init__(self, predicate):
         self.predicate = predicate
 

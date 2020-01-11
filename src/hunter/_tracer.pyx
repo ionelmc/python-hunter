@@ -9,8 +9,7 @@ from cpython.pystate cimport PyThreadState_Get
 
 from ._event cimport Event
 
-from ._predicates cimport fast_From_call
-from ._predicates cimport fast_When_call
+from ._predicates cimport fast_call
 
 from ._predicates cimport From
 from ._predicates cimport When
@@ -36,12 +35,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     cdef Event event = Event(frame, KIND_NAMES[kind], None if arg is NULL else <object>arg, self)
 
     try:
-        if type(handler) is When:
-            fast_When_call(<When>handler, event)
-        elif type(handler) is From:
-            fast_From_call(<From>handler, event)
-        elif handler is not None:
-            handler(event)
+        fast_call(handler, event)
     except Exception as exc:
         traceback.print_exc(file=config.DEFAULT_STREAM)
         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(

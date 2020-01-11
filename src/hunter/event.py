@@ -144,6 +144,11 @@ class Event(object):
 
         return event
 
+    def clone(self):
+        event = Event.__new__(Event)
+        event.__dict__ = dict(self.__dict__)
+        return event
+
     @cached_property
     def threadid(self):
         """

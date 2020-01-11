@@ -95,6 +95,30 @@ cdef class Event:
 
         return event
 
+    cdef inline Event clone(self):
+        event = <Event>Event.__new__(Event)
+        event.arg = self.arg
+        event.frame = self.frame
+        event.kind = self.kind
+        event.depth = self.depth
+        event.calls = self.calls
+        event.threading_support = self.threading_support
+        event._code = self._code
+        event._filename = self._filename
+        event._fullsource = self._fullsource
+        event._function_object = self._function_object
+        event._function = self._function
+        event._globals = self._globals
+        event._lineno = self._lineno
+        event._locals = self._locals
+        event._module = self._module
+        event._source = self._source
+        event._stdlib = self._stdlib
+        event._threadidn = self._threadidn
+        event._threadname = self._threadname
+        event._thread = self._thread
+        return event
+
     @property
     def threadid(self):
         cdef long current

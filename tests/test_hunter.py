@@ -950,6 +950,16 @@ def test_predicate_compression():
     assert repr(Or(1, Or(2, 3), 4)) == repr(Or(1, 2, 3, 4))
 
 
+def test_predicate_from_kwargs_split():
+    assert From(module=1, depth=2, depth_lt=3) == From(Query(module=1), Query(depth=2, depth_lt=3))
+    assert repr(From(module=1, depth=2, depth_lt=3)) in (
+        "<hunter.predicates.From: condition=<hunter.predicates.Query: query_eq=(('module', 1),)>, "
+        "predicate=<hunter.predicates.Query: query_eq=(('depth', 2),) query_lt=(('depth', 3),)>, watermark=0>",
+        "<hunter._predicates.From: condition=<hunter._predicates.Query: query_eq=(('module', 1),)>, "
+        "predicate=<hunter._predicates.Query: query_eq=(('depth', 2),) query_lt=(('depth', 3),)>, watermark=0>",
+    )
+
+
 def test_predicate_not(mockevent):
     assert Not(1).predicate == 1
     assert ~Or(1, 2) == Not(Or(1, 2))
@@ -1112,6 +1122,7 @@ def test_perf_filter(tracer_impl, benchmark):
         Q(module='does-not-exist') | Q(module='does not exist'.split()),
         action=inc
     )
+
     @benchmark
     def run():
         with impl.trace(handler):
@@ -1271,16 +1282,37 @@ def test_from_predicate(LineMatcher):
         "* line         return i",
         "* return    <= five: 0",
     ])
-    assert 'four' not in output
+    assert '<= four' not in output
     assert 'three' not in output
     assert 'two' not in output
     assert 'one' not in output
 
 
+def test_from_predicate_with_subpredicate(LineMatcher):
+    buff = StringIO()
+    from sample7 import one
+    with trace(From(Q(source_has='# two'), Q(depth_lt=1)), action=CallPrinter(stream=buff)):
+        one()
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        '* line      for i in range(1):  # two',
+        '* line      three()',
+        '* call      => three()',
+        '* return    <= three: None',
+        '* line      for i in range(1):  # two',
+    ])
+    assert 'five' not in output
+    assert 'four' not in output
+    assert 'one()' not in output
+    assert '# one' not in output
+    assert len(lm.lines) == 5
+
+
 def test_from_predicate_line(LineMatcher):
     buff = StringIO()
     from sample7 import one
-    with trace(From(Q(fullsource_has='in_five'), CallPrinter(stream=buff), watermark=-1)):
+    with trace(From(Q(fullsource_has='in_five'), CallPrinter(stream=buff))):
         one()
     output = buff.getvalue()
     lm = LineMatcher(output.splitlines())
@@ -1307,7 +1339,7 @@ def test_from_predicate_no_predicate(LineMatcher):
         "* line         return i",
         "* return    <= five: 0",
     ])
-    assert 'four' not in output
+    assert '<= four' not in output
     assert 'three' not in output
     assert 'two' not in output
     assert 'one' not in output
@@ -1316,7 +1348,7 @@ def test_from_predicate_no_predicate(LineMatcher):
 def test_from_predicate_line_no_predicate(LineMatcher):
     buff = StringIO()
     from sample7 import one
-    with trace(From(Q(fullsource_has='in_five'), watermark=-1), action=CallPrinter(stream=buff)):
+    with trace(From(Q(fullsource_has='in_five')), action=CallPrinter(stream=buff)):
         one()
     output = buff.getvalue()
     lm = LineMatcher(output.splitlines())
@@ -1513,8 +1545,7 @@ def test_varssnooper(LineMatcher):
 
 def test_from_typeerror():
     pytest.raises(TypeError, From, 1, 2, kind=3)
-    From(1, 2, 3)
-    From(kind=1, function=2)
+    pytest.raises(TypeError, From, 1, function=2)
     pytest.raises(TypeError, From, junk=1)
 
 

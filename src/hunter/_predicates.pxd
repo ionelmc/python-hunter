@@ -44,9 +44,9 @@ cdef class From:
     cdef:
         readonly object condition
         readonly object predicate
-        readonly bint waiting_for_condition
-        readonly int depth
         readonly int watermark
+        readonly int origin_depth
+        readonly int origin_calls
 
 cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)
@@ -54,3 +54,4 @@ cdef fast_Not_call(Not self, Event event)
 cdef fast_Or_call(Or self, Event event)
 cdef fast_Query_call(Query self, Event event)
 cdef fast_When_call(When self, Event event)
+cdef fast_call(callable, Event event)

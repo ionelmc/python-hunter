@@ -4,6 +4,7 @@ import atexit
 import functools
 import inspect
 import os
+import warnings
 import weakref
 
 from .actions import Action
@@ -38,7 +39,6 @@ except ImportError:
     from .predicates import Query
     from .tracer import Tracer
 
-
 try:
     from ._version import version as __version__
 except ImportError:
@@ -71,6 +71,9 @@ def Q(*predicates, **query):
     Helper that handles situations where :class:`hunter.predicates.Query` objects (or other callables)
     are passed in as positional arguments - it conveniently converts those to a
     :class:`hunter.predicates.And` predicate.
+
+    See Also:
+         :class:`hunter.predicates.Query`
     """
     optional_actions = query.pop("actions", [])
     if "action" in query:
@@ -136,6 +139,8 @@ def And(*predicates, **kwargs):
 
     Returns: A :class:`hunter.predicates.And` instance.
 
+    See Also:
+         :class:`hunter.predicates.And`
     """
     if kwargs:
         predicates += Query(**kwargs),
@@ -153,9 +158,11 @@ def Or(*predicates, **kwargs):
 
     Returns: A :class:`hunter.predicates.Or` instance.
 
+    See Also:
+         :class:`hunter.predicates.Or`
     """
     if kwargs:
-        predicates += tuple(Query(**{k: v}) for k, v in kwargs.items())
+        predicates += tuple(Query(**{key: value}) for key, value in kwargs.items())
     return _flatten(_Or, *predicates)
 
 
@@ -169,6 +176,9 @@ def Not(*predicates, **kwargs):
         **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`.
 
     Returns: A :class:`hunter.predicates.Not` instance (possibly containing a :class:`hunter.predicates.And` instance).
+
+    See Also:
+         :class:`hunter.predicates.Not`
     """
     if kwargs:
         predicates += Query(**kwargs),
@@ -178,24 +188,34 @@ def Not(*predicates, **kwargs):
         return _Not(*predicates)
 
 
-def From(predicate=None, condition=None, watermark=0, **kwargs):
+def From(condition=None, predicate=None, watermark=0, **kwargs):
     """
-    Helper that converts keyword arguments to a ``From(Q(**kwargs))``.
+    Helper that converts keyword arguments to ``From(condition=Q(**normal_kwargs), predicate=Q(**rel_kwargs)``
+    where ``rel_kwargs`` are all the kwargs that start with "depth" or "calls".
 
     Args:
         condition (callable): A callable that returns True/False or a :class:`hunter.predicates.Query` object.
         predicate (callable): Optional callable that returns True/False or a :class:`hunter.predicates.Query` object to
             run after ``condition`` first returns ``True``.
-        watermark (int): Depth difference to switch off and wait again on ``condition``.
-        **kwargs: Arguments that are passed to :func:`hunter.Q`
+        **kwargs: Arguments that are passed to :func:`hunter.Q`. Any kwarg that starts with "depth" or "calls" will be included `predicate`.
+
+    Examples:
+        ``From(function='foobar', depth_lt=5)`` coverts to ``From(Q(function='foobar'), Q(depth_lt=5))``.
+        The depth filter is moved in the predicate because it would not have any effect as a condition - it stop being called after it
+        returns True, thus it doesn't have the intended effect (a limit to how deep to trace from ``foobar``).
+
+    See Also:
+         :class:`hunter.predicates.From`
     """
-    if predicate is None and condition is None and watermark == 0:
-        return _From(Q(**kwargs))
+    if predicate is None and condition is None:
+        condition_kwargs = {key: value for key, value in kwargs.items() if not key.startswith('depth') and not key.startswith('calls')}
+        predicate_kwargs = {key: value for key, value in kwargs.items() if key.startswith('depth') or key.startswith('calls')}
+        return _From(Q(**condition_kwargs), Q(**predicate_kwargs), watermark)
     else:
         if kwargs:
             raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
                 kwargs.keys()))
-        return _From(predicate, condition, watermark)
+        return _From(condition, predicate, watermark)
 
 
 def stop():
@@ -204,7 +224,9 @@ def stop():
     """
     global _last_tracer
 
-    if _last_tracer is not None:
+    if _last_tracer is None:
+        warnings.warn('There is no tracer to stop.')
+    else:
         _last_tracer.stop()
         _last_tracer = None
 
@@ -244,6 +266,9 @@ def trace(*predicates, **options):
         action: Action to run if all the predicates return ``True``. Default: ``CodePrinter``.
         actions: Actions to run (in case you want more than 1).
         **kwargs: for convenience you can also pass anything that you'd pass to :obj:`hunter.Q`
+
+    See Also:
+         :class:`hunter.tracer.Tracer` or :class:`hunter.event.Event`
     """
     global _last_tracer
 
@@ -315,7 +340,9 @@ def wrap(function_to_trace=None, **trace_options):
                 return func(*args, **kwargs)
             finally:
                 local_tracer.stop()
+
         return tracing_wrapper
+
     if function_to_trace is None:
         return tracing_decorator
     else:

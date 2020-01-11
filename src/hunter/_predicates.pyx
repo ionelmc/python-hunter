@@ -345,22 +345,8 @@ cdef class When:
 
 cdef inline fast_When_call(When self, Event event):
     cdef object result
-    condition = self.condition
 
-    if type(condition) is Query:
-        result = fast_Query_call(<Query> condition, event)
-    elif type(condition) is Or:
-        result = fast_Or_call(<Or> condition, event)
-    elif type(condition) is And:
-        result = fast_And_call(<And> condition, event)
-    elif type(condition) is Not:
-        result = fast_Not_call(<Not> condition, event)
-    elif type(condition) is When:
-        result = fast_When_call(<When> condition, event)
-    elif type(condition) is From:
-        result = fast_From_call(<From> condition, event)
-    else:
-        result = condition(event)
+    result = fast_call(self.condition, event)
 
     if result:
         for action in self.actions:
@@ -379,13 +365,12 @@ cdef class From:
         self.condition = condition
         self.predicate = predicate
         self.watermark = watermark
-        self.waiting_for_condition = True
-        self.depth = -1
+        self.origin_depth = -1
+        self.origin_calls = -1
 
     def __str__(self):
-        return 'From(%s, %s)' % (
-            self.condition,
-            self.predicate
+        return 'From(%s, %s, watermark=%s)' % (
+            self.condition, self.predicate, self.watermark
         )
 
     def __repr__(self):
@@ -399,6 +384,7 @@ cdef class From:
             and self.condition == other.condition
             and self.predicate == other.predicate
         )
+
     def __call__(self, Event event):
         """
         Handles the event.
@@ -420,51 +406,32 @@ cdef class From:
 
 cdef inline fast_From_call(From self, Event event):
     cdef object result
+    cdef int delta_depth
+    cdef int delta_calls
 
-    if event.depth - self.watermark <= self.depth:
-        self.waiting_for_condition = True
-        self.depth = -1
-
-    if self.waiting_for_condition:
-        condition = self.condition
-
-        if type(condition) is Query:
-            result = fast_Query_call(<Query> condition, event)
-        elif type(condition) is Or:
-            result = fast_Or_call(<Or> condition, event)
-        elif type(condition) is And:
-            result = fast_And_call(<And> condition, event)
-        elif type(condition) is Not:
-            result = fast_Not_call(<Not> condition, event)
-        elif type(condition) is When:
-            result = fast_When_call(<When> condition, event)
-        elif type(condition) is From:
-            result = fast_From_call(<From> condition, event)
-        else:
-            result = condition(event)
+    if self.origin_depth == -1:
+        result = fast_call(self.condition, event)
 
         if result:
-            self.waiting_for_condition = False
-            self.depth = event.depth
+            self.origin_depth = event.depth
+            self.origin_calls = event.calls
+            delta_depth = delta_calls = 0
         else:
+            return False
+    else:
+        delta_depth = event.depth - self.origin_depth
+        delta_calls = event.calls - self.origin_calls
+        if delta_depth < self.watermark:
+            self.origin_depth = -1
             return False
 
     if self.predicate is None:
         return True
-    elif type(self.predicate) is Query:
-        return fast_Query_call(<Query> self.predicate, event)
-    elif type(self.predicate) is Or:
-        return fast_Or_call(<Or> self.predicate, event)
-    elif type(self.predicate) is And:
-        return fast_And_call(<And> self.predicate, event)
-    elif type(self.predicate) is Not:
-        return fast_Not_call(<Not> self.predicate, event)
-    elif type(self.predicate) is When:
-        return fast_When_call(<When> self.predicate, event)
-    elif type(self.predicate) is From:
-        return fast_From_call(<From> self.predicate, event)
     else:
-        return self.predicate(event)
+        relative_event = event.clone()
+        relative_event.depth = delta_depth
+        relative_event.calls = delta_calls
+        return fast_call(self.predicate, relative_event)
 
 @cython.final
 cdef class And:
@@ -519,27 +486,8 @@ cdef class And:
 
 cdef inline fast_And_call(And self, Event event):
     for predicate in self.predicates:
-        if type(predicate) is Query:
-            if not fast_Query_call(<Query> predicate, event):
-                return False
-        elif type(predicate) is Or:
-            if not fast_Or_call(<Or> predicate, event):
-                return False
-        elif type(predicate) is And:
-            if not fast_And_call(<And> predicate, event):
-                return False
-        elif type(predicate) is Not:
-            if not fast_Not_call(<Not> predicate, event):
-                return False
-        elif type(predicate) is When:
-            if not fast_When_call(<When> predicate, event):
-                return False
-        elif type(predicate) is From:
-            if not fast_From_call(<From> predicate, event):
-                return False
-        else:
-            if not predicate(event):
-                return False
+        if not fast_call(predicate, event):
+            return False
     else:
         return True
 
@@ -598,27 +546,8 @@ cdef class Or:
 
 cdef inline fast_Or_call(Or self, Event event):
     for predicate in self.predicates:
-        if type(predicate) is Query:
-            if fast_Query_call(<Query> predicate, event):
-                return True
-        elif type(predicate) is Or:
-            if fast_Or_call(<Or> predicate, event):
-                return True
-        elif type(predicate) is And:
-            if fast_And_call(<And> predicate, event):
-                return True
-        elif type(predicate) is Not:
-            if fast_Not_call(<Not> predicate, event):
-                return True
-        elif type(predicate) is When:
-            if fast_When_call(<When> predicate, event):
-                return True
-        elif type(predicate) is From:
-            if fast_From_call(<From> predicate, event):
-                return True
-        else:
-            if predicate(event):
-                return True
+        if fast_call(predicate, event):
+            return True
     else:
         return False
 
@@ -686,19 +615,20 @@ cdef class Not:
         return hash(self.predicate)
 
 cdef inline fast_Not_call(Not self, Event event):
-    predicate = self.predicate
+    return not fast_call(self.predicate, event)
 
-    if type(predicate) is Query:
-        return not fast_Query_call(<Query> predicate, event)
-    elif type(predicate) is Or:
-        return not fast_Or_call(<Or> predicate, event)
-    elif type(predicate) is And:
-        return not fast_And_call(<And> predicate, event)
-    elif type(predicate) is Not:
-        return not fast_Not_call(<Not> predicate, event)
-    elif type(predicate) is When:
-        return not fast_When_call(<When> predicate, event)
-    elif type(predicate) is From:
-        return not fast_From_call(<From> predicate, event)
+cdef inline fast_call(callable, Event event):
+    if type(callable) is Query:
+        return fast_Query_call(<Query> callable, event)
+    elif type(callable) is Or:
+        return fast_Or_call(<Or> callable, event)
+    elif type(callable) is And:
+        return fast_And_call(<And> callable, event)
+    elif type(callable) is Not:
+        return fast_Not_call(<Not> callable, event)
+    elif type(callable) is When:
+        return fast_When_call(<When> callable, event)
+    elif type(callable) is From:
+        return fast_From_call(<From> callable, event)
     else:
-        return not predicate(event)
+        return callable(event)
