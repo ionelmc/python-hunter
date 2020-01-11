@@ -374,7 +374,7 @@ cdef class From:
         )
 
     def __repr__(self):
-        return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (
+        return '<hunter._predicates.From: condition=%r, predicate=%r, watermark=%r>' % (
             self.condition, self.predicate, self.watermark
         )
 
@@ -616,6 +616,7 @@ cdef class Not:
 
 cdef inline fast_Not_call(Not self, Event event):
     return not fast_call(self.predicate, event)
+
 
 cdef inline fast_call(callable, Event event):
     if type(callable) is Query:

@@ -952,11 +952,9 @@ def test_predicate_compression():
 
 def test_predicate_from_kwargs_split():
     assert From(module=1, depth=2, depth_lt=3) == From(Query(module=1), Query(depth=2, depth_lt=3))
-    assert repr(From(module=1, depth=2, depth_lt=3)) in (
+    assert repr(From(module=1, depth=2, depth_lt=3)).replace('<hunter._', '<hunter.') == (
         "<hunter.predicates.From: condition=<hunter.predicates.Query: query_eq=(('module', 1),)>, "
-        "predicate=<hunter.predicates.Query: query_eq=(('depth', 2),) query_lt=(('depth', 3),)>, watermark=0>",
-        "<hunter._predicates.From: condition=<hunter._predicates.Query: query_eq=(('module', 1),)>, "
-        "predicate=<hunter._predicates.Query: query_eq=(('depth', 2),) query_lt=(('depth', 3),)>, watermark=0>",
+        "predicate=<hunter.predicates.Query: query_eq=(('depth', 2),) query_lt=(('depth', 3),)>, watermark=0>"
     )
 
 
