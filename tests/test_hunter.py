@@ -16,6 +16,7 @@ from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
+from hunter import ErrorSnooper
 from hunter import From
 from hunter import Not
 from hunter import Or
@@ -1553,3 +1554,43 @@ def test_tracer_autostop():
             assert sys.gettrace() is not tracer
         else:
             assert sys.gettrace() is None
+
+
+def test_errorsnooper(LineMatcher):
+    lines = StringIO()
+    snooper = ErrorSnooper(stream=lines)
+
+    @hunter.wrap(actions=[snooper])
+    def a():
+        import sample8errors
+
+    a()
+
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on RuntimeError()",
+        "*sample8errors.py:12    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:13    line          except Exception:",
+        "*sample8errors.py:14    line              pass",
+        "---------------------------------------------- function exit",
+        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> tracing silenced2 on RuntimeError()",
+        "*sample8errors.py:19    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:20    line          except Exception as exc:",
+        "*sample8errors.py:21    line              print(exc)",
+        "---------------------------------------------- too many lines",
+        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> tracing silenced3 on RuntimeError()",
+        "*sample8errors.py:29    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        '*sample8errors.py:31    line              return "mwhahaha"',
+        "---------------------------------------------- function exit",
+        ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> tracing silenced4 on RuntimeError()",
+        "*sample8errors.py:36    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:37    line          except Exception as exc:",
+        "*sample8errors.py:38    line              logger.info(repr(exc))",
+        "---------------------------------------------- function exit",
+   ])
+

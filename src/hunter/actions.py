@@ -1,8 +1,10 @@
 from __future__ import absolute_import
 
+import opcode
 import os
 import threading
 from collections import defaultdict
+from collections import namedtuple
 from os import getpid
 
 from colorama import AnsiToWin32
@@ -13,6 +15,7 @@ from .util import CALL_COLORS
 from .util import CODE_COLORS
 from .util import MISSING
 from .util import OTHER_COLORS
+from .util import PY3
 from .util import StringType
 from .util import builtins
 from .util import iter_symbols
@@ -23,9 +26,7 @@ try:
 except ImportError:
     from thread import get_ident
 
-
 __all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
-
 
 BUILTIN_REPR_FUNCS = {
     'repr': repr,
@@ -42,6 +43,7 @@ class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
+
     def __init__(self, klass=config.Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
         self.klass = config.resolve(klass)
         self.kwargs = kwargs
@@ -540,7 +542,16 @@ class VarsSnooper(ColorStreamAction):
         * It stores reprs for all seen variables, therefore it can use lots of memory.
         * Will leak memory if you filter the return events (eg: ``~Q(kind="return")``).
         * Not thoroughly tested. May misbehave on code with closures/nonlocal variables.
+
+    Args:
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
     """
+
     def __init__(self, **options):
         super(VarsSnooper, self).__init__(**options)
         self.stored_reprs = defaultdict(dict)
@@ -614,3 +625,76 @@ class VarsSnooper(ColorStreamAction):
                     )
         if event.kind == 'return':
             del self.stored_reprs[scope_key]
+
+
+_ErrorSnooperDetails = namedtuple("ErrorSnooperDetails", "function exception module")
+
+
+class ErrorSnooper(CodePrinter):
+    """
+    An action that prints events around silenced exceptions. Note that it inherits the output of :class:`~hunter.actions.CodePrinter` so no
+    fancy call indentation.
+
+    .. warning: Should be considered experimental. May show lots of false positives especially if you're tracing lots of clumsy code like::
+
+        try:
+            stuff = something[key]
+        except KeyError:
+            stuff = "default"
+
+    Args:
+        max_events (int): How many events to buffer up when an exception is raised. This is also the limit of events shown. Default: ``50``.
+        max_depth (int): Increase if you want to drill into subsequent calls after an exception is raised. If you increase this you might
+            want to also increase ``max_events`` since subsequent calls may have so many events you won't get to see the return event.
+            Default: ``1``.
+
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.events = []
+        self.depth = 0
+        self.details = None
+        self.max_events = kwargs.pop('max_events', 50)
+        self.max_depth = kwargs.pop('max_depth', 1)
+        super(ErrorSnooper, self).__init__(*args, **kwargs)
+
+    def __call__(self, event):
+        if event.kind == 'exception':  # something interesting happened ;)
+            if self.details is None:
+                self.details = event.function, self.try_repr(event.arg[1])
+                self.events = [event.detach(self.try_repr)]
+            else:
+                self.events.append(event.detach(self.try_repr))
+            self.depth = event.depth
+            self.count = 0
+        elif self.events:
+            if event.kind == 'return':  # stop if function returned
+                if event.arg or opcode.opname[
+                    event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])
+                ] == 'RETURN_VALUE':
+                    self.dump_events()
+                self.events = self.details = None
+            elif event.depth > self.depth + 1:  # too many details
+                return
+            elif len(self.events) > self.max_events:
+                return
+            else:
+                self.events.append(event.detach(self.try_repr))
+
+    def dump_events(self):
+        self.output("{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n",
+                    ">" * 46, *self.details)
+        for event in self.events:
+            super(ErrorSnooper, self).__call__(event)
+        if len(self.events) > self.max_events:
+            self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
+                        "-" * 46)
+        else:
+            self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
+                        "-" * 46)

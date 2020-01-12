@@ -11,6 +11,7 @@ from .actions import Action
 from .actions import CallPrinter
 from .actions import CodePrinter
 from .actions import Debugger
+from .actions import ErrorSnooper
 from .actions import Manhole
 from .actions import VarsPrinter
 from .actions import VarsSnooper

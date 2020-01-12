@@ -24,6 +24,7 @@ Reference
     hunter.actions.CodePrinter
     hunter.actions.ColorStreamAction
     hunter.actions.Debugger
+    hunter.actions.ErrorSnooper
     hunter.actions.Manhole
     hunter.actions.VarsPrinter
     hunter.actions.VarsSnooper
@@ -82,10 +83,6 @@ Helpers
 Actions
 -------
 
-.. autoclass:: hunter.actions.ColorStreamAction(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
-    :members:
-    :special-members:
-
 .. autoclass:: hunter.actions.CallPrinter(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
@@ -94,7 +91,15 @@ Actions
     :members:
     :special-members:
 
+.. autoclass:: hunter.actions.ColorStreamAction(stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
+    :members:
+    :special-members:
+
 .. autoclass:: hunter.actions.Debugger(klass=pdb.Pdb, **kwargs)
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.actions.ErrorSnooper(max_events=50, max_depth=1, stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
 
