@@ -537,7 +537,7 @@ class VarsSnooper(ColorStreamAction):
     """
     A PySnooper-inspired action, similar to :class:`~hunter.actions.VarsPrinter`, but only show variable changes.
 
-    .. warning: Should be considered experimental. Use judiciously.
+    .. warning:: Should be considered experimental. Use judiciously.
 
         * It stores reprs for all seen variables, therefore it can use lots of memory.
         * Will leak memory if you filter the return events (eg: ``~Q(kind="return")``).
@@ -635,12 +635,16 @@ class ErrorSnooper(CodePrinter):
     An action that prints events around silenced exceptions. Note that it inherits the output of :class:`~hunter.actions.CodePrinter` so no
     fancy call indentation.
 
-    .. warning: Should be considered experimental. May show lots of false positives especially if you're tracing lots of clumsy code like::
+    .. warning::
 
-        try:
-            stuff = something[key]
-        except KeyError:
-            stuff = "default"
+        Should be considered experimental. May show lots of false positives especially if you're tracing lots of clumsy code like:
+
+        .. sourcecode:: python
+
+            try:
+                stuff = something[key]
+            except KeyError:
+                stuff = "default"
 
     Args:
         max_events (int): How many events to buffer up when an exception is raised. This is also the limit of events shown. Default: ``50``.
