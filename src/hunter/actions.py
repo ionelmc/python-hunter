@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import collections
 import opcode
 import os
 import threading
@@ -627,7 +628,7 @@ class VarsSnooper(ColorStreamAction):
             del self.stored_reprs[scope_key]
 
 
-_ErrorSnooperDetails = namedtuple("ErrorSnooperDetails", "function exception module")
+_ErrorSnooperDetails = namedtuple("ErrorSnooperDetails", "function exception depth events")
 
 
 class ErrorSnooper(CodePrinter):
@@ -647,7 +648,8 @@ class ErrorSnooper(CodePrinter):
                 stuff = "default"
 
     Args:
-        max_events (int): How many events to buffer up when an exception is raised. This is also the limit of events shown. Default: ``50``.
+        max_ahead (int): Maximum number of events to record and display before the silenced exception is raised. Default: ``10``.
+        max_after (int): Maximum number of events to record and display after the silenced exception is raised. Default: ``50``.
         max_depth (int): Increase if you want to drill into subsequent calls after an exception is raised. If you increase this you might
             want to also increase ``max_events`` since subsequent calls may have so many events you won't get to see the return event.
             Default: ``1``.
@@ -661,44 +663,47 @@ class ErrorSnooper(CodePrinter):
     """
 
     def __init__(self, *args, **kwargs):
-        self.events = []
-        self.depth = 0
-        self.details = None
+        self.backlog = collections.deque(maxlen=kwargs.pop('max_ahead', 10))
         self.max_events = kwargs.pop('max_events', 50)
-        self.max_depth = kwargs.pop('max_depth', 1)
+        self.max_depth = kwargs.pop('max_depth', 0)
+        self.origin = None
+        self.events = None
         super(ErrorSnooper, self).__init__(*args, **kwargs)
 
     def __call__(self, event):
+        detached_event = event.detach(self.try_repr)
+        self.backlog.append(detached_event)
         if event.kind == 'exception':  # something interesting happened ;)
-            if self.details is None:
-                self.details = event.function, self.try_repr(event.arg[1])
-                self.events = [event.detach(self.try_repr)]
+            if self.origin:
+                self.events.append(detached_event)
+                if self.origin.depth > event.depth:
+                    self.origin = detached_event
             else:
-                self.events.append(event.detach(self.try_repr))
-            self.depth = event.depth
-            self.count = 0
-        elif self.events:
-            if event.kind == 'return':  # stop if function returned
-                if event.arg or opcode.opname[
-                    event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])
-                ] == 'RETURN_VALUE':
-                    self.dump_events()
-                self.events = self.details = None
-            elif event.depth > self.depth + 1:  # too many details
+                self.events = list(self.backlog)
+                self.origin = detached_event
+        elif self.origin:
+            if event.kind == 'return':
+                self.events.append(detached_event)
+                if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
+                    if opcode.opname[
+                        event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])
+                    ] == 'RETURN_VALUE':
+                        self.dump_events()
+                        self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n", "-" * 46)
+                    self.origin = None
+                    self.events = None
+            elif event.depth > self.origin.depth + self.max_depth:  # too many details
                 return
             elif len(self.events) > self.max_events:
-                return
+                self.dump_events()
+                self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n", "-" * 46)
             else:
-                self.events.append(event.detach(self.try_repr))
+                self.events.append(detached_event)
 
     def dump_events(self):
         self.output("{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n",
-                    ">" * 46, *self.details)
+                    ">" * 46, self.origin.function, self.origin.arg)
         for event in self.events:
             super(ErrorSnooper, self).__call__(event)
-        if len(self.events) > self.max_events:
-            self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n",
-                        "-" * 46)
-        else:
-            self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n",
-                        "-" * 46)
+        self.origin = None
+        self.events = None

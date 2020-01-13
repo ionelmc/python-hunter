@@ -50,6 +50,7 @@ __all__ = (
     'CallPrinter',
     'CodePrinter',
     'Debugger',
+    'ErrorSnooper',
     'From',
     'Manhole',
     'Not',

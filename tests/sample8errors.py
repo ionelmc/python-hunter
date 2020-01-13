@@ -7,6 +7,10 @@ def error():
     raise RuntimeError()
 
 
+def log(msg):
+    print(msg)
+
+
 def silenced1():
     try:
         error()
@@ -18,9 +22,9 @@ def silenced2():
     try:
         error()
     except Exception as exc:
-        print(exc)
-        for i in range(25):
-            print(i)
+        log(exc)
+        for i in range(200):
+            log(i)
     return 'x'
 
 
@@ -45,16 +49,4 @@ def notsilenced():
         raise ValueError(exc)
 
 
-silenced1()
-print("Done silenced1")
-silenced2()
-print("Done silenced2")
-silenced3()
-print("Done silenced3")
-silenced4()
-print("Done silenced4")
 
-try:
-    notsilenced()
-except ValueError:
-    print("Done not silenced")
