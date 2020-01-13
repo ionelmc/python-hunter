@@ -648,11 +648,12 @@ class ErrorSnooper(CodePrinter):
                 stuff = "default"
 
     Args:
-        max_ahead (int): Maximum number of events to record and display before the silenced exception is raised. Default: ``10``.
-        max_after (int): Maximum number of events to record and display after the silenced exception is raised. Default: ``50``.
+        max_backlog (int): Maximum number of events to record and display before the silenced exception is raised.
+            Set to 0 to disable and get a speed boost. Default: ``10``.
+        max_events (int): Maximum number of events to record and display for each detected silenced exception. Default: ``50``.
         max_depth (int): Increase if you want to drill into subsequent calls after an exception is raised. If you increase this you might
             want to also increase ``max_events`` since subsequent calls may have so many events you won't get to see the return event.
-            Default: ``1``.
+            Default: ``0`` (doesn't drill into any calls).
 
         stream (file-like): Stream to write to. Default: ``sys.stderr``.
         filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
@@ -663,7 +664,8 @@ class ErrorSnooper(CodePrinter):
     """
 
     def __init__(self, *args, **kwargs):
-        self.backlog = collections.deque(maxlen=kwargs.pop('max_ahead', 10))
+        self.max_backlog = kwargs.pop('max_backlog', 10)
+        self.backlog = collections.deque(maxlen=self.max_backlog)
         self.max_events = kwargs.pop('max_events', 50)
         self.max_depth = kwargs.pop('max_depth', 0)
         self.origin = None
@@ -671,9 +673,15 @@ class ErrorSnooper(CodePrinter):
         super(ErrorSnooper, self).__init__(*args, **kwargs)
 
     def __call__(self, event):
-        detached_event = event.detach(self.try_repr)
-        self.backlog.append(detached_event)
+        if self.max_backlog:
+            detached_event = event.detach(self.try_repr)
+            self.backlog.append(detached_event)
+        else:
+            detached_event = None
+
         if event.kind == 'exception':  # something interesting happened ;)
+            if detached_event is None:
+                detached_event = event.detach(self.try_repr)
             if self.origin:
                 self.events.append(detached_event)
                 if self.origin.depth > event.depth:
@@ -683,6 +691,8 @@ class ErrorSnooper(CodePrinter):
                 self.origin = detached_event
         elif self.origin:
             if event.kind == 'return':
+                if detached_event is None:
+                    detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
                     if opcode.opname[
@@ -698,6 +708,8 @@ class ErrorSnooper(CodePrinter):
                 self.dump_events()
                 self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n", "-" * 46)
             else:
+                if detached_event is None:
+                    detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
 
     def dump_events(self):

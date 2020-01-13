@@ -1558,7 +1558,7 @@ def test_tracer_autostop():
 
 def test_errorsnooper(LineMatcher):
     lines = StringIO()
-    snooper = ErrorSnooper(stream=lines, max_ahead=50, max_events=100)
+    snooper = ErrorSnooper(stream=lines, max_backlog=50, max_events=100)
 
     @hunter.wrap(actions=[snooper])
     def a():
@@ -1672,6 +1672,80 @@ def test_errorsnooper(LineMatcher):
         "*                       ...       return value: None",
         "*sample8errors.py:40    exception         error()",
         "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:41    line          except Exception as exc:",
+        "*sample8errors.py:42    line              logger.info(repr(exc))",
+        "*__init__.py:*  call          def info(self, msg, *args, **kwargs):",
+        "*sample8errors.py:42    return            logger.info(repr(exc))",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
+    ])
+
+
+def test_errorsnooper_fastmode(LineMatcher):
+    lines = StringIO()
+    snooper = ErrorSnooper(stream=lines, max_backlog=0, max_events=100)
+
+    @hunter.wrap(actions=[snooper])
+    def a():
+        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+
+        silenced1()
+        print("Done silenced1")
+        silenced2()
+        print("Done silenced2")
+        silenced3()
+        print("Done silenced3")
+        silenced4()
+        print("Done silenced4")
+
+        try:
+            notsilenced()
+        except ValueError:
+            print("Done not silenced")
+
+    a()
+
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on (*RuntimeError*)",
+        "*sample8errors.py:17    line          except Exception:",
+        "*sample8errors.py:18    line              pass",
+        "*sample8errors.py:18    return            pass",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced2 on (*RuntimeError*)",
+        "*sample8errors.py:24    line          except Exception as exc:",
+        "*sample8errors.py:25    line              log(exc)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*---------------------- too many lines",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced3 on (*RuntimeError*)",
+        '*sample8errors.py:35    line              return "mwhahaha"',
+        '*sample8errors.py:35    return            return "mwhahaha"',
+        "*                       ...       return value: 'mwhahaha'",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced4 on (*RuntimeError*)",
         "*sample8errors.py:41    line          except Exception as exc:",
         "*sample8errors.py:42    line              logger.info(repr(exc))",
         "*__init__.py:*  call          def info(self, msg, *args, **kwargs):",
