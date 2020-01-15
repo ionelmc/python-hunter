@@ -628,7 +628,7 @@ class VarsSnooper(ColorStreamAction):
             del self.stored_reprs[scope_key]
 
 
-_ErrorSnooperDetails = namedtuple("ErrorSnooperDetails", "function exception depth events")
+RETURN_VALUE = opcode.opmap['RETURN_VALUE']
 
 
 class ErrorSnooper(CodePrinter):
@@ -661,6 +661,8 @@ class ErrorSnooper(CodePrinter):
         repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
         repr_func (string or callable): Function to use instead of ``repr``.
             If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
+
+    .. versionadded:: 3.1.0
     """
 
     def __init__(self, *args, **kwargs):
@@ -695,9 +697,7 @@ class ErrorSnooper(CodePrinter):
                     detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
-                    if opcode.opname[
-                        event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])
-                    ] == 'RETURN_VALUE':
+                    if (event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])) == RETURN_VALUE:
                         self.dump_events()
                         self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n", "-" * 46)
                     self.origin = None
