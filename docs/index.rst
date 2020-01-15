@@ -9,6 +9,7 @@ Contents
    installation
    introduction
    remote
+   configuration
    cookbook
    reference
    contributing
