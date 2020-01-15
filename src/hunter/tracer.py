@@ -4,7 +4,8 @@ import sys
 import threading
 import traceback
 
-from . import config
+import hunter
+
 from .event import Event
 
 __all__ = 'Tracer',
@@ -76,8 +77,8 @@ class Tracer(object):
             try:
                 self._handler(Event(frame, kind, arg, self))
             except Exception as exc:
-                traceback.print_exc(file=config.DEFAULT_STREAM)
-                config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+                traceback.print_exc(file=hunter._default_stream)
+                hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
                     self._handler, exc))
                 self.stop()
                 return

@@ -4,6 +4,7 @@ import atexit
 import functools
 import inspect
 import os
+import sys
 import warnings
 import weakref
 
@@ -15,8 +16,6 @@ from .actions import ErrorSnooper
 from .actions import Manhole
 from .actions import VarsPrinter
 from .actions import VarsSnooper
-from .config import THREADING_SUPPORT_ALIASES
-from .config import load_config
 
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
@@ -64,8 +63,60 @@ __all__ = (
     'stop',
     'trace',
 )
+THREADING_SUPPORT_ALIASES = (
+    "threading_support", "threads_support", "thread_support",
+    "threadingsupport", "threadssupport", "threadsupport",
+    "threading", "threads", "thread",
+)
 _last_tracer = None
+_default_trace_args = None
 _default_config = {}
+_default_stream = sys.stderr
+
+
+def _prepare_config(*args, **kwargs):
+    _default_config.clear()
+    _default_config.update((key.lower(), val) for key, val in kwargs.items())
+    options = {}
+    predicates = []
+
+    for key, value in list(_default_config.items()):
+        if key in THREADING_SUPPORT_ALIASES or key == "clear_env_var":
+            options[key] = _default_config.pop(key)
+            continue
+        elif key in (
+            # builtin actions config
+            "klass",
+            "stream",
+            "force_colors",
+            "force_pid",
+            "filename_alignment",
+            "thread_alignment",
+            "pid_alignment",
+            "repr_limit",
+            "repr_func",
+        ):
+            continue
+
+        try:
+            Q(**{key: value})
+        except TypeError:
+            pass
+        else:
+            options[key] = _default_config.pop(key)
+            continue
+
+        _default_config.pop(key)
+        sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n".format(
+            key, value))
+    for position, predicate in enumerate(args):
+        if callable(predicate):
+            predicates.append(predicate)
+        else:
+            sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n".format(
+                predicate, position))
+
+    return predicates, options
 
 
 def Q(*predicates, **query):
@@ -245,6 +296,14 @@ def _prepare_predicate(*predicates, **options):
     return Q(*predicates, **options)
 
 
+def _apply_config(predicates, options):
+    if _default_trace_args is None:
+        return predicates, options
+    else:
+        config_predicates, config_options = _default_trace_args
+        return predicates + tuple(config_predicates), dict(config_options, **options)
+
+
 def trace(*predicates, **options):
     """
     Starts tracing. Can be used as a context manager (with slightly incorrect semantics - it starts tracing
@@ -274,7 +333,7 @@ def trace(*predicates, **options):
     """
     global _last_tracer
 
-    predicates, options = load_config(predicates, options)
+    predicates, options = _apply_config(predicates, options)
 
     clear_env_var = options.pop("clear_env_var", False)
     threading_support = None
@@ -349,3 +408,19 @@ def wrap(function_to_trace=None, **trace_options):
         return tracing_decorator
     else:
         return tracing_decorator(function_to_trace)
+
+
+def load_config(*args, **kwargs):
+    global _default_trace_args
+    try:
+        if args or kwargs:
+            _default_trace_args = _prepare_config(*args, **kwargs)
+        else:
+            _default_trace_args = eval("_prepare_config({})".format(os.environ.get("PYTHONHUNTERCONFIG", '')))
+    except Exception as exc:
+        sys.stderr.write("Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n".format(
+            os.environ, exc))
+        _default_trace_args = (), ()
+
+
+load_config()

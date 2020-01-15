@@ -2,8 +2,7 @@ import os
 
 import pytest
 
-from hunter.config import DEFAULTS
-from hunter.config import load_config
+import hunter
 
 
 @pytest.mark.parametrize('config', [
@@ -29,11 +28,22 @@ from hunter.config import load_config
     ('threading=1', (('x',), {'y': 1, 'threading': 1}), {}, ''),
     ('threads=1', (('x',), {'y': 1, 'threads': 1}), {}, ''),
     ('thread=1', (('x',), {'y': 1, 'thread': 1}), {}, ''),
+    ('', (('x',), {'y': 1}), {}, ''),
 ])
 def test_config(monkeypatch, config, capsys):
     env, result, defaults, stderr = config
     monkeypatch.setitem(os.environ, 'PYTHONHUNTERCONFIG', env)
-    assert load_config(('x',), {'y': 1}) == result
-    assert DEFAULTS == defaults
+    hunter.load_config()
+    assert hunter._apply_config(('x',), {'y': 1}) == result
+    assert hunter._default_config == defaults
     output = capsys.readouterr()
     assert output.err.startswith(stderr)
+
+
+def test_empty_config(monkeypatch, capsys):
+    monkeypatch.setitem(os.environ, 'PYTHONHUNTERCONFIG', ' ')
+    hunter.load_config()
+    assert hunter._apply_config((), {}) == ((), {})
+    assert hunter._default_config == {}
+    output = capsys.readouterr()
+    assert output.err == ''

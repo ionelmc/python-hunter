@@ -1551,9 +1551,6 @@ static void* __Pyx_GetVtable(PyObject *dict);
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
-/* ImportFrom.proto */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
-
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -1744,9 +1741,9 @@ static const char __pyx_k_index[] = "index";
 static const char __pyx_k_write[] = "write";
 static const char __pyx_k_Tracer[] = "Tracer";
 static const char __pyx_k_c_call[] = "c_call";
-static const char __pyx_k_config[] = "config";
 static const char __pyx_k_exc_tb[] = "exc_tb";
 static const char __pyx_k_format[] = "format";
+static const char __pyx_k_hunter[] = "hunter";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_return[] = "return";
@@ -1769,7 +1766,7 @@ static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_trace_hook[] = "_trace_hook";
 static const char __pyx_k_c_exception[] = "c_exception";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
-static const char __pyx_k_DEFAULT_STREAM[] = "DEFAULT_STREAM";
+static const char __pyx_k_default_stream[] = "_default_stream";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_threading_support[] = "threading_support";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -1777,7 +1774,6 @@ static const char __pyx_k_hunter__tracer_Tracer_at_0x_x_t[] = "<hunter._tracer.T
 static const char __pyx_k_Disabling_tracer_because_handler[] = "Disabling tracer because handler {} failed ({!r}).\n\n";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_kp_s_;
-static PyObject *__pyx_n_s_DEFAULT_STREAM;
 static PyObject *__pyx_kp_s_Disabling_tracer_because_handler;
 static PyObject *__pyx_n_s_Tracer;
 static PyObject *__pyx_n_s_TypeError;
@@ -1788,7 +1784,7 @@ static PyObject *__pyx_n_s_c_exception;
 static PyObject *__pyx_n_s_c_return;
 static PyObject *__pyx_n_s_call;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_config;
+static PyObject *__pyx_n_s_default_stream;
 static PyObject *__pyx_n_s_exc_tb;
 static PyObject *__pyx_n_s_exc_type;
 static PyObject *__pyx_n_s_exc_val;
@@ -1798,6 +1794,7 @@ static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_frame;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_handler;
+static PyObject *__pyx_n_s_hunter;
 static PyObject *__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
@@ -2054,7 +2051,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     try:
  *         fast_call(handler, event)             # <<<<<<<<<<<<<<
  *     except Exception as exc:
- *         traceback.print_exc(file=config.DEFAULT_STREAM)
+ *         traceback.print_exc(file=hunter._default_stream)
  */
       __Pyx_TraceLine(38,0,__PYX_ERR(0, 38, __pyx_L7_error))
       __pyx_t_4 = __pyx_f_6hunter_11_predicates_fast_call(__pyx_v_handler, __pyx_v_event); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L7_error)
@@ -2082,8 +2079,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     try:
  *         fast_call(handler, event)
  *     except Exception as exc:             # <<<<<<<<<<<<<<
- *         traceback.print_exc(file=config.DEFAULT_STREAM)
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+ *         traceback.print_exc(file=hunter._default_stream)
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
  */
     __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L9_except_error))
     __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
@@ -2100,8 +2097,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
         /* "hunter/_tracer.pyx":40
  *         fast_call(handler, event)
  *     except Exception as exc:
- *         traceback.print_exc(file=config.DEFAULT_STREAM)             # <<<<<<<<<<<<<<
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+ *         traceback.print_exc(file=hunter._default_stream)             # <<<<<<<<<<<<<<
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
  *             handler, exc))
  */
         __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L18_error))
@@ -2112,9 +2109,9 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 40, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_config); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 40, __pyx_L18_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_hunter); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 40, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_DEFAULT_STREAM); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 40, __pyx_L18_error)
+        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 40, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_file, __pyx_t_13) < 0) __PYX_ERR(0, 40, __pyx_L18_error)
@@ -2127,15 +2124,15 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
 
         /* "hunter/_tracer.pyx":41
  *     except Exception as exc:
- *         traceback.print_exc(file=config.DEFAULT_STREAM)
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(             # <<<<<<<<<<<<<<
+ *         traceback.print_exc(file=hunter._default_stream)
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(             # <<<<<<<<<<<<<<
  *             handler, exc))
  *         self.stop()
  */
         __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L18_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_config); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L18_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_hunter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_DEFAULT_STREAM); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 41, __pyx_L18_error)
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 41, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_write); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 41, __pyx_L18_error)
@@ -2145,8 +2142,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
         __Pyx_GOTREF(__pyx_t_12);
 
         /* "hunter/_tracer.pyx":42
- *         traceback.print_exc(file=config.DEFAULT_STREAM)
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+ *         traceback.print_exc(file=hunter._default_stream)
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
  *             handler, exc))             # <<<<<<<<<<<<<<
  *         self.stop()
  *         return 0
@@ -2216,7 +2213,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
         /* "hunter/_tracer.pyx":43
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
  *             handler, exc))
  *         self.stop()             # <<<<<<<<<<<<<<
  *         return 0
@@ -2261,8 +2258,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  *     try:
  *         fast_call(handler, event)
  *     except Exception as exc:             # <<<<<<<<<<<<<<
- *         traceback.print_exc(file=config.DEFAULT_STREAM)
- *         config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+ *         traceback.print_exc(file=hunter._default_stream)
+ *         hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
  */
       __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L18_error))
       /*finally:*/ {
@@ -4360,7 +4357,6 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
-  {&__pyx_n_s_DEFAULT_STREAM, __pyx_k_DEFAULT_STREAM, sizeof(__pyx_k_DEFAULT_STREAM), 0, 0, 1, 1},
   {&__pyx_kp_s_Disabling_tracer_because_handler, __pyx_k_Disabling_tracer_because_handler, sizeof(__pyx_k_Disabling_tracer_because_handler), 0, 0, 1, 0},
   {&__pyx_n_s_Tracer, __pyx_k_Tracer, sizeof(__pyx_k_Tracer), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
@@ -4371,7 +4367,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_c_return, __pyx_k_c_return, sizeof(__pyx_k_c_return), 0, 0, 1, 1},
   {&__pyx_n_s_call, __pyx_k_call, sizeof(__pyx_k_call), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_config, __pyx_k_config, sizeof(__pyx_k_config), 0, 0, 1, 1},
+  {&__pyx_n_s_default_stream, __pyx_k_default_stream, sizeof(__pyx_k_default_stream), 0, 0, 1, 1},
   {&__pyx_n_s_exc_tb, __pyx_k_exc_tb, sizeof(__pyx_k_exc_tb), 0, 0, 1, 1},
   {&__pyx_n_s_exc_type, __pyx_k_exc_type, sizeof(__pyx_k_exc_type), 0, 0, 1, 1},
   {&__pyx_n_s_exc_val, __pyx_k_exc_val, sizeof(__pyx_k_exc_val), 0, 0, 1, 1},
@@ -4381,6 +4377,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_frame, __pyx_k_frame, sizeof(__pyx_k_frame), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_handler, __pyx_k_handler, sizeof(__pyx_k_handler), 0, 0, 1, 0},
+  {&__pyx_n_s_hunter, __pyx_k_hunter, sizeof(__pyx_k_hunter), 0, 0, 1, 1},
   {&__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t, __pyx_k_hunter__tracer_Tracer_at_0x_x_t, sizeof(__pyx_k_hunter__tracer_Tracer_at_0x_x_t), 0, 0, 1, 0},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -4442,7 +4439,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "hunter/_tracer.pyx":19
- * from . import config
+ * import hunter
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
@@ -4714,7 +4711,6 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__tracer(PyObject *__pyx_pyinit_mod
 {
   __Pyx_TraceDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
@@ -4848,27 +4844,18 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_tracer.pyx":17
  * from ._predicates cimport When
  * 
- * from . import config             # <<<<<<<<<<<<<<
+ * import hunter             # <<<<<<<<<<<<<<
  * 
  * __all__ = 'Tracer',
  */
   __Pyx_TraceLine(17,0,__PYX_ERR(0, 17, __pyx_L1_error))
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_hunter, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_config);
-  __Pyx_GIVEREF(__pyx_n_s_config);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_config);
-  __pyx_t_2 = __Pyx_Import(__pyx_kp_s_, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hunter, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_config, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "hunter/_tracer.pyx":19
- * from . import config
+ * import hunter
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
@@ -4906,10 +4893,10 @@ if (!__Pyx_RefNanny) {
  * import traceback
  */
   __Pyx_TraceLine(1,0,__PYX_ERR(0, 1, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_TraceReturn(Py_None, 0);
 
   /*--- Wrapped vars code ---*/
@@ -4917,7 +4904,6 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init hunter._tracer", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -6576,20 +6562,6 @@ bad:
     Py_XDECREF(empty_list);
     Py_XDECREF(empty_dict);
     return module;
-}
-
-/* ImportFrom */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
-    PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
-    if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
-        PyErr_Format(PyExc_ImportError,
-        #if PY_MAJOR_VERSION < 3
-            "cannot import name %.230s", PyString_AS_STRING(name));
-        #else
-            "cannot import name %S", name);
-        #endif
-    }
-    return value;
 }
 
 /* CLineInTraceback */

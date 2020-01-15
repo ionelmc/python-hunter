@@ -5,7 +5,6 @@ import opcode
 import os
 import threading
 from collections import defaultdict
-from collections import namedtuple
 from os import getpid
 
 from colorama import AnsiToWin32
@@ -113,7 +112,7 @@ class ColorStreamAction(Action):
         self.force_pid = config.resolve(force_pid)
         stream = config.resolve(stream)
         if stream is None:
-            stream = config.DEFAULT_STREAM
+            from . import _default_stream as stream
         self.stream = stream
         self.filename_alignment = config.resolve(filename_alignment)
         self.thread_alignment = config.resolve(thread_alignment)

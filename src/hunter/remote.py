@@ -13,6 +13,8 @@ from contextlib import closing
 from contextlib import contextmanager
 from subprocess import check_call
 
+import hunter
+
 if platform.system() == 'Windows':
     print('ERROR: This tool does not work on Windows.', file=sys.stderr)
     sys.exit(1)
@@ -20,10 +22,6 @@ else:
     import manhole
     from manhole import get_peercred
     from manhole.cli import parse_signal
-
-    from . import stop
-    from . import trace
-    from . import config
 
 __all__ = 'install',
 
@@ -52,7 +50,7 @@ class RemoteStream(object):
         except Exception as exc:
             print('Hunter failed to send trace output {!r} (encoding: {!r}): {!r}. Stopping tracer.'.format(
                 data, self._encoding, exc), file=sys.stderr)
-            stop()
+            hunter.stop()
 
     def flush(self):
         pass
@@ -115,25 +113,22 @@ def connect_manhole(pid, timeout, signal):
 
 
 def activate(sink_path, isatty, encoding, options):
-    stream = config.DEFAULT_STREAM = RemoteStream(sink_path, isatty, encoding)
+    stream = hunter._default_stream = RemoteStream(sink_path, isatty, encoding)
     try:
         stream.write('Output stream active. Starting tracer ...\n\n')
-        eval('trace({})'.format(options))
+        eval('hunter.trace({})'.format(options))
     except Exception as exc:
         stream.write('Failed to activate: {!r}. {}\n'.format(
             exc,
             'Tracer options where: {}.'.format(options) if options else 'No tracer options.'
         ))
-        config.DEFAULT_STREAM = sys.stderr
+        hunter._default_stream = sys.stderr
         raise
 
 
-trace,  # used in eval above
-
-
 def deactivate():
-    config.DEFAULT_STREAM = sys.stderr
-    stop()
+    hunter._default_config = sys.stderr
+    hunter.stop()
 
 
 parser = argparse.ArgumentParser(description='Trace a process.')
@@ -173,7 +168,7 @@ def main():
         if pid:
             if pid != args.pid:
                 raise Exception('Unexpected pid {!r} connected to output socket. Was expecting {!r}.'.format(
-                     pid, args.pid))
+                    pid, args.pid))
         else:
             print('WARNING: Failed to get pid of connected process.', file=sys.stderr)
         data = conn.recv(1024)

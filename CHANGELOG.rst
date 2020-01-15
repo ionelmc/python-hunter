@@ -2,6 +2,17 @@
 Changelog
 =========
 
+3.1.0 (2019-01-)
+------------------
+
+* Added :class:`~hunter.actions.ErrorSnooper` - an action that detects silenced exceptions.
+* Added :func:`~hunter.load_config` and fixed issues with configuration being loaded too late from the ``PYTHONHUNTERCONFIG`` environment
+  variable.
+* Changed :func:`~hunter.From` helper to automatically move ``depth`` and ``calls`` filters to the predicate (so they filter after
+  :class:`~hunter.predicates.From` activates).
+* Changed :class:`~hunter.predicates.From` to pass a copy of event to the predicate.
+  The copy will have the ``depth`` and ``calls`` attributes adjusted to the point where :class:`~hunter.predicates.From` activated.
+
 3.0.5 (2019-12-06)
 ------------------
 
@@ -20,13 +31,13 @@ Changelog
 ------------------
 
 * Fixed ``safe_repr`` on pypy so it's safer on method objects.
-  See: :obj:`~hunter.actions.ColorStreamAction`.
+  See: :class:`~hunter.actions.ColorStreamAction`.
 
 3.0.2 (2019-10-10)
 ------------------
 
 * Fixed setting ``stream`` from ``PYTHONHUNTERCONFIG`` environment variable.
-  See: :obj:`~hunter.actions.ColorStreamAction`.
+  See: :class:`~hunter.actions.ColorStreamAction`.
 * Fixed a couple minor documentation issues.
 
 3.0.1 (2019-06-17)

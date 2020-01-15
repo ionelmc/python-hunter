@@ -14,7 +14,7 @@ from ._predicates cimport fast_call
 from ._predicates cimport From
 from ._predicates cimport When
 
-from . import config
+import hunter
 
 __all__ = 'Tracer',
 
@@ -37,8 +37,8 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     try:
         fast_call(handler, event)
     except Exception as exc:
-        traceback.print_exc(file=config.DEFAULT_STREAM)
-        config.DEFAULT_STREAM.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
+        traceback.print_exc(file=hunter._default_stream)
+        hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
             handler, exc))
         self.stop()
         return 0
