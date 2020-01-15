@@ -414,12 +414,17 @@ Why not pytrace?
 ----------------
 
 `Pytrace <https://pypi.python.org/pypi/pytrace>`_ is another tracer tool. It seems quite similar to Smiley - it uses a sqlite
-database for the events, threads and IPC.
+database for the events, threads and IPC, thus it's reasonable to expect the same kind of problems.
 
-TODO: Expand this.
+Why not PySnooper or snoop?
+---------------------------
 
-Why (not) coverage?
--------------------
+`snoop <https://pypi.org/project/snoop/>`_ is a refined version of `PySnooper <https://pypi.org/project/PySnooper/>`_. Both are
+more suited to tracing small programs or functions as the output is more verbose and less suited to the needs of tracing a big application
+where Hunter provides more flexible setup, filtering capabilities, speed and brevity.
+
+Why not coverage?
+-----------------
 
 For purposes of debugging `coverage <https://pypi.python.org/pypi/coverage>`_ is a great tool but only as far as "debugging
 by looking at what code is (not) run". Checking branch coverage is good but it will only get you as far.
