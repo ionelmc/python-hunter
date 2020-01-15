@@ -371,6 +371,27 @@ To run the all tests run::
 
     tox
 
+Design notes
+============
+
+Hunter doesn't do everything. As a design goal of this library some things are made intentionally austere and verbose (to avoid complexity,
+confusion and inconsistency). This has few consequences:
+
+* There are `Operators <https://python-hunter.readthedocs.io/en/stable/introduction.html#operators>`_ but there's no negation operator.
+  Instead you're expected to negate a Query object, eg: ``~Q(module='re')``.
+* There are no specialized operators or filters - all filters behave exactly the same. For example:
+
+  * No filter for packages. You're expected to filter by module with an operator.
+  * No filter for arguments, return values or variables. You're expected to write your own filter function and deal with the problems
+    of poking into objects.
+* Layering is minimal. There's are some `helpers <https://python-hunter.readthedocs.io/en/stable/reference.html#helpers>`_ that do
+  some argument processing and conversions to save you some typing but that's about it.
+* The library doesn't try to hide the mechanics of tracing in Python - it's 1:1 regarding what Python sends to a trace function if you'd be
+  using `sys.settrace <https://docs.python.org/3/library/sys.html?#sys.settrace>`_.
+* Doesn't have any storage. You are expected to redirect output to a file.
+
+You should look at it like it's a tool to help you understand and debug big applications, or a framework ridding you of the boring parts of
+settrace, not something that helps you learn Python.
 
 FAQ
 ===
