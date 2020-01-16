@@ -170,41 +170,8 @@ cdef class Query:
             ] if mapping
         )
 
-    def __call__(self, Event event):
-        """
-        Handles event. Returns True if all criteria matched.
-        """
-        return fast_Query_call(self, event)
-
-    def __or__(self, other):
-        """
-        Convenience API so you can do ``Q() | Q()``. It converts that to ``Or(Q(), Q())``.
-        """
-        return Or(self, other)
-
-    def __and__(self, other):
-        """
-        Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
-        """
-        return And(self, other)
-
-    def __ror__(self, other):
-        """
-        Convenience API so you can do ``Q() | Q()``. It converts that to ``Or(Q(), Q())``.
-        """
-        return Or(self, other)
-
-    def __rand__(self, other):
-        """
-        Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
-        """
-        return And(self, other)
-
-    def __invert__(self):
-        return Not(self)
-
-    def __richcmp__(self, other, int op):
-        is_equal = (
+    def __eq__(self, other):
+        return (
             isinstance(other, Query)
             and self.query_eq == (<Query> other).query_eq
             and self.query_startswith == (<Query> other).query_startswith
@@ -218,22 +185,32 @@ cdef class Query:
             and self.query_gte == (<Query>other).query_gte
         )
 
-        if op == Py_EQ:
-            return is_equal
-        elif op == Py_NE:
-            return not is_equal
-        else:
-            return PyObject_RichCompare(id(self), id(other), op)
-
     def __hash__(self):
         return hash((
+            'Query',
             self.query_eq,
-            self.query_startswith,
-            self.query_endswith,
             self.query_in,
             self.query_contains,
-            self.query_regex
+            self.query_startswith,
+            self.query_endswith,
+            self.query_regex,
+            self.query_lt,
+            self.query_lte,
+            self.query_gt,
+            self.query_gte,
         ))
+
+    def __call__(self, Event event):
+        return fast_Query_call(self, event)
+
+    def __or__(self, other):
+        return Or(self, other)
+
+    def __and__(self, other):
+        return And(self, other)
+
+    def __invert__(self):
+        return Not(self)
 
 cdef fast_Query_call(Query self, Event event):
     for key, value in self.query_eq:
@@ -305,10 +282,17 @@ cdef class When:
     def __repr__(self):
         return '<hunter._predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, When)
+            and self.condition == (<When> other).condition
+            and self.actions == (<When> other).actions
+        )
+
+    def __hash__(self):
+        return hash(('When', self.condition, self.actions))
+
     def __call__(self, Event event):
-        """
-        Handles the event.
-        """
         return fast_When_call(self, event)
 
     def __or__(self, other):
@@ -317,31 +301,8 @@ cdef class When:
     def __and__(self, other):
         return And(self, other)
 
-    def __ror__(self, other):
-        return Or(self, other)
-
-    def __rand__(self, other):
-        return And(self, other)
-
     def __invert__(self):
         return Not(self)
-
-    def __richcmp__(self, other, int op):
-        is_equal = (
-            isinstance(other, When)
-            and self.condition == (<When> other).condition
-            and self.actions == (<When> other).actions
-        )
-
-        if op == Py_EQ:
-            return is_equal
-        elif op == Py_NE:
-            return not is_equal
-        else:
-            return PyObject_RichCompare(id(self), id(other), op)
-
-    def __hash__(self):
-        return hash((self.condition, self.actions))
 
 cdef inline fast_When_call(When self, Event event):
     cdef object result
@@ -381,28 +342,24 @@ cdef class From:
     def __eq__(self, other):
         return (
             isinstance(other, From)
-            and self.condition == other.condition
-            and self.predicate == other.predicate
+            and self.condition == (<From> other).condition
+            and self.predicate == (<From> other).predicate
         )
 
+    def __hash__(self):
+        return hash(('From', self.condition, self.predicate))
+
     def __call__(self, Event event):
-        """
-        Handles the event.
-        """
         return fast_From_call(self, event)
 
     def __or__(self, other):
-        return From(Or(self.condition, other), self.predicate)
+        return Or(self, other)
 
     def __and__(self, other):
-        return From(self.condition, And(self.predicate, other))
+        return And(self, other)
 
     def __invert__(self):
         return Not(self)
-
-    __ror__ = __or__
-    __rand__ = __and__
-
 
 cdef inline fast_From_call(From self, Event event):
     cdef object result
@@ -447,42 +404,35 @@ cdef class And:
     def __repr__(self):
         return '<hunter._predicates.And: predicates=%r>' % (self.predicates,)
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, And)
+            and self.predicates == (<And> other).predicates
+        )
+
+    def __hash__(self):
+        return hash(('And', self.predicates))
+
     def __call__(self, Event event):
-        """
-        Handles the event.
-        """
         return fast_And_call(self, event)
 
     def __or__(self, other):
         return Or(self, other)
 
     def __and__(self, other):
-        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
-
-    def __ror__(self, other):
-        return Or(self, other)
-
-    def __rand__(self, other):
-        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
+        cdef list predicates
+        if type(self) is And:
+            predicates = list((<And>self).predicates)
+        else:
+            predicates = [self]
+        if isinstance(other, And):
+            predicates.extend((<And> other).predicates)
+        else:
+            predicates.append(other)
+        return And(*predicates)
 
     def __invert__(self):
         return Not(self)
-
-    def __richcmp__(self, other, int op):
-        is_equal = (
-            isinstance(other, And)
-            and self.predicates == (<And> other).predicates
-        )
-
-        if op == Py_EQ:
-            return is_equal
-        elif op == Py_NE:
-            return not is_equal
-        else:
-            return PyObject_RichCompare(id(self), id(other), op)
-
-    def __hash__(self):
-        return hash(frozenset(self.predicates))
 
 cdef inline fast_And_call(And self, Event event):
     for predicate in self.predicates:
@@ -507,42 +457,35 @@ cdef class Or:
     def __repr__(self):
         return '<hunter._predicates.Or: predicates=%r>' % (self.predicates,)
 
-    def __call__(self, Event event):
-        """
-        Handles the event.
-        """
-        return fast_Or_call(self, event)
-
-    def __or__(self, other):
-        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
-
-    def __and__(self, other):
-        return And(self, other)
-
-    def __ror__(self, other):
-        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
-
-    def __rand__(self, other):
-        return And(self, other)
-
-    def __invert__(self):
-        return Not(self)
-
-    def __richcmp__(self, other, int op):
-        is_equal = (
+    def __eq__(self, other):
+        return (
             isinstance(other, Or)
             and self.predicates == (<Or> other).predicates
         )
 
-        if op == Py_EQ:
-            return is_equal
-        elif op == Py_NE:
-            return not is_equal
-        else:
-            return PyObject_RichCompare(id(self), id(other), op)
-
     def __hash__(self):
-        return hash(frozenset(self.predicates))
+        return hash(('Or', self.predicates))
+
+    def __call__(self, Event event):
+        return fast_Or_call(self, event)
+
+    def __or__(self, other):
+        cdef list predicates
+        if type(self) is Or:
+            predicates = list((<Or> self).predicates)
+        else:
+            predicates = [self]
+        if type(other) is Or:
+            predicates.extend((<Or> other).predicates)
+        else:
+            predicates.append(other)
+        return Or(*predicates)
+
+    def __and__(self, other):
+        return And(self, other)
+
+    def __invert__(self):
+        return Not(self)
 
 cdef inline fast_Or_call(Or self, Event event):
     for predicate in self.predicates:
@@ -565,54 +508,32 @@ cdef class Not:
     def __repr__(self):
         return '<hunter._predicates.Not: predicate=%r>' % self.predicate
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, Not)
+            and self.predicate == (<Not> other).predicate
+        )
+
+    def __hash__(self):
+        return hash(('Not', self.predicate))
+
     def __call__(self, Event event):
-        """
-        Handles the event.
-        """
         return fast_Not_call(self, event)
 
     def __or__(self, other):
-        if isinstance(other, Not):
-            return Not(And(self.predicate, other.predicate))
+        if type(self) is Not and type(other) is Not:
+            return Not(And((<Not> self).predicate, (<Not> other).predicate))
         else:
             return Or(self, other)
 
     def __and__(self, other):
-        if isinstance(other, Not):
-            return Not(Or(self.predicate, other.predicate))
-        else:
-            return And(self, other)
-
-    def __ror__(self, other):
-        if isinstance(other, Not):
-            return Not(And(self.predicate, other.predicate))
-        else:
-            return Or(self, other)
-
-    def __rand__(self, other):
-        if isinstance(other, Not):
-            return Not(Or(self.predicate, other.predicate))
+        if type(self) is Not and type(other) is Not:
+            return Not(Or((<Not> self).predicate, (<Not> other).predicate))
         else:
             return And(self, other)
 
     def __invert__(self):
         return self.predicate
-
-    def __richcmp__(self, other, int op):
-        is_equal = (
-            isinstance(other, Not)
-            and self.predicate == (<Not> other).predicate
-        )
-
-        if op == Py_EQ:
-            return is_equal
-        elif op == Py_NE:
-            return not is_equal
-        else:
-            return PyObject_RichCompare(id(self), id(other), op)
-
-    def __hash__(self):
-        return hash(self.predicate)
 
 cdef inline fast_Not_call(Not self, Event event):
     return not fast_call(self.predicate, event)

@@ -239,6 +239,28 @@ def test_predicate_str_repr():
     assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
 
+    assert repr(From(module='a', depth_lte=2)).replace('<hunter._', '<hunter.') == (
+        "<hunter.predicates.From: condition=<hunter.predicates.Query: query_eq=(('module', 'a'),)>, "
+        "predicate=<hunter.predicates.Query: query_lte=(('depth', 2),)>, watermark=0>"
+    )
+    assert str(From(module='a', depth_gte=2)) == "From(Query(module='a'), Query(depth_gte=2), watermark=0)"
+
+
+def test_predicate_hashing():
+    assert Q(module='a', function='b') in {Q(module='a', function='b')}
+    assert ~Q(module='a', function='b') in {~Q(module='a', function='b')}
+    assert (Q(module='a') | Q(function='b')) in {Q(module='a') | Q(function='b')}
+    assert (Q(module='a') & Q(function='b')) in {Q(module='a') & Q(function='b')}
+    assert Q(module='a', action=id) in {Q(module='a', action=id)}
+    assert From(module='a', depth_gte=2) in {From(module='a', depth_gte=2)}
+
+    class foo(object):
+        def __call__(self):
+            pass
+
+    pytest.raises(TypeError, set, Q(module=object(), action=foo()))
+    pytest.raises(TypeError, set, From(module=object(), depth_gte=object()))
+
 
 def test_predicate_q_deduplicate_callprinter():
     out = repr(Q(CallPrinter(), action=CallPrinter()))
@@ -327,8 +349,8 @@ def test_predicate_or(mockevent):
     assert Q(module=1) | Q(module=2) == Or(Q(module=1), Q(module=2))
     assert Q(module=1) | Q(module=2) | Q(module=3) == Or(Q(module=1), Q(module=2), Q(module=3))
 
-    assert (Q(module='foo') | Q(module='bar'))(mockevent) == False
-    assert (Q(module='foo') | Q(module=__name__))(mockevent) == True
+    assert (Q(module='foo') | Q(module='bar'))(mockevent) is False
+    assert (Q(module='foo') | Q(module=__name__))(mockevent) is True
 
     assert Or(1, 2) & 3 == And(Or(1, 2), 3)
 
@@ -398,6 +420,46 @@ def test_mix_predicates_with_callables():
     hunter._prepare_predicate((lambda: 2) | Q(module=1))
     hunter._prepare_predicate(Q(module=1) & (lambda: 2))
     hunter._prepare_predicate((lambda: 2) & Q(module=1))
+
+
+def test_predicate_reverse_and_or():
+    class Foobar(object):
+        def __str__(self):
+            return 'Foobar'
+
+        __repr__ = __str__
+
+        def __call__(self, *args, **kwargs):
+            pass
+
+    foobar = Foobar()
+
+    assert str(foobar & Q(module=1)) == 'And(Foobar, Query(module=1))'
+    assert str(foobar | Q(module=1)) == 'Or(Foobar, Query(module=1))'
+    assert str(foobar & (Q(module=1) | Q(module=2))) == 'And(Foobar, Or(Query(module=1), Query(module=2)))'
+    assert str(foobar | (Q(module=1) | Q(module=2))) == 'Or(Foobar, Query(module=1), Query(module=2))'
+    assert str(foobar & (Q(module=1) & Q(module=2))) == 'And(Foobar, Query(module=1), Query(module=2))'
+    assert str(foobar | (Q(module=1) & Q(module=2))) == 'Or(Foobar, And(Query(module=1), Query(module=2)))'
+    assert str(foobar & ~Q(module=1)) == 'And(Foobar, Not(Query(module=1)))'
+    assert str(foobar | ~Q(module=1)) == 'Or(Foobar, Not(Query(module=1)))'
+    assert str(foobar & Q(module=1, action=foobar)) == 'And(Foobar, When(Query(module=1), Foobar))'
+    assert str(foobar | Q(module=1, action=foobar)) == 'Or(Foobar, When(Query(module=1), Foobar))'
+    assert str(foobar & ~Q(module=1, action=foobar)) == 'And(Foobar, Not(When(Query(module=1), Foobar)))'
+    assert str(foobar | ~Q(module=1, action=foobar)) == 'Or(Foobar, Not(When(Query(module=1), Foobar)))'
+    assert str(foobar & From(module=1, depth=2)) == 'And(Foobar, From(Query(module=1), Query(depth=2), watermark=0))'
+    assert str(foobar | From(module=1, depth=2)) == 'Or(Foobar, From(Query(module=1), Query(depth=2), watermark=0))'
+    assert str(foobar & ~From(module=1, depth=2)) == 'And(Foobar, Not(From(Query(module=1), Query(depth=2), watermark=0)))'
+    assert str(foobar | ~From(module=1, depth=2)) == 'Or(Foobar, Not(From(Query(module=1), Query(depth=2), watermark=0)))'
+    assert str(Q(module=1) & foobar) == 'And(Query(module=1), Foobar)'
+    assert str(Q(module=1) | foobar) == 'Or(Query(module=1), Foobar)'
+    assert str(~Q(module=1) & foobar) == 'And(Not(Query(module=1)), Foobar)'
+    assert str(~Q(module=1) | foobar) == 'Or(Not(Query(module=1)), Foobar)'
+    assert str(Q(module=1, action=foobar) & foobar) == 'And(When(Query(module=1), Foobar), Foobar)'
+    assert str(Q(module=1, action=foobar) | foobar) == 'Or(When(Query(module=1), Foobar), Foobar)'
+    assert str(~Q(module=1, action=foobar) & foobar) == 'And(Not(When(Query(module=1), Foobar)), Foobar)'
+    assert str(~Q(module=1, action=foobar) | foobar) == 'Or(Not(When(Query(module=1), Foobar)), Foobar)'
+    assert str(From(module=1, depth=2) & foobar) == 'And(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
+    assert str(From(module=1, depth=2) | foobar) == 'Or(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
 
 
 def test_threading_support(LineMatcher):
@@ -984,7 +1046,7 @@ def test_predicate_not(mockevent):
     assert repr(~(Query(module=1) & Query(module=2))) == repr(Not(And(Query(module=1), Query(module=2))))
     assert repr(~(Query(module=1) | Query(module=2))) == repr(Not(Or(Query(module=1), Query(module=2))))
 
-    assert Not(Q(module=__name__))(mockevent) == False
+    assert Not(Q(module=__name__))(mockevent) is False
 
 
 def test_predicate_query_allowed():
@@ -1027,6 +1089,14 @@ def test_predicate_when_allowed():
     ({'module': 'abc'}, False),
     ({'module_regex': r'(hunter|hunter.*)\b'}, False),
     ({'module_regex': r'(test|test.*)\b'}, True),
+    ({'calls_gte': 0}, True),
+    ({'calls_gt': 0}, False),
+    ({'calls_lte': 0}, True),
+    ({'calls_lt': 0}, False),
+    ({'calls_gte': 1}, False),
+    ({'calls_gt': -1}, True),
+    ({'calls_lte': -1}, False),
+    ({'calls_lt': 1}, True),
 ])
 def test_predicate_matching(expr, mockevent, expected):
     assert Query(**expr)(mockevent) == expected
@@ -1048,14 +1118,14 @@ def test_predicate_bad_query(expr, exc_type):
 
 def test_predicate_when(mockevent):
     called = []
-    assert When(Q(module='foo'), lambda ev: called.append(ev))(mockevent) == False
+    assert When(Q(module='foo'), lambda ev: called.append(ev))(mockevent) is False
     assert called == []
 
-    assert When(Q(module=__name__), lambda ev: called.append(ev))(mockevent) == True
+    assert When(Q(module=__name__), lambda ev: called.append(ev))(mockevent) is True
     assert called == [mockevent]
 
     called = []
-    assert Q(module=__name__, action=lambda ev: called.append(ev))(mockevent) == True
+    assert Q(module=__name__, action=lambda ev: called.append(ev))(mockevent) is True
     assert called == [mockevent]
 
     called = [[], []]
@@ -1063,10 +1133,10 @@ def test_predicate_when(mockevent):
         Q(module=__name__, action=lambda ev: called[0].append(ev)) |
         Q(module='foo', action=lambda ev: called[1].append(ev))
     )
-    assert predicate(mockevent) == True
+    assert predicate(mockevent) is True
     assert called == [[mockevent], []]
 
-    assert predicate(mockevent) == True
+    assert predicate(mockevent) is True
     assert called == [[mockevent, mockevent], []]
 
     called = [[], []]
@@ -1074,8 +1144,24 @@ def test_predicate_when(mockevent):
         Q(module=__name__, action=lambda ev: called[0].append(ev)) &
         Q(function='mockevent', action=lambda ev: called[1].append(ev))
     )
-    assert predicate(mockevent) == True
+    assert predicate(mockevent) is True
     assert called == [[mockevent], [mockevent]]
+
+
+def test_predicate_from(mockevent):
+    pytest.raises((AttributeError, TypeError), From(), 1)
+    assert From()(mockevent) is True
+
+    called = []
+    assert From(Q(module='foo') | Q(module='bar'), lambda ev: called.append(ev))(mockevent) is False
+    assert called == []
+
+    assert From(Not(Q(module='foo') | Q(module='bar')), lambda ev: called.append(ev))(mockevent) is None
+    assert called
+
+    called.clear()
+    assert From(Q(module=__name__), lambda ev: called.append(ev))(mockevent) is None
+    assert called
 
 
 def test_and_or_kwargs():

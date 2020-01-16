@@ -178,6 +178,21 @@ class Query(object):
             and self.query_gte == other.query_gte
         )
 
+    def __hash__(self):
+        return hash((
+            'Query',
+            self.query_eq,
+            self.query_in,
+            self.query_contains,
+            self.query_startswith,
+            self.query_endswith,
+            self.query_regex,
+            self.query_lt,
+            self.query_lte,
+            self.query_gt,
+            self.query_gte,
+        ))
+
     def __call__(self, event):
         """
         Handles event. Returns True if all criteria matched.
@@ -227,21 +242,33 @@ class Query(object):
 
     def __or__(self, other):
         """
-        Convenience API so you can do ``Q() | Q()``. It converts that to ``Or(Q(), Q())``.
+        Convenience API so you can do ``Query(...) | Query(...)``. It converts that to ``Or(Query(...), Query(...))``.
         """
         return Or(self, other)
 
     def __and__(self, other):
         """
-        Convenience API so you can do ``Q() & Q()``. It converts that to ``And(Q(), Q())``.
+        Convenience API so you can do ``Query(...) & Query(...)``. It converts that to ``And(Query(...), Query(...))``.
         """
         return And(self, other)
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~Query(...)``. It converts that to ``Not(Query(...))``.
+        """
         return Not(self)
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | Query(...)``. It converts that to ``Or(other, Query(...))``.
+        """
+        return Or(other, self)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & Query(...)``. It converts that to ``And(other, Query(...))``.
+        """
+        return And(other, self)
 
 
 class When(object):
@@ -275,6 +302,9 @@ class When(object):
             and self.actions == other.actions
         )
 
+    def __hash__(self):
+        return hash(('When', self.condition, self.actions))
+
     def __call__(self, event):
         """
         Handles the event.
@@ -287,16 +317,34 @@ class When(object):
             return False
 
     def __or__(self, other):
+        """
+        Convenience API so you can do ``When(...) | other``. It converts that to ``Or(When(...), other)``.
+        """
         return Or(self, other)
 
     def __and__(self, other):
+        """
+        Convenience API so you can do ``When(...) & other``. It converts that to ``And(When(...), other)``.
+        """
         return And(self, other)
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~When(...)``. It converts that to ``Not(When(...))``.
+        """
         return Not(self)
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | When(...)``. It converts that to ``Or(other, When(...))``.
+        """
+        return Or(other, self)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & When(...)``. It converts that to ``And(other, When(...))``.
+        """
+        return And(other, self)
 
 
 class From(object):
@@ -340,6 +388,9 @@ class From(object):
             and self.predicate == other.predicate
         )
 
+    def __hash__(self):
+        return hash(('From', self.condition, self.predicate))
+
     def __call__(self, event):
         """
         Handles the event.
@@ -366,16 +417,34 @@ class From(object):
             return self.predicate(relative_event)
 
     def __or__(self, other):
-        return From(Or(self.condition, other), self.predicate)
+        """
+        Convenience API so you can do ``From(...) | other``. It converts that to ``Or(From(...), other)``.
+        """
+        return Or(self, other)
 
     def __and__(self, other):
-        return From(self.condition, And(self.predicate, other))
+        """
+        Convenience API so you can do ``From(...) & other``. It converts that to ``And(From(...), other))``.
+        """
+        return And(self, other)
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~From(...)``. It converts that to ``Not(From(...))``.
+        """
         return Not(self)
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | From(...)``. It converts that to ``Or(other, From(...))``.
+        """
+        return Or(other, self)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & From(...)``. It converts that to ``And(other, From(...))``.
+        """
+        return And(other, self)
 
 
 class And(object):
@@ -392,6 +461,15 @@ class And(object):
     def __repr__(self):
         return '<hunter.predicates.And: predicates=%r>' % (self.predicates,)
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, And)
+            and self.predicates == other.predicates
+        )
+
+    def __hash__(self):
+        return hash(('And', self.predicates))
+
     def __call__(self, event):
         """
         Handles the event.
@@ -402,26 +480,35 @@ class And(object):
         else:
             return True
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, And)
-            and self.predicates == other.predicates
-        )
-
     def __or__(self, other):
+        """
+        Convenience API so you can do ``And(...) | other``. It converts that to ``Or(And(...), other)``.
+        """
         return Or(self, other)
 
     def __and__(self, other):
+        """
+        Convenience API so you can do ``And(...) & other``. It converts that to ``And(..., other)``.
+        """
         return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~And(...)``. It converts that to ``Not(And(...))``.
+        """
         return Not(self)
 
-    def __hash__(self):
-        return hash(frozenset(self.predicates))
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | And(...)``. It converts that to ``Or(other, And(...))``.
+        """
+        return Or(other, self)
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & And(...)``. It converts that to ``And(other, And(...))``.
+        """
+        return And(other, *self.predicates)
 
 
 class Or(object):
@@ -438,6 +525,15 @@ class Or(object):
     def __repr__(self):
         return '<hunter.predicates.Or: predicates=%r>' % (self.predicates,)
 
+    def __eq__(self, other):
+        return (
+            isinstance(other, Or)
+            and self.predicates == other.predicates
+        )
+
+    def __hash__(self):
+        return hash(('Or', self.predicates))
+
     def __call__(self, event):
         """
         Handles the event.
@@ -448,26 +544,35 @@ class Or(object):
         else:
             return False
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, Or)
-            and self.predicates == other.predicates
-        )
-
     def __or__(self, other):
+        """
+        Convenience API so you can do ``Or(...) | other``. It converts that to ``Or(..., other)``.
+        """
         return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
 
     def __and__(self, other):
+        """
+        Convenience API so you can do ``Or(...) & other``. It converts that to ``And(Or(...), other)``.
+        """
         return And(self, other)
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~Or(...)``. It converts that to ``Not(Or(...))``.
+        """
         return Not(self)
 
-    def __hash__(self):
-        return hash(frozenset(self.predicates))
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | Or(...)``. It converts that to ``Or(other, Or(...))``.
+        """
+        return Or(other, *self.predicates)
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & Or(...)``. It converts that to ``And(other, Or(...))``.
+        """
+        return And(other, self)
 
 
 class Not(object):
@@ -490,6 +595,9 @@ class Not(object):
             and self.predicate == other.predicate
         )
 
+    def __hash__(self):
+        return hash(('Not', self.predicate))
+
     def __call__(self, event):
         """
         Handles the event.
@@ -497,19 +605,41 @@ class Not(object):
         return not self.predicate(event)
 
     def __or__(self, other):
+        """
+        Convenience API so you can do ``Not(...) | other``. It converts that to ``Or(Not(...), other)``.
+
+        Note that ``Not(...) | Not(...)`` converts to ``Not(And(..., ...))``.
+        """
         if isinstance(other, Not):
             return Not(And(self.predicate, other.predicate))
         else:
             return Or(self, other)
 
     def __and__(self, other):
+        """
+        Convenience API so you can do ``Not(...) & other``. It converts that to ``And(Not(...), other)``.
+
+        Note that ``Not(...) & Not(...)`` converts to ``Not(Or(..., ...))``.
+        """
         if isinstance(other, Not):
             return Not(Or(self.predicate, other.predicate))
         else:
             return And(self, other)
 
     def __invert__(self):
+        """
+        Convenience API so you can do ``~Not(...)``. It converts that to ``...``.
+        """
         return self.predicate
 
-    __ror__ = __or__
-    __rand__ = __and__
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | Not(...)``. It converts that to ``Or(other, Not(...))``.
+        """
+        return Or(other, self)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & Not(...)``. It converts that to ``And(other, Not(...))``.
+        """
+        return And(other, self)
