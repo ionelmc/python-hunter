@@ -127,27 +127,27 @@ Predicates
 
 .. autoclass:: hunter.predicates.Query
     :members:
-    :special-members: __call__
+    :special-members:
 
 .. autoclass:: hunter.predicates.When
     :members:
-    :special-members: __call__
+    :special-members:
 
 .. autoclass:: hunter.predicates.From
     :members:
-    :special-members: __call__
+    :special-members:
 
 .. autoclass:: hunter.predicates.And
     :members:
-    :special-members: __call__
+    :special-members:
 
 .. autoclass:: hunter.predicates.Or
     :members:
-    :special-members: __call__
+    :special-members:
 
 .. autoclass:: hunter.predicates.Not
     :members:
-    :special-members: __call__
+    :special-members:
 
 ----
 
@@ -168,4 +168,4 @@ performance reasons.
 
 .. autoclass:: hunter.tracer.Tracer
     :members:
-    :special-members: __call__, __enter__, __exit__
+    :special-members:
