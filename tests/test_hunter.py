@@ -1159,7 +1159,7 @@ def test_predicate_from(mockevent):
     assert From(Not(Q(module='foo') | Q(module='bar')), lambda ev: called.append(ev))(mockevent) is None
     assert called
 
-    called.clear()
+    called = []
     assert From(Q(module=__name__), lambda ev: called.append(ev))(mockevent) is None
     assert called
 
