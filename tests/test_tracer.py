@@ -14,9 +14,11 @@ from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
+from hunter import ErrorSnooper
 from hunter import From
 from hunter import Q
 from hunter import VarsPrinter
+from hunter import VarsSnooper
 from hunter import When
 
 try:
@@ -29,6 +31,9 @@ pytest_plugins = 'pytester',
 PY3 = sys.version_info[0] == 3
 
 
+class EvilFrame(object):
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
 
 
 class EvilTracer(object):
@@ -38,9 +43,13 @@ class EvilTracer(object):
         clear_env_var = kwargs.pop('clear_env_var', False)
         self.handler = hunter._prepare_predicate(*args, **kwargs)
         self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
+        self.is_pure = type(self._tracer).__module__ == 'hunter.tracer'
 
     def _append(self, event):
-        self._calls.append(event.detach(lambda obj: obj))
+        detached_event = event.detach(lambda obj: obj)
+        if self.is_pure:
+            detached_event.frame = EvilFrame(f_lasti=event.frame.f_lasti, f_code=event.code)
+        self._calls.append(detached_event)
 
     def __enter__(self):
         return self
@@ -602,8 +611,10 @@ def test_trace_with_class_actions():
 def test_proper_backend():
     if os.environ.get('PUREPYTHONHUNTER') or platform.python_implementation() == 'PyPy':
         assert 'hunter.tracer.Tracer' in repr(hunter.Tracer)
+        assert hunter.Tracer.__module__ == 'hunter.tracer'
     else:
         assert 'hunter._tracer.Tracer' in repr(hunter.Tracer)
+        assert hunter.Tracer.__module__ == 'hunter._tracer'
 
 
 @pytest.fixture(params=['pure', 'cython'])
@@ -936,4 +947,299 @@ def test_function_object(LineMatcher):
         "dlf(23)|missing|call",
         "gf(24)|gf|call",
         "dgf(25)|{}|call".format('dgf' if PY3 else 'missing'),
+    ])
+
+
+def test_tracing_bare(LineMatcher):
+    lines = StringIO()
+    with trace(CodePrinter(stream=lines)):
+        def a():
+            return 1
+
+        b = a()
+        b = 2
+        try:
+            raise Exception('BOOM!')
+        except Exception:
+            pass
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*test_*.py* call              def a():",
+        "*test_*.py* line                  return 1",
+        "*test_*.py* return                return 1",
+        "* ...       return value: 1",
+    ])
+
+
+def test_debugger(LineMatcher):
+    out = StringIO()
+    calls = []
+
+    class FakePDB:
+        def __init__(self, foobar=1):
+            calls.append(foobar)
+
+        def set_trace(self, frame):
+            calls.append(frame.f_code.co_name)
+
+    with trace(
+        lambda event: event.locals.get('node') == 'Foobar',
+        module=__name__,
+        function='foo',
+        actions=[CodePrinter,
+                 VarsPrinter('a', 'node', 'foo', 'test_debugger', stream=out),
+                 Debugger(klass=FakePDB, foobar=2)]
+    ):
+        def foo():
+            a = 1
+            node = 'Foobar'
+            node += 'x'
+            a += 2
+            return a
+
+        foo()
+    print(out.getvalue())
+    assert calls == [2, 'foo']
+    lm = LineMatcher(out.getvalue().splitlines())
+    pprint(lm.lines)
+    lm.fnmatch_lines_random([
+        "*      [[]test_debugger => <function test_debugger at *[]]",
+        "*      [[]node => *Foobar*[]]",
+        "*      [[]a => 1[]]",
+    ])
+
+
+def test_varssnooper(LineMatcher):
+    lines = StringIO()
+    snooper = VarsSnooper(stream=lines)
+
+    def a():
+        foo = bar = b = 1
+        b = 2
+        foo = 3
+        foo = bar = 4
+        return b
+
+    with trace(function='a', actions=[snooper, CodePrinter(stream=lines)]):
+        a()
+
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*test_*.py*  line              foo = bar = b = 1",
+        "*test_*.py*  line      [[]b := 1[]]",
+        "*         *  ...       [[]bar := 1[]]",
+        "*         *  ...       [[]foo := 1[]]",
+        "*test_*.py*  line              b = 2",
+        "*test_*.py*  line      [[]b : 1 => 2[]]",
+        "*test_*.py*  line              foo = 3",
+        "*test_*.py*  line      [[]foo : 1 => 3[]]",
+        "*test_*.py*  line              foo = bar = 4",
+        "*test_*.py*  line      [[]bar : 1 => 4[]]",
+        "*         *  ...       [[]foo : 3 => 4[]]",
+        "*test_*.py*  line              return b",
+        "*test_*.py*  return            return b",
+        "*         *  ...       return value: 2",
+    ])
+    assert snooper.stored_reprs == {}
+
+
+@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
+def test_errorsnooper(LineMatcher):
+    lines = StringIO()
+    snooper = ErrorSnooper(stream=lines, max_backlog=50, max_events=100)
+
+    def a():
+        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+
+        silenced1()
+        print("Done silenced1")
+        silenced2()
+        print("Done silenced2")
+        silenced3()
+        print("Done silenced3")
+        silenced4()
+        print("Done silenced4")
+
+        try:
+            notsilenced()
+        except ValueError:
+            print("Done not silenced")
+
+    with trace(actions=[snooper]):
+        a()
+
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on (*RuntimeError*)",
+        "*test_*.py:*  line              silenced1()",
+        "*sample8errors.py:14    call      def silenced1():",
+        "*sample8errors.py:15    line          try:",
+        "*sample8errors.py:16    line              error()",
+        "*sample8errors.py:6     call      def error():",
+        "*sample8errors.py:7     line          raise RuntimeError()",
+        "*sample8errors.py:7     exception     raise RuntimeError()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:7     return        raise RuntimeError()",
+        "*                       ...       return value: None",
+        "*sample8errors.py:16    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:17    line          except Exception:",
+        "*sample8errors.py:18    line              pass",
+        "*sample8errors.py:18    return            pass",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced2 on (*RuntimeError*)",
+        '*test_*.py:*  line              print("Done silenced1")',
+        "*test_*.py:*  line              silenced2()",
+        "*sample8errors.py:21    call      def silenced2():",
+        "*sample8errors.py:22    line          try:",
+        "*sample8errors.py:23    line              error()",
+        "*sample8errors.py:6     call      def error():",
+        "*sample8errors.py:7     line          raise RuntimeError()",
+        "*sample8errors.py:7     exception     raise RuntimeError()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:7     return        raise RuntimeError()",
+        "*                       ...       return value: None",
+        "*sample8errors.py:23    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:24    line          except Exception as exc:",
+        "*sample8errors.py:25    line              log(exc)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*---------------------- too many lines",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced3 on (*RuntimeError*)",
+        '*test_*.py:*  line              print("Done silenced2")',
+        "*test_*.py:*  line              silenced3()",
+        "*sample8errors.py:31    call      def silenced3():",
+        "*sample8errors.py:32    line          try:",
+        "*sample8errors.py:33    line              error()",
+        "*sample8errors.py:6     call      def error():",
+        "*sample8errors.py:7     line          raise RuntimeError()",
+        "*sample8errors.py:7     exception     raise RuntimeError()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:7     return        raise RuntimeError()",
+        "*                       ...       return value: None",
+        "*sample8errors.py:33    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        '*sample8errors.py:35    line              return "mwhahaha"',
+        '*sample8errors.py:35    return            return "mwhahaha"',
+        "*                       ...       return value: 'mwhahaha'",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced4 on (*RuntimeError*)",
+        '*test_*.py:*  line              print("Done silenced3")',
+        "*test_*.py:*  line              silenced4()",
+        "*sample8errors.py:38    call      def silenced4():",
+        "*sample8errors.py:39    line          try:",
+        "*sample8errors.py:40    line              error()",
+        "*sample8errors.py:6     call      def error():",
+        "*sample8errors.py:7     line          raise RuntimeError()",
+        "*sample8errors.py:7     exception     raise RuntimeError()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:7     return        raise RuntimeError()",
+        "*                       ...       return value: None",
+        "*sample8errors.py:40    exception         error()",
+        "*                       ...       exception value: (*RuntimeError*)",
+        "*sample8errors.py:41    line          except Exception as exc:",
+        "*sample8errors.py:42    line              logger.info(repr(exc))",
+        "*__init__.py:*  call          def info(self, msg, *args, **kwargs):",
+        "*sample8errors.py:42    return            logger.info(repr(exc))",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
+    ])
+
+
+@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
+def test_errorsnooper_fastmode(LineMatcher):
+    lines = StringIO()
+    snooper = ErrorSnooper(stream=lines, max_backlog=0, max_events=100)
+
+    def a():
+        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+
+        silenced1()
+        print("Done silenced1")
+        silenced2()
+        print("Done silenced2")
+        silenced3()
+        print("Done silenced3")
+        silenced4()
+        print("Done silenced4")
+
+        try:
+            notsilenced()
+        except ValueError:
+            print("Done not silenced")
+
+    with trace(actions=[snooper]):
+        a()
+
+    print(lines.getvalue())
+    lm = LineMatcher(lines.getvalue().splitlines())
+    lm.fnmatch_lines([
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced1 on (*RuntimeError*)",
+        "*sample8errors.py:17    line          except Exception:",
+        "*sample8errors.py:18    line              pass",
+        "*sample8errors.py:18    return            pass",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced2 on (*RuntimeError*)",
+        "*sample8errors.py:24    line          except Exception as exc:",
+        "*sample8errors.py:25    line              log(exc)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*sample8errors.py:27    line                  log(i)",
+        "*sample8errors.py:10    call      def log(msg):",
+        "*sample8errors.py:11    return        print(msg)",
+        "*                       ...       return value: None",
+        "*sample8errors.py:26    line              for i in range(*):",
+        "*---------------------- too many lines",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced3 on (*RuntimeError*)",
+        '*sample8errors.py:35    line              return "mwhahaha"',
+        '*sample8errors.py:35    return            return "mwhahaha"',
+        "*                       ...       return value: 'mwhahaha'",
+        "*---------------------- function exit",
+
+        "*>>>>>>>>>>>>>>>>>>>>>> tracing silenced4 on (*RuntimeError*)",
+        "*sample8errors.py:41    line          except Exception as exc:",
+        "*sample8errors.py:42    line              logger.info(repr(exc))",
+        "*__init__.py:*  call          def info(self, msg, *args, **kwargs):",
+        "*sample8errors.py:42    return            logger.info(repr(exc))",
+        "*                       ...       return value: None",
+        "*---------------------- function exit",
     ])
