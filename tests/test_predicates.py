@@ -5,7 +5,9 @@ import sys
 import pytest
 
 import hunter
-from hunter import And, CallPrinter, CodePrinter
+from hunter import And
+from hunter import CallPrinter
+from hunter import CodePrinter
 from hunter import From
 from hunter import Not
 from hunter import Or

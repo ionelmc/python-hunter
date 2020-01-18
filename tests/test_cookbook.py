@@ -71,4 +71,3 @@ def no_probe(*args, **kwargs):
 def test_probe(impl, benchmark):
     with impl('%s.baz' % __name__, hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')), kind="return", depth=0):
         benchmark(bar)
-

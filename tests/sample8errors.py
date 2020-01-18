@@ -47,6 +47,3 @@ def notsilenced():
         error()
     except Exception as exc:
         raise ValueError(exc)
-
-
-
