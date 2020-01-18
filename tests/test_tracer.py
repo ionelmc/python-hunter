@@ -42,8 +42,8 @@ class EvilTracer(object):
         threading_support = kwargs.pop('threading_support', False)
         clear_env_var = kwargs.pop('clear_env_var', False)
         self.handler = hunter._prepare_predicate(*args, **kwargs)
+        self.is_pure = type(hunter.Tracer).__module__ == 'hunter.tracer'
         self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
-        self.is_pure = type(self._tracer).__module__ == 'hunter.tracer'
 
     def _append(self, event):
         detached_event = event.detach(lambda obj: obj)
@@ -972,6 +972,7 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
+@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
 def test_debugger(LineMatcher):
     out = StringIO()
     calls = []
