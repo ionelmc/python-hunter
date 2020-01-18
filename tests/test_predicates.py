@@ -5,10 +5,12 @@ import sys
 import pytest
 
 import hunter
-from hunter import And, Manhole, Debugger
+from hunter import And
 from hunter import CallPrinter
 from hunter import CodePrinter
+from hunter import Debugger
 from hunter import From
+from hunter import Manhole
 from hunter import Not
 from hunter import Or
 from hunter import Q
