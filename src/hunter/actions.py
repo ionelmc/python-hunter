@@ -183,6 +183,27 @@ class ColorStreamAction(Action):
         else:
             raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
 
+    def try_str(self, obj):
+        """
+        Safely call ``str(obj)``. Failures will have special colored output and output is trimmed according
+        to ``self.repr_limit``.
+
+        Only used when dumping detached events.
+
+        Returns: string
+        """
+        limit = self.repr_limit
+        try:
+            s = str(obj)
+            s = s.replace('\n', r'\n')
+            if len(s) > limit:
+                cutoff = limit // 2
+                return '{} {CONT}[...]{RESET} {}'.format(s[:cutoff], s[-cutoff:], **self.other_colors)
+            else:
+                return s
+        except Exception as exc:
+            return '{INTERNAL-FAILURE}!!! FAILED REPR: {INTERNAL-DETAIL}{!r}{RESET}'.format(exc, **self.other_colors)
+
     def try_repr(self, obj):
         """
         Safely call ``self.repr_func(obj)``. Failures will have special colored output and output is trimmed according
@@ -364,7 +385,7 @@ class CodePrinter(ColorStreamAction):
                 self.filename_prefix(),
                 '...',
                 event.kind,
-                event.arg if event.detached else self.try_repr(event.arg),
+                self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
 
@@ -417,7 +438,7 @@ class CallPrinter(CodePrinter):
                 event.function,
                 ', '.join('{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}'.format(
                     var,
-                    event.locals.get(var, MISSING) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
+                    self.try_str(event.locals.get(var, MISSING)) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
                     **self.other_colors
                 ) for var in code.co_varnames[:code.co_argcount]),
                 COLOR=self.event_colors.get(event.kind),
@@ -431,7 +452,7 @@ class CallPrinter(CodePrinter):
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                event.arg if event.detached else self.try_repr(event.arg),
+                self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
 
@@ -444,7 +465,7 @@ class CallPrinter(CodePrinter):
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                event.arg if event.detached else self.try_repr(event.arg),
+                self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
             if stack and stack[-1] == ident:
@@ -508,7 +529,7 @@ class VarsPrinter(ColorStreamAction):
             except Exception as exc:
                 printout = '{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}'.format(exc, **self.other_colors)
             else:
-                printout = obj if event.detached else self.try_repr(obj)
+                printout = self.try_str(obj) if event.detached else self.try_repr(obj)
 
             if frame_symbols >= symbols:
                 if first:
@@ -568,7 +589,7 @@ class VarsSnooper(ColorStreamAction):
         empty_filename_prefix = self.filename_prefix()
 
         current_reprs = {
-            name: value if event.detached else self.try_repr(value)
+            name: self.try_str(value) if event.detached else self.try_repr(value)
             for name, value in event.locals.items()
         }
         scope_key = event.code or event.function
