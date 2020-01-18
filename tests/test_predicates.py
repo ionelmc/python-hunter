@@ -5,7 +5,7 @@ import sys
 import pytest
 
 import hunter
-from hunter import And
+from hunter import And, Manhole, Debugger
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import From
@@ -276,6 +276,12 @@ def test_str_repr():
         "predicate=<hunter.predicates.Query: query_lte=(('depth', 2),)>, watermark=0>"
     )
     assert str(From(module='a', depth_gte=2)) == "From(Query(module='a'), Query(depth_gte=2), watermark=0)"
+
+    assert repr(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
+    assert str(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
+
+    assert repr(Manhole()) == 'Manhole(options={})'
+    assert str(Manhole()) == 'Manhole(options={})'
 
 
 def test_hashing():

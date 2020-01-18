@@ -39,12 +39,23 @@ class Action(object):
         raise NotImplementedError()
 
 
+class LazyImportPdb(object):
+    def __repr__(self):
+        return "<class 'pdb.Pdb'>"
+
+    __str__ = __repr__
+
+    def __call__(self, **kwargs):
+        from pdb import Pdb
+        return Pdb(**kwargs)
+
+
 class Debugger(Action):
     """
     An action that starts ``pdb``.
     """
 
-    def __init__(self, klass=config.Default('klass', lambda **kwargs: __import__('pdb').Pdb(**kwargs)), **kwargs):
+    def __init__(self, klass=config.Default('klass', LazyImportPdb()), **kwargs):
         self.klass = config.resolve(klass)
         self.kwargs = kwargs
 
