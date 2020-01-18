@@ -49,9 +49,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/hunter
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.0.5.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.1.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/ionelmc/python-hunter/compare/v3.0.5...master
+    :target: https://github.com/ionelmc/python-hunter/compare/v3.1.0...master
 
 
 

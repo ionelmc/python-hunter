@@ -12,6 +12,11 @@ Changelog
   :class:`~hunter.predicates.From` activates).
 * Changed :class:`~hunter.predicates.From` to pass a copy of event to the predicate.
   The copy will have the ``depth`` and ``calls`` attributes adjusted to the point where :class:`~hunter.predicates.From` activated.
+* Fixed a bunch of inconsistencies and bugs when using ``&`` and ``|`` operators with predicates.
+* Fixed a bunch of broken fields on :meth:`detached events <hunter.event.Event.detach>`
+  (:attr:`~hunter.event.Event.function_object` and :attr:`~hunter.event.Event.arg`).
+* Improved docstrings in various and added a configuration doc section.
+* Improved testing (more coverage).
 
 3.0.5 (2019-12-06)
 ------------------
