@@ -667,7 +667,7 @@ def test_perf_stdlib(tracer_impl, benchmark):
         output = StringIO()
         with t.trace(Q(
             ~Q(module_contains='pytest'),
-            ~Q(module_in=(__name__, 'hunter.tracer')),
+            ~Q(module_in=(__name__, 'hunter.tracer', 'hunter._tracer')),
             ~Q(filename='<string>'),
             ~Q(filename=''),
             stdlib=False,

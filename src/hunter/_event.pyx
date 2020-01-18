@@ -70,6 +70,7 @@ cdef class Event:
         event._code = self.code
         event._filename = self.filename
         event._fullsource = self.fullsource
+        event._function_object = self._function_object
         event._function = self.function
         event._lineno = self.lineno
         event._module = self.module
@@ -85,6 +86,7 @@ cdef class Event:
         else:
             event._globals = {}
             event._locals = {}
+            event.arg = None
 
         event.threading_support = self.threading_support
         event.calls = self.calls
