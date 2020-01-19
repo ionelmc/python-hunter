@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.1.2 (2019-01-19)
+------------------
+
+* Really fix the ``<frozen importlib.something`` stdlib check.
+
 3.1.1 (2019-01-19)
 ------------------
 

@@ -13,6 +13,8 @@ SITE_PACKAGES_PATHS.add(get_python_lib())
 SITE_PACKAGES_PATHS = tuple(SITE_PACKAGES_PATHS)
 
 SYS_PREFIX_PATHS = {
+    '<frozen importlib._bootstrap>',
+    '<frozen importlib._bootstrap_external>',
     sys.prefix,
     sys.exec_prefix,
     os.path.dirname(os.__file__),

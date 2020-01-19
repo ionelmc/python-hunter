@@ -1851,7 +1851,6 @@ static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_CYTHON_SUFFIX_RE[] = "CYTHON_SUFFIX_RE";
 static const char __pyx_k_SYS_PREFIX_PATHS[] = "SYS_PREFIX_PATHS";
-static const char __pyx_k_frozen_importlib[] = "<frozen importlib";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_pyx_unpickle_Event[] = "__pyx_unpickle_Event";
 static const char __pyx_k_SITE_PACKAGES_PATHS[] = "SITE_PACKAGES_PATHS";
@@ -1897,7 +1896,6 @@ static PyObject *__pyx_n_s_filename;
 static PyObject *__pyx_n_s_findall;
 static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_frame;
-static PyObject *__pyx_kp_s_frozen_importlib;
 static PyObject *__pyx_n_s_fullsource;
 static PyObject *__pyx_n_s_function;
 static PyObject *__pyx_n_s_functools;
@@ -5540,8 +5538,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_TraceCall("__get__", __pyx_f[0], 237, 0, __PYX_ERR(0, 237, __pyx_L1_error));
 
@@ -5550,7 +5547,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *     def stdlib(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
  *             module_parts = self.module.split('.')
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  */
   __Pyx_TraceLine(238,0,__PYX_ERR(0, 238, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_stdlib == __pyx_v_6hunter_6_event_UNSET);
@@ -5561,7 +5558,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *     def stdlib(self):
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')             # <<<<<<<<<<<<<<
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  *                 self._stdlib = True
  */
     __Pyx_TraceLine(239,0,__PYX_ERR(0, 239, __pyx_L1_error))
@@ -5591,27 +5588,18 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     /* "hunter/_event.pyx":240
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:             # <<<<<<<<<<<<<<
+ *             if 'pkg_resources' in module_parts:  # if vendored             # <<<<<<<<<<<<<<
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
  */
     __Pyx_TraceLine(240,0,__PYX_ERR(0, 240, __pyx_L1_error))
-    __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_pkg_resources, __pyx_v_module_parts, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 240, __pyx_L1_error)
-    __pyx_t_6 = (__pyx_t_1 != 0);
-    if (!__pyx_t_6) {
-    } else {
-      __pyx_t_2 = __pyx_t_6;
-      goto __pyx_L5_bool_binop_done;
-    }
-    __pyx_t_6 = (__Pyx_PySequence_ContainsTF(__pyx_kp_s_frozen_importlib, __pyx_v_module_parts, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 240, __pyx_L1_error)
-    __pyx_t_1 = (__pyx_t_6 != 0);
-    __pyx_t_2 = __pyx_t_1;
-    __pyx_L5_bool_binop_done:;
-    if (__pyx_t_2) {
+    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_pkg_resources, __pyx_v_module_parts, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_1 = (__pyx_t_2 != 0);
+    if (__pyx_t_1) {
 
       /* "hunter/_event.pyx":241
  *             module_parts = self.module.split('.')
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  *                 self._stdlib = True             # <<<<<<<<<<<<<<
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
  *                 # if it's in site-packages then its definitely not stdlib
@@ -5626,7 +5614,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
       /* "hunter/_event.pyx":240
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:             # <<<<<<<<<<<<<<
+ *             if 'pkg_resources' in module_parts:  # if vendored             # <<<<<<<<<<<<<<
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
  */
@@ -5634,7 +5622,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     }
 
     /* "hunter/_event.pyx":242
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
  *                 # if it's in site-packages then its definitely not stdlib
@@ -5648,25 +5636,25 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_SITE_PACKAGES_PATHS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = NULL;
+    __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_7)) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_6)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5);
-    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_2) {
+    if (__pyx_t_1) {
 
       /* "hunter/_event.pyx":244
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
@@ -5683,7 +5671,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
       __pyx_v_self->_stdlib = Py_False;
 
       /* "hunter/_event.pyx":242
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
  *                 # if it's in site-packages then its definitely not stdlib
@@ -5707,25 +5695,25 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_SYS_PREFIX_PATHS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = NULL;
+    __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_7)) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_6)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_5, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_7, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__pyx_t_2) {
+    if (__pyx_t_1) {
 
       /* "hunter/_event.pyx":246
  *                 self._stdlib = False
@@ -5773,7 +5761,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *     def stdlib(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
  *             module_parts = self.module.split('.')
- *             if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
+ *             if 'pkg_resources' in module_parts:  # if vendored
  */
   }
 
@@ -5803,7 +5791,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_AddTraceback("hunter._event.Event.stdlib.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -9802,7 +9790,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_findall, __pyx_k_findall, sizeof(__pyx_k_findall), 0, 0, 1, 1},
   {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
   {&__pyx_n_s_frame, __pyx_k_frame, sizeof(__pyx_k_frame), 0, 0, 1, 1},
-  {&__pyx_kp_s_frozen_importlib, __pyx_k_frozen_importlib, sizeof(__pyx_k_frozen_importlib), 0, 0, 1, 0},
   {&__pyx_n_s_fullsource, __pyx_k_fullsource, sizeof(__pyx_k_fullsource), 0, 0, 1, 1},
   {&__pyx_n_s_function, __pyx_k_function, sizeof(__pyx_k_function), 0, 0, 1, 1},
   {&__pyx_n_s_functools, __pyx_k_functools, sizeof(__pyx_k_functools), 0, 0, 1, 1},
