@@ -2,7 +2,12 @@
 Changelog
 =========
 
-3.1.0 (2019-01-)
+3.1.1 (2019-01-19)
+------------------
+
+* Marked all the ``<frozen importlib.something`` files as part of stdlib.
+
+3.1.0 (2019-01-19)
 ------------------
 
 * Added :class:`~hunter.actions.ErrorSnooper` - an action that detects silenced exceptions.

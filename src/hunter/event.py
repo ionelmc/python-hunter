@@ -304,9 +304,7 @@ class Event(object):
         :type: bool
         """
         module_parts = self.module.split('.')
-        if 'pkg_resources' in module_parts:
-            return True
-        elif self.filename == '<frozen importlib._bootstrap>':
+        if 'pkg_resources' in module_parts or '<frozen importlib' in module_parts:
             return True
         elif self.filename.startswith(SITE_PACKAGES_PATHS):
             # if it's in site-packages then its definitely not stdlib
