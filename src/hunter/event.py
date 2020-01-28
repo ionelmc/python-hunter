@@ -304,7 +304,11 @@ class Event(object):
         :type: bool
         """
         module_parts = self.module.split('.')
-        if 'pkg_resources' in module_parts:  # if vendored
+        if 'pkg_resources' in module_parts:
+            # skip this over-vendored module
+            return True
+        elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):
+            # skip namedtuple exec garbage
             return True
         elif self.filename.startswith(SITE_PACKAGES_PATHS):
             # if it's in site-packages then its definitely not stdlib

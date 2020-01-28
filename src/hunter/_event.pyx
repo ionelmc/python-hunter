@@ -237,7 +237,11 @@ cdef class Event:
     def stdlib(self):
         if self._stdlib is UNSET:
             module_parts = self.module.split('.')
-            if 'pkg_resources' in module_parts:  # if vendored
+            if 'pkg_resources' in module_parts:
+                # skip this over-vendored module
+                self._stdlib = True
+            elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):
+                # skip namedtuple exec garbage
                 self._stdlib = True
             elif self.filename.startswith(SITE_PACKAGES_PATHS):
                 # if it's in site-packages then its definitely not stdlib
