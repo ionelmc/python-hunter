@@ -1,7 +1,7 @@
 import os
 import site
 import sys
-import this
+import stat
 from distutils.sysconfig import get_python_lib
 
 SITE_PACKAGES_PATHS = set()
@@ -20,7 +20,7 @@ SYS_PREFIX_PATHS = {
     sys.prefix,
     sys.exec_prefix,
     os.path.dirname(os.__file__),
-    os.path.dirname(this.__file__),
+    os.path.dirname(stat.__file__),
 }
 for prop in 'real_prefix', 'real_exec_prefix', 'base_prefix', 'base_exec_prefix':
     if hasattr(sys, prop):
