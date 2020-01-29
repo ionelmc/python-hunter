@@ -1,7 +1,7 @@
 import os
 import site
-import sys
 import stat
+import sys
 from distutils.sysconfig import get_python_lib
 
 SITE_PACKAGES_PATHS = set()
