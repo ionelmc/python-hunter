@@ -2,10 +2,15 @@
 Changelog
 =========
 
+3.1.3 (2020-02-02)
+------------------
+
+* Improved again the stdlib check to handle certain paths better.
+
 3.1.2 (2019-01-19)
 ------------------
 
-* Really fix the ``<frozen importlib.something`` stdlib check.
+* Really fixed the ``<frozen importlib.something`` stdlib check.
 
 3.1.1 (2019-01-19)
 ------------------
