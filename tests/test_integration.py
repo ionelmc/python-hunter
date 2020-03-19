@@ -17,6 +17,7 @@ from hunter import Q
 from hunter import VarsPrinter
 from hunter import VarsSnooper
 from hunter import When
+from hunter.actions import StackPrinter
 
 try:
     from cStringIO import StringIO
@@ -568,4 +569,30 @@ def test_errorsnooper_fastmode(LineMatcher):
         "*sample8errors.py:42    return            logger.info(repr(exc))",
         "*                       ...       return value: None",
         "*---------------------- function exit",
+    ])
+
+
+def test_stack_printer_1(LineMatcher):
+    buff = StringIO()
+    with hunter.trace(Q(function="five", action=StackPrinter(limit=1, stream=buff))):
+        from sample7 import one
+        one()
+
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*sample7.py:??:five <= sample7.py:??:four <= sample7.py:??:three <= sample7.py:??:two <= sample7.py:?:one <= test_integration.py:???:test_stack_printer*",
+    ])
+
+
+def test_stack_printer_2(LineMatcher):
+    buff = StringIO()
+    with hunter.trace(Q(function="five", action=StackPrinter(limit=2, stream=buff))):
+        from sample7 import one
+        one()
+
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*sample7.py:??:five <= tests/sample7.py:??:four <= tests/sample7.py:??:three <= tests/sample7.py:??:two <= tests/sample7.py:?:one <= tests/test_integration.py:???:test_stack_printer*",
     ])

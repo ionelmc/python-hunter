@@ -20,6 +20,7 @@ from hunter import Q
 from hunter import VarsPrinter
 from hunter import VarsSnooper
 from hunter import When
+from hunter.actions import StackPrinter
 
 try:
     from cStringIO import StringIO
@@ -32,6 +33,8 @@ PY3 = sys.version_info[0] == 3
 
 
 class EvilFrame(object):
+    f_back = None
+
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
@@ -1243,4 +1246,17 @@ def test_errorsnooper_fastmode(LineMatcher):
         "*sample8errors.py:42    return            logger.info(repr(exc))",
         "*                       ...       return value: None",
         "*---------------------- function exit",
+    ])
+
+
+def test_stack_printer(LineMatcher):
+    buff = StringIO()
+    with trace(Q(function="five", action=StackPrinter(stream=buff))):
+        from sample7 import one
+        one()
+
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*sample7.py:30:five <= no frames available (detached=True)",
     ])

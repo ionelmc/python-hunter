@@ -5,6 +5,7 @@ import opcode
 import os
 import threading
 from collections import defaultdict
+from itertools import islice
 from os import getpid
 
 from colorama import AnsiToWin32
@@ -750,3 +751,66 @@ class ErrorSnooper(CodePrinter):
             super(ErrorSnooper, self).__call__(event)
         self.origin = None
         self.events = None
+
+
+class StackPrinter(ColorStreamAction):
+    """
+    An action that prints a one-line stacktrace.
+
+    Args:
+        depth (int): The maximum number of frames to show.
+        limit (int): The maximum number of components to show in path. Eg: ``limit=2`` means it will show 1 parent: ``foo/bar.py``.
+        stream (file-like): Stream to write to. Default: ``sys.stderr``.
+        filename_alignment (int): Default size for the filename column (files are right-aligned). Default: ``40``.
+        force_colors (bool): Force coloring. Default: ``False``.
+        repr_limit (bool): Limit length of ``repr()`` output. Default: ``512``.
+        repr_func (string or callable): Function to use instead of ``repr``.
+            If string must be one of 'repr' or 'safe_repr'. Default: ``'safe_repr'``.
+    """
+
+    def __init__(self, depth=15, limit=2, **options):
+        self.limit = limit
+        self.depth = depth
+        super(StackPrinter, self).__init__(**options)
+
+    def __call__(self, event):
+        """
+        Handle event and print the stack.
+        """
+        pid_prefix = self.pid_prefix()
+        thread_prefix = self.thread_prefix(event)
+        filename_prefix = self.filename_prefix(event).rstrip()
+        sep = os.path.sep
+
+        if event.frame and event.frame.f_back:
+            template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<={RESET} %s' % (
+                event.function,
+                ' {KIND}<={RESET} '.join(
+                    '%s{CONT}:{RESET}%s{CONT}:{BRIGHT}{fore(BLUE)}%s' % (
+                        '/'.join(frame.f_code.co_filename.split(sep)[-self.limit:]),
+                        frame.f_lineno,
+                        frame.f_code.co_name
+                    )
+                    for frame in islice(self.frame_iterator(event.frame.f_back), self.depth)
+                )
+            )
+        else:
+            template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<= {BRIGHT}{fore(YELLOW)}no frames available {NORMAL}(detached=%s)' % (
+                event.function,
+                event.detached,
+            )
+        template += "{RESET}\n"
+        self.output(
+            template,
+            pid_prefix,
+            thread_prefix,
+            filename_prefix,
+        )
+
+    def frame_iterator(self, frame):
+        """
+        Yields frames till there are no more.
+        """
+        while frame:
+            yield frame
+            frame = frame.f_back
