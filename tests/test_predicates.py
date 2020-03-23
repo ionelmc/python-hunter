@@ -6,6 +6,7 @@ import pytest
 
 import hunter
 from hunter import And
+from hunter import Backlog
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
@@ -216,6 +217,22 @@ def test_from(mockevent):
     assert called
 
 
+def test_backlog(mockevent):
+    pytest.raises(AttributeError, Backlog(), 1)
+    assert Backlog()(mockevent) is True
+
+    called = []
+    assert Backlog(Q(module='foo') | Q(module='bar'), lambda: lambda ev: called.append(ev))(mockevent) is False
+    assert called == []
+
+    assert Backlog(Not(Q(module='foo') | Q(module='bar')), lambda: lambda ev: called.append(ev))(mockevent) is True
+    assert called
+
+    called = []
+    assert Backlog(Q(module=__name__), lambda: lambda ev: called.append(ev))(mockevent) is True
+    assert called
+
+
 def test_and_or_kwargs():
     assert And(1, function=2) == And(1, Query(function=2))
     assert Or(1, function=2) == Or(1, Query(function=2))
@@ -225,6 +242,13 @@ def test_from_typeerror():
     pytest.raises(TypeError, From, 1, 2, kind=3)
     pytest.raises(TypeError, From, 1, function=2)
     pytest.raises(TypeError, From, junk=1)
+
+
+def test_backlog_typeerror():
+    pytest.raises(TypeError, Backlog, 1, 2, kind=3)
+    pytest.raises(TypeError, Backlog, 1, function=2)
+    pytest.raises(TypeError, Backlog, junk=1)
+    pytest.raises(TypeError, Backlog, size=1, depth=1)
 
 
 def test_and(mockevent):
@@ -279,6 +303,12 @@ def test_str_repr():
     )
     assert str(From(module='a', depth_gte=2)) == "From(Query(module='a'), Query(depth_gte=2), watermark=0)"
 
+    assert repr(Backlog(module='a', action=lambda: 'foo', size=2)).replace('<hunter._', '<hunter.') == (
+        "<hunter.predicates.Backlog: condition=<hunter.predicates.Query: query_eq=(('module', 'a'),)>, "
+        "action='foo', size=2, depth=None>"
+    )
+    assert str(Backlog(module='a', action=lambda: 'foo', depth=2)) == "Backlog(Query(module='a'), foo, size=None, depth=2)"
+
     assert repr(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
     assert str(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
 
@@ -293,6 +323,7 @@ def test_hashing():
     assert (Q(module='a') & Q(function='b')) in {Q(module='a') & Q(function='b')}
     assert Q(module='a', action=id) in {Q(module='a', action=id)}
     assert From(module='a', depth_gte=2) in {From(module='a', depth_gte=2)}
+    assert Backlog(module='a', size=3) in {Backlog(module='a', size=3)}
 
     class Foo(object):
         def __call__(self):
