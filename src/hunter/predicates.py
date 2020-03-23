@@ -1,12 +1,14 @@
 from __future__ import absolute_import
 
+import collections
 import inspect
 import re
-from itertools import chain
+from itertools import chain, islice
 
 from .actions import Action
 from .event import Event
-from .util import StringType
+from .util import StringType, clone_event_and_set_attrs
+from .util import frame_iterator
 
 __all__ = (
     'And',
@@ -26,6 +28,10 @@ ALLOWED_OPERATORS = (
     'sw', 'ew', 'has', 'rx',
     'gt', 'gte', 'lt', 'lte',
 )
+
+
+class BasePredicate(object):
+    pass
 
 
 class Query(object):
@@ -82,13 +88,15 @@ class Query(object):
                 if operator in ('startswith', 'sw'):
                     if not isinstance(value, StringType):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(
+                                'Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator in ('endswith', 'ew'):
                     if not isinstance(value, StringType):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(
+                                'Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_endswith
                 elif operator == 'in':
@@ -641,5 +649,91 @@ class Not(object):
     def __rand__(self, other):
         """
         Convenience API so you can do ``other & Not(...)``. It converts that to ``And(other, Not(...))``.
+        """
+        return And(other, self)
+
+
+class Backlog(object):
+    def __init__(self, condition, action=None, size=None, depth=None):
+        self.condition = condition
+        self.action = action
+        self.size = size
+        self.queue = collections.deque(maxlen=size) if size else None
+        self.depth = depth
+        self.called = False
+
+    def __call__(self, event):
+        """
+        Handles the event.
+        """
+        if not self.called and self.condition(event):
+            self.called = True
+            if self.size:
+                backlog_events = self.queue
+            else:
+                backlog_events = (
+                    clone_event_and_set_attrs(event, frame=frame, kind='call', arg=None)
+                    for frame in islice(frame_iterator(event.frame.f_back), self.depth)
+                )
+
+            for be in backlog_events:
+                self.action(be)
+
+            return True
+
+        if not self.called and self.size:
+            self.queue.append(event)
+
+        return False
+
+    def __str__(self):
+        return 'Backlog(%s, %s, size=%s, depth=%s)' % (
+            self.condition, self.action, self.size, self.depth
+        )
+
+    def __repr__(self):
+        return '<hunter.predicates.Backlog: condition=%r, action=%r, size=%r, depth=%r>' % (
+            self.condition, self.action, self.size, self.depth
+        )
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, Backlog) and
+            self.condition == other.condition and
+            self.action == other.action and
+            self.queue == other.queue and
+            self.depth == other.depth
+        )
+
+    def __hash__(self):
+        return hash(('Backlog', self.condition, self.action, self.queue, self.depth))
+
+    def __or__(self, other):
+        """
+        Convenience API so you can do ``From(...) | other``. It converts that to ``Or(From(...), other)``.
+        """
+        return Or(self, other)
+
+    def __and__(self, other):
+        """
+        Convenience API so you can do ``From(...) & other``. It converts that to ``And(From(...), other))``.
+        """
+        return And(self, other)
+
+    def __invert__(self):
+        """
+        Convenience API so you can do ``~From(...)``. It converts that to ``Not(From(...))``.
+        """
+        return Not(self)
+
+    def __ror__(self, other):
+        """
+        Convenience API so you can do ``other | From(...)``. It converts that to ``Or(other, From(...))``.
+        """
+        return Or(other, self)
+
+    def __rand__(self, other):
+        """
+        Convenience API so you can do ``other & From(...)``. It converts that to ``And(other, From(...))``.
         """
         return And(other, self)

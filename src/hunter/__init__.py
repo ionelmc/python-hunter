@@ -16,28 +16,28 @@ from .actions import ErrorSnooper
 from .actions import Manhole
 from .actions import VarsPrinter
 from .actions import VarsSnooper
-
-try:
-    if os.environ.get("PUREPYTHONHUNTER"):
-        raise ImportError("Cython speedups are disabled.")
-
-    from ._event import Event
-    from ._predicates import And as _And
-    from ._predicates import From as _From
-    from ._predicates import Not as _Not
-    from ._predicates import Or as _Or
-    from ._predicates import When
-    from ._predicates import Query
-    from ._tracer import Tracer
-except ImportError:
-    from .event import Event  # noqa
-    from .predicates import And as _And
-    from .predicates import From as _From
-    from .predicates import Not as _Not
-    from .predicates import Or as _Or
-    from .predicates import When
-    from .predicates import Query
-    from .tracer import Tracer
+# try:
+#     if os.environ.get("PUREPYTHONHUNTER"):
+#         raise ImportError("Cython speedups are disabled.")
+#
+#     from ._event import Event
+#     from ._predicates import And as _And
+#     from ._predicates import From as _From
+#     from ._predicates import Not as _Not
+#     from ._predicates import Or as _Or
+#     from ._predicates import When
+#     from ._predicates import Query
+#     from ._tracer import Tracer
+# except ImportError:
+from .event import Event  # noqa
+from .predicates import And as _And
+from .predicates import Backlog as _Backlog
+from .predicates import From as _From
+from .predicates import Not as _Not
+from .predicates import Or as _Or
+from .predicates import Query
+from .predicates import When
+from .tracer import Tracer
 
 try:
     from ._version import version as __version__
@@ -59,6 +59,7 @@ __all__ = (
     'VarsPrinter',
     'VarsSnooper',
     'When',
+    'Backlog',
 
     'stop',
     'trace',
@@ -269,6 +270,25 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
             raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
                 kwargs.keys()))
         return _From(condition, predicate, watermark)
+
+
+def Backlog(condition=None, action=CallPrinter, size=None, depth=None, **kwargs):
+    DEFAULT_DEPTH = 15
+    if size is not None and depth is not None:
+        raise TypeError("Only one of these keyword arguments must be specified: (size, depth)")
+
+    if condition is None:
+        condition = Q(**kwargs)
+    elif kwargs:
+        raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
+            kwargs.keys()))
+
+    if size is None and depth is None:
+        depth = DEFAULT_DEPTH
+    if inspect.isclass(action):
+        action = action()
+
+    return _Backlog(condition, action, size, depth)
 
 
 def stop():

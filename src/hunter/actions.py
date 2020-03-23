@@ -19,6 +19,7 @@ from .util import OTHER_COLORS
 from .util import PY3
 from .util import StringType
 from .util import builtins
+from .util import frame_iterator
 from .util import iter_symbols
 from .util import safe_repr
 
@@ -791,7 +792,7 @@ class StackPrinter(ColorStreamAction):
                         frame.f_lineno,
                         frame.f_code.co_name
                     )
-                    for frame in islice(self.frame_iterator(event.frame.f_back), self.depth)
+                    for frame in islice(frame_iterator(event.frame.f_back), self.depth)
                 )
             )
         else:
@@ -806,11 +807,3 @@ class StackPrinter(ColorStreamAction):
             thread_prefix,
             filename_prefix,
         )
-
-    def frame_iterator(self, frame):
-        """
-        Yields frames till there are no more.
-        """
-        while frame:
-            yield frame
-            frame = frame.f_back

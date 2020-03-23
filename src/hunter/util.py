@@ -185,3 +185,19 @@ def safe_repr(obj, maxdepth=5):
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
         #  with side-effects will be going on in __repr__ - use the default instead (object.__repr__)
         return object.__repr__(obj)
+
+
+def frame_iterator(frame):
+    """
+    Yields frames till there are no more.
+    """
+    while frame:
+        yield frame
+        frame = frame.f_back
+
+
+def clone_event_and_set_attrs(event, **kwargs):
+    new_event = event.clone()
+    for key, val in kwargs.items():
+        setattr(new_event, key, val)
+    return new_event

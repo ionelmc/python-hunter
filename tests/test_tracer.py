@@ -11,6 +11,7 @@ import pytest
 
 import hunter
 from hunter import And
+from hunter import Backlog
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
@@ -107,6 +108,14 @@ def test_predicate_reverse_and_or():
     assert str(foobar | From(module=1, depth=2)) == 'Or(Foobar, From(Query(module=1), Query(depth=2), watermark=0))'
     assert str(foobar & ~From(module=1, depth=2)) == 'And(Foobar, Not(From(Query(module=1), Query(depth=2), watermark=0)))'
     assert str(foobar | ~From(module=1, depth=2)) == 'Or(Foobar, Not(From(Query(module=1), Query(depth=2), watermark=0)))'
+    assert str(From(module=1, depth=2) & foobar) == 'And(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
+    assert str(From(module=1, depth=2) | foobar) == 'Or(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
+    assert str(foobar & Backlog(module=1, action=lambda: 'foo', depth=2)) == 'And(Foobar, Backlog(Query(module=1), foo, size=None, depth=2))'
+    assert str(foobar | Backlog(module=1, action=lambda: 'foo', depth=2)) == 'Or(Foobar, Backlog(Query(module=1), foo, size=None, depth=2))'
+    assert str(foobar & ~Backlog(module=1, action=lambda: 'foo', depth=2)) == 'And(Foobar, Not(Backlog(Query(module=1), foo, size=None, depth=2)))'
+    assert str(foobar | ~Backlog(module=1, action=lambda: 'foo', depth=2)) == 'Or(Foobar, Not(Backlog(Query(module=1), foo, size=None, depth=2)))'
+    assert str(Backlog(module=1, action=lambda: 'foo', depth=2) & foobar) == 'And(Backlog(Query(module=1), foo, size=None, depth=2), Foobar)'
+    assert str(Backlog(module=1, action=lambda: 'foo', depth=2) | foobar) == 'Or(Backlog(Query(module=1), foo, size=None, depth=2), Foobar)'
     assert str(Q(module=1) & foobar) == 'And(Query(module=1), Foobar)'
     assert str(Q(module=1) | foobar) == 'Or(Query(module=1), Foobar)'
     assert str(~Q(module=1) & foobar) == 'And(Not(Query(module=1)), Foobar)'
@@ -115,8 +124,6 @@ def test_predicate_reverse_and_or():
     assert str(Q(module=1, action=foobar) | foobar) == 'Or(When(Query(module=1), Foobar), Foobar)'
     assert str(~Q(module=1, action=foobar) & foobar) == 'And(Not(When(Query(module=1), Foobar)), Foobar)'
     assert str(~Q(module=1, action=foobar) | foobar) == 'Or(Not(When(Query(module=1), Foobar)), Foobar)'
-    assert str(From(module=1, depth=2) & foobar) == 'And(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
-    assert str(From(module=1, depth=2) | foobar) == 'Or(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
 
 
 def test_threading_support(LineMatcher):
@@ -805,6 +812,54 @@ def test_from_predicate_line_no_predicate(LineMatcher):
     assert 'three' not in output
     assert 'two' not in output
     assert 'one' not in output
+
+
+def test_backlog_size_predicate(LineMatcher):
+    backlog_buff = StringIO()
+    tracer_buff = StringIO()
+    from sample7 import one
+    with trace(Backlog(Q(function='five'), size=5, action=CallPrinter(stream=backlog_buff)), action=CallPrinter(stream=tracer_buff)):
+        one()
+    backlog_output = backlog_buff.getvalue()
+    lm = LineMatcher(backlog_output.splitlines())
+    lm.fnmatch_lines([
+        "* line      for i in range(1):  # three",
+        "* line      four()",
+        "* call      => four()",
+        "* line         for i in range(1):  # four",
+        "* line         five()",
+    ])
+    assert '=> three' not in backlog_output
+    assert '=> five()' not in backlog_output
+    assert 'two' not in backlog_output
+    assert 'one' not in backlog_output
+
+    tracer_output = tracer_buff.getvalue()
+    assert len(tracer_output.splitlines()) == 1
+    assert "call      => five()" in tracer_buff.getvalue()
+
+
+def test_backlog_size_predicate_line(LineMatcher):
+    buff = StringIO()
+    from sample7 import one
+    with trace(Backlog(Q(fullsource_has='return i'), size=5, action=CallPrinter(stream=buff))):
+        one()
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        # "* line      for i in range(1):  # four",
+        "* line      five()",
+        "* call      => five()",
+        "* line         in_five = 1",
+        "* line         for i in range(1):  # five",
+        "* line         return i"
+    ])
+
+    # assert 'four' not in output
+    # assert 'three' not in output
+    # assert 'two' not in output
+    # assert 'one' not in output
 
 
 def decorator(func):
