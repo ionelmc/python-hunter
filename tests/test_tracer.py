@@ -836,7 +836,7 @@ def test_backlog_size_predicate(LineMatcher):
 
     tracer_output = tracer_buff.getvalue()
     assert len(tracer_output.splitlines()) == 1
-    assert "call      => five()" in tracer_buff.getvalue()
+    assert "call         => five()" in tracer_buff.getvalue()
 
 
 def test_backlog_size_predicate_line(LineMatcher):
@@ -848,12 +848,12 @@ def test_backlog_size_predicate_line(LineMatcher):
     print(output)
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
-        # "* line      for i in range(1):  # four",
+        "* line      for i in range(1):  # four",
         "* line      five()",
         "* call      => five()",
         "* line         in_five = 1",
         "* line         for i in range(1):  # five",
-        "* line         return i"
+        # "* line         return i"
     ])
 
     # assert 'four' not in output

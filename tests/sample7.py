@@ -2,6 +2,8 @@ from __future__ import print_function
 
 import os
 import sys
+import hunter
+hunter.trace(hunter.Backlog(source_has='four', size=10, stack_depth=10).filter(source_has='two'))
 
 
 def one():

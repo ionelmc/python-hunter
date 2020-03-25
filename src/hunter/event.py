@@ -40,7 +40,12 @@ class Event(object):
     depth = None
     calls = None
 
-    def __init__(self, frame, kind, arg, tracer):
+    def __init__(self, frame, kind, arg, tracer=None, depth=None, calls=-1, threading_support=False):
+        if tracer:
+            depth = tracer.depth
+            calls = tracer.calls
+            threading_support = tracer.threading_support # just for the moment, we need to think more about this
+
         #: The original Frame object.
         #:
         #: .. note::
@@ -61,12 +66,12 @@ class Event(object):
         #: Tracing depth (increases on calls, decreases on returns)
         #:
         #: :type: int
-        self.depth = tracer.depth
+        self.depth = depth
 
         #: A counter for total number of calls up to this Event.
         #:
         #: :type: int
-        self.calls = tracer.calls
+        self.calls = calls
 
         #: A copy of the :attr:`hunter.tracer.Tracer.threading_support` flag.
         #:
@@ -75,7 +80,7 @@ class Event(object):
         #:  Not allowed in the builtin predicates. You may access it from your custom predicate though.
         #:
         #: :type: bool or None
-        self.threading_support = tracer.threading_support
+        self.threading_support = threading_support
 
         #: Flag that is ``True`` if the event was created with :meth:`~hunter.event.Event.detach`.
         #:

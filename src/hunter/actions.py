@@ -419,10 +419,10 @@ class CallPrinter(CodePrinter):
     .. versionadded:: 1.2.0
     """
     EVENT_COLORS = CALL_COLORS
+    locals = defaultdict(list)
 
     def __init__(self, *args, **kwargs):
         super(CallPrinter, self).__init__(*args, **kwargs)
-        self.locals = defaultdict(list)
 
     def __call__(self, event):
         """
