@@ -272,23 +272,30 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
         return _From(condition, predicate, watermark)
 
 
-def Backlog(condition=None, action=CallPrinter, size=None, depth=None, **kwargs):
-    DEFAULT_DEPTH = 15
-    if size is not None and depth is not None:
-        raise TypeError("Only one of these keyword arguments must be specified: (size, depth)")
+def Backlog(condition=None, action=CallPrinter, size=100, stack_depth=0, **kwargs):
+    condition = _get_condition(condition, kwargs)
+    if inspect.isclass(action):
+        action = action()
 
+    return _Backlog(condition, action, size, stack_depth)
+
+
+def _backlog_filter(self, condition=None, **kwargs):
+    self.filter_condition = _get_condition(condition, kwargs)
+    return self
+
+
+_Backlog.filter = _backlog_filter
+
+
+def _get_condition(condition, kwargs):
     if condition is None:
-        condition = Q(**kwargs)
+        return Q(**kwargs)
     elif kwargs:
         raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
             kwargs.keys()))
 
-    if size is None and depth is None:
-        depth = DEFAULT_DEPTH
-    if inspect.isclass(action):
-        action = action()
-
-    return _Backlog(condition, action, size, depth)
+    return condition
 
 
 def stop():

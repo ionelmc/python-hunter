@@ -654,13 +654,15 @@ class Not(object):
 
 
 class Backlog(object):
-    def __init__(self, condition, action=None, size=None, depth=None):
+    def __init__(self, condition, action=None, size=100, stack_depth=0):
         self.condition = condition
         self.action = action
         self.size = size
-        self.queue = collections.deque(maxlen=size) if size else None
-        self.depth = depth
+        self.queue = collections.deque(maxlen=size)
+        self.stack_depth = stack_depth
         self.called = False
+
+        self.filter_condition = lambda _: True
 
     def __call__(self, event):
         """
@@ -668,32 +670,49 @@ class Backlog(object):
         """
         if not self.called and self.condition(event):
             self.called = True
-            if self.size:
-                backlog_events = self.queue
-            else:
-                backlog_events = (
-                    clone_event_and_set_attrs(event, frame=frame, kind='call', arg=None)
-                    for frame in islice(frame_iterator(event.frame.f_back), self.depth)
-                )
-
-            for be in backlog_events:
+            for be in self._backlog_events_iter(event):
                 self.action(be)
 
             return True
 
-        if not self.called and self.size:
+        if not self.called and self.size and self.filter_condition(event):
             self.queue.append(event)
 
         return False
 
+    def _backlog_events_iter(self, event):
+        depth = self._compute_depth(event)
+        first_frame = self.queue[0].frame if self.queue else event.frame
+
+        stack_events = [
+            Event(frame=frame, kind='call', arg=None)
+            for frame in islice(frame_iterator(first_frame.f_back), depth)
+        ]
+        stack_events.reverse()
+        yield from iter(stack_events)
+        yield from iter(self.queue)
+
+    def _compute_depth(self, event):
+        if not self.size:
+            return self.stack_depth
+        elif len(self.queue) > 1:
+            backlog_depth_length = abs(event.depth - self.queue[0].depth)
+            depth = self.stack_depth - backlog_depth_length
+            if depth > 0:
+                return depth
+        else:
+            return self.stack_depth
+
+        return 0
+
     def __str__(self):
         return 'Backlog(%s, %s, size=%s, depth=%s)' % (
-            self.condition, self.action, self.size, self.depth
+            self.condition, self.action, self.size, self.stack_depth
         )
 
     def __repr__(self):
         return '<hunter.predicates.Backlog: condition=%r, action=%r, size=%r, depth=%r>' % (
-            self.condition, self.action, self.size, self.depth
+            self.condition, self.action, self.size, self.stack_depth
         )
 
     def __eq__(self, other):
@@ -702,11 +721,11 @@ class Backlog(object):
             self.condition == other.condition and
             self.action == other.action and
             self.queue == other.queue and
-            self.depth == other.depth
+            self.stack_depth == other.stack_depth
         )
 
     def __hash__(self):
-        return hash(('Backlog', self.condition, self.action, self.queue, self.depth))
+        return hash(('Backlog', self.condition, self.action, self.queue, self.stack_depth))
 
     def __or__(self, other):
         """
