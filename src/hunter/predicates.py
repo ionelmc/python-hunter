@@ -676,34 +676,44 @@ class Backlog(object):
             return True
 
         if not self.called and self.size and self.filter_condition(event):
+            event.detach()
             self.queue.append(event)
 
         return False
 
     def _backlog_events_iter(self, event):
-        depth = self._compute_depth(event)
-        first_frame = self.queue[0].frame if self.queue else event.frame
+        stack_events_length = self._compute_stack_events_length(event)
+        first_event = self.queue[0] if self.queue else event
+        first_frame = first_event.frame
+        initial_event_depth = first_event.depth
+
+        if first_event.kind == 'call':
+            first_frame = first_frame.f_back
+            initial_event_depth -= 1
 
         stack_events = [
-            Event(frame=frame, kind='call', arg=None)
-            for frame in islice(frame_iterator(first_frame.f_back), depth)
+            Event(
+                frame=frame, kind='call', arg=None,
+                threading_support=event.threading_support,
+                depth=initial_event_depth - i, calls=-1
+            )
+            for i, frame in enumerate(islice(frame_iterator(first_frame), stack_events_length))
         ]
         stack_events.reverse()
         yield from iter(stack_events)
         yield from iter(self.queue)
 
-    def _compute_depth(self, event):
-        if not self.size:
-            return self.stack_depth
-        elif len(self.queue) > 1:
-            backlog_depth_length = abs(event.depth - self.queue[0].depth)
-            depth = self.stack_depth - backlog_depth_length
-            if depth > 0:
-                return depth
-        else:
-            return self.stack_depth
+    def _compute_stack_events_length(self, event):
+        if len(self.queue) > 1:
+            backlog_depth_length = event.depth - self.queue[0].depth
+            if backlog_depth_length > 0:
+                stack_events_length = self.stack_depth - backlog_depth_length
+                if stack_events_length > 0:
+                    return stack_events_length
+                else:
+                    return 0
 
-        return 0
+        return self.stack_depth
 
     def __str__(self):
         return 'Backlog(%s, %s, size=%s, depth=%s)' % (
@@ -729,30 +739,30 @@ class Backlog(object):
 
     def __or__(self, other):
         """
-        Convenience API so you can do ``From(...) | other``. It converts that to ``Or(From(...), other)``.
+        Convenience API so you can do ``Backlog(...) | other``. It converts that to ``Or(Backlog(...), other)``.
         """
         return Or(self, other)
 
     def __and__(self, other):
         """
-        Convenience API so you can do ``From(...) & other``. It converts that to ``And(From(...), other))``.
+        Convenience API so you can do ``Backlog(...) & other``. It converts that to ``And(Backlog(...), other))``.
         """
         return And(self, other)
 
     def __invert__(self):
         """
-        Convenience API so you can do ``~From(...)``. It converts that to ``Not(From(...))``.
+        Convenience API so you can do ``~Backlog(...)``. It converts that to ``Not(Backlog(...))``.
         """
         return Not(self)
 
     def __ror__(self, other):
         """
-        Convenience API so you can do ``other | From(...)``. It converts that to ``Or(other, From(...))``.
+        Convenience API so you can do ``other | Backlog(...)``. It converts that to ``Or(other, Backlog(...))``.
         """
         return Or(other, self)
 
     def __rand__(self, other):
         """
-        Convenience API so you can do ``other & From(...)``. It converts that to ``And(other, From(...))``.
+        Convenience API so you can do ``other & Backlog(...)``. It converts that to ``And(other, Backlog(...))``.
         """
         return And(other, self)
