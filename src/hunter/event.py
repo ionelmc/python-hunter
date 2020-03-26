@@ -12,6 +12,7 @@ from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import CYTHON_SUFFIX_RE
 from .util import LEADING_WHITESPACE_RE
+from .util import MISSING
 from .util import cached_property
 from .util import get_func_in_mro
 from .util import get_main_thread
@@ -40,11 +41,14 @@ class Event(object):
     depth = None
     calls = None
 
-    def __init__(self, frame, kind, arg, tracer=None, depth=None, calls=-1, threading_support=False):
-        if tracer:
+    def __init__(self, frame, kind, arg, tracer=None, depth=MISSING, calls=MISSING, threading_support=MISSING):
+        if tracer is None:
+            if MISSING in (depth, calls, threading_support):
+                raise TypeError("Depth, calls and threading support need to be specified when creating and event")
+        else:
             depth = tracer.depth
             calls = tracer.calls
-            threading_support = tracer.threading_support # just for the moment, we need to think more about this
+            threading_support = tracer.threading_support
 
         #: The original Frame object.
         #:

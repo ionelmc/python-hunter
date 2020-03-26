@@ -233,6 +233,31 @@ def test_backlog(mockevent):
     assert called
 
 
+def test_backlog_predicate():
+    assert isinstance(Backlog().action, CallPrinter)
+    assert isinstance(Backlog(action=CallPrinter).action, CallPrinter)
+
+    class FakeAction:
+        called = False
+
+        def __init__(self):
+            FakeAction.called = True
+
+    assert not FakeAction.called
+    assert isinstance(Backlog(action=FakeAction).action, FakeAction)
+    assert FakeAction.called
+
+    class FakeAction:
+        not_called = True
+
+        def __call__(self):
+            FakeAction.not_called = False
+
+    assert FakeAction.not_called
+    assert isinstance(Backlog(action=FakeAction()).action, FakeAction)
+    assert FakeAction.not_called
+
+
 def test_and_or_kwargs():
     assert And(1, function=2) == And(1, Query(function=2))
     assert Or(1, function=2) == Or(1, Query(function=2))
