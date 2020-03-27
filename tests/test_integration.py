@@ -7,9 +7,9 @@ import sys
 from pprint import pprint
 
 import pytest
+from fields import Namespace
 
-import hunter
-from hunter import CallPrinter
+from hunter import CallPrinter, trace, Backlog
 from hunter import CodePrinter
 from hunter import Debugger
 from hunter import ErrorSnooper
@@ -17,7 +17,7 @@ from hunter import Q
 from hunter import VarsPrinter
 from hunter import VarsSnooper
 from hunter import When
-from hunter.actions import StackPrinter
+from hunter import StackPrinter
 
 try:
     from cStringIO import StringIO
@@ -153,7 +153,7 @@ def test_pth_sample2(LineMatcher):
 
 def test_tracing_bare(LineMatcher):
     lines = StringIO()
-    with hunter.trace(CodePrinter(stream=lines)):
+    with trace(CodePrinter(stream=lines)):
         def a():
             return 1
 
@@ -175,7 +175,7 @@ def test_tracing_bare(LineMatcher):
 
 def test_tracing_reinstall(LineMatcher):
     lines = StringIO()
-    with hunter.trace(CodePrinter(stream=lines)):
+    with trace(CodePrinter(stream=lines)):
         def foo():
             a = 2
             sys.settrace(sys.gettrace())
@@ -207,7 +207,7 @@ def test_tracing_reinstall(LineMatcher):
 
 
 def test_tracer_autostop():
-    with hunter.trace(lambda: garbage) as tracer:
+    with trace(lambda: garbage) as tracer:
         if os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1":
             assert sys.gettrace() is not tracer
         else:
@@ -226,7 +226,7 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
         else:
             os._exit(0)  # child
 
-    with hunter.trace(actions=[Action(force_pid=force_pid, stream=sys.stdout),
+    with trace(actions=[Action(force_pid=force_pid, stream=sys.stdout),
                                VarsPrinter('a', force_pid=force_pid, stream=sys.stdout)],
                       stdlib=False,
                       threading_support=True):
@@ -257,7 +257,7 @@ def test_debugger(LineMatcher):
         def set_trace(self, frame):
             calls.append(frame.f_code.co_name)
 
-    with hunter.trace(
+    with trace(
         lambda event: event.locals.get('node') == 'Foobar',
         module=__name__,
         function='foo',
@@ -574,7 +574,7 @@ def test_errorsnooper_fastmode(LineMatcher):
 
 def test_stack_printer_1(LineMatcher):
     buff = StringIO()
-    with hunter.trace(Q(function="five", action=StackPrinter(limit=1, stream=buff))):
+    with trace(Q(function="five", action=StackPrinter(limit=1, stream=buff))):
         from sample7 import one
         one()
 
@@ -587,7 +587,7 @@ def test_stack_printer_1(LineMatcher):
 
 def test_stack_printer_2(LineMatcher):
     buff = StringIO()
-    with hunter.trace(Q(function="five", action=StackPrinter(limit=2, stream=buff))):
+    with trace(Q(function="five", action=StackPrinter(limit=2, stream=buff))):
         from sample7 import one
         one()
 
@@ -595,4 +595,77 @@ def test_stack_printer_2(LineMatcher):
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
         "*sample7.py:??:five <= tests/sample7.py:??:four <= tests/sample7.py:??:three <= tests/sample7.py:??:two <= tests/sample7.py:?:one <= tests/test_integration.py:???:test_stack_printer*",
+    ])
+
+
+def test_backlog_before_return(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(fullsource_has='return i', size=10, stack=6, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))), force_colors=1)),
+        action=CallPrinter(stream=buff)
+    ):
+        from sample7 import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*tegration.py:*   call      => test_backlog(LineMatcher=*)",
+        "*sample7.py:6     call         => one()",
+        "*sample7.py:11    call            => two()",
+        "*sample7.py:11    line               three()",
+        "*sample7.py:14    call               => three()",
+        "*sample7.py:15    line                  for i in range(1):  # three",
+        "*sample7.py:16    line                  four()",
+        "*sample7.py:19    call                  => four()",
+        "*sample7.py:20    line                     for i in range(1):  # four",
+        "*sample7.py:21    line                     five()",
+        "*sample7.py:24    call                     => five()",
+        "*sample7.py:25    line                        in_five = 1",
+        "*sample7.py:26    line                        for i in range(1):  # five",
+        "DONE backlog."
+        "*sample7.py:27    line                        return i  # five",
+    ])
+
+
+def test_backlog_before_call(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(function='five', size=5, stack=5, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))), force_colors=1)),
+        action=CallPrinter(stream=buff)
+
+    ):
+        from sample7 import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*tegration.py:*   call      => test_backlog(LineMatcher=*)",
+        "*sample7.py:6     call         => one()",
+        "*sample7.py:11    call            => two()",
+        "*sample7.py:11    line               three()",
+        "*sample7.py:14    call               => three()",
+        "*sample7.py:15    line                  for i in range(1):  # three",
+        "*sample7.py:16    line                  four()",
+        "*sample7.py:19    call                  => four()",
+        "*sample7.py:20    line                     for i in range(1):  # four",
+        "*sample7.py:21    line                     five()",
+        "*sample7.py:24    call                     => five()",
+        "*sample7.py:25    line                        in_five = 1",
+        "*sample7.py:26    line                        for i in range(1):  # five",
+        "DONE backlog."
+        "*sample7.py:27    line                        return i  # five",
     ])
