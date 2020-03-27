@@ -14,10 +14,10 @@ from hunter import CodePrinter
 from hunter import Debugger
 from hunter import ErrorSnooper
 from hunter import Q
+from hunter import StackPrinter
 from hunter import VarsPrinter
 from hunter import VarsSnooper
 from hunter import When
-from hunter import StackPrinter
 
 try:
     from cStringIO import StringIO
@@ -227,9 +227,9 @@ def test_pid_prefix(LineMatcher, Action, force_pid, capfd):
             os._exit(0)  # child
 
     with trace(actions=[Action(force_pid=force_pid, stream=sys.stdout),
-                               VarsPrinter('a', force_pid=force_pid, stream=sys.stdout)],
-                      stdlib=False,
-                      threading_support=True):
+                        VarsPrinter('a', force_pid=force_pid, stream=sys.stdout)],
+               stdlib=False,
+               threading_support=True):
         main()
     out, err = capfd.readouterr()
     print('OUT', out)
@@ -604,33 +604,49 @@ def test_backlog_before_return(LineMatcher):
         Backlog(fullsource_has='return i', size=10, stack=6, action=CallPrinter(
             stream=Namespace(
                 flush=buff.flush,
-                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))), force_colors=1)),
+                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))))),
         action=CallPrinter(stream=buff)
     ):
         from sample7 import one
         one()
         one()  # make sure Backlog is reusable (doesn't have storage side-effects)
 
-
     output = buff.getvalue()
     print(output)
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
-        "*tegration.py:*   call      => test_backlog(LineMatcher=*)",
-        "*sample7.py:6     call         => one()",
-        "*sample7.py:11    call            => two()",
-        "*sample7.py:11    line               three()",
-        "*sample7.py:14    call               => three()",
-        "*sample7.py:15    line                  for i in range(1):  # three",
-        "*sample7.py:16    line                  four()",
-        "*sample7.py:19    call                  => four()",
-        "*sample7.py:20    line                     for i in range(1):  # four",
-        "*sample7.py:21    line                     five()",
-        "*sample7.py:24    call                     => five()",
-        "*sample7.py:25    line                        in_five = 1",
-        "*sample7.py:26    line                        for i in range(1):  # five",
-        "DONE backlog."
-        "*sample7.py:27    line                        return i  # five",
+        "*gration.py:*   call      => test_backlog_before_return(LineMatcher=?) [[]backlog[]]",
+        "*sample7.py:*   call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7.py:*   line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                  four() [[]backlog[]]",
+        "*sample7.py:*   call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7.py:*   line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                     five() [[]backlog[]]",
+        "*sample7.py:*   call                     => five(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7.py:*   line                        return i  # five",
+        "*sample7.py:*   return                   <= five: 0",
+        "*gration.py:*   call      => test_backlog_before_return(LineMatcher=?) [[]backlog[]]",
+        "*sample7.py:*   call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7.py:*   line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                  four() [[]backlog[]]",
+        "*sample7.py:*   call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7.py:*   line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                     five() [[]backlog[]]",
+        "*sample7.py:*   call                     => five(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7.py:*   line                        return i  # five",
+        "*sample7.py:*   return                   <= five: 0",
     ])
 
 
@@ -640,7 +656,7 @@ def test_backlog_before_call(LineMatcher):
         Backlog(function='five', size=5, stack=5, action=CallPrinter(
             stream=Namespace(
                 flush=buff.flush,
-                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))), force_colors=1)),
+                write=lambda s: buff.write(s.replace('\n', ' [backlog]\n'))))),
         action=CallPrinter(stream=buff)
 
     ):
@@ -648,24 +664,36 @@ def test_backlog_before_call(LineMatcher):
         one()
         one()  # make sure Backlog is reusable (doesn't have storage side-effects)
 
-
     output = buff.getvalue()
     print(output)
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
-        "*tegration.py:*   call      => test_backlog(LineMatcher=*)",
-        "*sample7.py:6     call         => one()",
-        "*sample7.py:11    call            => two()",
-        "*sample7.py:11    line               three()",
-        "*sample7.py:14    call               => three()",
-        "*sample7.py:15    line                  for i in range(1):  # three",
-        "*sample7.py:16    line                  four()",
-        "*sample7.py:19    call                  => four()",
-        "*sample7.py:20    line                     for i in range(1):  # four",
-        "*sample7.py:21    line                     five()",
-        "*sample7.py:24    call                     => five()",
-        "*sample7.py:25    line                        in_five = 1",
-        "*sample7.py:26    line                        for i in range(1):  # five",
-        "DONE backlog."
-        "*sample7.py:27    line                        return i  # five",
+        "*gration.py:*   call      => test_backlog_before_call(LineMatcher=?) [[]backlog[]]",
+        "*sample7.py:*   call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                  four() [[]backlog[]]",
+        "*sample7.py:*   call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7.py:*   line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                     five() [[]backlog[]]",
+        "*sample7.py:*   call                     => five(a=123, b='234', c={'3': [[]4, '5'[]]})",
+        "*sample7.py:*   line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7.py:*   line                        for i in range(1):  # five",
+        "*sample7.py:*   line                        return i  # five",
+        "*sample7.py:*   return                   <= five: 0",
+        "*gration.py:*   call      => test_backlog_before_call(LineMatcher=?) [[]backlog[]]",
+        "*sample7.py:*   call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                  four() [[]backlog[]]",
+        "*sample7.py:*   call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7.py:*   line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7.py:*   line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7.py:*   line                     five() [[]backlog[]]",
+        "*sample7.py:*   call                     => five(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'})",
+        "*sample7.py:*   line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7.py:*   line                        for i in range(1):  # five",
+        "*sample7.py:*   line                        return i  # five",
+        "*sample7.py:*   return                   <= five: 0",
     ])
