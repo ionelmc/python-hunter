@@ -335,6 +335,9 @@ class ColorStreamAction(Action):
             **dict(self.other_colors, **kwargs)
         ))
 
+    def cleanup(self):
+        pass
+
 
 class CodePrinter(ColorStreamAction):
     """
@@ -419,7 +422,12 @@ class CallPrinter(CodePrinter):
     .. versionadded:: 1.2.0
     """
     EVENT_COLORS = CALL_COLORS
+
     locals = defaultdict(list)
+
+    @classmethod
+    def cleanup(cls):
+        cls.locals = defaultdict(list)
 
     def __init__(self, *args, **kwargs):
         super(CallPrinter, self).__init__(*args, **kwargs)
@@ -537,7 +545,7 @@ class VarsPrinter(ColorStreamAction):
         for code, symbols in self.names.items():
             try:
                 obj = eval(code, dict(vars(builtins), **event.globals), event.locals)
-            except AttributeError:
+            except (AttributeError, KeyError):
                 continue
             except Exception as exc:
                 printout = '{INTERNAL-FAILURE}FAILED EVAL: {INTERNAL-DETAIL}{!r}'.format(exc, **self.other_colors)

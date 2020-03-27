@@ -364,8 +364,8 @@ class From(object):
     ``event`` will return ``predicate(event)`` until ``event.depth - watermark`` is equal to the depth that was saved.
 
     Args:
-        condition (callable): A callable that returns True/False or a :class:`~hunter.predicates.Query` object.
-        predicate (callable): Optional callable that returns True/False or a :class:`~hunter.predicates.Query` object to
+        condition (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False.
+        predicate (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False to
             run after ``condition`` first returns ``True``. Note that this predicate will be called with a event-copy that has adjusted
             :attr:`~hunter.event.Event.depth` and :attr:`~hunter.event.Event.calls` to the initial point where the ``condition`` matched.
             In other words they will be relative.
@@ -654,75 +654,72 @@ class Not(object):
 
 
 class Backlog(object):
-    def __init__(self, condition, action=None, size=100, stack_depth=0):
-        self.condition = condition
+    def __init__(self, condition, filter, action=None, size=100, stack=10, vars=False):
         self.action = action
-        self.size = size
-        self.queue = collections.deque(maxlen=size)
-        self.stack_depth = stack_depth
         self.called = False
-
-        self.filter_condition = lambda _: True
+        self.condition = condition
+        self.queue = collections.deque(maxlen=size)
+        self.queue_filter = filter
+        self.size = size
+        self.stack = stack
+        self.vars = vars
 
     def __call__(self, event):
         """
         Handles the event.
         """
-        if not self.called and self.condition(event):
-            self.called = True
-            for be in self._backlog_events_iter(event):
-                self.action(be)
+        result = self.condition(event)
+        if result:
+            if self.queue:
+                self.action.cleanup()
 
-            return True
+                first_event = self.queue[0]
+                first_depth = first_event.depth - first_event.is_call
+                missing_depth = max(0, self.stack + first_depth - event.depth)
+                if missing_depth:
+                    if first_event.is_call:
+                        first_frame = first_event.frame.f_back
+                    else:
+                        first_frame = first_event.frame
+                    if first_frame:
+                        stack_events = collections.deque()
+                        for depth_delta, frame in enumerate(islice(frame_iterator(first_frame), missing_depth)):
+                            stack_event = Event(
+                                frame=frame, kind='call', arg=None,
+                                threading_support=event.threading_support,
+                                depth=first_depth - depth_delta, calls=-1
+                            )
+                            if not self.vars:
+                                # noinspection PyPropertyAccess
+                                stack_event.locals = {}
+                                stack_event.detached = True
+                            stack_events.appendleft(stack_event)
+                        for stack_event in stack_events:
+                            if self.queue_filter is None:
+                                self.action(stack_event)
+                            elif self.queue_filter(stack_event):
+                                self.action(stack_event)
+                for backlog_event in self.queue:
+                    if self.queue_filter is None:
+                        self.action(backlog_event)
+                    elif self.queue_filter(backlog_event):
+                        self.action(backlog_event)
+                self.queue.clear()
+        else:
+            detached_event = event.detach(self.action.try_repr if self.vars else None)
+            detached_event.frame = event.frame
+            self.queue.append(detached_event)
 
-        if not self.called and self.size and self.filter_condition(event):
-            event.detach()
-            self.queue.append(event)
-
-        return False
-
-    def _backlog_events_iter(self, event):
-        stack_events_length = self._compute_stack_events_length(event)
-        first_event = self.queue[0] if self.queue else event
-        first_frame = first_event.frame
-        initial_event_depth = first_event.depth
-
-        if first_event.kind == 'call':
-            first_frame = first_frame.f_back
-            initial_event_depth -= 1
-
-        stack_events = [
-            Event(
-                frame=frame, kind='call', arg=None,
-                threading_support=event.threading_support,
-                depth=initial_event_depth - i, calls=-1
-            )
-            for i, frame in enumerate(islice(frame_iterator(first_frame), stack_events_length))
-        ]
-        stack_events.reverse()
-        yield from iter(stack_events)
-        yield from iter(self.queue)
-
-    def _compute_stack_events_length(self, event):
-        if len(self.queue) > 1:
-            backlog_depth_length = event.depth - self.queue[0].depth
-            if backlog_depth_length > 0:
-                stack_events_length = self.stack_depth - backlog_depth_length
-                if stack_events_length > 0:
-                    return stack_events_length
-                else:
-                    return 0
-
-        return self.stack_depth
+        return result
 
     def __str__(self):
         return 'Backlog(%s, %s, size=%s, depth=%s)' % (
-            self.condition, self.action, self.size, self.stack_depth
+            self.condition, self.action, self.size, self.stack
         )
 
     def __repr__(self):
         return '<hunter.predicates.Backlog: condition=%r, action=%r, size=%r, depth=%r>' % (
-            self.condition, self.action, self.size, self.stack_depth
+            self.condition, self.action, self.size, self.stack
         )
 
     def __eq__(self, other):
@@ -731,11 +728,11 @@ class Backlog(object):
             self.condition == other.condition and
             self.action == other.action and
             self.queue == other.queue and
-            self.stack_depth == other.stack_depth
+            self.stack == other.stack
         )
 
     def __hash__(self):
-        return hash(('Backlog', self.condition, self.action, self.queue, self.stack_depth))
+        return hash(('Backlog', self.condition, self.action, self.queue, self.stack))
 
     def __or__(self, other):
         """

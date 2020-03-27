@@ -8,36 +8,37 @@ import sys
 import warnings
 import weakref
 
-from .actions import Action
+from .actions import Action, ColorStreamAction
 from .actions import CallPrinter
 from .actions import CodePrinter
 from .actions import Debugger
 from .actions import ErrorSnooper
 from .actions import Manhole
+from .actions import StackPrinter
 from .actions import VarsPrinter
 from .actions import VarsSnooper
-# try:
-#     if os.environ.get("PUREPYTHONHUNTER"):
-#         raise ImportError("Cython speedups are disabled.")
-#
-#     from ._event import Event
-#     from ._predicates import And as _And
-#     from ._predicates import From as _From
-#     from ._predicates import Not as _Not
-#     from ._predicates import Or as _Or
-#     from ._predicates import When
-#     from ._predicates import Query
-#     from ._tracer import Tracer
-# except ImportError:
-from .event import Event  # noqa
-from .predicates import And as _And
-from .predicates import Backlog as _Backlog
-from .predicates import From as _From
-from .predicates import Not as _Not
-from .predicates import Or as _Or
-from .predicates import Query
-from .predicates import When
-from .tracer import Tracer
+try:
+    if os.environ.get("PUREPYTHONHUNTER"):
+        raise ImportError("Cython speedups are disabled.")
+
+    from ._event import Event
+    from ._predicates import And as _And
+    from ._predicates import From as _From
+    from ._predicates import Not as _Not
+    from ._predicates import Or as _Or
+    from ._predicates import When
+    from ._predicates import Query
+    from ._tracer import Tracer
+except ImportError:
+    from .event import Event  # noqa
+    from .predicates import And as _And
+    from .predicates import Backlog as _Backlog
+    from .predicates import From as _From
+    from .predicates import Not as _Not
+    from .predicates import Or as _Or
+    from .predicates import Query
+    from .predicates import When
+    from .tracer import Tracer
 
 try:
     from ._version import version as __version__
@@ -56,6 +57,7 @@ __all__ = (
     'Or',
     'Q',
     'Query',
+    'StackPrinter',
     'VarsPrinter',
     'VarsSnooper',
     'When',
@@ -272,12 +274,15 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
         return _From(condition, predicate, watermark)
 
 
-def Backlog(condition=None, action=CallPrinter, size=100, stack_depth=0, **kwargs):
+def Backlog(condition=None, filter=None, size=100, stack=0, action=CallPrinter,  **kwargs):
     condition = _get_condition(condition, kwargs)
     if inspect.isclass(action):
         action = action()
 
-    return _Backlog(condition, action, size, stack_depth)
+    if not isinstance(action, ColorStreamAction):
+        raise TypeError("Action %r must be an instance of ColorStreamAction." % action)
+
+    return _Backlog(condition, filter=filter, size=size, stack=stack, action=action)
 
 
 def _backlog_filter(self, condition=None, **kwargs):
