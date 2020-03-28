@@ -8,6 +8,7 @@ import threading
 from pprint import pprint
 
 import pytest
+from fields import Namespace
 
 import hunter
 from hunter import And
@@ -44,18 +45,27 @@ class EvilFrame(object):
 
 
 class EvilTracer(object):
+    is_pure = hunter.Tracer.__module__ == 'hunter.tracer'
+
     def __init__(self, *args, **kwargs):
         self._calls = []
         threading_support = kwargs.pop('threading_support', False)
         clear_env_var = kwargs.pop('clear_env_var', False)
         self.handler = hunter._prepare_predicate(*args, **kwargs)
-        self.is_pure = hunter.Tracer.__module__ == 'hunter.tracer'
         self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
 
     def _append(self, event):
         detached_event = event.detach(lambda obj: obj)
         if self.is_pure:
-            detached_event.frame = EvilFrame(f_lasti=event.frame.f_lasti, f_code=event.code)
+            detached_event.detached = False
+            detached_event.frame = EvilFrame(
+                f_globals=event.frame.f_globals,
+                f_locals=event.frame.f_locals,
+
+                f_back=event.frame.f_back,
+                f_lasti=event.frame.f_lasti,
+                f_code=event.code
+            )
         self._calls.append(detached_event)
 
     def __enter__(self):
@@ -1374,14 +1384,231 @@ def test_errorsnooper_fastmode(LineMatcher):
     ])
 
 
-def test_stack_printer(LineMatcher):
+def test_stack_printer_1(LineMatcher):
     buff = StringIO()
-    with trace(Q(function="five", action=StackPrinter(stream=buff))):
+    with trace(Q(function="five", action=StackPrinter(limit=1, stream=buff))):
         from sample7 import one
         one()
 
     output = buff.getvalue()
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
-        "*sample7.py:30:five <= no frames available (detached=True)",
+        "*sample7.py:30:five <= no frames available (detached=True)"
+        if trace.is_pure else
+        "*sample7.py:??:five <= sample7.py:??:four <= sample7.py:??:three <= sample7.py:??:two <= sample7.py:?:one <= test_tracer.py:????:test_stack_printer*",
+    ])
+
+
+def test_stack_printer_2(LineMatcher):
+    buff = StringIO()
+    with trace(Q(function="five", action=StackPrinter(limit=2, stream=buff))):
+        from sample7 import one
+        one()
+
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*sample7.py:30:five <= no frames available (detached=True)"
+        if trace.is_pure else
+        "*sample7.py:??:five <= tests/sample7.py:??:four <= tests/sample7.py:??:three <= tests/sample7.py:??:two <= tests/sample7.py:?:one <= tests/test_tracer.py:????:test_stack_printer*",
+    ])
+
+
+def test_backlog_before_return(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(fullsource_has='return i', size=10, stack=6, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [' 'backlog' ']\n'))))),
+        action=CallPrinter(stream=buff)
+    ):
+        from sample7args import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*test_tracer.py:*  call      => test_backlog_before_return(LineMatcher=?) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7args.py:*  line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=?, b=?, c=*) [[]backlog[]]",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+        "*test_tracer.py:*  call      => test_backlog_before_return(LineMatcher=?) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7args.py:*  line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+    ])
+
+
+def test_backlog_before_call(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(function='five', size=5, stack=5, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [' 'backlog' ']\n'))))),
+        action=CallPrinter(stream=buff)
+
+    ):
+        from sample7args import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+    output = buff.getvalue()
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*test_tracer.py:*  call      => test_backlog_before_call(LineMatcher=?) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]]*})",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7args.py:*  line                        for i in range(1):  # five",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+        "*test_tracer.py:*  call      => test_backlog_before_call(LineMatcher=?) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'})",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7args.py:*  line                        for i in range(1):  # five",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+    ])
+
+
+def test_backlog_vars_before_return(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(fullsource_has='return i', vars=True, size=10, stack=6, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [' 'backlog' ']\n'))))),
+        action=CallPrinter(stream=buff)
+    ):
+        from sample7args import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*test_tracer.py:*  call      => test_backlog_vars_before_return(LineMatcher=*) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7args.py:*  line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=123, b='234', c={'3': [[]4, '5'[]]*}) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]]*}) [[]backlog[]]",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+        "*test_tracer.py:*  call      => test_backlog_vars_before_return(LineMatcher=*) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                  for i in range(1):  # three [[]backlog[]]",
+        "*sample7args.py:*  line                  a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                        for i in range(1):  # five [[]backlog[]]",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+    ])
+
+
+def test_backlog_vars_before_call(LineMatcher):
+    buff = StringIO()
+    with trace(
+        Backlog(function='five', vars=True, size=5, stack=5, action=CallPrinter(
+            stream=Namespace(
+                flush=buff.flush,
+                write=lambda s: buff.write(s.replace('\n', ' [' 'backlog' ']\n'))))),
+        action=CallPrinter(stream=buff)
+    ):
+        from sample7args import one
+        one()
+        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+
+    output = buff.getvalue()
+    print(output)
+    lm = LineMatcher(output.splitlines())
+    lm.fnmatch_lines([
+        "*test_tracer.py:*  call      => test_backlog_vars_before_call(LineMatcher=*) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=123, b='234', c={'3': [[]4, '5'[]]*}) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]]*})",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7args.py:*  line                        for i in range(1):  # five",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
+        "*test_tracer.py:*  call      => test_backlog_vars_before_call(LineMatcher=<class '_pytest.pytester.LineMatcher'>) [[]backlog[]]",
+        "*sample7args.py:*  call         => one(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call            => two(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  call               => three(a='effect', b='effect', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                  four() [[]backlog[]]",
+        "*sample7args.py:*  call                  => four(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'}) [[]backlog[]]",
+        "*sample7args.py:*  line                     for i in range(1):  # four [[]backlog[]]",
+        "*sample7args.py:*  line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
+        "*sample7args.py:*  line                     five() [[]backlog[]]",
+        "*sample7args.py:*  call                     => five(a=123, b='234', c={'3': [[]4, '5'[]], 'side': 'effect'})",
+        "*sample7args.py:*  line                        a = b = c[[]'side'[]] = in_five = 'effect'",
+        "*sample7args.py:*  line                        for i in range(1):  # five",
+        "*sample7args.py:*  line                        return i  # five",
+        "*sample7args.py:*  return                   <= five: 0",
     ])
