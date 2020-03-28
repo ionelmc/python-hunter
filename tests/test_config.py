@@ -4,6 +4,7 @@ import pytest
 
 import hunter
 
+
 @pytest.fixture
 def cleanup():
     hunter._default_trace_args = None
