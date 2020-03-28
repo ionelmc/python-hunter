@@ -3,11 +3,13 @@ from __future__ import absolute_import
 import collections
 import inspect
 import re
-from itertools import chain, islice
+from itertools import chain
+from itertools import islice
 
-from .actions import Action, ColorStreamAction
+from .actions import Action
+from .actions import ColorStreamAction
 from .event import Event
-from .util import StringType, clone_event_and_set_attrs
+from .util import StringType
 from .util import frame_iterator
 
 __all__ = (
@@ -779,4 +781,3 @@ class Backlog(object):
             size=self.size, stack=self.stack, vars=self.vars, action=self.action,
             filter=_merge(*args, **kwargs)
         )
-
