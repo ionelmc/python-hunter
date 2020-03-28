@@ -5,7 +5,7 @@ import inspect
 import re
 from itertools import chain, islice
 
-from .actions import Action
+from .actions import Action, ColorStreamAction
 from .event import Event
 from .util import StringType, clone_event_and_set_attrs
 from .util import frame_iterator
@@ -376,8 +376,8 @@ class From(object):
         self.condition = condition
         self.predicate = predicate
         self.watermark = watermark
-        self.origin_depth = None
-        self.origin_calls = None
+        self._origin_depth = None
+        self._origin_calls = None
 
     def __str__(self):
         return 'From(%s, %s, watermark=%s)' % (
@@ -403,18 +403,18 @@ class From(object):
         """
         Handles the event.
         """
-        if self.origin_depth is None:
+        if self._origin_depth is None:
             if self.condition(event):
-                self.origin_depth = event.depth
-                self.origin_calls = event.calls
+                self._origin_depth = event.depth
+                self._origin_calls = event.calls
                 delta_depth = delta_calls = 0
             else:
                 return False
         else:
-            delta_depth = event.depth - self.origin_depth
-            delta_calls = event.calls - self.origin_calls
+            delta_depth = event.depth - self._origin_depth
+            delta_calls = event.calls - self._origin_calls
             if delta_depth < self.watermark:
-                self.origin_depth = None
+                self._origin_depth = None
                 return False
         if self.predicate is None:
             return True
@@ -654,15 +654,16 @@ class Not(object):
 
 
 class Backlog(object):
-    def __init__(self, condition, filter, action=None, size=100, stack=10, vars=False):
-        self.action = action
-        self.called = False
+    def __init__(self, condition, size=100, stack=10, vars=False, action=None, filter=None):
+        self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
+        if not isinstance(self.action, ColorStreamAction):
+            raise TypeError("Action %r must be a ColorStreamAction." % self.action)
         self.condition = condition
         self.queue = collections.deque(maxlen=size)
-        self.queue_filter = filter
         self.size = size
         self.stack = stack
         self.vars = vars
+        self._filter = filter
 
     def __call__(self, event):
         """
@@ -674,10 +675,11 @@ class Backlog(object):
                 self.action.cleanup()
 
                 first_event = self.queue[0]
-                first_depth = first_event.depth - first_event.is_call
+                first_is_call = first_event.kind == 'call'
+                first_depth = first_event.depth - first_is_call
                 missing_depth = max(0, self.stack + first_depth - event.depth)
                 if missing_depth:
-                    if first_event.is_call:
+                    if first_is_call:
                         first_frame = first_event.frame.f_back
                     else:
                         first_frame = first_event.frame
@@ -695,14 +697,14 @@ class Backlog(object):
                                 stack_event.detached = True
                             stack_events.appendleft(stack_event)
                         for stack_event in stack_events:
-                            if self.queue_filter is None:
+                            if self._filter is None:
                                 self.action(stack_event)
-                            elif self.queue_filter(stack_event):
+                            elif self._filter(stack_event):
                                 self.action(stack_event)
                 for backlog_event in self.queue:
-                    if self.queue_filter is None:
+                    if self._filter is None:
                         self.action(backlog_event)
-                    elif self.queue_filter(backlog_event):
+                    elif self._filter(backlog_event):
                         self.action(backlog_event)
                 self.queue.clear()
         else:
@@ -713,26 +715,28 @@ class Backlog(object):
         return result
 
     def __str__(self):
-        return 'Backlog(%s, %s, size=%s, depth=%s)' % (
-            self.condition, self.action, self.size, self.stack
+        return 'Backlog(%s, size=%s, stack=%s, vars=%s, action=%s, filter=%s)' % (
+            self.condition, self.size, self.stack, self.vars, self.action, self._filter
         )
 
     def __repr__(self):
-        return '<hunter.predicates.Backlog: condition=%r, action=%r, size=%r, depth=%r>' % (
-            self.condition, self.action, self.size, self.stack
+        return '<hunter.predicates.Backlog: condition=%r, size=%r, stack=%r, vars=%r, action=%r, filter=%r>' % (
+            self.condition, self.size, self.stack, self.vars, self.action, self._filter
         )
 
     def __eq__(self, other):
         return (
             isinstance(other, Backlog) and
-            self.condition == other.condition and
-            self.action == other.action and
-            self.queue == other.queue and
-            self.stack == other.stack
+            self.condition == self.condition and
+            self.size == self.size and
+            self.stack == self.stack and
+            self.vars == self.vars and
+            self.action == self.action
+
         )
 
     def __hash__(self):
-        return hash(('Backlog', self.condition, self.action, self.queue, self.stack))
+        return hash(('Backlog', self.condition, self.size, self.stack, self.vars, self.action, self._filter))
 
     def __or__(self, other):
         """
@@ -750,7 +754,7 @@ class Backlog(object):
         """
         Convenience API so you can do ``~Backlog(...)``. It converts that to ``Not(Backlog(...))``.
         """
-        return Not(self)
+        return Backlog(Not(self.condition), size=self.size, stack=self.stack, vars=self.vars, action=self.action, filter=self._filter)
 
     def __ror__(self, other):
         """
@@ -763,3 +767,16 @@ class Backlog(object):
         Convenience API so you can do ``other & Backlog(...)``. It converts that to ``And(other, Backlog(...))``.
         """
         return And(other, self)
+
+    def filter(self, *args, **kwargs):
+        from hunter import _merge
+
+        if self.filter is not None:
+            args = (self.filter,) + args
+
+        return Backlog(
+            Not(self.condition),
+            size=self.size, stack=self.stack, vars=self.vars, action=self.action,
+            filter=_merge(*args, **kwargs)
+        )
+

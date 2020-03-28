@@ -8,7 +8,7 @@ import sys
 import warnings
 import weakref
 
-from .actions import Action, ColorStreamAction
+from .actions import Action
 from .actions import CallPrinter
 from .actions import CodePrinter
 from .actions import Debugger
@@ -17,6 +17,7 @@ from .actions import Manhole
 from .actions import StackPrinter
 from .actions import VarsPrinter
 from .actions import VarsSnooper
+
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
         raise ImportError("Cython speedups are disabled.")
@@ -166,6 +167,14 @@ def Q(*predicates, **query):
     return result
 
 
+def _merge(*predicates, **query):
+    if predicates:
+        predicates += Query(**query),
+        return And(*predicates)
+    else:
+        return Query(**query)
+
+
 def _flatten(cls, predicate, *predicates):
     if not predicates:
         return predicate
@@ -274,33 +283,14 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
         return _From(condition, predicate, watermark)
 
 
-def Backlog(condition=None, filter=None, size=100, stack=0, action=CallPrinter,  **kwargs):
-    condition = _get_condition(condition, kwargs)
-    if inspect.isclass(action):
-        action = action()
-
-    if not isinstance(action, ColorStreamAction):
-        raise TypeError("Action %r must be an instance of ColorStreamAction." % action)
-
-    return _Backlog(condition, filter=filter, size=size, stack=stack, action=action)
-
-
-def _backlog_filter(self, condition=None, **kwargs):
-    self.filter_condition = _get_condition(condition, kwargs)
-    return self
-
-
-_Backlog.filter = _backlog_filter
-
-
-def _get_condition(condition, kwargs):
-    if condition is None:
-        return Q(**kwargs)
-    elif kwargs:
-        raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
-            kwargs.keys()))
-
-    return condition
+def Backlog(*conditions, **kwargs):
+    size = kwargs.pop("size", 100)
+    stack = kwargs.pop("stack", 10)
+    vars = kwargs.pop("vars", False)
+    action = kwargs.pop("action", CallPrinter)
+    if not conditions and not kwargs:
+        raise TypeError("Backlog needs at least 1 condition.")
+    return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, action=action)
 
 
 def stop():
@@ -310,7 +300,7 @@ def stop():
     global _last_tracer
 
     if _last_tracer is None:
-        warnings.warn('There is no tracer to stop.')
+        warnings.warn("There is no tracer to stop.")
     else:
         _last_tracer.stop()
         _last_tracer = None
@@ -415,14 +405,14 @@ def wrap(function_to_trace=None, **trace_options):
         @functools.wraps(func)
         def tracing_wrapper(*args, **kwargs):
             predicates = []
-            local = trace_options.pop('local', False)
+            local = trace_options.pop("local", False)
             if local:
                 predicates.append(Query(depth_lt=2))
             predicates.append(
                 From(
                     Query(kind="call"),
                     Not(When(
-                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
+                        Query(calls_gt=0, depth=0) & Not(Query(kind="return")),
                         Stop
                     )),
                     watermark=-1

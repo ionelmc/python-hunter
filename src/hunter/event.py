@@ -63,8 +63,6 @@ class Event(object):
         #:
         #: :type: str
         self.kind = kind
-        self.is_call = kind == 'call'
-        self.is_line = kind == 'line'
 
         #: A value that depends on ``kind``
         self.arg = arg
@@ -150,8 +148,6 @@ class Event(object):
         event.calls = self.calls
         event.depth = self.depth
         event.kind = self.kind
-        event.is_call = self.is_call
-        event.is_line = self.is_line
 
         event.detached = True
 
