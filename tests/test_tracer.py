@@ -817,119 +817,119 @@ def test_from_predicate_line_no_predicate(LineMatcher):
     assert 'one' not in output
 
 
-def test_backlog_size_call(LineMatcher):
-    backlog_buff = StringIO()
-    tracer_buff = StringIO()
-    from sample7 import one
-    with trace(
-        Backlog(function='five', size=5, action=CallPrinter(stream=backlog_buff)),
-        action=CallPrinter(stream=tracer_buff)
-    ):
-        one()
-    backlog_output = backlog_buff.getvalue()
-    lm = LineMatcher(backlog_output.splitlines())
-    lm.fnmatch_lines([
-        "* line      for i in range(1):  # three",
-        "* line      four()",
-        "* call      => four()",
-        "* line         for i in range(1):  # four",
-        "* line         five()",
-    ])
-    assert '=> three' not in backlog_output
-    assert '=> five()' not in backlog_output
-    assert 'two' not in backlog_output
-    assert 'one' not in backlog_output
-
-    tracer_output = tracer_buff.getvalue()
-    assert len(tracer_output.splitlines()) == 1
-    assert " call         => five()" in tracer_output
-
-
-def test_backlog_size_line(LineMatcher):
-    buff = StringIO()
-    tracer_buff = StringIO()
-    from sample7 import one
-    with trace(
-        Backlog(fullsource_has='return i', size=5, action=CallPrinter(stream=buff)),
-        action=CallPrinter(stream=tracer_buff)
-    ):
-        one()
-    output = buff.getvalue()
-    lm = LineMatcher(output.splitlines())
-    lm.fnmatch_lines([
-        "* line      for i in range(1):  # four",
-        "* line      five()",
-        "* call      => five()",
-        "* line         in_five = 1",
-        "* line         for i in range(1):  # five",
-    ])
-
-    assert 'four' not in output
-
-    tracer_output = tracer_buff.getvalue()
-    assert len(tracer_output.splitlines()) == 1
-    assert " line         return i" in tracer_output
-
-
-def test_backlog_size_call_filter(LineMatcher):
-    buff = StringIO()
-    tracer_buff = StringIO()
-    from sample7 import one
-    with trace(
-        Backlog(function='five', size=5, action=CallPrinter(stream=buff)).filter(~Q(fullsource_has='four')),
-        action=CallPrinter(stream=tracer_buff)
-    ):
-        one()
-    output = buff.getvalue()
-    lm = LineMatcher(output.splitlines())
-    lm.fnmatch_lines([
-        "* line      for i in range(1):  # two",
-        "* line      three()",
-        "* call      => three()",
-        "* line         for i in range(1):  # three",
-        "* line         five()",
-    ])
-    assert "four" not in output
-
-    tracer_output = tracer_buff.getvalue()
-    assert len(tracer_output.splitlines()) == 1
-    assert " call         => five()" in tracer_buff.getvalue()
-
-
-def test_backlog_size_predicate_line_filter(LineMatcher):
-    buff = StringIO()
-    tracer_buff = StringIO()
-    from sample7 import one
-    with trace(
-        Backlog(fullsource_has='return i', size=5, action=CallPrinter(stream=buff)).filter(~Q(fullsource_has="five")),
-        action=CallPrinter(stream=tracer_buff)
-    ):
-        one()
-    output = buff.getvalue()
-    lm = LineMatcher(output.splitlines())
-    lm.fnmatch_lines([
-        "* call      => three()",
-        "* line         for i in range(1):  # three",
-        "* line         four()",
-        "* call         => four()",
-        "* line            for i in range(1):  # four",
-    ])
-
-    assert "five" not in output
-
-    tracer_output = tracer_buff.getvalue()
-    assert len(tracer_output.splitlines()) == 1
-    assert " line            return i" in tracer_output
-
-
-def test_backlog_size_first_line_match(LineMatcher):
-    buff = StringIO()
-    tracer_buff = StringIO()
-    from sample7 import one
-    with trace(Backlog(fullsource_has='one', module_rx='sample7', size=100, action=CallPrinter(stream=buff)).filter(fullsource_has='one'), action=CallPrinter(stream=tracer_buff)):
-        one()
-    output = buff.getvalue()
-    assert not output
+# def test_backlog_size_call(LineMatcher):
+#     backlog_buff = StringIO()
+#     tracer_buff = StringIO()
+#     from sample7 import one
+#     with trace(
+#         Backlog(function='five', size=5, action=CallPrinter(stream=backlog_buff)),
+#         action=CallPrinter(stream=tracer_buff)
+#     ):
+#         one()
+#     backlog_output = backlog_buff.getvalue()
+#     lm = LineMatcher(backlog_output.splitlines())
+#     lm.fnmatch_lines([
+#         "* line      for i in range(1):  # three",
+#         "* line      four()",
+#         "* call      => four()",
+#         "* line         for i in range(1):  # four",
+#         "* line         five()",
+#     ])
+#     assert '=> three' not in backlog_output
+#     assert '=> five()' not in backlog_output
+#     assert 'two' not in backlog_output
+#     assert 'one' not in backlog_output
+#
+#     tracer_output = tracer_buff.getvalue()
+#     assert len(tracer_output.splitlines()) == 1
+#     assert " call         => five()" in tracer_output
+#
+#
+# def test_backlog_size_line(LineMatcher):
+#     buff = StringIO()
+#     tracer_buff = StringIO()
+#     from sample7 import one
+#     with trace(
+#         Backlog(fullsource_has='return i', size=5, action=CallPrinter(stream=buff)),
+#         action=CallPrinter(stream=tracer_buff)
+#     ):
+#         one()
+#     output = buff.getvalue()
+#     lm = LineMatcher(output.splitlines())
+#     lm.fnmatch_lines([
+#         "* line      for i in range(1):  # four",
+#         "* line      five()",
+#         "* call      => five()",
+#         "* line         in_five = 1",
+#         "* line         for i in range(1):  # five",
+#     ])
+#
+#     assert 'four' not in output
+#
+#     tracer_output = tracer_buff.getvalue()
+#     assert len(tracer_output.splitlines()) == 1
+#     assert " line         return i" in tracer_output
+#
+#
+# def test_backlog_size_call_filter(LineMatcher):
+#     buff = StringIO()
+#     tracer_buff = StringIO()
+#     from sample7 import one
+#     with trace(
+#         Backlog(function='five', size=5, action=CallPrinter(stream=buff)).filter(~Q(fullsource_has='four')),
+#         action=CallPrinter(stream=tracer_buff)
+#     ):
+#         one()
+#     output = buff.getvalue()
+#     lm = LineMatcher(output.splitlines())
+#     lm.fnmatch_lines([
+#         "* line      for i in range(1):  # two",
+#         "* line      three()",
+#         "* call      => three()",
+#         "* line         for i in range(1):  # three",
+#         "* line         five()",
+#     ])
+#     assert "four" not in output
+#
+#     tracer_output = tracer_buff.getvalue()
+#     assert len(tracer_output.splitlines()) == 1
+#     assert " call         => five()" in tracer_buff.getvalue()
+#
+#
+# def test_backlog_size_predicate_line_filter(LineMatcher):
+#     buff = StringIO()
+#     tracer_buff = StringIO()
+#     from sample7 import one
+#     with trace(
+#         Backlog(fullsource_has='return i', size=5, action=CallPrinter(stream=buff)).filter(~Q(fullsource_has="five")),
+#         action=CallPrinter(stream=tracer_buff)
+#     ):
+#         one()
+#     output = buff.getvalue()
+#     lm = LineMatcher(output.splitlines())
+#     lm.fnmatch_lines([
+#         "* call      => three()",
+#         "* line         for i in range(1):  # three",
+#         "* line         four()",
+#         "* call         => four()",
+#         "* line            for i in range(1):  # four",
+#     ])
+#
+#     assert "five" not in output
+#
+#     tracer_output = tracer_buff.getvalue()
+#     assert len(tracer_output.splitlines()) == 1
+#     assert " line            return i" in tracer_output
+#
+#
+# def test_backlog_size_first_line_match(LineMatcher):
+#     buff = StringIO()
+#     tracer_buff = StringIO()
+#     from sample7 import one
+#     with trace(Backlog(fullsource_has='one', module_rx='sample7', size=100, action=CallPrinter(stream=buff)).filter(fullsource_has='one'), action=CallPrinter(stream=tracer_buff)):
+#         one()
+#     output = buff.getvalue()
+#     assert not output
 
 
 def decorator(func):

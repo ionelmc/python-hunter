@@ -4,6 +4,14 @@ import pytest
 
 import hunter
 
+@pytest.fixture
+def cleanup():
+    hunter._default_trace_args = None
+    hunter._default_config.clear()
+    yield
+    hunter._default_trace_args = None
+    hunter._default_config.clear()
+
 
 @pytest.mark.parametrize('config', [
     ('foobar', (('x',), {'y': 1}), {},
@@ -29,7 +37,7 @@ import hunter
     ('threads=1', (('x',), {'y': 1, 'threads': 1}), {}, ''),
     ('thread=1', (('x',), {'y': 1, 'thread': 1}), {}, ''),
     ('', (('x',), {'y': 1}), {}, ''),
-])
+], ids=lambda x: repr(x))
 def test_config(monkeypatch, config, capsys):
     env, result, defaults, stderr = config
     monkeypatch.setitem(os.environ, 'PYTHONHUNTERCONFIG', env)
