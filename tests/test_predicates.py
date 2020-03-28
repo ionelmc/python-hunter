@@ -17,6 +17,7 @@ from hunter import Or
 from hunter import Q
 from hunter import Query
 from hunter import When
+from hunter.actions import ColorStreamAction
 
 
 class FakeCallable(object):
@@ -218,44 +219,42 @@ def test_from(mockevent):
 
 
 def test_backlog(mockevent):
-    pytest.raises(AttributeError, Backlog(), 1)
-    assert Backlog()(mockevent) is True
+    assert Backlog(module=__name__)(mockevent) is True
 
-    called = []
-    assert Backlog(Q(module='foo') | Q(module='bar'), lambda: lambda ev: called.append(ev))(mockevent) is False
-    assert called == []
+    class Action(ColorStreamAction):
+        called = []
 
-    assert Backlog(Not(Q(module='foo') | Q(module='bar')), lambda: lambda ev: called.append(ev))(mockevent) is True
-    assert called
+        def __call__(self, event):
+            self.called.append(event)
 
-    called = []
-    assert Backlog(Q(module=__name__), lambda: lambda ev: called.append(ev))(mockevent) is True
-    assert called
+    assert Backlog(Q(module='foo') | Q(module='bar'), action=Action)(mockevent) is False
+    assert Action.called == []
+
+    backlog = Backlog(Not(Q(module='foo') | Q(module='bar')), action=Action)
+    assert backlog(mockevent) is True
+    assert backlog(mockevent) is True
+    assert Action.called == []
+
+    def predicate(ev, store=[]):
+        store.append(1)
+        return len(store) > 2
+
+    backlog = Backlog(predicate, action=Action, stack=0)
+
+    assert backlog(mockevent) is False
+    assert backlog(mockevent) is False
+    assert backlog(mockevent) is True
+    assert len(Action.called) == 2
 
 
-def test_backlog_predicate():
-    assert isinstance(Backlog().action, CallPrinter)
-    assert isinstance(Backlog(action=CallPrinter).action, CallPrinter)
+def test_backlog_action_setup():
+    assert isinstance(Backlog(module=1).action, CallPrinter)
+    assert isinstance(Backlog(module=1, action=CodePrinter).action, CodePrinter)
 
-    class FakeAction:
-        called = False
+    class FakeAction(ColorStreamAction):
+        pass
 
-        def __init__(self):
-            FakeAction.called = True
-
-    assert not FakeAction.called
-    assert isinstance(Backlog(action=FakeAction).action, FakeAction)
-    assert FakeAction.called
-
-    class FakeAction:
-        not_called = True
-
-        def __call__(self):
-            FakeAction.not_called = False
-
-    assert FakeAction.not_called
-    assert isinstance(Backlog(action=FakeAction()).action, FakeAction)
-    assert FakeAction.not_called
+    assert isinstance(Backlog(module=1, action=FakeAction).action, FakeAction)
 
 
 def test_and_or_kwargs():
@@ -270,10 +269,11 @@ def test_from_typeerror():
 
 
 def test_backlog_typeerror():
-    pytest.raises(TypeError, Backlog, 1, 2, kind=3)
-    pytest.raises(TypeError, Backlog, 1, function=2)
+    pytest.raises(TypeError, Backlog)
     pytest.raises(TypeError, Backlog, junk=1)
-    pytest.raises(TypeError, Backlog, size=1, depth=1)
+    pytest.raises(TypeError, Backlog, action=1)
+    pytest.raises(TypeError, Backlog, module=1, action=1)
+    pytest.raises(TypeError, Backlog, module=1, action=type)
 
 
 def test_and(mockevent):
@@ -328,11 +328,10 @@ def test_str_repr():
     )
     assert str(From(module='a', depth_gte=2)) == "From(Query(module='a'), Query(depth_gte=2), watermark=0)"
 
-    assert repr(Backlog(module='a', action=lambda: 'foo', size=2)).replace('<hunter._', '<hunter.') == (
+    assert repr(Backlog(module='a', action=CodePrinter, size=2)).replace('<hunter._', '<hunter.').startswith(
         "<hunter.predicates.Backlog: condition=<hunter.predicates.Query: query_eq=(('module', 'a'),)>, "
-        "action='foo', size=2, depth=None>"
+        "size=2, stack=10, vars=False, action=CodePrinter"
     )
-    assert str(Backlog(module='a', action=lambda: 'foo', depth=2)) == "Backlog(Query(module='a'), foo, size=None, depth=2)"
 
     assert repr(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
     assert str(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"
@@ -348,7 +347,6 @@ def test_hashing():
     assert (Q(module='a') & Q(function='b')) in {Q(module='a') & Q(function='b')}
     assert Q(module='a', action=id) in {Q(module='a', action=id)}
     assert From(module='a', depth_gte=2) in {From(module='a', depth_gte=2)}
-    assert Backlog(module='a', size=3) in {Backlog(module='a', size=3)}
 
     class Foo(object):
         def __call__(self):

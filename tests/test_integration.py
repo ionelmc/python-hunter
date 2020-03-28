@@ -630,7 +630,7 @@ def test_backlog_before_return(LineMatcher):
         "*sample7args.py:*   line                     for i in range(1):  # four [[]backlog[]]",
         "*sample7args.py:*   line                     a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
         "*sample7args.py:*   line                     five() [[]backlog[]]",
-        "*sample7args.py:*   call                     => five(a=?, b=?, c=?) [[]backlog[]]",
+        "*sample7args.py:*   call                     => five(a=?, b=?, c=*) [[]backlog[]]",
         "*sample7args.py:*   line                        a = b = c[[]'side'[]] = in_five = 'effect' [[]backlog[]]",
         "*sample7args.py:*   line                        for i in range(1):  # five [[]backlog[]]",
         "*sample7args.py:*   line                        return i  # five",

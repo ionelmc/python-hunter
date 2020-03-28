@@ -35,6 +35,9 @@ PY3 = sys.version_info[0] == 3
 
 class EvilFrame(object):
     f_back = None
+    f_globals = {}
+    f_locals = {}
+    f_lineno = 0
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -110,12 +113,12 @@ def test_predicate_reverse_and_or():
     assert str(foobar | ~From(module=1, depth=2)) == 'Or(Foobar, Not(From(Query(module=1), Query(depth=2), watermark=0)))'
     assert str(From(module=1, depth=2) & foobar) == 'And(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
     assert str(From(module=1, depth=2) | foobar) == 'Or(From(Query(module=1), Query(depth=2), watermark=0), Foobar)'
-    assert str(foobar & Backlog(module=1, action=lambda: 'foo', depth=2)) == 'And(Foobar, Backlog(Query(module=1), foo, size=None, depth=2))'
-    assert str(foobar | Backlog(module=1, action=lambda: 'foo', depth=2)) == 'Or(Foobar, Backlog(Query(module=1), foo, size=None, depth=2))'
-    assert str(foobar & ~Backlog(module=1, action=lambda: 'foo', depth=2)) == 'And(Foobar, Not(Backlog(Query(module=1), foo, size=None, depth=2)))'
-    assert str(foobar | ~Backlog(module=1, action=lambda: 'foo', depth=2)) == 'Or(Foobar, Not(Backlog(Query(module=1), foo, size=None, depth=2)))'
-    assert str(Backlog(module=1, action=lambda: 'foo', depth=2) & foobar) == 'And(Backlog(Query(module=1), foo, size=None, depth=2), Foobar)'
-    assert str(Backlog(module=1, action=lambda: 'foo', depth=2) | foobar) == 'Or(Backlog(Query(module=1), foo, size=None, depth=2), Foobar)'
+    assert str(foobar & Backlog(module=1)).startswith('And(Foobar, Backlog(Query(module=1), ')
+    assert str(foobar | Backlog(module=1)).startswith('Or(Foobar, Backlog(Query(module=1), ')
+    assert str(foobar & ~Backlog(module=1)).startswith('And(Foobar, Backlog(Not(Query(module=1)), ')
+    assert str(foobar | ~Backlog(module=1)).startswith('Or(Foobar, Backlog(Not(Query(module=1)), ')
+    assert str(Backlog(module=1) & foobar).startswith('And(Backlog(Query(module=1), ')
+    assert str(Backlog(module=1) | foobar).startswith('Or(Backlog(Query(module=1), ')
     assert str(Q(module=1) & foobar) == 'And(Query(module=1), Foobar)'
     assert str(Q(module=1) | foobar) == 'Or(Query(module=1), Foobar)'
     assert str(~Q(module=1) & foobar) == 'And(Not(Query(module=1)), Foobar)'
