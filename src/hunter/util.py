@@ -194,10 +194,3 @@ def frame_iterator(frame):
     while frame:
         yield frame
         frame = frame.f_back
-
-
-def clone_event_and_set_attrs(event, **kwargs):
-    new_event = event.clone()
-    for key, val in kwargs.items():
-        setattr(new_event, key, val)
-    return new_event

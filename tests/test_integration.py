@@ -9,7 +9,7 @@ from pprint import pprint
 import pytest
 from fields import Namespace
 
-from hunter import Backlog, wrap
+from hunter import Backlog
 from hunter import CallPrinter
 from hunter import CodePrinter
 from hunter import Debugger
@@ -21,7 +21,7 @@ from hunter import VarsPrinter
 from hunter import VarsSnooper
 from hunter import When
 from hunter import trace
-
+from hunter import wrap
 
 try:
     from cStringIO import StringIO
