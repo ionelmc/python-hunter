@@ -5,7 +5,7 @@ import pytest
 import hunter
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def cleanup():
     hunter._default_trace_args = None
     hunter._default_config.clear()
