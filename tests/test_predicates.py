@@ -244,7 +244,7 @@ def test_backlog(mockevent):
     assert backlog(mockevent) is False
     assert backlog(mockevent) is False
     assert backlog(mockevent) is True
-    assert len(Action.called) == 2
+    assert len(Action.called) == 1
 
 
 def test_backlog_action_setup():

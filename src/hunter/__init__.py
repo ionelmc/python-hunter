@@ -284,13 +284,15 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
 
 
 def Backlog(*conditions, **kwargs):
+    action = kwargs.pop("action", CallPrinter)
+    filter = kwargs.pop("filter", None)
     size = kwargs.pop("size", 100)
     stack = kwargs.pop("stack", 10)
+    strip = kwargs.pop("strip", True)
     vars = kwargs.pop("vars", False)
-    action = kwargs.pop("action", CallPrinter)
     if not conditions and not kwargs:
         raise TypeError("Backlog needs at least 1 condition.")
-    return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, action=action)
+    return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, strip=strip, action=action, filter=filter)
 
 
 def stop():

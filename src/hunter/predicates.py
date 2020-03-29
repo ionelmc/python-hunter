@@ -656,7 +656,7 @@ class Not(object):
 
 
 class Backlog(object):
-    def __init__(self, condition, size=100, stack=10, vars=False, action=None, filter=None):
+    def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
         self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
             raise TypeError("Action %r must be a ColorStreamAction." % self.action)
@@ -664,6 +664,7 @@ class Backlog(object):
         self.queue = collections.deque(maxlen=size)
         self.size = size
         self.stack = stack
+        self.strip = strip
         self.vars = vars
         self._filter = filter
 
@@ -678,8 +679,9 @@ class Backlog(object):
 
                 first_event = self.queue[0]
                 first_is_call = first_event.kind == 'call'
-                first_depth = first_event.depth - first_is_call
-                missing_depth = max(0, self.stack + first_depth - event.depth)
+                first_depth = first_event.depth
+                backlog_call_depth = event.depth - first_depth
+                missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
                 if missing_depth:
                     if first_is_call:
                         first_frame = first_event.frame.f_back
@@ -691,11 +693,12 @@ class Backlog(object):
                             stack_event = Event(
                                 frame=frame, kind='call', arg=None,
                                 threading_support=event.threading_support,
-                                depth=first_depth - depth_delta, calls=-1
+                                depth=first_depth - depth_delta - 1, calls=-1
                             )
                             if not self.vars:
                                 # noinspection PyPropertyAccess
                                 stack_event.locals = {}
+                                stack_event.globals = {}
                                 stack_event.detached = True
                             stack_events.appendleft(stack_event)
                         for stack_event in stack_events:
@@ -710,9 +713,14 @@ class Backlog(object):
                         self.action(backlog_event)
                 self.queue.clear()
         else:
-            detached_event = event.detach(self.action.try_repr if self.vars else None)
-            detached_event.frame = event.frame
-            self.queue.append(detached_event)
+            if self.strip and event.depth < 1:
+                # Looks like we're back to depth 0 for some reason.
+                # Delete everything because we don't want to see what is likely just a long stream of useless returns.
+                self.queue.clear()
+            if self._filter is None or self._filter(event):
+                detached_event = event.detach(self.action.try_repr if self.vars else None)
+                detached_event.frame = event.frame
+                self.queue.append(detached_event)
 
         return result
 
@@ -777,7 +785,7 @@ class Backlog(object):
             args = (self.filter,) + args
 
         return Backlog(
-            Not(self.condition),
+            self.condition,
             size=self.size, stack=self.stack, vars=self.vars, action=self.action,
             filter=_merge(*args, **kwargs)
         )
