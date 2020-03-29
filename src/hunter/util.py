@@ -8,9 +8,9 @@ from collections import OrderedDict
 from collections import defaultdict
 from collections import deque
 
-from colorama import Back
-from colorama import Fore
-from colorama import Style
+from .vendor.colorama import Back
+from .vendor.colorama import Fore
+from .vendor.colorama import Style
 
 try:
     import __builtin__ as builtins

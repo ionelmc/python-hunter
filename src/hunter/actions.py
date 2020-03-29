@@ -8,8 +8,6 @@ from collections import defaultdict
 from itertools import islice
 from os import getpid
 
-from colorama import AnsiToWin32
-
 from . import config
 from .util import BUILTIN_SYMBOLS
 from .util import CALL_COLORS
@@ -22,6 +20,7 @@ from .util import builtins
 from .util import frame_iterator
 from .util import iter_symbols
 from .util import safe_repr
+from .vendor.colorama import AnsiToWin32
 
 try:
     from threading import get_ident
