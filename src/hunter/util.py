@@ -177,7 +177,8 @@ def safe_repr(obj, maxdepth=5):
         return '<%sbound method %s of %s>' % ('un' if self is None else '', name, safe_repr(self, newdepth))
     elif obj_type_type is type and BaseException in obj_type.__mro__:
         return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
-    elif obj_type_type is type and obj_type is not InstanceType and obj_type.__module__ in (builtins.__name__, 'io', 'socket', '_socket'):
+    elif obj_type_type is type and obj_type is not InstanceType and \
+            obj_type.__module__ in (builtins.__name__, 'datetime', 'decimal', 'io', 're', 'socket', '_socket'):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)
         return repr(obj)
