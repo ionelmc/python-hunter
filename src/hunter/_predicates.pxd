@@ -1,6 +1,6 @@
 # cython: language_level=3str
 cimport cython
-
+from cpython cimport bool
 from ._event cimport Event
 
 
@@ -47,6 +47,17 @@ cdef class From:
         readonly int watermark
         readonly int origin_depth
         readonly int origin_calls
+
+@cython.final
+cdef class Backlog:
+    cdef:
+        object condition
+        int size
+        int stack
+        bool vars
+        bool strip
+        object action
+        object filter
 
 cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)

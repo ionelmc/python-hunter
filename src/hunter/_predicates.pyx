@@ -1,6 +1,7 @@
 # cython: linetrace=True, language_level=3str
 from __future__ import absolute_import
 
+from collections import deque
 import inspect
 import re
 from itertools import chain
@@ -12,7 +13,7 @@ from cpython.object cimport Py_NE
 
 from ._event cimport Event
 
-from .actions import Action
+from .actions import Action, ColorStreamAction
 
 __all__ = (
     'And',
@@ -390,6 +391,144 @@ cdef inline fast_From_call(From self, Event event):
         relative_event.calls = delta_calls
         return fast_call(self.predicate, relative_event)
 
+
+@cython.final
+cdef class Backlog(object):
+    def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
+        self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
+        if not isinstance(self.action, ColorStreamAction):
+            raise TypeError("Action %r must be a ColorStreamAction." % self.action)
+        self.condition = condition
+        self.queue = deque(maxlen=size)
+        self.size = size
+        self.stack = stack
+        self.strip = strip
+        self.vars = vars
+        self._filter = filter
+
+    def __call__(self, event):
+        return fast_Backlog_call(self, event)
+
+    def __str__(self):
+        return 'Backlog(%s, size=%s, stack=%s, vars=%s, action=%s, filter=%s)' % (
+            self.condition, self.size, self.stack, self.vars, self.action, self._filter
+        )
+
+    def __repr__(self):
+        return '<hunter.predicates.Backlog: condition=%r, size=%r, stack=%r, vars=%r, action=%r, filter=%r>' % (
+            self.condition, self.size, self.stack, self.vars, self.action, self._filter
+        )
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, Backlog) and
+            self.condition == (<Backlog> other).condition and
+            self.size == (<Backlog> other).size and
+            self.stack == (<Backlog> other).stack and
+            self.vars == (<Backlog> other).vars and
+            self.action == (<Backlog> other).action
+        )
+
+    def __hash__(self):
+        return hash(('Backlog', self.condition, self.size, self.stack, self.vars, self.action, self._filter))
+
+    def __or__(self, other):
+        return Or(self, other)
+
+    def __and__(self, other):
+        return And(self, other)
+
+    def __invert__(self):
+        return Backlog(Not(self.condition), size=self.size, stack=self.stack, vars=self.vars, action=self.action, filter=self._filter)
+
+    def __ror__(self, other):
+        return Or(other, self)
+
+    def __rand__(self, other):
+        return And(other, self)
+
+    def filter(self, *args, **kwargs):
+        from hunter import _merge
+
+        if self.filter is not None:
+            args = (self.filter,) + args
+
+        return Backlog(
+            self.condition,
+            size=self.size, stack=self.stack, vars=self.vars, action=self.action,
+            filter=_merge(*args, **kwargs)
+        )
+
+cdef inline fast_Backlog_call(Backlog self, Event event):
+    cdef object result
+    cdef Event first_event
+    cdef basestring first_is_call
+    cdef int first_depth
+    cdef int backlog_call_depth
+    cdef int missing_depth
+    cdef int depth_delta
+    cdef object stack_events # ??
+    cdef object detached_event
+
+    result = fast_call(self.condition, event)
+    if result:
+        if self.queue:
+            self.action.cleanup()
+
+            first_event = self.queue[0]
+            first_is_call = first_event.kind == 'call'
+            first_depth = first_event.depth
+            backlog_call_depth = event.depth - first_depth
+            missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
+            if missing_depth:
+                if first_is_call:
+                    first_frame = first_event.frame.f_back
+                else:
+                    first_frame = first_event.frame
+                if first_frame:
+                    stack_events = deque()
+                    depth_delta = 0
+
+                    while first_frame and depth_delta < missing_depth:
+                        stack_event = Event(
+                            frame=frame, kind='call', arg=None,
+                            threading_support=event.threading_support,
+                            depth=first_depth - depth_delta - 1, calls=-1
+                        )
+                        if not self.vars:
+                            # noinspection PyPropertyAccess
+                            stack_event.locals = {}
+                            stack_event.globals = {}
+                            stack_event.detached = True
+                        stack_events.appendleft(stack_event)
+
+                        depth_delta += 1
+                        frame = first_frame.f_back
+
+                    for stack_event in stack_events:
+                        if self._filter is None:
+                            self.action(stack_event)
+                        elif self._filter(stack_event):
+                            self.action(stack_event)
+            for backlog_event in self.queue:
+                if self._filter is None:
+                    self.action(backlog_event)
+                elif self._filter(backlog_event):
+                    self.action(backlog_event)
+            self.queue.clear()
+    else:
+        if self.strip and event.depth < 1:
+            # Looks like we're back to depth 0 for some reason.
+            # Delete everything because we don't want to see what is likely just a long stream of useless returns.
+            self.queue.clear()
+        if self._filter is None or self._filter(event):
+            detached_event = event.detach(self.action.try_repr if self.vars else None)
+            detached_event.frame = event.frame
+            self.queue.append(detached_event)
+
+    return result
+
+
 @cython.final
 cdef class And:
     """
@@ -552,5 +691,7 @@ cdef inline fast_call(callable, Event event):
         return fast_When_call(<When> callable, event)
     elif type(callable) is From:
         return fast_From_call(<From> callable, event)
+    elif type(callable) is Backlog:
+        return fast_Backlog_call(<Backlog> callable, event)
     else:
         return callable(event)
