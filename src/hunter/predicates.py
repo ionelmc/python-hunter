@@ -737,12 +737,11 @@ class Backlog(object):
     def __eq__(self, other):
         return (
             isinstance(other, Backlog) and
-            self.condition == self.condition and
-            self.size == self.size and
-            self.stack == self.stack and
-            self.vars == self.vars and
-            self.action == self.action
-
+            self.condition == other.condition and
+            self.size == other.size and
+            self.stack == other.stack and
+            self.vars == other.vars and
+            self.action == other.action
         )
 
     def __hash__(self):
