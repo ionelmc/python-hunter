@@ -10,6 +10,8 @@ cimport cython
 from cpython.object cimport PyObject_RichCompare
 from cpython.object cimport Py_EQ
 from cpython.object cimport Py_NE
+from cpython cimport bool
+from ._tracer cimport *
 
 from ._event cimport Event
 
@@ -462,13 +464,15 @@ cdef class Backlog(object):
 cdef inline fast_Backlog_call(Backlog self, Event event):
     cdef object result
     cdef Event first_event
-    cdef basestring first_is_call
+    cdef bool first_is_call
     cdef int first_depth
     cdef int backlog_call_depth
     cdef int missing_depth
     cdef int depth_delta
-    cdef object stack_events # ??
+    cdef object stack_events
     cdef object detached_event
+    cdef FrameType frame
+    cdef FrameType first_frame
 
     result = fast_call(self.condition, event)
     if result:
@@ -489,6 +493,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
                     stack_events = deque()
                     depth_delta = 0
 
+                    frame = first_frame
                     while first_frame and depth_delta < missing_depth:
                         stack_event = Event(
                             frame=frame, kind='call', arg=None,
@@ -497,9 +502,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
                         )
                         if not self.vars:
                             # noinspection PyPropertyAccess
-                            stack_event.locals = {}
-                            stack_event.globals = {}
-                            stack_event.detached = True
+                            stack_event.make_fake_event()
                         stack_events.appendleft(stack_event)
 
                         depth_delta += 1
@@ -523,7 +526,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             self.queue.clear()
         if self._filter is None or self._filter(event):
             detached_event = event.detach(self.action.try_repr if self.vars else None)
-            detached_event.frame = event.frame
+            detached_event.set_frame(event.frame)
             self.queue.append(detached_event)
 
     return result

@@ -824,6 +824,7 @@ struct __pyx_obj_6hunter_11_predicates_Or;
 struct __pyx_obj_6hunter_11_predicates_Not;
 struct __pyx_obj_6hunter_11_predicates_When;
 struct __pyx_obj_6hunter_11_predicates_From;
+struct __pyx_obj_6hunter_11_predicates_Backlog;
 struct __pyx_obj_6hunter_7_tracer_Tracer;
 
 /* "_event.pxd":11
@@ -949,6 +950,26 @@ struct __pyx_obj_6hunter_11_predicates_From {
   int watermark;
   int origin_depth;
   int origin_calls;
+};
+
+
+/* "_predicates.pxd":52
+ * 
+ * @cython.final
+ * cdef class Backlog:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         object condition
+ */
+struct __pyx_obj_6hunter_11_predicates_Backlog {
+  PyObject_HEAD
+  PyObject *condition;
+  int size;
+  int stack;
+  PyBoolObject *vars;
+  PyBoolObject *strip;
+  PyObject *action;
+  PyObject *_filter;
+  PyObject *queue;
 };
 
 
@@ -1709,6 +1730,7 @@ static PyTypeObject *__pyx_ptype_6hunter_11_predicates_Or = 0;
 static PyTypeObject *__pyx_ptype_6hunter_11_predicates_Not = 0;
 static PyTypeObject *__pyx_ptype_6hunter_11_predicates_When = 0;
 static PyTypeObject *__pyx_ptype_6hunter_11_predicates_From = 0;
+static PyTypeObject *__pyx_ptype_6hunter_11_predicates_Backlog = 0;
 static PyObject *(*__pyx_f_6hunter_11_predicates_fast_call)(PyObject *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 
 /* Module declarations from 'hunter._tracer' */
@@ -4584,6 +4606,8 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_6hunter_11_predicates_When) __PYX_ERR(7, 37, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_From = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "From", sizeof(struct __pyx_obj_6hunter_11_predicates_From), __Pyx_ImportType_CheckSize_Warn);
    if (!__pyx_ptype_6hunter_11_predicates_From) __PYX_ERR(7, 43, __pyx_L1_error)
+  __pyx_ptype_6hunter_11_predicates_Backlog = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "Backlog", sizeof(struct __pyx_obj_6hunter_11_predicates_Backlog), __Pyx_ImportType_CheckSize_Warn);
+   if (!__pyx_ptype_6hunter_11_predicates_Backlog) __PYX_ERR(7, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

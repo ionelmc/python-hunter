@@ -57,7 +57,8 @@ cdef class Backlog:
         bool vars
         bool strip
         object action
-        object filter
+        object _filter
+        object queue
 
 cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)

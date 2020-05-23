@@ -1425,7 +1425,7 @@ def test_stack_printer_2(LineMatcher):
 @pytest.mark.parametrize('vars', [True, False], ids="vars={}".format)
 @pytest.mark.parametrize('filter', [None, ~Q(function='six')], ids="filter={}".format)
 @pytest.mark.parametrize('condition', [{'fullsource_has': 'return i'}, {'function': 'five'}], ids=urlencode)
-def test_backlog(LineMatcher, size, stack, vars, condition, filter):
+def test_backlog_specific(LineMatcher, size, stack, vars, condition, filter):
     buff = StringIO()
     from sample7args import one
     with trace(
@@ -1438,6 +1438,7 @@ def test_backlog(LineMatcher, size, stack, vars, condition, filter):
     output = buff.getvalue()
     # print(re.sub(r'([\[\]])', r'[\1]', output))
     lm = LineMatcher(output.splitlines())
+    import pdb;pdb.set_trace()
     lm.fnmatch_lines([
         "depth=0 calls=*sample7args.py:*  call      => one(a=*, b=*, c=*) [[]backlog[]]",
         "depth=1 calls=*sample7args.py:*  call         => two(a=*, b=*, c=*) [[]backlog[]]",
