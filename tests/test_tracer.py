@@ -1438,7 +1438,6 @@ def test_backlog_specific(LineMatcher, size, stack, vars, condition, filter):
     output = buff.getvalue()
     # print(re.sub(r'([\[\]])', r'[\1]', output))
     lm = LineMatcher(output.splitlines())
-    import pdb;pdb.set_trace()
     lm.fnmatch_lines([
         "depth=0 calls=*sample7args.py:*  call      => one(a=*, b=*, c=*) [[]backlog[]]",
         "depth=1 calls=*sample7args.py:*  call         => two(a=*, b=*, c=*) [[]backlog[]]",
