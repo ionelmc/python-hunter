@@ -33,13 +33,13 @@ try:
 except ImportError:
     from .event import Event  # noqa
     from .predicates import And as _And
-    from .predicates import Backlog as _Backlog
     from .predicates import From as _From
     from .predicates import Not as _Not
     from .predicates import Or as _Or
     from .predicates import Query
     from .predicates import When
     from .tracer import Tracer
+from .predicates import Backlog as _Backlog
 
 try:
     from ._version import version as __version__
