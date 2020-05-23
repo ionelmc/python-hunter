@@ -37,11 +37,10 @@ Development
 
 To set up `python-hunter` for local development:
 
-1. Fork `python-hunter <https://github.com/ionelmc/python-hunter/fork>`_.
-2. Clone your fork locally (replace ``GITUSER`` with your GitHub
-   username)::
+1. `Fork python-hunter <https://github.com/ionelmc/python-hunter/fork>`_.
+2. Clone your fork locally (replace ``USERNAME`` with your GitHub username)::
 
-    git clone git@github.com:GITUSER/python-hunter.git
+    git clone git@github.com:USERNAME/python-hunter.git
 
 3. Create a branch for local development::
 
