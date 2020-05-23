@@ -48,6 +48,7 @@ except ImportError:
 
 __all__ = (
     'And',
+    'Backlog',
     'CallPrinter',
     'CodePrinter',
     'Debugger',
