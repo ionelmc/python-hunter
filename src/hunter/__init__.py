@@ -39,6 +39,7 @@ except ImportError:
     from .predicates import Query
     from .predicates import When
     from .tracer import Tracer
+from .predicates import Backlog as _Backlog
 
 try:
     from ._version import version as __version__
