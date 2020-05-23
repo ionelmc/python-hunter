@@ -678,9 +678,9 @@ class Backlog(object):
                 self.action.cleanup()
 
                 first_event = self.queue[0]
-                first_is_call = first_event.kind == 'call'
                 first_depth = first_event.depth
                 backlog_call_depth = event.depth - first_depth
+                first_is_call = first_event.kind == 'call'  # note that True is 1, thus the following math is valid
                 missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
                 if missing_depth:
                     if first_is_call:
