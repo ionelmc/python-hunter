@@ -17,13 +17,13 @@ from .actions import Manhole
 from .actions import StackPrinter
 from .actions import VarsPrinter
 from .actions import VarsSnooper
-
 try:
     if os.environ.get("PUREPYTHONHUNTER"):
         raise ImportError("Cython speedups are disabled.")
 
     from ._event import Event
     from ._predicates import And as _And
+    from ._predicates import Backlog as _Backlog
     from ._predicates import From as _From
     from ._predicates import Not as _Not
     from ._predicates import Or as _Or

@@ -10,6 +10,7 @@ from tokenize import TokenError
 from tokenize import generate_tokens
 
 from cpython.pythread cimport PyThread_get_thread_ident
+from cpython cimport bool
 
 from ._tracer cimport Tracer
 
@@ -40,13 +41,21 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer):
+    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer=None, object depth=UNSET, object calls=UNSET, object threading_support=UNSET):
+        if tracer is None:
+            if UNSET in (depth, calls, threading_support):
+                raise TypeError("Depth, calls and threading support need to be specified when creating and event")
+        else:
+            depth = tracer.depth
+            calls = tracer.calls
+            threading_support = tracer.threading_support
+
         self.arg = arg
         self.frame = frame
         self.kind = kind
-        self.depth = tracer.depth
-        self.calls = tracer.calls
-        self.threading_support = tracer.threading_support
+        self.depth = depth
+        self.calls = calls
+        self.threading_support = threading_support
         self.detached = False
 
         self._code = UNSET
@@ -120,6 +129,14 @@ cdef class Event:
         event._threadname = self._threadname
         event._thread = self._thread
         return event
+
+    def set_frame(self, frame):
+        self.frame = <FrameType>frame
+
+    def make_fake_event(self):
+        self._locals = {}
+        self._globals = {}
+        self.detached = True
 
     @property
     def threadid(self):
