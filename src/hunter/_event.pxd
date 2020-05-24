@@ -16,8 +16,8 @@ cdef class Event:
         readonly int depth
         readonly int calls
         readonly bint threading_support
-        readonly bint detached
 
+        bint detached
         object _code
         object _filename
         object _fullsource
@@ -33,6 +33,6 @@ cdef class Event:
         object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
 
-    cpdef:
         Event clone(self)
-        Event detach(self, value_filter=?)
+
+    cpdef Event detach(self, value_filter=?)
