@@ -8,6 +8,8 @@ from collections import OrderedDict
 from collections import defaultdict
 from collections import deque
 
+import hunter
+
 from .vendor.colorama import Back
 from .vendor.colorama import Fore
 from .vendor.colorama import Style
@@ -194,3 +196,16 @@ def frame_iterator(frame):
     while frame:
         yield frame
         frame = frame.f_back
+
+
+def convert_num_calls_to_pure_or_cython(lines):
+    is_not_pure = hunter.Tracer.__module__ != 'hunter.tracer'
+
+    def inc_if_not_pure(i):
+        return int(i) - is_not_pure
+
+    regex = 'calls=(\d+)'
+    return [
+        re.sub(regex, 'calls={}'.format(inc_if_not_pure(re.search(regex, line).group(1))), line)
+        for line in lines
+    ]

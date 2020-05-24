@@ -73,7 +73,7 @@ cdef class Event:
         self._threadname = UNSET
         self._thread = UNSET
 
-    cdef inline Event detach(self, value_filter=None):
+    cpdef inline Event detach(self, value_filter=None):
         event = <Event>Event.__new__(Event)
 
         event._code = self.code

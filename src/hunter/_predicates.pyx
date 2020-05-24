@@ -509,9 +509,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
                         frame = frame.f_back
                         depth_delta += 1
                     for stack_event in stack_events:
-                        if self._filter is None:
-                            self.action(stack_event)
-                        elif self._filter(stack_event):
+                        if self._filter is None or self._filter(stack_event):
                             self.action(stack_event)
             for backlog_event in self.queue:
                 if self._filter is None:
