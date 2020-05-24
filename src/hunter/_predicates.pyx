@@ -462,17 +462,18 @@ cdef class Backlog(object):
         )
 
 cdef inline fast_Backlog_call(Backlog self, Event event):
-    cdef object result
-    cdef Event first_event
-    cdef bool first_is_call
-    cdef int first_depth
-    cdef int backlog_call_depth
-    cdef int missing_depth
-    cdef int depth_delta
-    cdef object stack_events
+    cdef bint first_is_call
     cdef Event detached_event
-    cdef FrameType frame
+    cdef Event first_event
+    cdef Event stack_event
     cdef FrameType first_frame
+    cdef FrameType frame
+    cdef int backlog_call_depth
+    cdef int depth_delta
+    cdef int first_depth
+    cdef int missing_depth
+    cdef object result
+    cdef object stack_events
 
     result = fast_call(self.condition, event)
     if result:
@@ -480,21 +481,20 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             self.action.cleanup()
 
             first_event = self.queue[0]
-            first_is_call = first_event.kind == 'call'
             first_depth = first_event.depth
             backlog_call_depth = event.depth - first_depth
+            first_is_call = first_event.kind == 'call'  # note that True is 1, thus the following math is valid
             missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
             if missing_depth:
                 if first_is_call:
                     first_frame = first_event.frame.f_back
                 else:
                     first_frame = first_event.frame
-                if first_frame:
-                    stack_events = deque()
-                    depth_delta = 0
-
+                if first_frame is not None:
+                    stack_events = deque()  # a new deque because self.queue is limited, we can't add while it's full
                     frame = first_frame
-                    while first_frame and depth_delta < missing_depth:
+                    depth_delta = 0
+                    while frame and depth_delta < missing_depth:
                         stack_event = Event(
                             frame=frame, kind='call', arg=None,
                             threading_support=event.threading_support,
@@ -502,12 +502,12 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
                         )
                         if not self.vars:
                             # noinspection PyPropertyAccess
-                            stack_event.make_fake_event()
+                            stack_event._locals = {}
+                            stack_event._globals = {}
+                            stack_event.detached = True
                         stack_events.appendleft(stack_event)
-
+                        frame = frame.f_back
                         depth_delta += 1
-                        frame = first_frame.f_back
-
                     for stack_event in stack_events:
                         if self._filter is None:
                             self.action(stack_event)

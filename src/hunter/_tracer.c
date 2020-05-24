@@ -970,15 +970,15 @@ struct __pyx_obj_6hunter_11_predicates_From {
  * @cython.final
  * cdef class Backlog:             # <<<<<<<<<<<<<<
  *     cdef:
- *         object condition
+ *         readonly object condition
  */
 struct __pyx_obj_6hunter_11_predicates_Backlog {
   PyObject_HEAD
   PyObject *condition;
   int size;
   int stack;
-  PyBoolObject *vars;
-  PyBoolObject *strip;
+  int vars;
+  int strip;
   PyObject *action;
   PyObject *_filter;
   PyObject *queue;

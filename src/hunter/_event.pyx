@@ -130,11 +130,6 @@ cdef class Event:
         event._thread = self._thread
         return event
 
-    def make_fake_event(self):
-        self._locals = {}
-        self._globals = {}
-        self.detached = True
-
     @property
     def threadid(self):
         cdef long current

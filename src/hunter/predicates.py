@@ -687,9 +687,11 @@ class Backlog(object):
                         first_frame = first_event.frame.f_back
                     else:
                         first_frame = first_event.frame
-                    if first_frame:
+                    if first_frame is not None:
                         stack_events = collections.deque()  # a new deque because self.queue is limited, we can't add while it's full
-                        for depth_delta, frame in enumerate(islice(frame_iterator(first_frame), missing_depth)):
+                        frame = first_frame
+                        depth_delta = 0
+                        while frame and depth_delta < missing_depth:
                             stack_event = Event(
                                 frame=frame, kind='call', arg=None,
                                 threading_support=event.threading_support,
@@ -701,6 +703,8 @@ class Backlog(object):
                                 stack_event.globals = {}
                                 stack_event.detached = True
                             stack_events.appendleft(stack_event)
+                            frame = frame.f_back
+                            depth_delta += 1
                         for stack_event in stack_events:
                             if self._filter is None:
                                 self.action(stack_event)

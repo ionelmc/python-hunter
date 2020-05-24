@@ -33,6 +33,7 @@ try:
 except ImportError:
     from .event import Event  # noqa
     from .predicates import And as _And
+    from .predicates import Backlog as _Backlog
     from .predicates import From as _From
     from .predicates import Not as _Not
     from .predicates import Or as _Or
