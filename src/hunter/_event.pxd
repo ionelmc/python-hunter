@@ -33,6 +33,5 @@ cdef class Event:
         object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
 
-        Event clone(self)
-
+    cpdef Event clone(self)
     cpdef Event detach(self, value_filter=?)

@@ -810,9 +810,9 @@ static const char *__pyx_f[] = {
   "src/hunter/_event.pyx",
   "src/hunter/_event.pxd",
   "stringsource",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/type.pxd",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/bool.pxd",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/complex.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/type.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/bool.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/complex.pxd",
   "src/hunter/_tracer.pxd",
 };
 
@@ -822,9 +822,9 @@ struct __pyx_obj_6hunter_6_event_Event;
 struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
 struct __pyx_opt_args_6hunter_6_event_5Event_detach;
 
-/* "hunter/_event.pxd":38
- *         Event clone(self)
+/* "hunter/_event.pxd":37
  * 
+ *     cpdef Event clone(self)
  *     cpdef Event detach(self, value_filter=?)             # <<<<<<<<<<<<<<
  */
 struct __pyx_opt_args_6hunter_6_event_5Event_detach {
@@ -919,11 +919,11 @@ struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines {
  */
 
 struct __pyx_vtabstruct_6hunter_6_event_Event {
-  struct __pyx_obj_6hunter_6_event_Event *(*clone)(struct __pyx_obj_6hunter_6_event_Event *);
+  struct __pyx_obj_6hunter_6_event_Event *(*clone)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch);
   struct __pyx_obj_6hunter_6_event_Event *(*detach)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args);
 };
 static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_event_Event;
-static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *);
+static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch);
 static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_detach(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args);
 
 /* --- Runtime support code (head) --- */
@@ -1724,7 +1724,7 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_detach(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args); /* proto*/
-static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto*/
+static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, CYTHON_UNUSED int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'cython' */
 
@@ -2078,6 +2078,7 @@ static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_yield_lines;
 static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyFrameObject *__pyx_v_frame, PyObject *__pyx_v_kind, PyObject *__pyx_v_arg, struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer, PyObject *__pyx_v_depth, PyObject *__pyx_v_calls, PyObject *__pyx_v_threading_support); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_2detach(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value_filter); /* proto */
+static PyObject *__pyx_pf_6hunter_6_event_5Event_4clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_10threadname___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6locals___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
@@ -2091,15 +2092,15 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4code___get__(struct __pyx_obj_
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6source___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6hunter_6_event_5Event_4__getitem__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_item); /* proto */
+static PyObject *__pyx_pf_6hunter_6_event_5Event_6__getitem__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_item); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_5frame___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_4kind___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_3arg___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_5depth___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_5calls___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_17threading_support___get__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6hunter_6_event_5Event_6__reduce_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6hunter_6_event_5Event_8__setstate_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6hunter_6_event_5Event_8__reduce_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6hunter_6_event_5Event_10__setstate_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_yield_lines(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_filename, PyObject *__pyx_v_module_globals, PyObject *__pyx_v_start, PyObject *__pyx_v_collector, PyObject *__pyx_v_limit); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_3__pyx_unpickle_Event(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_6hunter_6_event_Event(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3248,7 +3249,7 @@ static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_de
  * 
  *         return event             # <<<<<<<<<<<<<<
  * 
- *     cdef inline Event clone(self):
+ *     cpdef inline Event clone(self):
  */
   __Pyx_TraceLine(107,0,__PYX_ERR(0, 107, __pyx_L1_error))
   __Pyx_XDECREF(((PyObject *)__pyx_r));
@@ -3379,12 +3380,13 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2detach(struct __pyx_obj_6hunte
 /* "hunter/_event.pyx":109
  *         return event
  * 
- *     cdef inline Event clone(self):             # <<<<<<<<<<<<<<
+ *     cpdef inline Event clone(self):             # <<<<<<<<<<<<<<
  *         event = <Event>Event.__new__(Event)
  *         event.arg = self.arg
  */
 
-static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
+static PyObject *__pyx_pw_6hunter_6_event_5Event_5clone(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, CYTHON_UNUSED int __pyx_skip_dispatch) {
   struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event = NULL;
   struct __pyx_obj_6hunter_6_event_Event *__pyx_r = NULL;
   __Pyx_TraceDeclarations
@@ -3401,7 +3403,7 @@ static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_cl
 
   /* "hunter/_event.pyx":110
  * 
- *     cdef inline Event clone(self):
+ *     cpdef inline Event clone(self):
  *         event = <Event>Event.__new__(Event)             # <<<<<<<<<<<<<<
  *         event.arg = self.arg
  *         event.frame = self.frame
@@ -3416,7 +3418,7 @@ static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_cl
   __pyx_t_2 = 0;
 
   /* "hunter/_event.pyx":111
- *     cdef inline Event clone(self):
+ *     cpdef inline Event clone(self):
  *         event = <Event>Event.__new__(Event)
  *         event.arg = self.arg             # <<<<<<<<<<<<<<
  *         event.frame = self.frame
@@ -3736,7 +3738,7 @@ static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_cl
   /* "hunter/_event.pyx":109
  *         return event
  * 
- *     cdef inline Event clone(self):             # <<<<<<<<<<<<<<
+ *     cpdef inline Event clone(self):             # <<<<<<<<<<<<<<
  *         event = <Event>Event.__new__(Event)
  *         event.arg = self.arg
  */
@@ -3750,6 +3752,48 @@ static struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_5Event_cl
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_event);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_TraceReturn(__pyx_r, 0);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6hunter_6_event_5Event_5clone(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6hunter_6_event_5Event_5clone(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("clone (wrapper)", 0);
+  __pyx_r = __pyx_pf_6hunter_6_event_5Event_4clone(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6hunter_6_event_5Event_4clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_TraceDeclarations
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("clone", 0);
+  __Pyx_TraceCall("clone (wrapper)", __pyx_f[0], 109, 0, __PYX_ERR(0, 109, __pyx_L1_error));
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((PyObject *)__pyx_f_6hunter_6_event_5Event_clone(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("hunter._event.Event.clone", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_TraceReturn(__pyx_r, 0);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -7635,19 +7679,19 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6source___get__(struct __pyx_ob
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6hunter_6_event_5Event_5__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_item); /*proto*/
-static PyObject *__pyx_pw_6hunter_6_event_5Event_5__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_item) {
+static PyObject *__pyx_pw_6hunter_6_event_5Event_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_item); /*proto*/
+static PyObject *__pyx_pw_6hunter_6_event_5Event_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_item) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__getitem__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_4__getitem__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v_item));
+  __pyx_r = __pyx_pf_6hunter_6_event_5Event_6__getitem__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v_item));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6hunter_6_event_5Event_4__getitem__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_item) {
+static PyObject *__pyx_pf_6hunter_6_event_5Event_6__getitem__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_item) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -7988,19 +8032,19 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_17threading_support___get__(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6hunter_6_event_5Event_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6hunter_6_event_5Event_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6hunter_6_event_5Event_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6hunter_6_event_5Event_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_6__reduce_cython__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6hunter_6_event_5Event_8__reduce_cython__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6hunter_6_event_5Event_6__reduce_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
+static PyObject *__pyx_pf_6hunter_6_event_5Event_8__reduce_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -8423,19 +8467,19 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6__reduce_cython__(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6hunter_6_event_5Event_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_6hunter_6_event_5Event_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6hunter_6_event_5Event_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6hunter_6_event_5Event_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6hunter_6_event_5Event_8__setstate_cython__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6hunter_6_event_5Event_10__setstate_cython__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6hunter_6_event_5Event_8__setstate_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6hunter_6_event_5Event_10__setstate_cython__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -9900,8 +9944,9 @@ static PyObject *__pyx_getprop_6hunter_6_event_5Event_threading_support(PyObject
 
 static PyMethodDef __pyx_methods_6hunter_6_event_Event[] = {
   {"detach", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6hunter_6_event_5Event_3detach, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_6hunter_6_event_5Event_7__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_6hunter_6_event_5Event_9__setstate_cython__, METH_O, 0},
+  {"clone", (PyCFunction)__pyx_pw_6hunter_6_event_5Event_5clone, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6hunter_6_event_5Event_9__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6hunter_6_event_5Event_11__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -9943,7 +9988,7 @@ static PySequenceMethods __pyx_tp_as_sequence_Event = {
 
 static PyMappingMethods __pyx_tp_as_mapping_Event = {
   0, /*mp_length*/
-  __pyx_pw_6hunter_6_event_5Event_5__getitem__, /*mp_subscript*/
+  __pyx_pw_6hunter_6_event_5Event_7__getitem__, /*mp_subscript*/
   0, /*mp_ass_subscript*/
 };
 
@@ -10490,7 +10535,7 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   __pyx_vtabptr_6hunter_6_event_Event = &__pyx_vtable_6hunter_6_event_Event;
-  __pyx_vtable_6hunter_6_event_Event.clone = (struct __pyx_obj_6hunter_6_event_Event *(*)(struct __pyx_obj_6hunter_6_event_Event *))__pyx_f_6hunter_6_event_5Event_clone;
+  __pyx_vtable_6hunter_6_event_Event.clone = (struct __pyx_obj_6hunter_6_event_Event *(*)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch))__pyx_f_6hunter_6_event_5Event_clone;
   __pyx_vtable_6hunter_6_event_Event.detach = (struct __pyx_obj_6hunter_6_event_Event *(*)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args))__pyx_f_6hunter_6_event_5Event_detach;
   if (PyType_Ready(&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
@@ -11197,7 +11242,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":109
  *         return event
  * 
- *     cdef inline Event clone(self):             # <<<<<<<<<<<<<<
+ *     cpdef inline Event clone(self):             # <<<<<<<<<<<<<<
  *         event = <Event>Event.__new__(Event)
  *         event.arg = self.arg
  */
