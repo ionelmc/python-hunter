@@ -810,9 +810,9 @@ static const char *__pyx_f[] = {
   "src/hunter/_tracer.pyx",
   "stringsource",
   "src/hunter/_tracer.pxd",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/type.pxd",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/bool.pxd",
-  ".tox/cythonize/lib/python3.8/site-packages/Cython/Includes/cpython/complex.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/type.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/bool.pxd",
+  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/complex.pxd",
   "src/hunter/_event.pxd",
   "src/hunter/_predicates.pxd",
 };
@@ -829,9 +829,9 @@ struct __pyx_obj_6hunter_11_predicates_Backlog;
 struct __pyx_obj_6hunter_7_tracer_Tracer;
 struct __pyx_opt_args_6hunter_6_event_5Event_detach;
 
-/* "_event.pxd":38
- *         Event clone(self)
+/* "_event.pxd":37
  * 
+ *     cpdef Event clone(self)
  *     cpdef Event detach(self, value_filter=?)             # <<<<<<<<<<<<<<
  */
 struct __pyx_opt_args_6hunter_6_event_5Event_detach {
@@ -1015,7 +1015,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  */
 
 struct __pyx_vtabstruct_6hunter_6_event_Event {
-  struct __pyx_obj_6hunter_6_event_Event *(*clone)(struct __pyx_obj_6hunter_6_event_Event *);
+  struct __pyx_obj_6hunter_6_event_Event *(*clone)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch);
   struct __pyx_obj_6hunter_6_event_Event *(*detach)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args);
 };
 static struct __pyx_vtabstruct_6hunter_6_event_Event *__pyx_vtabptr_6hunter_6_event_Event;

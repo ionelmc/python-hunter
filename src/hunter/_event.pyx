@@ -106,7 +106,7 @@ cdef class Event:
 
         return event
 
-    cdef inline Event clone(self):
+    cpdef inline Event clone(self):
         event = <Event>Event.__new__(Event)
         event.arg = self.arg
         event.frame = self.frame
