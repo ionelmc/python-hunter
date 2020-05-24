@@ -470,7 +470,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
     cdef int missing_depth
     cdef int depth_delta
     cdef object stack_events
-    cdef object detached_event
+    cdef Event detached_event
     cdef FrameType frame
     cdef FrameType first_frame
 
@@ -526,7 +526,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             self.queue.clear()
         if self._filter is None or self._filter(event):
             detached_event = event.detach(self.action.try_repr if self.vars else None)
-            detached_event.set_frame(event.frame)
+            detached_event.frame = event.frame
             self.queue.append(detached_event)
 
     return result

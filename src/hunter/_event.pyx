@@ -73,7 +73,7 @@ cdef class Event:
         self._threadname = UNSET
         self._thread = UNSET
 
-    def detach(self, value_filter=None):
+    cdef inline Event detach(self, value_filter=None):
         event = <Event>Event.__new__(Event)
 
         event._code = self.code
@@ -129,9 +129,6 @@ cdef class Event:
         event._threadname = self._threadname
         event._thread = self._thread
         return event
-
-    def set_frame(self, frame):
-        self.frame = <FrameType>frame
 
     def make_fake_event(self):
         self._locals = {}
