@@ -51,14 +51,14 @@ cdef class From:
 @cython.final
 cdef class Backlog:
     cdef:
-        object condition
-        int size
-        int stack
-        bool vars
-        bool strip
-        object action
-        object _filter
-        object queue
+        readonly object condition
+        readonly int size
+        readonly int stack
+        readonly bint vars
+        readonly bint strip
+        readonly object action
+        readonly object _filter
+        readonly object queue
 
 cdef fast_And_call(And self, Event event)
 cdef fast_From_call(From self, Event event)
