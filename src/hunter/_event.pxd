@@ -34,3 +34,4 @@ cdef class Event:
         object _threadname
 
         Event clone(self)
+        Event detach(self, value_filter=?)
