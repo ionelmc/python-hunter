@@ -18,8 +18,8 @@ from .actions import StackPrinter
 from .actions import VarsPrinter
 from .actions import VarsSnooper
 try:
-    if os.environ.get("PUREPYTHONHUNTER"):
-        raise ImportError("Cython speedups are disabled.")
+    if os.environ.get('PUREPYTHONHUNTER'):
+        raise ImportError('Cython speedups are disabled.')
 
     from ._event import Event
     from ._predicates import And as _And
@@ -69,9 +69,9 @@ __all__ = (
     'trace',
 )
 THREADING_SUPPORT_ALIASES = (
-    "threading_support", "threads_support", "thread_support",
-    "threadingsupport", "threadssupport", "threadsupport",
-    "threading", "threads", "thread",
+    'threading_support', 'threads_support', 'thread_support',
+    'threadingsupport', 'threadssupport', 'threadsupport',
+    'threading', 'threads', 'thread',
 )
 _last_tracer = None
 _default_trace_args = None
@@ -86,20 +86,20 @@ def _prepare_config(*args, **kwargs):
     predicates = []
 
     for key, value in list(_default_config.items()):
-        if key in THREADING_SUPPORT_ALIASES or key == "clear_env_var":
+        if key in THREADING_SUPPORT_ALIASES or key == 'clear_env_var':
             options[key] = _default_config.pop(key)
             continue
         elif key in (
             # builtin actions config
-            "klass",
-            "stream",
-            "force_colors",
-            "force_pid",
-            "filename_alignment",
-            "thread_alignment",
-            "pid_alignment",
-            "repr_limit",
-            "repr_func",
+            'klass',
+            'stream',
+            'force_colors',
+            'force_pid',
+            'filename_alignment',
+            'thread_alignment',
+            'pid_alignment',
+            'repr_limit',
+            'repr_func',
         ):
             continue
 
@@ -112,13 +112,13 @@ def _prepare_config(*args, **kwargs):
             continue
 
         _default_config.pop(key)
-        sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n".format(
+        sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n'.format(
             key, value))
     for position, predicate in enumerate(args):
         if callable(predicate):
             predicates.append(predicate)
         else:
-            sys.stderr.write("Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n".format(
+            sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n'.format(
                 predicate, position))
 
     return predicates, options
@@ -133,17 +133,17 @@ def Q(*predicates, **query):
     See Also:
          :class:`hunter.predicates.Query`
     """
-    optional_actions = query.pop("actions", [])
-    if "action" in query:
-        optional_actions.append(query.pop("action"))
+    optional_actions = query.pop('actions', [])
+    if 'action' in query:
+        optional_actions.append(query.pop('action'))
 
     for p in predicates:
         if not callable(p):
-            raise TypeError("Predicate {0!r} is not callable.".format(p))
+            raise TypeError('Predicate {0!r} is not callable.'.format(p))
 
     for a in optional_actions:
         if not callable(a):
-            raise TypeError("Action {0!r} is not callable.".format(a))
+            raise TypeError('Action {0!r} is not callable.'.format(a))
 
     if predicates:
         predicates = tuple(
@@ -285,14 +285,14 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
 
 
 def Backlog(*conditions, **kwargs):
-    action = kwargs.pop("action", CallPrinter)
-    filter = kwargs.pop("filter", None)
-    size = kwargs.pop("size", 100)
-    stack = kwargs.pop("stack", 10)
-    strip = kwargs.pop("strip", True)
-    vars = kwargs.pop("vars", False)
+    action = kwargs.pop('action', CallPrinter)
+    filter = kwargs.pop('filter', None)
+    size = kwargs.pop('size', 100)
+    stack = kwargs.pop('stack', 10)
+    strip = kwargs.pop('strip', True)
+    vars = kwargs.pop('vars', False)
     if not conditions and not kwargs:
-        raise TypeError("Backlog needs at least 1 condition.")
+        raise TypeError('Backlog needs at least 1 condition.')
     return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, strip=strip, action=action, filter=filter)
 
 
@@ -303,7 +303,7 @@ def stop():
     global _last_tracer
 
     if _last_tracer is None:
-        warnings.warn("There is no tracer to stop.")
+        warnings.warn('There is no tracer to stop.')
     else:
         _last_tracer.stop()
         _last_tracer = None
@@ -315,8 +315,8 @@ class Stop(Action):
 
 
 def _prepare_predicate(*predicates, **options):
-    if "action" not in options and "actions" not in options:
-        options["action"] = CallPrinter
+    if 'action' not in options and 'actions' not in options:
+        options['action'] = CallPrinter
 
     return Q(*predicates, **options)
 
@@ -360,7 +360,7 @@ def trace(*predicates, **options):
 
     predicates, options = _apply_config(predicates, options)
 
-    clear_env_var = options.pop("clear_env_var", False)
+    clear_env_var = options.pop('clear_env_var', False)
     threading_support = None
     for alias in THREADING_SUPPORT_ALIASES:
         if alias in options:
@@ -368,7 +368,7 @@ def trace(*predicates, **options):
     predicate = _prepare_predicate(*predicates, **options)
 
     if clear_env_var:
-        os.environ.pop("PYTHONHUNTER", None)
+        os.environ.pop('PYTHONHUNTER', None)
 
     _last_tracer = Tracer(threading_support)
 
@@ -408,14 +408,14 @@ def wrap(function_to_trace=None, **trace_options):
         @functools.wraps(func)
         def tracing_wrapper(*args, **kwargs):
             predicates = []
-            local = trace_options.pop("local", False)
+            local = trace_options.pop('local', False)
             if local:
                 predicates.append(Query(depth_lt=2))
             predicates.append(
                 From(
-                    Query(kind="call"),
+                    Query(kind='call'),
                     Not(When(
-                        Query(calls_gt=0, depth=0) & Not(Query(kind="return")),
+                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
                         Stop
                     )),
                     watermark=-1
@@ -441,9 +441,9 @@ def load_config(*args, **kwargs):
         if args or kwargs:
             _default_trace_args = _prepare_config(*args, **kwargs)
         else:
-            _default_trace_args = eval("_prepare_config({})".format(os.environ.get("PYTHONHUNTERCONFIG", '')))
+            _default_trace_args = eval('_prepare_config({})'.format(os.environ.get('PYTHONHUNTERCONFIG', '')))
     except Exception as exc:
-        sys.stderr.write("Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n".format(
+        sys.stderr.write('Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n'.format(
             os.environ, exc))
         _default_trace_args = (), ()
 
