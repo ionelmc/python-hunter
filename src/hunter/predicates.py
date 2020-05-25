@@ -683,7 +683,7 @@ class Backlog(object):
                 first_is_call = first_event.kind == 'call'  # note that True is 1, thus the following math is valid
                 missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
                 if missing_depth:
-                    if first_is_call:
+                    if first_is_call and first_event.frame is not None:
                         first_frame = first_event.frame.f_back
                     else:
                         first_frame = first_event.frame
