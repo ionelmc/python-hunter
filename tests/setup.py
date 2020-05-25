@@ -31,10 +31,10 @@ if __name__ == '__main__':
             Extension(
                 splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
                 sources=[path],
-                include_dirs=[dirname(path)],
+                include_dirs=[dirname(path), 'src'],
                 define_macros=[('CYTHON_TRACE', '1')]
             )
             for root, _, _ in os.walk('tests')
             for path in glob(join(root, '*.pyx' if Cython else '*.c'))
-            ],
+        ],
     )

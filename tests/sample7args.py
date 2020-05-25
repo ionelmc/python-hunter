@@ -42,9 +42,10 @@ if __name__ == "__main__":
     from utils import DebugCallPrinter
     from hunter import *
 
-    with trace(
+    trace(
         Backlog(stack=15, vars=True, action=DebugCallPrinter(' [' 'backlog' ']'), function='five').filter(~Q(function='six')),
         action=DebugCallPrinter
-    ):
-        one()
-        one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+    )
+    one()
+    one()  # make sure Backlog is reusable (doesn't have storage side-effects)
+    stop()

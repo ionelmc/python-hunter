@@ -35,34 +35,29 @@ try:
 except ImportError:
     from io import StringIO
 
-pytest_plugins = 'pytester',
 
-PY3 = sys.version_info[0] == 3
+if hunter.Tracer.__module__ == 'hunter.tracer':
+    class EvilFrame(object):
+        f_back = None
+        f_globals = {}
+        f_locals = {}
+        f_lineno = 0
 
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
 
-class EvilFrame(object):
-    f_back = None
-    f_globals = {}
-    f_locals = {}
-    f_lineno = 0
+    class EvilTracer(object):
+        is_pure = True
 
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+        def __init__(self, *args, **kwargs):
+            self._calls = []
+            threading_support = kwargs.pop('threading_support', False)
+            clear_env_var = kwargs.pop('clear_env_var', False)
+            self.handler = hunter._prepare_predicate(*args, **kwargs)
+            self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
 
-
-class EvilTracer(object):
-    is_pure = hunter.Tracer.__module__ == 'hunter.tracer'
-
-    def __init__(self, *args, **kwargs):
-        self._calls = []
-        threading_support = kwargs.pop('threading_support', False)
-        clear_env_var = kwargs.pop('clear_env_var', False)
-        self.handler = hunter._prepare_predicate(*args, **kwargs)
-        self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
-
-    def _append(self, event):
-        detached_event = event.detach(lambda obj: obj)
-        if self.is_pure:
+        def _append(self, event):
+            detached_event = event.detach(lambda obj: obj)
             detached_event.detached = False
             detached_event.frame = EvilFrame(
                 f_globals=event.frame.f_globals,
@@ -72,19 +67,25 @@ class EvilTracer(object):
                 f_lasti=event.frame.f_lasti,
                 f_code=event.code
             )
-        self._calls.append(detached_event)
+            self._calls.append(detached_event)
 
-    def __enter__(self):
-        return self
+        def __enter__(self):
+            return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self._tracer.stop()
-        predicate = self.handler
-        for call in self._calls:
-            predicate(call)
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            self._tracer.stop()
+            predicate = self.handler
+            for call in self._calls:
+                predicate(call)
+else:
+    from eviltracer import EvilTracer
 
 
 trace = EvilTracer
+
+pytest_plugins = 'pytester',
+
+PY3 = sys.version_info[0] == 3
 
 
 def test_mix_predicates_with_callables():
@@ -1400,8 +1401,6 @@ def test_stack_printer_1(LineMatcher):
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
         "*sample7.py:??:five <= sample7.py:??:four <= sample7.py:??:three <= sample7.py:??:two <= sample7.py:?:one <= test_tracer.py:????:test_stack_printer*"
-        if trace.is_pure else
-        "*sample7.py:30:five <= no frames available (detached=True)"
     ])
 
 
@@ -1415,8 +1414,6 @@ def test_stack_printer_2(LineMatcher):
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
         "*sample7.py:??:five <= tests/sample7.py:??:four <= tests/sample7.py:??:three <= tests/sample7.py:??:two <= tests/sample7.py:?:one <= tests/test_tracer.py:????:test_stack_printer*"
-        if trace.is_pure else
-        "*sample7.py:30:five <= no frames available (detached=True)"
     ])
 
 
