@@ -114,6 +114,7 @@ cdef class Event:
         event.depth = self.depth
         event.calls = self.calls
         event.threading_support = self.threading_support
+        event.detached = False
         event._code = self._code
         event._filename = self._filename
         event._fullsource = self._fullsource

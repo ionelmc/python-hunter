@@ -683,7 +683,7 @@ def test_backlog_subprocess(LineMatcher):
     print(re.sub(r'([\[\]])', r'[\1]', output))
     print(output)
     lm = LineMatcher(output.splitlines())
-    lm.fnmatch_lines(convert_num_calls_to_pure_or_cython([
+    lm.fnmatch_lines([
         "depth=0 calls=1   *sample7args.py:4     call      => one(a=123, b='234', c={'3': [[]4, '5'[]]}) [[]backlog[]]",
         "depth=1 calls=2   *sample7args.py:5     line         for i in range(1):  # one [[]backlog[]]",
         "depth=1 calls=2   *sample7args.py:6     line         a = b = c[[]'side'[]] = 'effect' [[]backlog[]]",
@@ -732,4 +732,4 @@ def test_backlog_subprocess(LineMatcher):
         "depth=5 calls=17  *sample7args.py:33    line                     for i in range(1):  # five",
         "depth=5 calls=17  *sample7args.py:34    line                     return i  # five",
         "depth=4 calls=17  *sample7args.py:34    return                <= five: 0",
-    ]))
+    ])
