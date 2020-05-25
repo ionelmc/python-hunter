@@ -4,13 +4,11 @@ import collections
 import inspect
 import re
 from itertools import chain
-from itertools import islice
 
 from .actions import Action
 from .actions import ColorStreamAction
 from .event import Event
 from .util import StringType
-from .util import frame_iterator
 
 __all__ = (
     'And',

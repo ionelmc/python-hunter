@@ -24,8 +24,6 @@ from hunter import wrap
 
 from utils import DebugCallPrinter
 
-from hunter.util import convert_num_calls_to_pure_or_cython
-
 try:
     from cStringIO import StringIO
 except ImportError:
