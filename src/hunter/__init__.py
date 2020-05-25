@@ -17,6 +17,7 @@ from .actions import Manhole
 from .actions import StackPrinter
 from .actions import VarsPrinter
 from .actions import VarsSnooper
+
 try:
     if os.environ.get('PUREPYTHONHUNTER'):
         raise ImportError('Cython speedups are disabled.')
