@@ -664,6 +664,7 @@ class Backlog(object):
         self.stack = stack
         self.strip = strip
         self.vars = vars
+        self._try_repr = self.action.try_repr if self.vars else None
         self._filter = filter
 
     def __call__(self, event):
@@ -718,7 +719,7 @@ class Backlog(object):
                 # Delete everything because we don't want to see what is likely just a long stream of useless returns.
                 self.queue.clear()
             if self._filter is None or self._filter(event):
-                detached_event = event.detach(self.action.try_repr if self.vars else None)
+                detached_event = event.detach(self.try_repr)
                 detached_event.frame = event.frame
                 self.queue.append(detached_event)
 

@@ -57,6 +57,7 @@ cdef class Backlog:
         readonly bint vars
         readonly bint strip
         readonly object action
+        readonly object _try_repr
         readonly object _filter
         readonly object queue
 

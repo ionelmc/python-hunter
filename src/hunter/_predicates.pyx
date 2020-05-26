@@ -2,8 +2,8 @@
 from __future__ import absolute_import
 
 from collections import deque
-import inspect
-import re
+from inspect import isclass
+from re import compile as re_compile
 from itertools import chain
 
 cimport cython
@@ -36,6 +36,75 @@ cdef tuple ALLOWED_OPERATORS = (
     'gt', 'gte', 'lt', 'lte',
 )
 
+ctypedef object (*Event_getter_typedef)(Event)
+cdef Event_get_function(Event event): return event.function_getter()
+cdef Event_get_code(Event event): return event.code_getter()
+cdef Event_get_frame(Event event): return event.frame_getter()
+cdef Event_get_module(Event event): return event.module_getter()
+cdef Event_get_lineno(Event event): return event.lineno_getter()
+cdef Event_get_globals(Event event): return event.globals_getter()
+cdef Event_get_stdlib(Event event): return event.stdlib_getter()
+cdef Event_get_arg(Event event): return event.arg
+cdef Event_get_locals(Event event): return event.locals_getter()
+cdef Event_get_kind(Event event): return event.kind
+cdef Event_get_filename(Event event): return event.filename_getter()
+cdef Event_get_source(Event event): return event.source_getter()
+cdef Event_get_fullsource(Event event): return event.fullsource_getter()
+cdef Event_get_threadname(Event event): return event.threadname_getter()
+cdef Event_get_threadid(Event event): return event.threadid_getter()
+cdef Event_get_depth(Event event): return event.depth
+cdef Event_get_calls(Event event): return event.calls
+
+cdef Event_getter_typedef[17] Event_getters = [
+    Event_get_function,
+    Event_get_code,
+    Event_get_frame,
+    Event_get_module,
+    Event_get_lineno,
+    Event_get_globals,
+    Event_get_stdlib,
+    Event_get_arg,
+    Event_get_locals,
+    Event_get_kind,
+    Event_get_filename,
+    Event_get_source,
+    Event_get_fullsource,
+    Event_get_threadname,
+    Event_get_threadid,
+    Event_get_depth,
+    Event_get_calls,
+]
+
+@cython.final
+cdef class QueryEntry:
+    cdef Event_getter_typedef getter
+    cdef int getter_index
+    cdef object value
+
+    def __init__(self, object value, str name):
+        self.value = value
+        self.getter_index = ALLOWED_KEYS.index(name)
+        self.getter = Event_getters[self.getter_index]
+
+    def __str__(self):
+        return str(self.value)
+
+    def __repr__(self):
+        return repr(self.value)
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, QueryEntry)
+            and self.value == (<QueryEntry> other).value
+            and self.getter_index == (<QueryEntry> other).getter_index
+        )
+
+    def __hash__(self):
+        return hash((
+            'QueryEntry',
+            self.value,
+            self.getter_index
+        ))
 
 @cython.final
 cdef class Query:
@@ -68,6 +137,8 @@ cdef class Query:
                 ``threadid``,
                 ``threadname``.
         """
+        cdef void* prefix_getter_pointer
+
         query_eq = {}
         query_startswith = {}
         query_endswith = {}
@@ -105,7 +176,7 @@ cdef class Query:
                 elif operator in ('contains', 'has'):
                     mapping = query_contains
                 elif operator in ('regex', 'rx'):
-                    value = re.compile(value)
+                    value = re_compile(value)
                     mapping = query_regex
                 elif operator == 'lt':
                     mapping = query_lt
@@ -124,7 +195,7 @@ cdef class Query:
             if prefix not in ALLOWED_KEYS:
                 raise TypeError('Unexpected argument %r. Must be one of %s.' % (key, ALLOWED_KEYS))
 
-            mapping[prefix] = value
+            mapping[prefix] = QueryEntry(value, prefix)
 
         self.query_eq = tuple(sorted(query_eq.items()))
         self.query_startswith = tuple(sorted(query_startswith.items()))
@@ -216,45 +287,45 @@ cdef class Query:
         return Not(self)
 
 cdef fast_Query_call(Query self, Event event):
-    for key, value in self.query_eq:
-        evalue = event[key]
-        if evalue != value:
+    for key, entry in self.query_eq:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if value_from_event != (<QueryEntry>entry).value:
             return False
-    for key, value in self.query_in:
-        evalue = event[key]
-        if evalue not in value:
+    for key, entry in self.query_in:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if (<str?>value_from_event) not in (<QueryEntry>entry).value:
             return False
-    for key, value in self.query_contains:
-        evalue = event[key]
-        if value not in evalue:
+    for key, entry in self.query_contains:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if (<QueryEntry>entry).value not in (<str?>value_from_event):
             return False
-    for key, value in self.query_startswith:
-        evalue = event[key]
-        if not evalue.startswith(value):
+    for key, entry in self.query_startswith:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not (<str?>value_from_event).startswith((<QueryEntry>entry).value):
             return False
-    for key, value in self.query_endswith:
-        evalue = event[key]
-        if not evalue.endswith(value):
+    for key, entry in self.query_endswith:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not (<str?>value_from_event).endswith((<QueryEntry>entry).value):
             return False
-    for key, value in self.query_regex:
-        evalue = event[key]
-        if not value.match(evalue):
+    for key, entry in self.query_regex:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not (<QueryEntry>entry).value.match(value_from_event):
             return False
-    for key, value in self.query_gt:
-        evalue = event[key]
-        if not evalue > value:
+    for key, entry in self.query_gt:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not value_from_event > (<QueryEntry>entry).value:
             return False
-    for key, value in self.query_gte:
-        evalue = event[key]
-        if not evalue >= value:
+    for key, entry in self.query_gte:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not value_from_event >= (<QueryEntry>entry).value:
             return False
-    for key, value in self.query_lt:
-        evalue = event[key]
-        if not evalue < value:
+    for key, entry in self.query_lt:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not value_from_event < (<QueryEntry>entry).value:
             return False
-    for key, value in self.query_lte:
-        evalue = event[key]
-        if not evalue <= value:
+    for key, entry in self.query_lte:
+        value_from_event = (<QueryEntry>entry).getter(event)
+        if not value_from_event <= (<QueryEntry>entry).value:
             return False
 
     return True
@@ -273,7 +344,7 @@ cdef class When:
             raise TypeError('Must give at least one action.')
         self.condition = condition
         self.actions = tuple(
-            action() if inspect.isclass(action) and issubclass(action, Action) else action
+            action() if isclass(action) and issubclass(action, Action) else action
             for action in actions)
 
     def __str__(self):
@@ -565,7 +636,7 @@ cdef inline fast_call(callable, Event event):
 @cython.final
 cdef class Backlog(object):
     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
-        self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
+        self.action = action() if isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
             raise TypeError("Action %r must be a ColorStreamAction." % self.action)
         self.condition = condition
@@ -574,6 +645,7 @@ cdef class Backlog(object):
         self.stack = stack
         self.strip = strip
         self.vars = vars
+        self._try_repr = self.action.try_repr if self.vars else None
         self._filter = filter
 
     def __call__(self, event):
@@ -691,7 +763,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             # Delete everything because we don't want to see what is likely just a long stream of useless returns.
             self.queue.clear()
         if self._filter is None or self._filter(event):
-            detached_event = event.detach(self.action.try_repr if self.vars else None)
+            detached_event = event.detach(self._try_repr)
             detached_event.frame = event.frame
             self.queue.append(detached_event)
 

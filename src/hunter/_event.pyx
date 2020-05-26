@@ -131,8 +131,7 @@ cdef class Event:
         event._thread = self._thread
         return event
 
-    @property
-    def threadid(self):
+    cdef threadid_getter(self):
         cdef long current
 
         if self._threadidn is UNSET:
@@ -145,7 +144,10 @@ cdef class Event:
         return self._threadidn
 
     @property
-    def threadname(self):
+    def threadid(self):
+        return self.threadid_getter()
+
+    cdef threadname_getter(self):
         if self._threadname is UNSET:
             if self._thread is UNSET:
                 self._thread = current_thread()
@@ -153,23 +155,36 @@ cdef class Event:
         return self._threadname
 
     @property
-    def locals(self):
+    def threadname(self):
+        return self.threadname_getter()
+
+    cdef locals_getter(self):
         if self._locals is UNSET:
             PyFrame_FastToLocals(self.frame)
             self._locals = self.frame.f_locals
         return self._locals
 
     @property
-    def globals(self):
+    def locals(self):
+        return self.locals_getter()
+
+    cdef globals_getter(self):
         if self._globals is UNSET:
             self._globals = self.frame.f_globals
         return self._globals
 
     @property
-    def function(self):
+    def globals(self):
+        return self.globals_getter()
+
+    cdef function_getter(self):
         if self._function is UNSET:
             self._function = self.frame.f_code.co_name
         return self._function
+
+    @property
+    def function(self):
+        return self.function_getter()
 
     @property
     def function_object(self):
@@ -199,8 +214,7 @@ cdef class Event:
             self._function_object = func
         return self._function_object
 
-    @property
-    def module(self):
+    cdef module_getter(self):
         if self._module is UNSET:
             module = self.frame.f_globals.get('__name__', '')
             if module is None:
@@ -210,7 +224,10 @@ cdef class Event:
         return self._module
 
     @property
-    def filename(self):
+    def module(self):
+        return self.module_getter()
+
+    cdef filename_getter(self):
         if self._filename is UNSET:
             filename = self.frame.f_code.co_filename
             if not filename:
@@ -231,20 +248,29 @@ cdef class Event:
         return self._filename
 
     @property
-    def lineno(self):
+    def filename(self):
+        return self.filename_getter()
+
+    cdef lineno_getter(self):
         if self._lineno is UNSET:
             self._lineno = self.frame.f_lineno
         return self._lineno
 
     @property
-    def code(self):
+    def lineno(self):
+        return self.lineno_getter()
+
+    cdef code_getter(self):
         if self._code is UNSET:
             return self.frame.f_code
         else:
             return self._code
 
     @property
-    def stdlib(self):
+    def code(self):
+        return self.code_getter()
+
+    cdef stdlib_getter(self):
         if self._stdlib is UNSET:
             module_parts = self.module.split('.')
             if 'pkg_resources' in module_parts:
@@ -263,7 +289,10 @@ cdef class Event:
         return self._stdlib
 
     @property
-    def fullsource(self):
+    def stdlib(self):
+        return self.stdlib_getter()
+
+    cdef fullsource_getter(self):
         cdef list lines
 
         if self._fullsource is UNSET:
@@ -289,7 +318,10 @@ cdef class Event:
         return self._fullsource
 
     @property
-    def source(self):
+    def fullsource(self):
+        return self.fullsource_getter()
+
+    cdef source_getter(self):
         if self._source is UNSET:
             if self.filename.endswith(('.so', '.pyd')):
                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
@@ -299,6 +331,10 @@ cdef class Event:
                 self._source = "??? NO SOURCE: {!r}".format(exc)
 
         return self._source
+
+    @property
+    def source(self):
+        return self.source_getter()
 
     def __getitem__(self, item):
         return getattr(self, item)

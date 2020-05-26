@@ -33,5 +33,18 @@ cdef class Event:
         object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
 
+        object code_getter(self)
+        object filename_getter(self)
+        object fullsource_getter(self)
+        object function_getter(self)
+        object globals_getter(self)
+        object lineno_getter(self)
+        object locals_getter(self)
+        object module_getter(self)
+        object source_getter(self)
+        object stdlib_getter(self)
+        object threadid_getter(self)
+        object threadname_getter(self)
+
     cpdef Event clone(self)
     cpdef Event detach(self, value_filter=?)

@@ -829,7 +829,7 @@ struct __pyx_obj_6hunter_11_predicates_Backlog;
 struct __pyx_obj_6hunter_7_tracer_Tracer;
 struct __pyx_opt_args_6hunter_6_event_5Event_detach;
 
-/* "_event.pxd":37
+/* "_event.pxd":50
  * 
  *     cpdef Event clone(self)
  *     cpdef Event detach(self, value_filter=?)             # <<<<<<<<<<<<<<
@@ -980,6 +980,7 @@ struct __pyx_obj_6hunter_11_predicates_Backlog {
   int vars;
   int strip;
   PyObject *action;
+  PyObject *_try_repr;
   PyObject *_filter;
   PyObject *queue;
 };
@@ -1015,6 +1016,18 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
  */
 
 struct __pyx_vtabstruct_6hunter_6_event_Event {
+  PyObject *(*code_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*filename_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*fullsource_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*function_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*globals_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*lineno_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*locals_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*module_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*source_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*stdlib_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*threadid_getter)(struct __pyx_obj_6hunter_6_event_Event *);
+  PyObject *(*threadname_getter)(struct __pyx_obj_6hunter_6_event_Event *);
   struct __pyx_obj_6hunter_6_event_Event *(*clone)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch);
   struct __pyx_obj_6hunter_6_event_Event *(*detach)(struct __pyx_obj_6hunter_6_event_Event *, int __pyx_skip_dispatch, struct __pyx_opt_args_6hunter_6_event_5Event_detach *__pyx_optional_args);
 };
