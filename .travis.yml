@@ -159,15 +159,19 @@ matrix:
       python: '3.8'
     - env:
         - TOXENV=pypy-pure-cover,codecov
+        - TOXPYTHON=pypy
       python: 'pypy'
     - env:
         - TOXENV=pypy-pure-nocov
+        - TOXPYTHON=pypy
       python: 'pypy'
     - env:
         - TOXENV=pypy-cython-cover,codecov
+        - TOXPYTHON=pypy
       python: 'pypy'
     - env:
         - TOXENV=pypy-cython-nocov
+        - TOXPYTHON=pypy
       python: 'pypy'
     - env:
         - TOXENV=pypy3-pure-cover,codecov

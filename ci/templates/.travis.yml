@@ -56,6 +56,7 @@ matrix:
         - TOXPYTHON=pypy3
       python: 'pypy3'
 {%- elif env.startswith('pypy') %}{{ '' }}
+        - TOXPYTHON=pypy
       python: 'pypy'
 {%- else %}{{ '' }}
       python: '{{ '{0[2]}.{0[3]}'.format(env) }}'
