@@ -2,6 +2,17 @@
 Changelog
 =========
 
+3.2.0 (2020-05-??)
+------------------
+
+* Implemented the :class:`~hunter.actions.StackPrinter` action.
+* Implemented the :class:`~hunter.predicates.Backlog` predicate.
+  Contributed by Dan Ailenei in `#81 <https://github.com/ionelmc/python-hunter/pull/81>`_.
+* Improved contributing section in docs a bit.
+  Contributed by Tom Schraitle in `#85 <https://github.com/ionelmc/python-hunter/pull/85>`_.
+* Improved filtering performance by avoiding a lot of unnecessary
+  ``PyObject_GetAttr`` calls in the Cython implementation of :class:`~hunter.predicates.Backlog`.
+
 3.1.3 (2020-02-02)
 ------------------
 
