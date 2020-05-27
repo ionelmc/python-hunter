@@ -23,6 +23,7 @@ matrix:
           (
           set -eux
           tox -v
+          git diff
           git update-index --ignore-submodules --refresh
           if ! git diff-files --exit-code --ignore-submodules; then
             echo "C files are stale!"
