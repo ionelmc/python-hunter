@@ -739,22 +739,22 @@ class ErrorSnooper(CodePrinter):
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
                     if (event.code.co_code[event.frame.f_lasti] if PY3 else ord(event.code.co_code[event.frame.f_lasti])) == RETURN_VALUE:
                         self.dump_events()
-                        self.output("{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n", "-" * 46)
+                        self.output('{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n', '-' * 46)
                     self.origin = None
                     self.events = None
             elif event.depth > self.origin.depth + self.max_depth:  # too many details
                 return
             elif len(self.events) > self.max_events:
                 self.dump_events()
-                self.output("{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n", "-" * 46)
+                self.output('{BRIGHT}{fore(BLACK)}{} too many lines{RESET}\n', '-' * 46)
             else:
                 if detached_event is None:
                     detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
 
     def dump_events(self):
-        self.output("{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n",
-                    ">" * 46, self.origin.function, self.origin.arg)
+        self.output('{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n',
+                    '>' * 46, self.origin.function, self.origin.arg)
         for event in self.events:
             super(ErrorSnooper, self).__call__(event)
         self.origin = None
@@ -807,7 +807,7 @@ class StackPrinter(ColorStreamAction):
                 event.function,
                 event.detached,
             )
-        template += "{RESET}\n"
+        template += '{RESET}\n'
         self.output(
             template,
             pid_prefix,

@@ -44,7 +44,7 @@ class Event(object):
     def __init__(self, frame, kind, arg, tracer=None, depth=MISSING, calls=MISSING, threading_support=MISSING):
         if tracer is None:
             if MISSING in (depth, calls, threading_support):
-                raise TypeError("Depth, calls and threading support need to be specified when creating and event")
+                raise TypeError('Depth, calls and threading support need to be specified when creating and event')
         else:
             depth = tracer.depth
             calls = tracer.calls
@@ -380,7 +380,7 @@ def yield_lines(filename, module_globals, start, collector,
     for line in linecache.getlines(filename, module_globals)[start:start + limit]:
         if dedent is None:
             dedent = leading_whitespace_re.findall(line)
-            dedent = dedent[0] if dedent else ""
+            dedent = dedent[0] if dedent else ''
             amount = len(dedent)
         elif not line.startswith(dedent):
             break

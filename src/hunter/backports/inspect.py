@@ -6,7 +6,7 @@ _sentinel = object()
 def _check_instance(obj, attr):
     instance_dict = {}
     try:
-        instance_dict = object.__getattribute__(obj, "__dict__")
+        instance_dict = object.__getattribute__(obj, '__dict__')
     except AttributeError:
         pass
     return dict.get(instance_dict, attr, _sentinel)
@@ -31,15 +31,15 @@ def _is_type(obj):
 
 
 def _shadowed_dict_newstyle(klass):
-    dict_attr = type.__dict__["__dict__"]
+    dict_attr = type.__dict__['__dict__']
     for entry in _static_getmro(klass):
         try:
-            class_dict = dict_attr.__get__(entry)["__dict__"]
+            class_dict = dict_attr.__get__(entry)['__dict__']
         except KeyError:
             pass
         else:
             if not (type(class_dict) is types.GetSetDescriptorType and  # noqa
-                    class_dict.__name__ == "__dict__" and
+                    class_dict.__name__ == '__dict__' and
                     class_dict.__objclass__ is entry):
                 return class_dict
     return _sentinel

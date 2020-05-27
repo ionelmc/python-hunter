@@ -688,7 +688,7 @@ class Backlog(object):
     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
         self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
-            raise TypeError("Action %r must be a ColorStreamAction." % self.action)
+            raise TypeError('Action %r must be a ColorStreamAction.' % self.action)
         self.condition = condition
         self.queue = collections.deque(maxlen=size)
         self.size = size

@@ -13,6 +13,10 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: double-quote-string-fixer
+        exclude: '^tests/'
+      - id: mixed-line-ending
+        args: [--fix=lf]
   - repo: https://github.com/timothycrosley/isort
     rev: master
     hooks:
