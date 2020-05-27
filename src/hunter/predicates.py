@@ -809,7 +809,7 @@ class Backlog(object):
         """
         return And(other, self)
 
-    def filter(self, *args, **kwargs):
+    def filter(self, *predicates, **kwargs):
         """
         Returns another Backlog instance with extra output filtering. If the current instance already
         have filters they will be merged by using an :class:`~hunter.predicates.And` predicate.
@@ -822,11 +822,11 @@ class Backlog(object):
         """
         from hunter import _merge
 
-        if self.filter is not None:
-            args = (self.filter,) + args
+        if self._filter is not None:
+            predicates = (self._filter,) + predicates
 
         return Backlog(
             self.condition,
             size=self.size, stack=self.stack, vars=self.vars, action=self.action,
-            filter=_merge(*args, **kwargs)
+            filter=_merge(*predicates, **kwargs)
         )

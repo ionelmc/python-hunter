@@ -2,8 +2,12 @@
 #   pre-commit install
 # To update the pre-commit hooks run:
 #   pre-commit install-hooks
-exclude: '^(.tox|ci/templates|.bumpversion.cfg)(/|$)'
+exclude: '^(.tox/|ci/templates/|.bumpversion.cfg$|.*\.c$)'
 repos:
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+      - id: check-hooks-apply
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: master
     hooks:
@@ -13,6 +17,7 @@ repos:
     rev: master
     hooks:
       - id: isort
+        exclude_types: [cython]
   - repo: https://gitlab.com/pycqa/flake8
     rev: master
     hooks:

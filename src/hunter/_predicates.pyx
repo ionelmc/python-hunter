@@ -689,16 +689,16 @@ cdef class Backlog(object):
     def __rand__(self, other):
         return And(other, self)
 
-    def filter(self, *args, **kwargs):
+    def filter(self, *predicates, **kwargs):
         from hunter import _merge
 
-        if self.filter is not None:
-            args = (self.filter,) + args
+        if self._filter is not None:
+            predicates = (self._filter,) + predicates
 
         return Backlog(
             self.condition,
             size=self.size, stack=self.stack, vars=self.vars, action=self.action,
-            filter=_merge(*args, **kwargs)
+            filter=_merge(*predicates, **kwargs)
         )
 
 cdef inline fast_Backlog_call(Backlog self, Event event):
