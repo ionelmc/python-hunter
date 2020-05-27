@@ -36,35 +36,33 @@ class BasePredicate(object):
 
 class Query(object):
     """
-    A query class.
+    Event-filtering predicate.
 
-    See :class:`hunter.event.Event` for fields that can be filtered on.
+    See :class:`hunter.event.Event` for details about the fields that can be filtered on.
+
+    Args:
+        query: criteria to match on.
+
+            Accepted arguments:
+            ``arg``,
+            ``calls``,
+            ``code``,
+            ``depth``,
+            ``filename``,
+            ``frame``,
+            ``fullsource``,
+            ``function``,
+            ``globals``,
+            ``kind``,
+            ``lineno``,
+            ``locals``,
+            ``module``,
+            ``source``,
+            ``stdlib``,
+            ``threadid``,
+            ``threadname``.
     """
-
     def __init__(self, **query):
-        """
-        Args:
-            query: criteria to match on.
-
-                Accepted arguments:
-                ``arg``,
-                ``calls``,
-                ``code``,
-                ``depth``,
-                ``filename``,
-                ``frame``,
-                ``fullsource``,
-                ``function``,
-                ``globals``,
-                ``kind``,
-                ``lineno``,
-                ``locals``,
-                ``module``,
-                ``source``,
-                ``stdlib``,
-                ``threadid``,
-                ``threadname``.
-        """
         query_eq = {}
         query_startswith = {}
         query_endswith = {}
@@ -281,7 +279,7 @@ class Query(object):
 
 class When(object):
     """
-    Runs ``actions`` when ``condition(event)`` is ``True``.
+    Conditional predicate. Runs ``actions`` when ``condition(event)`` is ``True``.
 
     Actions take a single ``event`` argument.
     """
@@ -370,6 +368,9 @@ class From(object):
             :attr:`~hunter.event.Event.depth` and :attr:`~hunter.event.Event.calls` to the initial point where the ``condition`` matched.
             In other words they will be relative.
         watermark (int): Depth difference to switch off and wait again on ``condition``.
+
+    See Also:
+         :class:`hunter.predicates.Backlog`
     """
 
     def __init__(self, condition, predicate=None, watermark=0):
@@ -457,7 +458,7 @@ class From(object):
 
 class And(object):
     """
-    Returns ``False`` at the first sub-predicate that returns ``False``, otherwise returns ``True``.
+    Logical conjunction. Returns ``False`` at the first sub-predicate that returns ``False``, otherwise returns ``True``.
     """
 
     def __init__(self, *predicates):
@@ -521,7 +522,7 @@ class And(object):
 
 class Or(object):
     """
-    Returns ``True`` after the first sub-predicate that returns ``True``.
+    Logical disjunction. Returns ``True`` after the first sub-predicate that returns ``True``.
     """
 
     def __init__(self, *predicates):
@@ -585,7 +586,7 @@ class Or(object):
 
 class Not(object):
     """
-    Simply returns ``not predicate(event)``.
+    Logical complement (negation). Simply returns ``not predicate(event)``.
     """
 
     def __init__(self, predicate):
@@ -654,6 +655,36 @@ class Not(object):
 
 
 class Backlog(object):
+    """
+    Until-point buffering mechanism. It will buffer detached events up to the given ``size`` and display them
+    using the given ``action`` when ``condition`` returns True.
+
+    This is a complement to :class:`~hunter.predicates.From` - essentially working the other way. While :class:`~hunter.predicates.From`
+    shows events after something interesting occurred the Backlog will show events prior to something interesting occurring.
+
+    If the depth delta from the first event in the backlog and the event that matched the condition is less
+    than the given ``stack`` then it will create fake call events to be passed to the action before the events
+    from the backlog are passed in.
+
+    Using a ``filter`` or pre-filtering is recommended to reduce storage work and improve tracing speed. Pre-filtering means that you use
+    Backlog inside a :class:`~hunter.When` or `:class:`~hunter.And` - effectively reducing the number of Events that get to the Backlog.
+
+    Args:
+        condition (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False.
+        size (int): Number of events that the backlog stores. Effectively this is the ``maxlen`` for the internal deque.
+        stack (int): Stack size to fill. Setting this to ``0`` disables creating fake call events.
+        vars (bool): Makes global/local variables available in the stored events.
+            This is an expensive option - it will use ``action.try_repr`` on all the variables.
+        strip (bool): If this option is set then the backlog will be cleared every time an event matching the ``condition`` is found.
+            Disabling this may show more context every time an event matching the ``condition`` is found but said context may also be
+            duplicated across multiple matches.
+        action (ColorStreamAction): A ColorStreamAction to display the stored events when an event matching the ``condition`` is found.
+        filter (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False to filter the stored
+            events with.
+
+    See Also:
+         :class:`hunter.predicates.From`
+    """
     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
         self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
@@ -779,6 +810,16 @@ class Backlog(object):
         return And(other, self)
 
     def filter(self, *args, **kwargs):
+        """
+        Returns another Backlog instance with extra output filtering. If the current instance already
+        have filters they will be merged by using an :class:`~hunter.predicates.And` predicate.
+
+        Args:
+            *predicates (callables): Callables that returns True/False or :class:`~hunter.predicates.Query` objects.
+            **kwargs: Arguments that may be passed to :class:`~hunter.predicates.Query`.
+
+        Returns: A new :class:`~hunter.predicates.Backlog` instance.
+        """
         from hunter import _merge
 
         if self.filter is not None:

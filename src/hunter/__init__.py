@@ -202,7 +202,7 @@ def And(*predicates, **kwargs):
 
     Args:
         *predicates (callables): Callables that returns True/False or :class:`hunter.predicates.Query` objects.
-        **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`
+        **kwargs: Arguments that may be passed to :class:`hunter.predicates.Query`.
 
     Returns: A :class:`hunter.predicates.And` instance.
 
@@ -286,6 +286,26 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
 
 
 def Backlog(*conditions, **kwargs):
+    """
+    Helper that merges kwargs and conditions prior to creating the :class:`~hunter.predicates.Backlog`.
+
+    Args:
+        *conditions (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False.
+        size (int): Number of events that the backlog stores. Effectively this is the ``maxlen`` for the internal deque.
+        stack (int): Stack size to fill. Setting this to ``0`` disables creating fake call events.
+        vars (bool): Makes global/local variables available in the stored events.
+            This is an expensive option - it will use ``action.try_repr`` on all the variables.
+        strip (bool): If this option is set then the backlog will be cleared every time an event matching the ``condition`` is found.
+            Disabling this may show more context every time an event matching the ``condition`` is found but said context may also be
+            duplicated across multiple matches.
+        action (ColorStreamAction): A ColorStreamAction to display the stored events when an event matching the ``condition`` is found.
+        filter (callable): Optional :class:`~hunter.predicates.Query` object or a callable that returns True/False to filter the stored
+            events with.
+        **kwargs: Arguments that are passed to :func:`hunter.Q`. Any kwarg that starts with "depth" or "calls" will be included `predicate`.
+
+    See Also:
+         :class:`hunter.predicates.Backlog`
+    """
     action = kwargs.pop('action', CallPrinter)
     filter = kwargs.pop('filter', None)
     size = kwargs.pop('size', 100)
@@ -293,7 +313,8 @@ def Backlog(*conditions, **kwargs):
     strip = kwargs.pop('strip', True)
     vars = kwargs.pop('vars', False)
     if not conditions and not kwargs:
-        raise TypeError('Backlog needs at least 1 condition.')
+        raise TypeError("Backlog needs at least 1 condition "
+                        "(it doesn't have any effect without one besides making everything incredibly slow).")
     return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, strip=strip, action=action, filter=filter)
 
 

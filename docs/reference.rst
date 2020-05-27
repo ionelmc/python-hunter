@@ -1,7 +1,7 @@
 Reference
 =========
 
-.. autosummary::
+.. _helpers-summary:
 
 .. highlights:: :ref:`reference:Helpers`
 
@@ -11,6 +11,7 @@ Reference
     hunter.stop
     hunter.wrap
     hunter.And
+    hunter.Backlog
     hunter.From
     hunter.Not
     hunter.Or
@@ -26,6 +27,7 @@ Reference
     hunter.actions.Debugger
     hunter.actions.ErrorSnooper
     hunter.actions.Manhole
+    hunter.actions.StackPrinter
     hunter.actions.VarsPrinter
     hunter.actions.VarsSnooper
 
@@ -38,13 +40,13 @@ Reference
 
 .. autosummary::
 
-    hunter.predicates.Query
-    hunter.predicates.From
-    hunter.predicates.When
     hunter.predicates.And
+    hunter.predicates.Backlog
+    hunter.predicates.From
     hunter.predicates.Not
     hunter.predicates.Or
     hunter.predicates.Query
+    hunter.predicates.When
 
 .. highlights:: :ref:`reference:Internals`
 
@@ -70,6 +72,8 @@ Helpers
 
 .. autofunction:: hunter.And
 
+.. autofunction:: hunter.Backlog
+
 .. autofunction:: hunter.From
 
 .. autofunction:: hunter.Not
@@ -77,6 +81,7 @@ Helpers
 .. autofunction:: hunter.Or
 
 .. autofunction:: hunter.Q
+
 
 ----
 
@@ -107,6 +112,10 @@ Actions
     :members:
     :special-members:
 
+.. autoclass:: hunter.actions.StackPrinter(depth=15, limit=2, stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
+    :members:
+    :special-members:
+
 .. autoclass:: hunter.actions.VarsPrinter(name, [name, [name, [...]]], stream=sys.stderr, force_colors=False, force_pid=False, filename_alignment=40, thread_alignment=12, pid_alignment=9, repr_limit=1024, repr_func='safe_repr')
     :members:
     :special-members:
@@ -123,13 +132,18 @@ Predicates
 .. warning::
 
     These have Cython implementations in modules prefixed with "_".
-    They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
 
-.. autoclass:: hunter.predicates.Query
+    Note that:
+
+    * Every predicate except :class:`~hunter.predicates.When` has a :ref:`helper <helpers-summary>` importable directly from the
+      ``hunter`` package.
+    * Ideally you'd use the helpers instead of these to get the right implementation, extra validation and better argument handling.
+
+.. autoclass:: hunter.predicates.And
     :members:
     :special-members:
 
-.. autoclass:: hunter.predicates.When
+.. autoclass:: hunter.predicates.Backlog
     :members:
     :special-members:
 
@@ -137,7 +151,7 @@ Predicates
     :members:
     :special-members:
 
-.. autoclass:: hunter.predicates.And
+.. autoclass:: hunter.predicates.Not
     :members:
     :special-members:
 
@@ -145,7 +159,11 @@ Predicates
     :members:
     :special-members:
 
-.. autoclass:: hunter.predicates.Not
+.. autoclass:: hunter.predicates.Query
+    :members:
+    :special-members:
+
+.. autoclass:: hunter.predicates.When
     :members:
     :special-members:
 
