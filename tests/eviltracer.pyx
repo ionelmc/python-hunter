@@ -1,3 +1,4 @@
+# language_level=3
 import cython
 
 from cpython.pystate cimport PyThreadState_Get, PyThreadState
