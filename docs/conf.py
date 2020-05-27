@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 import os
 import traceback
 
+import sphinx_py3doc_enhanced_theme
+
 os.environ['PUREPYTHONHUNTER'] = 'yes'
 
 extensions = [
@@ -42,7 +44,6 @@ extlinks = {
     'issue': ('https://github.com/ionelmc/python-hunter/issues/%s', '#'),
     'pr': ('https://github.com/ionelmc/python-hunter/pull/%s', 'PR #'),
 }
-import sphinx_py3doc_enhanced_theme
 html_theme = "sphinx_py3doc_enhanced_theme"
 html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
 html_theme_options = {

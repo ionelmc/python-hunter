@@ -47,6 +47,7 @@ def exec_in_env():
     print("+ exec", python_executable, __file__, "--no-env")
     os.execv(python_executable, [python_executable, __file__, "--no-env"])
 
+
 def main():
     import jinja2
 

@@ -5,4 +5,3 @@ foo = bar = lambda x: x
 @bar
 def foo():
     return 1
-

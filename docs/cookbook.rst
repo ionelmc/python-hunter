@@ -248,5 +248,3 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
                 self.backlog.append(event.detach(self.try_repr))
 
 Take note about the use of :meth:`~hunter.event.Event.detach` and :meth:`~hunter.actions.ColorStreamAction.output`.
-
-

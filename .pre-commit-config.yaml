@@ -2,7 +2,7 @@
 #   pre-commit install
 # To update the pre-commit hooks run:
 #   pre-commit install-hooks
-exclude: '^(.tox/|ci/templates/|.bumpversion.cfg$|.*\.c$)'
+exclude: '^(.tox/|ci/templates/|src/hunter.(pth|embed)$|src/hunter/vendor/|.bumpversion.cfg$|.*\.c$)'
 repos:
   - repo: meta
     hooks:
@@ -17,8 +17,9 @@ repos:
     rev: master
     hooks:
       - id: isort
-        exclude_types: [cython]
+        types: [python]
   - repo: https://gitlab.com/pycqa/flake8
     rev: master
     hooks:
       - id: flake8
+        exclude: '^tests/'

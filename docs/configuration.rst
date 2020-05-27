@@ -38,4 +38,3 @@ Notes:
   which is the equivalent of::
 
     PYTHONHUNTER="Q(module_startswith='django')&Q(module_startswith='celery')"
-
