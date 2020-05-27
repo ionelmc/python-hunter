@@ -171,7 +171,8 @@ def Q(*predicates, **query):
 
 def _merge(*predicates, **query):
     if predicates:
-        predicates += Query(**query),
+        if query:
+            predicates += Query(**query),
         return And(*predicates)
     else:
         return Query(**query)

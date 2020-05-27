@@ -17,6 +17,7 @@ from hunter import Or
 from hunter import Q
 from hunter import Query
 from hunter import When
+from hunter import _Backlog
 from hunter.actions import ColorStreamAction
 
 
@@ -274,6 +275,24 @@ def test_backlog_typeerror():
     pytest.raises(TypeError, Backlog, action=1)
     pytest.raises(TypeError, Backlog, module=1, action=1)
     pytest.raises(TypeError, Backlog, module=1, action=type)
+
+
+def test_backlog_filter():
+    class MyAction(ColorStreamAction):
+        def __eq__(self, other):
+            return True
+
+    assert Backlog(Q(), action=MyAction).filter(function=1) == _Backlog(condition=Q(), filter=Query(function=1), action=MyAction)
+    assert Backlog(Q(), action=MyAction, filter=Q(module=1)).filter(function=2) == _Backlog(
+        condition=Q(), filter=And(Query(module=1), Query(function=2)), action=MyAction)
+
+    def blabla():
+        pass
+
+    assert Backlog(Q(), action=MyAction, filter=blabla).filter(function=1) == _Backlog(
+        condition=Q(), filter=And(blabla, Query(function=1)), action=MyAction)
+    assert Backlog(Q(), action=MyAction, filter=Q(module=1)).filter(blabla, function=2) == _Backlog(
+        condition=Q(), filter=And(Query(module=1), blabla, Query(function=2)), action=MyAction)
 
 
 def test_and(mockevent):
