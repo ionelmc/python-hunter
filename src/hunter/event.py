@@ -41,10 +41,14 @@ class Event(object):
     depth = None
     calls = None
 
-    def __init__(self, frame, kind, arg, tracer=None, depth=MISSING, calls=MISSING, threading_support=MISSING):
+    def __init__(self, frame, kind, arg, tracer=None, depth=None, calls=None, threading_support=MISSING):
         if tracer is None:
-            if MISSING in (depth, calls, threading_support):
-                raise TypeError('Depth, calls and threading support need to be specified when creating and event')
+            if depth is None:
+                raise TypeError('Missing argument: depth (required because tracer was not given)')
+            if calls is None:
+                raise TypeError('Missing argument: calls (required because tracer was not given)')
+            if threading_support is MISSING:
+                raise TypeError('Missing argument: threading_support (required because tracer was not given)')
         else:
             depth = tracer.depth
             calls = tracer.calls

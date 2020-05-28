@@ -18,6 +18,7 @@ from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import CYTHON_SUFFIX_RE
 from .util import LEADING_WHITESPACE_RE
+from .util import MISSING
 from .util import get_func_in_mro
 from .util import get_main_thread
 from .util import if_same_code
@@ -41,10 +42,14 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer=None, object depth=UNSET, object calls=UNSET, object threading_support=UNSET):
+    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer=None, object depth=None, object calls=None, object threading_support=MISSING):
         if tracer is None:
-            if UNSET in (depth, calls, threading_support):
-                raise TypeError("Depth, calls and threading support need to be specified when creating and event")
+            if depth is None:
+                raise TypeError('Missing argument: depth (required because tracer was not given)')
+            if calls is None:
+                raise TypeError('Missing argument: calls (required because tracer was not given)')
+            if threading_support is MISSING:
+                raise TypeError('Missing argument: threading_support (required because tracer was not given)')
         else:
             depth = tracer.depth
             calls = tracer.calls
