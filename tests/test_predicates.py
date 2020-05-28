@@ -359,22 +359,6 @@ def test_str_repr():
     assert str(Manhole()) == 'Manhole(options={})'
 
 
-def test_hashing():
-    assert Q(module='a', function='b') in {Q(module='a', function='b')}
-    assert ~Q(module='a', function='b') in {~Q(module='a', function='b')}
-    assert (Q(module='a') | Q(function='b')) in {Q(module='a') | Q(function='b')}
-    assert (Q(module='a') & Q(function='b')) in {Q(module='a') & Q(function='b')}
-    assert Q(module='a', action=id) in {Q(module='a', action=id)}
-    assert From(module='a', depth_gte=2) in {From(module='a', depth_gte=2)}
-
-    class Foo(object):
-        def __call__(self):
-            pass
-
-    pytest.raises(TypeError, set, Q(module=object(), action=Foo()))
-    pytest.raises(TypeError, set, From(module=object(), depth_gte=object()))
-
-
 def test_q_deduplicate_callprinter():
     out = repr(Q(CallPrinter(), action=CallPrinter()))
     assert out.startswith('CallPrinter(')

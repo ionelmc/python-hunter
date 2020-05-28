@@ -184,21 +184,6 @@ class Query(object):
             and self.query_gte == other.query_gte
         )
 
-    def __hash__(self):
-        return hash((
-            'Query',
-            self.query_eq,
-            self.query_in,
-            self.query_contains,
-            self.query_startswith,
-            self.query_endswith,
-            self.query_regex,
-            self.query_lt,
-            self.query_lte,
-            self.query_gt,
-            self.query_gte,
-        ))
-
     def __call__(self, event):
         """
         Handles event. Returns True if all criteria matched.
@@ -308,9 +293,6 @@ class When(object):
             and self.actions == other.actions
         )
 
-    def __hash__(self):
-        return hash(('When', self.condition, self.actions))
-
     def __call__(self, event):
         """
         Handles the event.
@@ -397,9 +379,6 @@ class From(object):
             and self.predicate == other.predicate
         )
 
-    def __hash__(self):
-        return hash(('From', self.condition, self.predicate))
-
     def __call__(self, event):
         """
         Handles the event.
@@ -476,9 +455,6 @@ class And(object):
             and self.predicates == other.predicates
         )
 
-    def __hash__(self):
-        return hash(('And', self.predicates))
-
     def __call__(self, event):
         """
         Handles the event.
@@ -540,9 +516,6 @@ class Or(object):
             and self.predicates == other.predicates
         )
 
-    def __hash__(self):
-        return hash(('Or', self.predicates))
-
     def __call__(self, event):
         """
         Handles the event.
@@ -603,9 +576,6 @@ class Not(object):
             isinstance(other, Not)
             and self.predicate == other.predicate
         )
-
-    def __hash__(self):
-        return hash(('Not', self.predicate))
 
     def __call__(self, event):
         """
@@ -775,9 +745,6 @@ class Backlog(object):
             self.vars == other.vars and
             self.action == other.action
         )
-
-    def __hash__(self):
-        return hash(('Backlog', self.condition, self.size, self.stack, self.vars, self.action, self._filter))
 
     def __or__(self, other):
         """

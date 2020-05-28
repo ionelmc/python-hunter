@@ -99,13 +99,6 @@ cdef class QueryEntry:
             and self.getter_index == (<QueryEntry> other).getter_index
         )
 
-    def __hash__(self):
-        return hash((
-            'QueryEntry',
-            self.value,
-            self.getter_index
-        ))
-
 @cython.final
 cdef class Query:
     """
@@ -259,21 +252,6 @@ cdef class Query:
             and self.query_gte == (<Query>other).query_gte
         )
 
-    def __hash__(self):
-        return hash((
-            'Query',
-            self.query_eq,
-            self.query_in,
-            self.query_contains,
-            self.query_startswith,
-            self.query_endswith,
-            self.query_regex,
-            self.query_lt,
-            self.query_lte,
-            self.query_gt,
-            self.query_gte,
-        ))
-
     def __call__(self, Event event):
         return fast_Query_call(self, event)
 
@@ -363,9 +341,6 @@ cdef class When:
             and self.actions == (<When> other).actions
         )
 
-    def __hash__(self):
-        return hash(('When', self.condition, self.actions))
-
     def __call__(self, Event event):
         return fast_When_call(self, event)
 
@@ -419,9 +394,6 @@ cdef class From:
             and self.condition == (<From> other).condition
             and self.predicate == (<From> other).predicate
         )
-
-    def __hash__(self):
-        return hash(('From', self.condition, self.predicate))
 
     def __call__(self, Event event):
         return fast_From_call(self, event)
@@ -485,9 +457,6 @@ cdef class And:
             and self.predicates == (<And> other).predicates
         )
 
-    def __hash__(self):
-        return hash(('And', self.predicates))
-
     def __call__(self, Event event):
         return fast_And_call(self, event)
 
@@ -538,9 +507,6 @@ cdef class Or:
             and self.predicates == (<Or> other).predicates
         )
 
-    def __hash__(self):
-        return hash(('Or', self.predicates))
-
     def __call__(self, Event event):
         return fast_Or_call(self, event)
 
@@ -588,9 +554,6 @@ cdef class Not:
             isinstance(other, Not)
             and self.predicate == (<Not> other).predicate
         )
-
-    def __hash__(self):
-        return hash(('Not', self.predicate))
 
     def __call__(self, Event event):
         return fast_Not_call(self, event)
@@ -670,9 +633,6 @@ cdef class Backlog(object):
             self.vars == (<Backlog> other).vars and
             self.action == (<Backlog> other).action
         )
-
-    def __hash__(self):
-        return hash(('Backlog', self.condition, self.size, self.stack, self.vars, self.action, self._filter))
 
     def __or__(self, other):
         return Or(self, other)
