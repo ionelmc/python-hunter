@@ -1,6 +1,7 @@
 language: python
 dist: xenial
 cache: false
+sudo: true
 git:
   depth: false
 addons:
