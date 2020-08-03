@@ -40,6 +40,7 @@ class Event(object):
     arg = None
     depth = None
     calls = None
+    builtin = None
 
     def __init__(self, frame, kind, arg, tracer=None, depth=None, calls=None, threading_support=MISSING):
         if tracer is None:
@@ -62,8 +63,19 @@ class Event(object):
         #:  You may access it from your custom predicate though.
         self.frame = frame
 
-        #: The kind of the event, could be one of ``'call'``, ``'line'``, ``'return'``, ``'exception'``,
-        #: ``'c_call'``, ``'c_return'``, or ``'c_exception'``.
+        if kind.startswith('c_'):
+            kind = kind[2:]
+            builtin = arg
+            arg = None
+        else:
+            builtin = False
+
+        #: If kind of the event is one of ``'c_call'``, ``'c_return'``, or ``'c_exception'`` then this will be True.
+        #:
+        #: :type: bool
+        self.builtin = builtin
+
+        #: The kind of the event, could be one of ``'call'``, ``'line'``, ``'return'``, ``'exception'``.
         #:
         #: :type: str
         self.kind = kind
@@ -71,7 +83,7 @@ class Event(object):
         #: A value that depends on ``kind``
         self.arg = arg
 
-        #: Tracing depth (increases on calls, decreases on returns)
+        #: Tracing depth (increases on calls, decreases on returns).
         #:
         #: :type: int
         self.depth = depth
@@ -152,6 +164,7 @@ class Event(object):
         event.calls = self.calls
         event.depth = self.depth
         event.kind = self.kind
+        event.builtin = self.builtin
 
         event.detached = True
 
@@ -196,6 +209,9 @@ class Event(object):
 
         :type: dict
         """
+        if self.builtin:
+            return {}
+
         return self.frame.f_locals
 
     @cached_property
@@ -205,6 +221,9 @@ class Event(object):
 
         :type: dict
         """
+        if self.builtin:
+            return {}
+
         return self.frame.f_globals
 
     @cached_property
@@ -214,7 +233,10 @@ class Event(object):
 
         :type: str
         """
-        return self.code.co_name
+        if self.builtin:
+            return self.builtin.__name__
+        else:
+            return self.code.co_name
 
     @cached_property
     def function_object(self):
@@ -230,6 +252,9 @@ class Event(object):
         :type: function or None
         """
         # Based on MonkeyType's get_func
+        if self.builtin:
+            return self.arg
+
         code = self.code
         if code.co_name is None:
             return None
@@ -261,10 +286,12 @@ class Event(object):
 
         :type: str
         """
+        if self.builtin:
+            return self.builtin.__module__
+
         module = self.frame.f_globals.get('__name__', '')
         if module is None:
             module = ''
-
         return module
 
     @cached_property
@@ -275,6 +302,10 @@ class Event(object):
 
         :type: str
         """
+        # if self.builtin:
+        #     return '<builtin>'
+        # if self.builtin:
+        #     return '<builtin>'
         filename = self.frame.f_code.co_filename
         if not filename:
             filename = self.frame.f_globals.get('__file__')

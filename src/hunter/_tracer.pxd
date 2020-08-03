@@ -18,11 +18,14 @@ cdef extern from "frameobject.h":
         cdef int f_lineno
 
     void PyEval_SetTrace(Py_tracefunc func, PyObject *obj)
+    void PyEval_SetProfile(Py_tracefunc func, PyObject *obj)
 
 cdef extern from "pystate.h":
     ctypedef struct PyThreadState:
         PyObject *c_traceobj
+        PyObject *c_profileobj
         Py_tracefunc c_tracefunc
+        Py_tracefunc c_profilefunc
 
 @cython.final
 cdef class Tracer:
@@ -30,6 +33,7 @@ cdef class Tracer:
         readonly object handler
         readonly object previous
         readonly object threading_support
+        readonly bint profiling_mode
         readonly int depth
         readonly int calls
 

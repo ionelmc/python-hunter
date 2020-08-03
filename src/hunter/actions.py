@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 
-import collections
 import opcode
+
+import collections
 import os
 import threading
 from collections import defaultdict
@@ -244,7 +245,7 @@ class ColorStreamAction(Action):
         """
         source = event.fullsource if full else event.source
         if source.startswith('??? NO SOURCE: '):
-            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}'.format(source[15:], **self.other_colors),
+            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}{}'.format(source[15:], **self.other_colors)
         elif source:
             return source
         else:
@@ -258,11 +259,16 @@ class ColorStreamAction(Action):
         Returns: string
         """
         if event:
-            filename = event.filename or '<???>'
+            if event.builtin:
+                filename = '<{}>'.format(event.module)
+                lineno = '      '
+            else:
+                filename = event.filename or '<???>'
+                lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
             if len(filename) > self.filename_alignment:
                 filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-            return '{:>{}}{COLON}:{LINENO}{:<5} '.format(
-                filename, self.filename_alignment, event.lineno, **self.other_colors)
+            return '{:>{}}{} '.format(
+                filename, self.filename_alignment, lineno, **self.other_colors)
         else:
             return '{:>{}}       '.format('', self.filename_alignment)
 
@@ -445,7 +451,20 @@ class CallPrinter(CodePrinter):
         thread_prefix = self.thread_prefix(event)
         filename_prefix = self.filename_prefix(event)
 
-        if event.kind == 'call':
+        if event.builtin and event.kind == 'call':
+            stack.append(ident)
+            self.output(
+                '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}: {}{RESET}\n',
+                pid_prefix,
+                thread_prefix,
+                filename_prefix,
+                event.kind,
+                '   ' * (len(stack) - 1),
+                event.function,
+                self.try_source(event).strip(),
+                COLOR=self.event_colors.get(event.kind),
+            )
+        elif event.kind == 'call':
             code = event.code
             stack.append(ident)
             self.output(
@@ -478,14 +497,15 @@ class CallPrinter(CodePrinter):
 
         elif event.kind == 'return':
             self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}: {RESET}{}\n',
+                '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}{}{RESET}{}\n',
                 pid_prefix,
                 thread_prefix,
                 filename_prefix,
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
+                '' if event.builtin else ': ',
+                '' if event.builtin else (self.try_str(event.arg) if event.detached else self.try_repr(event.arg)),
                 COLOR=self.event_colors.get(event.kind),
             )
             if stack and stack[-1] == ident:

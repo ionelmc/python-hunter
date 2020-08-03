@@ -45,6 +45,7 @@ class Query(object):
 
             Accepted arguments:
             ``arg``,
+            ``builtin``,
             ``calls``,
             ``code``,
             ``depth``,

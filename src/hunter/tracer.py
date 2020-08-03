@@ -18,7 +18,7 @@ class Tracer(object):
     Args:
         threading_support (bool): Hooks the tracer into ``threading.settrace`` as well if True.
     """
-    def __init__(self, threading_support=None):
+    def __init__(self, threading_support=None, profiling_mode=False):
         self._handler = None
         self._previous = None
         self._threading_previous = None
@@ -27,6 +27,11 @@ class Tracer(object):
         #:
         #: :type: bool
         self.threading_support = threading_support
+
+        #: True if profiling mode was enabled. Should be considered read-only.
+        #:
+        #: :type: bool
+        self.profiling_mode = profiling_mode
 
         #: Tracing depth (increases on calls, decreases on returns)
         #:
@@ -98,11 +103,18 @@ class Tracer(object):
             self
         """
         self._handler = predicate
-        if self.threading_support is None or self.threading_support:
-            self._threading_previous = getattr(threading, '_trace_hook', None)
-            threading.settrace(self)
-        self._previous = sys.gettrace()
-        sys.settrace(self)
+        if self.profiling_mode:
+            if self.threading_support is None or self.threading_support:
+                self._threading_previous = getattr(threading, '_profile_hook', None)
+                threading.setprofile(self)
+            self._previous = sys.getprofile()
+            sys.setprofile(self)
+        else:
+            if self.threading_support is None or self.threading_support:
+                self._threading_previous = getattr(threading, '_trace_hook', None)
+                threading.settrace(self)
+            self._previous = sys.gettrace()
+            sys.settrace(self)
         return self
 
     def stop(self):
@@ -110,11 +122,18 @@ class Tracer(object):
         Stop tracing. Reinstalls the :attr:`~hunter.tracer.Tracer.previous` tracer.
         """
         if self._handler is not None:
-            sys.settrace(self._previous)
-            self._handler = self._previous = None
-            if self.threading_support is None or self.threading_support:
-                threading.settrace(self._threading_previous)
-                self._threading_previous = None
+            if self.profiling_mode:
+                sys.setprofile(self._previous)
+                self._handler = self._previous = None
+                if self.threading_support is None or self.threading_support:
+                    threading.setprofile(self._threading_previous)
+                    self._threading_previous = None
+            else:
+                sys.settrace(self._previous)
+                self._handler = self._previous = None
+                if self.threading_support is None or self.threading_support:
+                    threading.settrace(self._threading_previous)
+                    self._threading_previous = None
 
     def __enter__(self):
         """

@@ -28,8 +28,8 @@ try:
     from ._predicates import From as _From
     from ._predicates import Not as _Not
     from ._predicates import Or as _Or
-    from ._predicates import When
     from ._predicates import Query
+    from ._predicates import When
     from ._tracer import Tracer
 except ImportError:
     from .event import Event  # noqa
@@ -74,6 +74,10 @@ THREADING_SUPPORT_ALIASES = (
     'threadingsupport', 'threadssupport', 'threadsupport',
     'threading', 'threads', 'thread',
 )
+TRACER_OPTION_NAMES = THREADING_SUPPORT_ALIASES + (
+    'clear_env_var',
+    'profile',
+)
 _last_tracer = None
 _default_trace_args = None
 _default_config = {}
@@ -87,7 +91,7 @@ def _prepare_config(*args, **kwargs):
     predicates = []
 
     for key, value in list(_default_config.items()):
-        if key in THREADING_SUPPORT_ALIASES or key == 'clear_env_var':
+        if key in TRACER_OPTION_NAMES:
             options[key] = _default_config.pop(key)
             continue
         elif key in (
@@ -384,6 +388,7 @@ def trace(*predicates, **options):
     predicates, options = _apply_config(predicates, options)
 
     clear_env_var = options.pop('clear_env_var', False)
+    profiling_mode = options.pop('profile', False)
     threading_support = None
     for alias in THREADING_SUPPORT_ALIASES:
         if alias in options:
@@ -393,7 +398,7 @@ def trace(*predicates, **options):
     if clear_env_var:
         os.environ.pop('PYTHONHUNTER', None)
 
-    _last_tracer = Tracer(threading_support)
+    _last_tracer = Tracer(threading_support, profiling_mode)
 
     @atexit.register
     def atexit_cleanup(ref=weakref.ref(_last_tracer)):

@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3str
+# cython: linetrace=True, language_level=3str, c_string_encoding=ascii
 from functools import partial
 from linecache import getline
 from linecache import getlines
@@ -9,10 +9,14 @@ from threading import current_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
 
+from libc.stdlib cimport malloc
+
 from cpython.pythread cimport PyThread_get_thread_ident
-from cpython cimport bool
+from cpython.ref cimport PyObject
+from cpython.ref cimport Py_XINCREF
 
 from ._tracer cimport Tracer
+from .vendor._cymem.cymem cimport Pool
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
@@ -26,6 +30,18 @@ from .util import if_same_code
 __all__ = 'Event',
 
 cdef object UNSET = object()
+
+cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
+cdef Pool mem = Pool()
+
+cdef PyObject** make_kind_names(list strings):
+    cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
+    cdef object name
+    for i, string in enumerate(strings):
+        name = intern(string)
+        Py_XINCREF(<PyObject*>name)
+        array[i] = <PyObject*>name
+    return <PyObject**>array
 
 
 cdef class Event:
@@ -42,7 +58,8 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __init__(self, FrameType frame, str kind, object arg, Tracer tracer=None, object depth=None, object calls=None, object threading_support=MISSING):
+    def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+                 object threading_support=MISSING):
         if tracer is None:
             if depth is None:
                 raise TypeError('Missing argument: depth (required because tracer was not given)')
@@ -55,13 +72,20 @@ cdef class Event:
             calls = tracer.calls
             threading_support = tracer.threading_support
 
+        if kind > 3:
+            builtin = arg
+            arg = None
+        else:
+            builtin = False
+
         self.arg = arg
         self.frame = frame
-        self.kind = kind
+        self.kind = <str>KIND_NAMES[kind]
         self.depth = depth
         self.calls = calls
         self.threading_support = threading_support
         self.detached = False
+        self.builtin = builtin
 
         self._code = UNSET
         self._filename = UNSET
@@ -102,24 +126,25 @@ cdef class Event:
             event._locals = {}
             event.arg = None
 
-        event.threading_support = self.threading_support
+        event.builtin = self.builtin
         event.calls = self.calls
         event.depth = self.depth
-        event.kind = self.kind
-
         event.detached = True
+        event.kind = self.kind
+        event.threading_support = self.threading_support
 
         return event
 
     cpdef inline Event clone(self):
         event = <Event>Event.__new__(Event)
         event.arg = self.arg
+        event.builtin = self.builtin
+        event.calls = self.calls
+        event.depth = self.depth
+        event.detached = False
         event.frame = self.frame
         event.kind = self.kind
-        event.depth = self.depth
-        event.calls = self.calls
         event.threading_support = self.threading_support
-        event.detached = False
         event._code = self._code
         event._filename = self._filename
         event._fullsource = self._fullsource
@@ -165,8 +190,11 @@ cdef class Event:
 
     cdef locals_getter(self):
         if self._locals is UNSET:
-            PyFrame_FastToLocals(self.frame)
-            self._locals = self.frame.f_locals
+            if self.builtin:
+                self._locals = {}
+            else:
+                PyFrame_FastToLocals(self.frame)
+                self._locals = self.frame.f_locals
         return self._locals
 
     @property
@@ -175,7 +203,10 @@ cdef class Event:
 
     cdef globals_getter(self):
         if self._globals is UNSET:
-            self._globals = self.frame.f_globals
+            if self.builtin:
+                self._locals = {}
+            else:
+                self._globals = self.frame.f_globals
         return self._globals
 
     @property
@@ -184,7 +215,10 @@ cdef class Event:
 
     cdef function_getter(self):
         if self._function is UNSET:
-            self._function = self.frame.f_code.co_name
+            if self.builtin:
+                self._function = self.builtin.__name__
+            else:
+                self._function = self.frame.f_code.co_name
         return self._function
 
     @property
@@ -193,7 +227,9 @@ cdef class Event:
 
     @property
     def function_object(self):
-        if self._function_object is UNSET:
+        if self.builtin:
+            return self.builtin
+        elif self._function_object is UNSET:
             code = self.code
             if code.co_name is None:
                 return None
@@ -221,9 +257,12 @@ cdef class Event:
 
     cdef module_getter(self):
         if self._module is UNSET:
-            module = self.frame.f_globals.get('__name__', '')
-            if module is None:
-                module = ''
+            if self.builtin:
+                module = self.builtin.__module__
+            else:
+                module = self.frame.f_globals.get('__name__', '')
+                if module is None:
+                    module = ''
 
             self._module = module
         return self._module

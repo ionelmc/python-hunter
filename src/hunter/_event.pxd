@@ -17,6 +17,7 @@ cdef class Event:
         readonly int calls
         readonly bint threading_support
         readonly bint detached
+        readonly object builtin
 
         object _code
         object _filename

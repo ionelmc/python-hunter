@@ -28,7 +28,7 @@ __all__ = (
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
-    'fullsource', 'threadname', 'threadid', 'depth', 'calls',
+    'fullsource', 'threadname', 'threadid', 'depth', 'calls', 'builtin',
 )
 cdef tuple ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex',
