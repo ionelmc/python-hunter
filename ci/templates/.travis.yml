@@ -9,7 +9,7 @@ addons:
       - gdb
 env:
   global:
-    - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+    - LD_PRELOAD=libSegFault.so
     - SEGFAULT_SIGNALS=all
     - PYTEST_ADDOPTS=--benchmark-disable
     - TWINE_USERNAME=ionel
