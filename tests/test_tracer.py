@@ -1197,7 +1197,11 @@ def test_errorsnooper(LineMatcher):
     snooper = ErrorSnooper(stream=lines, max_backlog=50, max_events=100)
 
     def a():
-        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+        from sample8errors import notsilenced
+        from sample8errors import silenced1
+        from sample8errors import silenced2
+        from sample8errors import silenced3
+        from sample8errors import silenced4
 
         silenced1()
         print("Done silenced1")
@@ -1322,7 +1326,11 @@ def test_errorsnooper_fastmode(LineMatcher):
     snooper = ErrorSnooper(stream=lines, max_backlog=0, max_events=100)
 
     def a():
-        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+        from sample8errors import notsilenced
+        from sample8errors import silenced1
+        from sample8errors import silenced2
+        from sample8errors import silenced3
+        from sample8errors import silenced4
 
         silenced1()
         print("Done silenced1")

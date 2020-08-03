@@ -384,7 +384,11 @@ def test_errorsnooper(LineMatcher):
 
     @wrap(actions=[snooper])
     def a():
-        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+        from sample8errors import notsilenced
+        from sample8errors import silenced1
+        from sample8errors import silenced2
+        from sample8errors import silenced3
+        from sample8errors import silenced4
 
         silenced1()
         print("Done silenced1")
@@ -509,7 +513,11 @@ def test_errorsnooper_fastmode(LineMatcher):
 
     @wrap(actions=[snooper])
     def a():
-        from sample8errors import silenced1, silenced2, silenced3, silenced4, notsilenced
+        from sample8errors import notsilenced
+        from sample8errors import silenced1
+        from sample8errors import silenced2
+        from sample8errors import silenced3
+        from sample8errors import silenced4
 
         silenced1()
         print("Done silenced1")

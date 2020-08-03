@@ -39,8 +39,9 @@ def six():
 
 
 if __name__ == "__main__":
-    from utils import DebugCallPrinter
     from hunter import *
+
+    from utils import DebugCallPrinter
 
     trace(
         Backlog(stack=15, vars=True, action=DebugCallPrinter(' [' 'backlog' ']'), function='five').filter(~Q(function='six')),

@@ -1,8 +1,7 @@
 from __future__ import absolute_import
 
-import opcode
-
 import collections
+import opcode
 import os
 import threading
 from collections import defaultdict
