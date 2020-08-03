@@ -339,6 +339,8 @@ script:
       docker run --rm --user $UID -v $(pwd):/code ionelmc/manylinux:manylinux$WHEEL_MANYLINUX
       tox --installpkg wheelhouse/*.whl -v
       export WHEEL_PATH=wheelhouse
+    elif [[ -n ${WHEEL_PATH:-} ]]; then
+      tox -v --wheel
     else
       tox -v
     fi
