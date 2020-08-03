@@ -3,19 +3,20 @@ from __future__ import absolute_import
 
 from collections import deque
 from inspect import isclass
-from re import compile as re_compile
 from itertools import chain
+from re import compile as re_compile
 
 cimport cython
-from cpython.object cimport PyObject_RichCompare
+from cpython cimport bool
 from cpython.object cimport Py_EQ
 from cpython.object cimport Py_NE
-from cpython cimport bool
-from ._tracer cimport *
+from cpython.object cimport PyObject_RichCompare
 
 from ._event cimport Event
+from ._tracer cimport *
 
-from .actions import Action, ColorStreamAction
+from .actions import Action
+from .actions import ColorStreamAction
 
 __all__ = (
     'And',

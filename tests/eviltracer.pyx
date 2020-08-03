@@ -1,11 +1,13 @@
 # language_level=3
 import cython
 
-from cpython.pystate cimport PyThreadState_Get, PyThreadState
+from cpython.pystate cimport PyThreadState
+from cpython.pystate cimport PyThreadState_Get
 
 import hunter
 
 from hunter._event cimport Event
+
 
 cdef extern from "frameobject.h":
     ctypedef struct PyObject

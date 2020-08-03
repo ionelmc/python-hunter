@@ -21,6 +21,9 @@ repos:
     rev: master
     hooks:
       - id: isort
+        types: [python]
+      - id: isort
+        types: [cython]
   - repo: https://gitlab.com/pycqa/flake8
     rev: master
     hooks:

@@ -9,11 +9,10 @@ from threading import current_thread
 from tokenize import TokenError
 from tokenize import generate_tokens
 
-from libc.stdlib cimport malloc
-
 from cpython.pythread cimport PyThread_get_thread_ident
-from cpython.ref cimport PyObject
 from cpython.ref cimport Py_XINCREF
+from cpython.ref cimport PyObject
+from libc.stdlib cimport malloc
 
 from ._tracer cimport Tracer
 from .vendor._cymem.cymem cimport Pool
