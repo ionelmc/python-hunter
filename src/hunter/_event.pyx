@@ -62,11 +62,11 @@ cdef class Event:
                  object threading_support=MISSING):
         if tracer is None:
             if depth is None:
-                raise TypeError('Missing argument: depth (required because tracer was not given)')
+                raise TypeError('Missing argument: depth (required because tracer was not given).')
             if calls is None:
-                raise TypeError('Missing argument: calls (required because tracer was not given)')
+                raise TypeError('Missing argument: calls (required because tracer was not given).')
             if threading_support is MISSING:
-                raise TypeError('Missing argument: threading_support (required because tracer was not given)')
+                raise TypeError('Missing argument: threading_support (required because tracer was not given).')
         else:
             depth = tracer.depth
             calls = tracer.calls
