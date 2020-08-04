@@ -7,6 +7,7 @@ from cpython.pystate cimport PyThreadState_Get
 import hunter
 
 from hunter._event cimport Event
+from hunter._event cimport fast_detach
 
 
 cdef extern from "frameobject.h":
@@ -43,7 +44,7 @@ cdef class EvilTracer:
         self._tracer = hunter.trace(self._append, threading_support=threading_support, clear_env_var=clear_env_var)
 
     def _append(self, Event event):
-        detached_event = event.detach(lambda obj: obj)
+        detached_event = fast_detach(event, lambda obj: obj)
         detached_event.detached = False
         frame = PyFrame_New(PyThreadState_Get(), <CodeType>event.code, event.frame.f_globals, event.frame.f_locals)
         frame.f_back = event.frame.f_back
