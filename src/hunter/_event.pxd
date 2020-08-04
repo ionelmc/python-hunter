@@ -47,5 +47,5 @@ cdef class Event:
         object threadid_getter(self)
         object threadname_getter(self)
 
-    cpdef Event clone(self)
-    cpdef Event detach(self, value_filter=?)
+cdef Event fast_clone(Event self)
+cdef Event fast_detach(Event self, object value_filter)

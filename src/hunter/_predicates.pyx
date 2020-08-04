@@ -13,6 +13,7 @@ from cpython.object cimport Py_NE
 from cpython.object cimport PyObject_RichCompare
 
 from ._event cimport Event
+from ._event cimport fast_detach
 from ._tracer cimport *
 
 from .actions import Action
@@ -28,7 +29,7 @@ __all__ = (
 )
 
 cdef tuple ALLOWED_KEYS = (
-    'function', 'code', 'frame', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
+    'function', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
     'fullsource', 'threadname', 'threadid', 'depth', 'calls', 'builtin',
 )
 cdef tuple ALLOWED_OPERATORS = (
@@ -39,8 +40,6 @@ cdef tuple ALLOWED_OPERATORS = (
 
 ctypedef object (*Event_getter_typedef)(Event)
 cdef Event_get_function(Event event): return event.function_getter()
-cdef Event_get_code(Event event): return event.code_getter()
-cdef Event_get_frame(Event event): return event.frame_getter()
 cdef Event_get_module(Event event): return event.module_getter()
 cdef Event_get_lineno(Event event): return event.lineno_getter()
 cdef Event_get_globals(Event event): return event.globals_getter()
@@ -56,10 +55,8 @@ cdef Event_get_threadid(Event event): return event.threadid_getter()
 cdef Event_get_depth(Event event): return event.depth
 cdef Event_get_calls(Event event): return event.calls
 
-cdef Event_getter_typedef[17] Event_getters = [
+cdef Event_getter_typedef[15] Event_getters = [
     Event_get_function,
-    Event_get_code,
-    Event_get_frame,
     Event_get_module,
     Event_get_lineno,
     Event_get_globals,
@@ -724,7 +721,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             # Delete everything because we don't want to see what is likely just a long stream of useless returns.
             self.queue.clear()
         if self._filter is None or self._filter(event):
-            detached_event = event.detach(self._try_repr)
+            detached_event = fast_detach(event, self._try_repr)
             detached_event.frame = event.frame
             self.queue.append(detached_event)
 

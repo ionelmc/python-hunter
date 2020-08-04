@@ -101,64 +101,11 @@ cdef class Event:
         self._threadname = UNSET
         self._thread = UNSET
 
-    cpdef inline Event detach(self, value_filter=None):
-        event = <Event>Event.__new__(Event)
+    def detach(self, value_filter=None):
+        return fast_detach(self, value_filter)
 
-        event._code = self.code
-        event._filename = self.filename
-        event._fullsource = self.fullsource
-        event._function_object = self._function_object
-        event._function = self.function
-        event._lineno = self.lineno
-        event._module = self.module
-        event._source = self.source
-        event._stdlib = self.stdlib
-        event._threadidn = self.threadid
-        event._threadname = self.threadname
-
-        if value_filter:
-            event._globals = {key: value_filter(value) for key, value in self.globals.items()}
-            event._locals = {key: value_filter(value) for key, value in self.locals.items()}
-            event.arg = value_filter(self.arg)
-        else:
-            event._globals = {}
-            event._locals = {}
-            event.arg = None
-
-        event.builtin = self.builtin
-        event.calls = self.calls
-        event.depth = self.depth
-        event.detached = True
-        event.kind = self.kind
-        event.threading_support = self.threading_support
-
-        return event
-
-    cpdef inline Event clone(self):
-        event = <Event>Event.__new__(Event)
-        event.arg = self.arg
-        event.builtin = self.builtin
-        event.calls = self.calls
-        event.depth = self.depth
-        event.detached = False
-        event.frame = self.frame
-        event.kind = self.kind
-        event.threading_support = self.threading_support
-        event._code = self._code
-        event._filename = self._filename
-        event._fullsource = self._fullsource
-        event._function_object = self._function_object
-        event._function = self._function
-        event._globals = self._globals
-        event._lineno = self._lineno
-        event._locals = self._locals
-        event._module = self._module
-        event._source = self._source
-        event._stdlib = self._stdlib
-        event._threadidn = self._threadidn
-        event._threadname = self._threadname
-        event._thread = self._thread
-        return event
+    def clone(self):
+        return fast_clone(self)
 
     cdef threadid_getter(self):
         cdef long current
@@ -396,3 +343,63 @@ def yield_lines(filename, module_globals, start, list collector,
             break
         collector.append(line)
         yield line[amount:]
+
+
+cdef inline Event fast_detach(Event self, object value_filter):
+    event = <Event>Event.__new__(Event)
+
+    event._code = self.code
+    event._filename = self.filename
+    event._fullsource = self.fullsource
+    event._function_object = self._function_object
+    event._function = self.function
+    event._lineno = self.lineno
+    event._module = self.module
+    event._source = self.source
+    event._stdlib = self.stdlib
+    event._threadidn = self.threadid
+    event._threadname = self.threadname
+
+    if value_filter:
+        event._globals = {key: value_filter(value) for key, value in self.globals.items()}
+        event._locals = {key: value_filter(value) for key, value in self.locals.items()}
+        event.arg = value_filter(self.arg)
+    else:
+        event._globals = {}
+        event._locals = {}
+        event.arg = None
+
+    event.builtin = self.builtin
+    event.calls = self.calls
+    event.depth = self.depth
+    event.detached = True
+    event.kind = self.kind
+    event.threading_support = self.threading_support
+
+    return event
+
+cdef inline Event fast_clone(Event self):
+    event = <Event>Event.__new__(Event)
+    event.arg = self.arg
+    event.builtin = self.builtin
+    event.calls = self.calls
+    event.depth = self.depth
+    event.detached = False
+    event.frame = self.frame
+    event.kind = self.kind
+    event.threading_support = self.threading_support
+    event._code = self._code
+    event._filename = self._filename
+    event._fullsource = self._fullsource
+    event._function_object = self._function_object
+    event._function = self._function
+    event._globals = self._globals
+    event._lineno = self._lineno
+    event._locals = self._locals
+    event._module = self._module
+    event._source = self._source
+    event._stdlib = self._stdlib
+    event._threadidn = self._threadidn
+    event._threadname = self._threadname
+    event._thread = self._thread
+    return event
