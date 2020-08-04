@@ -53,6 +53,7 @@ def test_manhole_clean_exit():
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
+@pytest.mark.skipif('platform.machine() == "aarch64"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
 @pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb():
@@ -71,6 +72,7 @@ def test_gdb():
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
+@pytest.mark.skipif('platform.machine() == "aarch64"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
 @pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb_clean_exit():
