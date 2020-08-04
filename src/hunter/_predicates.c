@@ -20214,7 +20214,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(s
  *                     depth_delta = 0
  *                     while frame and depth_delta < missing_depth:             # <<<<<<<<<<<<<<
  *                         stack_event = Event(
- *                             frame=frame, kind='call', arg=None,
+ *                             frame=frame, kind=0, arg=None,
  */
           __Pyx_TraceLine(696,0,__PYX_ERR(1, 696, __pyx_L1_error))
           while (1) {
@@ -20232,7 +20232,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(s
             /* "hunter/_predicates.pyx":698
  *                     while frame and depth_delta < missing_depth:
  *                         stack_event = Event(
- *                             frame=frame, kind='call', arg=None,             # <<<<<<<<<<<<<<
+ *                             frame=frame, kind=0, arg=None,             # <<<<<<<<<<<<<<
  *                             threading_support=event.threading_support,
  *                             depth=first_depth - depth_delta - 1, calls=-1
  */
@@ -20240,12 +20240,12 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(s
             __pyx_t_1 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 698, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_frame, ((PyObject *)__pyx_v_frame)) < 0) __PYX_ERR(1, 698, __pyx_L1_error)
-            if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_kind, __pyx_n_s_call) < 0) __PYX_ERR(1, 698, __pyx_L1_error)
+            if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_kind, __pyx_int_0) < 0) __PYX_ERR(1, 698, __pyx_L1_error)
             if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_arg, Py_None) < 0) __PYX_ERR(1, 698, __pyx_L1_error)
 
             /* "hunter/_predicates.pyx":699
  *                         stack_event = Event(
- *                             frame=frame, kind='call', arg=None,
+ *                             frame=frame, kind=0, arg=None,
  *                             threading_support=event.threading_support,             # <<<<<<<<<<<<<<
  *                             depth=first_depth - depth_delta - 1, calls=-1
  *                         )
@@ -20257,7 +20257,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(s
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
             /* "hunter/_predicates.pyx":700
- *                             frame=frame, kind='call', arg=None,
+ *                             frame=frame, kind=0, arg=None,
  *                             threading_support=event.threading_support,
  *                             depth=first_depth - depth_delta - 1, calls=-1             # <<<<<<<<<<<<<<
  *                         )
@@ -20274,7 +20274,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(s
  *                     depth_delta = 0
  *                     while frame and depth_delta < missing_depth:
  *                         stack_event = Event(             # <<<<<<<<<<<<<<
- *                             frame=frame, kind='call', arg=None,
+ *                             frame=frame, kind=0, arg=None,
  *                             threading_support=event.threading_support,
  */
             __Pyx_TraceLine(697,0,__PYX_ERR(1, 697, __pyx_L1_error))

@@ -695,7 +695,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
                     depth_delta = 0
                     while frame and depth_delta < missing_depth:
                         stack_event = Event(
-                            frame=frame, kind='call', arg=None,
+                            frame=frame, kind=0, arg=None,
                             threading_support=event.threading_support,
                             depth=first_depth - depth_delta - 1, calls=-1
                         )

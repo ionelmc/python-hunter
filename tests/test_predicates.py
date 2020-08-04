@@ -46,7 +46,7 @@ C = FakeCallable
 
 @pytest.fixture
 def mockevent():
-    return hunter.Event(sys._getframe(0), 'line', None, hunter.Tracer())
+    return hunter.Event(sys._getframe(0), 2 if '_event' in hunter.Event.__module__ else 'line', None, hunter.Tracer())
 
 
 def test_no_inf_recursion(mockevent):
