@@ -260,18 +260,22 @@ matrix:
       arch: amd64
     - env:
         - TOXENV=pypy-pure-cover,codecov
+        - TOXPYTHON=pypy
       python: 'pypy'
       arch: amd64
     - env:
         - TOXENV=pypy-pure-nocov
+        - TOXPYTHON=pypy
       python: 'pypy'
       arch: amd64
     - env:
         - TOXENV=pypy-cython-cover,codecov
+        - TOXPYTHON=pypy
       python: 'pypy'
       arch: amd64
     - env:
         - TOXENV=pypy-cython-nocov
+        - TOXPYTHON=pypy
       python: 'pypy'
       arch: amd64
     - env:
