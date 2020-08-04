@@ -49,7 +49,7 @@ matrix:
 {%- endif %}
 {%- endif %}{{ '' }}
 {%- for arch in ['arm64', 'amd64'] %}{{ '' }}
-{%- if arch == 'amd64' or env.startswith('py3') or 'cover' in env %}{{ '' }}
+{%- if arch == 'amd64' or env.startswith('py3') or ('cover' in env and not env.startswith('pypy')) %}{{ '' }}
     - env:
         - TOXENV={{ env }}{% if 'cover' in env %},codecov{% endif %}
 {%- if 'pypy' not in env and 'nocov' in env %}{{ '' }}

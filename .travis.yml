@@ -261,19 +261,11 @@ matrix:
     - env:
         - TOXENV=pypy-pure-cover,codecov
       python: 'pypy'
-      arch: arm64
-    - env:
-        - TOXENV=pypy-pure-cover,codecov
-      python: 'pypy'
       arch: amd64
     - env:
         - TOXENV=pypy-pure-nocov
       python: 'pypy'
       arch: amd64
-    - env:
-        - TOXENV=pypy-cython-cover,codecov
-      python: 'pypy'
-      arch: arm64
     - env:
         - TOXENV=pypy-cython-cover,codecov
       python: 'pypy'
@@ -286,22 +278,12 @@ matrix:
         - TOXENV=pypy3-pure-cover,codecov
         - TOXPYTHON=pypy3
       python: 'pypy3'
-      arch: arm64
-    - env:
-        - TOXENV=pypy3-pure-cover,codecov
-        - TOXPYTHON=pypy3
-      python: 'pypy3'
       arch: amd64
     - env:
         - TOXENV=pypy3-pure-nocov
         - TOXPYTHON=pypy3
       python: 'pypy3'
       arch: amd64
-    - env:
-        - TOXENV=pypy3-cython-cover,codecov
-        - TOXPYTHON=pypy3
-      python: 'pypy3'
-      arch: arm64
     - env:
         - TOXENV=pypy3-cython-cover,codecov
         - TOXPYTHON=pypy3
