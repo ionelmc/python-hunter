@@ -13,6 +13,7 @@ from cpython.object cimport Py_NE
 from cpython.object cimport PyObject_RichCompare
 
 from ._event cimport Event
+from ._event cimport fast_clone
 from ._event cimport fast_detach
 from ._tracer cimport *
 
@@ -429,7 +430,7 @@ cdef inline fast_From_call(From self, Event event):
     if self.predicate is None:
         return True
     else:
-        relative_event = event.clone()
+        relative_event = fast_clone(event)
         relative_event.depth = delta_depth
         relative_event.calls = delta_calls
         return fast_call(self.predicate, relative_event)

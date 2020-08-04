@@ -1936,8 +1936,8 @@ static PyTypeObject *__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Address = 0;
 static PyTypeObject *__pyx_ptype_6hunter_6_event_Event = 0;
 static PyTypeObject *__pyx_ptype_6hunter_6_event___pyx_scope_struct__yield_lines = 0;
 static PyObject *__pyx_v_6hunter_6_event_UNSET = 0;
-static PyObject **__pyx_v_6hunter_6_event_KIND_NAMES;
 static struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *__pyx_v_6hunter_6_event_mem = 0;
+static PyObject **__pyx_v_6hunter_6_event_KIND_NAMES;
 static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_fast_clone(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_fast_detach(struct __pyx_obj_6hunter_6_event_Event *, PyObject *); /*proto*/
 static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *); /*proto*/
@@ -2262,7 +2262,7 @@ static PyObject *__pyx_codeobj__13;
 /* Late includes */
 
 /* "hunter/_event.pyx":36
- * cdef Pool mem = Pool()
+ * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
@@ -2383,7 +2383,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
   goto __pyx_L0;
 
   /* "hunter/_event.pyx":36
- * cdef Pool mem = Pool()
+ * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
@@ -12733,7 +12733,7 @@ if (!__Pyx_RefNanny) {
  * 
  * cdef object UNSET = object()             # <<<<<<<<<<<<<<
  * 
- * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
+ * cdef Pool mem = Pool()
  */
   __Pyx_TraceLine(31,0,__PYX_ERR(0, 31, __pyx_L1_error))
   __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_builtin_object); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
@@ -12746,12 +12746,27 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":33
  * cdef object UNSET = object()
  * 
- * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])             # <<<<<<<<<<<<<<
- * cdef Pool mem = Pool()
+ * cdef Pool mem = Pool()             # <<<<<<<<<<<<<<
+ * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  */
   __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
-  __pyx_t_2 = PyList_New(7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_XGOTREF(((PyObject *)__pyx_v_6hunter_6_event_mem));
+  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_mem, ((struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_t_2));
+  __Pyx_GIVEREF(__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "hunter/_event.pyx":34
+ * 
+ * cdef Pool mem = Pool()
+ * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])             # <<<<<<<<<<<<<<
+ * 
+ * cdef PyObject** make_kind_names(list strings):
+ */
+  __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
+  __pyx_t_2 = PyList_New(7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_call);
   __Pyx_GIVEREF(__pyx_n_s_call);
@@ -12777,23 +12792,8 @@ if (!__Pyx_RefNanny) {
   __pyx_v_6hunter_6_event_KIND_NAMES = __pyx_f_6hunter_6_event_make_kind_names(((PyObject*)__pyx_t_2));
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":34
- * 
- * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
- * cdef Pool mem = Pool()             # <<<<<<<<<<<<<<
- * 
- * cdef PyObject** make_kind_names(list strings):
- */
-  __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_XGOTREF(((PyObject *)__pyx_v_6hunter_6_event_mem));
-  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_mem, ((struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_t_2));
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
-
   /* "hunter/_event.pyx":36
- * cdef Pool mem = Pool()
+ * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))

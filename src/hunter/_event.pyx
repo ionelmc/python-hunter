@@ -30,8 +30,8 @@ __all__ = 'Event',
 
 cdef object UNSET = object()
 
-cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
 cdef Pool mem = Pool()
+cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
 
 cdef PyObject** make_kind_names(list strings):
     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
