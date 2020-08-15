@@ -180,6 +180,11 @@ Silenced exception runtime analysis
 
 Finding code that discards exceptions is sometimes really hard.
 
+.. note::
+
+    This was made available in :class:`hunter.actions.ErrorSnooper` for convenience. This cookbook entry will remain for educational
+    purposes.
+
 While this is easy to find with a ``grep "except:" -R .``:
 
 .. code-block:: python
@@ -248,3 +253,128 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
                 self.backlog.append(event.detach(self.try_repr))
 
 Take note about the use of :meth:`~hunter.event.Event.detach` and :meth:`~hunter.actions.ColorStreamAction.output`.
+
+Profiling
+=========
+
+Hunter can be used to implement profiling (measure function timings).
+
+The most basic implementation that only measures timings looks like this:
+
+.. code-block:: python
+
+    from hunter.actions import Action
+    from hunter.actions import RETURN_VALUE
+
+    class ProfileAction(Action):
+        def __init__(self):
+            self.timings = {}
+
+        def __call__(self, event):
+            if event.kind == 'call':
+                self.timings[id(event.frame)] = time()
+            elif event.kind == 'return':
+                start_time = self.timings.pop(id(event.frame), None)
+                if start_time is None:
+                    return
+                delta = time() - start_time
+                print(f'{event.function} returned: {event.arg}. Duration: {delta:.4f}s\n')
+
+If you don't care about exceptions at all this will be fine, but then you might just as well use a real profiler.
+
+When exceptions occur Python send this to the tracer:
+
+* .. code-block:: python
+
+    event.kind="exception", event.arg=(exc_value, exc_type, tb)
+
+* .. code-block:: python
+
+    event.kind="return", event.arg=None
+
+Unfortunately Python emits the return event even if the exception wasn't discarded so we need to do some extra checks around the last
+bytecode instruction that run at the return event.
+
+This means that we have to store the exception for a little while, and do the check at return:
+
+.. code-block:: python
+
+    from hunter.actions import Action
+    from hunter.actions import RETURN_VALUE
+
+    class ProfileAction(Action):
+        def __init__(self):
+            self.timings = {}
+
+        def __call__(self, event):
+            current_time = time()
+            frame_id = id(event.frame)
+
+            if event.kind == 'call':
+                self.timings[frame_id] = current_time, None
+            elif frame_id in self.timings:
+                start_time, depth, exception = self.timings.pop(frame_id)
+
+                if event.kind == 'exception':
+                    # store the exception (there will be a followup 'return' event in which we deal with it)
+                    self.timings[frame_id] = start_time, event.arg
+                elif event.kind == 'return':
+                    delta = current_time - start_time
+                    if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                        # exception was discarded
+                        print(f'{event.function} returned: {event.arg}. Duration: {delta:.4f}s\n')
+                    else:
+                        print(f'{event.function} raised exception: {exception}. Duration: {delta:.4f}s\n')
+
+If you try that example you may notice that it's not completely equivalent to any of the profilers available out there: data for builtin
+functions is missing.
+
+Python does in fact have a profiling mode (eg: ``hunter.trace(profile=True``) and that will make hunter use ``sys.setprofile`` instead
+of ``sys.setrace``. However there are some downsides with that API:
+
+* exception data will be missing (most likely because profiling is designed for speed and tracebacks are costly to build)
+* trace events for builtin functions do not have their own frame objects (so we need to cater for that)
+
+Behold, a `ProfileAction` that works in profile mode:
+
+.. code-block:: python
+
+    from hunter.actions import ColorStreamAction
+    from hunter.actions import RETURN_VALUE
+
+    class ProfileAction(ColorStreamAction):
+        def __init__(self, **kwargs):
+            self.timings = {}
+            super(ProfileAction, self).__init__(**kwargs)
+
+        def __call__(self, event):
+            current_time = time()
+            frame_id = id(event.frame), str(event.builtin)
+
+            if event.kind == 'call':
+                self.timings[frame_id] = current_time, None
+            elif frame_id in self.timings:
+                start_time, exception = self.timings.pop(frame_id)
+
+                # try to find a complete function name for display
+                function_object = event.function_object
+                if event.builtin:
+                    function = '<builtin>.{}'.format(event.builtin.__name__)
+                elif function_object:
+                    if hasattr(function_object, '__qualname__'):
+                        function = '{}.{}'.format(function_object.__module__, function_object.__qualname__)
+                    else:
+                        function = '{}.{}'.format(function_object.__module__, function_object.__name__)
+                else:
+                    function = event.function
+
+                if event.kind == 'exception':
+                    # store the exception (there will be a followup 'return' event in which we deal with it)
+                    self.timings[frame_id] = start_time, event.arg
+                elif event.kind == 'return':
+                    delta = current_time - start_time
+                    if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                        # exception was discarded
+                        self.output('{} returned: {}. Duration: {:.4f}s\n', function, event.arg, delta)
+                    else:
+                        self.output('{} raised exception: {}. Duration: {:.4f}s\n', function, exception, delta)

@@ -1,18 +1,15 @@
-import collections
 import contextlib
 import functools
-import opcode
 import os
-import sys
 from logging import getLogger
+from time import time
 
 import aspectlib
 import pytest
 
 import hunter
-from hunter import CallPrinter
-from hunter import CodePrinter
-from hunter import VarsSnooper
+from hunter.actions import RETURN_VALUE
+from hunter.actions import ColorStreamAction
 
 try:
     from cStringIO import StringIO
@@ -69,5 +66,99 @@ def no_probe(*args, **kwargs):
 
 @pytest.mark.parametrize('impl', [fast_probe, brief_probe, no_probe])
 def test_probe(impl, benchmark):
-    with impl('%s.baz' % __name__, hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')), kind="return", depth=0):
+    with impl('%s.baz' % __name__, hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')), kind='return', depth=0):
         benchmark(bar)
+
+
+class ProfileAction(ColorStreamAction):
+    def __init__(self, **kwargs):
+        self.timings = {}
+        super(ProfileAction, self).__init__(**kwargs)
+
+    def __call__(self, event):
+        current_time = time()
+        frame_id = id(event.frame), str(event.builtin)
+
+        if event.kind == 'call':
+            print(repr(frame_id))
+            self.timings[frame_id] = current_time, None
+        elif frame_id in self.timings:
+            start_time, exception = self.timings.pop(frame_id)
+            print(event.module, event.function)
+            function_object = event.function_object
+            if event.builtin:
+                function = '<builtin>.{}'.format(event.builtin.__name__)
+            elif function_object:
+                if hasattr(function_object, '__qualname__'):
+                    function = '{}.{}'.format(function_object.__module__, function_object.__qualname__)
+                else:
+                    function = '{}.{}'.format(function_object.__module__, function_object.__name__)
+            else:
+                function = event.function
+
+            if event.kind == 'exception':
+                # store the exception (there will be a followup 'return' event in which we deal with it)
+                self.timings[frame_id] = start_time, event.arg
+            elif event.kind == 'return':
+                delta = current_time - start_time
+                if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                    # exception was discarded
+                    self.output('{} returned: {}. Duration: {:.4f}s\n', function, event.arg, delta)
+                else:
+                    self.output('{} raised exception: {}. Duration: {:.4f}s\n', function, exception, delta)
+
+
+@pytest.mark.parametrize('options', [
+    {'kind__in': ['call', 'return', 'exception']},
+    {'profile': True}
+])
+def test_profile(LineMatcher, options):
+    stream = StringIO()
+    with hunter.trace(action=ProfileAction(stream=stream), **options):
+        from sample8errors import notsilenced
+        from sample8errors import silenced1
+        from sample8errors import silenced3
+        from sample8errors import silenced4
+
+        silenced1()
+        print('Done silenced1')
+        silenced3()
+        print('Done silenced3')
+        silenced4()
+        print('Done silenced4')
+
+        try:
+            notsilenced()
+        except ValueError:
+            print('Done not silenced')
+
+    lm = LineMatcher(stream.getvalue().splitlines())
+    if 'profile' in options:
+        lm.fnmatch_lines([
+            "sample8errors.error raised exception: None. Duration: ?.????s",
+            "sample8errors.silenced1 returned: None. Duration: ?.????s",
+
+            "sample8errors.error raised exception: None. Duration: ?.????s",
+            "sample8errors.silenced3 returned: mwhahaha. Duration: ?.????s",
+
+            "sample8errors.error raised exception: None. Duration: ?.????s",
+            "<builtin>.repr raised exception: None. Duration: ?.????s",
+            "sample8errors.silenced4 returned: None. Duration: ?.????s",
+
+            "sample8errors.error raised exception: None. Duration: ?.????s",
+            "sample8errors.notsilenced raised exception: None. Duration: ?.????s",
+        ])
+    else:
+        lm.fnmatch_lines([
+            "sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s",
+            "sample8errors.silenced1 returned: None. Duration: ?.????s",
+
+            "sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s",
+            "sample8errors.silenced3 returned: mwhahaha. Duration: ?.????s",
+
+            "sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s",
+            "sample8errors.silenced4 returned: None. Duration: ?.????s",
+
+            "sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s",
+            "sample8errors.notsilenced raised exception: (*ValueError(RuntimeError*, *). Duration: ?.????s",
+        ])
