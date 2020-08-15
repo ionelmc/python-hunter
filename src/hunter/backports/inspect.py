@@ -35,7 +35,7 @@ def _shadowed_dict_newstyle(klass):
     for entry in _static_getmro(klass):
         try:
             class_dict = dict_attr.__get__(entry)['__dict__']
-        except KeyError:
+        except (KeyError, TypeError):
             pass
         else:
             if not (type(class_dict) is types.GetSetDescriptorType and  # noqa
