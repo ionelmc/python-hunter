@@ -89,9 +89,6 @@ cdef class QueryEntry:
         self.getter_index = ALLOWED_KEYS.index(name)
         self.getter = Event_getters[self.getter_index]
 
-    def __str__(self):
-        return str(self.value)
-
     def __repr__(self):
         return repr(self.value)
 
