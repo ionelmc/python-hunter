@@ -72,7 +72,7 @@ class Event(object):
 
         #: If kind of the event is one of ``'c_call'``, ``'c_return'``, or ``'c_exception'`` then this will be True.
         #:
-        #: :type: bool
+        #: :type: builtin function or False
         self.builtin = builtin
 
         #: The kind of the event, could be one of ``'call'``, ``'line'``, ``'return'``, ``'exception'``.
@@ -253,7 +253,7 @@ class Event(object):
         """
         # Based on MonkeyType's get_func
         if self.builtin:
-            return self.arg
+            return self.builtin
 
         code = self.code
         if code.co_name is None:
