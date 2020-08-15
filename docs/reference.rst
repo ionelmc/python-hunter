@@ -34,7 +34,7 @@ Reference
 .. warning::
 
     The following (Predicates and Internals) have Cython implementations in modules prefixed with "_".
-    They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
+    They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the best available implementation.
 
 .. highlights:: :ref:`reference:Predicates`
 
@@ -137,7 +137,8 @@ Predicates
 
     * Every predicate except :class:`~hunter.predicates.When` has a :ref:`helper <helpers-summary>` importable directly from the
       ``hunter`` package.
-    * Ideally you'd use the helpers instead of these to get the right implementation, extra validation and better argument handling.
+    * Ideally you'd use the helpers instead of these to get the best available implementation, extra validation and
+      better argument handling.
 
 .. autoclass:: hunter.predicates.And
     :members:
@@ -175,7 +176,7 @@ Internals
 .. warning::
 
     These have Cython implementations in modules prefixed with "_".
-    They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the right implementation.
+    They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the best available implementation.
 
 Normally these are not used directly. Perhaps just the :class:`~hunter.tracer.Tracer` may be used directly for
 performance reasons.
