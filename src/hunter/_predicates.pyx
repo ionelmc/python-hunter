@@ -643,12 +643,6 @@ cdef class Backlog(object):
     def __invert__(self):
         return Backlog(Not(self.condition), size=self.size, stack=self.stack, vars=self.vars, action=self.action, filter=self._filter)
 
-    def __ror__(self, other):
-        return Or(other, self)
-
-    def __rand__(self, other):
-        return And(other, self)
-
     def filter(self, *predicates, **kwargs):
         from hunter import _merge
 

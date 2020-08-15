@@ -305,8 +305,6 @@ def test_and(mockevent):
 
     assert And(1, 2) | 3 == Or(And(1, 2), 3)
 
-    assert Backlog(Query(module=1)) & Query(module=2) == And(Backlog(Query(module=1)), Query(module=2))
-
 
 def test_or(mockevent):
     assert Q(module=1) | Q(module=2) == Or(Q(module=1), Q(module=2))
@@ -317,7 +315,6 @@ def test_or(mockevent):
 
     assert Or(1, 2) & 3 == And(Or(1, 2), 3)
 
-    assert Backlog(Query(module=1)) | Query(module=2) == Or(Backlog(Query(module=1)), Query(module=2))
 
 def test_str_repr():
     assert repr(Q(module='a', function='b')).endswith("predicates.Query: query_eq=(('function', 'b'), ('module', 'a'))>")
