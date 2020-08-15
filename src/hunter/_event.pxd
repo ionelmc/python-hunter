@@ -33,6 +33,7 @@ cdef class Event:
         object _thread
         object _threadidn  # slightly different name cause "_threadid" is a goddamn macro in Microsoft stddef.h
         object _threadname
+        object _instruction
 
         object code_getter(self)
         object filename_getter(self)
@@ -46,6 +47,7 @@ cdef class Event:
         object stdlib_getter(self)
         object threadid_getter(self)
         object threadname_getter(self)
+        object instruction_getter(self)
 
 cdef Event fast_clone(Event self)
 cdef Event fast_detach(Event self, object value_filter)

@@ -758,7 +758,7 @@ class ErrorSnooper(CodePrinter):
                     detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
-                    if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                    if event.instruction == RETURN_VALUE:
                         self.dump_events()
                         self.output('{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n', '-' * 46)
                     self.origin = None

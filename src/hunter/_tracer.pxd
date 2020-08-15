@@ -8,6 +8,7 @@ cdef extern from "frameobject.h":
 
     ctypedef class types.CodeType[object PyCodeObject]:
         cdef object co_filename
+        cdef object co_code
         cdef int co_firstlineno
 
     ctypedef class types.FrameType[object PyFrameObject]:
@@ -16,6 +17,7 @@ cdef extern from "frameobject.h":
         cdef object f_globals
         cdef object f_locals
         cdef int f_lineno
+        cdef int f_lasti
 
     void PyEval_SetTrace(Py_tracefunc func, PyObject *obj)
     void PyEval_SetProfile(Py_tracefunc func, PyObject *obj)

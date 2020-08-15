@@ -111,7 +111,7 @@ class ProfileAction(ColorStreamAction):
                 self.timings[frame_id] = start_time, event.arg
             elif event.kind == 'return':
                 delta = current_time - start_time
-                if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                if event.instruction == RETURN_VALUE:
                     # exception was discarded
                     self.output(
                         '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',

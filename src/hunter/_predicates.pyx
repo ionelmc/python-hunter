@@ -31,7 +31,7 @@ __all__ = (
 
 cdef tuple ALLOWED_KEYS = (
     'function', 'module', 'lineno', 'globals', 'stdlib', 'arg', 'locals', 'kind', 'filename', 'source',
-    'fullsource', 'threadname', 'threadid', 'depth', 'calls', 'builtin',
+    'fullsource', 'threadname', 'threadid', 'instruction', 'depth', 'calls', 'builtin',
 )
 cdef tuple ALLOWED_OPERATORS = (
     'startswith', 'endswith', 'in', 'contains', 'regex',
@@ -53,10 +53,12 @@ cdef Event_get_source(Event event): return event.source_getter()
 cdef Event_get_fullsource(Event event): return event.fullsource_getter()
 cdef Event_get_threadname(Event event): return event.threadname_getter()
 cdef Event_get_threadid(Event event): return event.threadid_getter()
+cdef Event_get_instruction(Event event): return event.instruction_getter()
 cdef Event_get_depth(Event event): return event.depth
 cdef Event_get_calls(Event event): return event.calls
+cdef Event_get_builtin(Event event): return event.builtin
 
-cdef Event_getter_typedef[15] Event_getters = [
+cdef Event_getter_typedef[17] Event_getters = [
     Event_get_function,
     Event_get_module,
     Event_get_lineno,
@@ -70,8 +72,10 @@ cdef Event_getter_typedef[15] Event_getters = [
     Event_get_fullsource,
     Event_get_threadname,
     Event_get_threadid,
+    Event_get_instruction,
     Event_get_depth,
     Event_get_calls,
+    Event_get_builtin,
 ]
 
 @cython.final

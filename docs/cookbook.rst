@@ -232,7 +232,7 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
                 if event.depth > self.depth:  # too many details
                     return
                 elif event.depth < self.depth and event.kind == 'return':  # stop if function returned
-                    op = event.code.co_code[event.frame.f_lasti]
+                    op = event.instruction
                     op = op if isinstance(op, int) else ord(op)
                     if op == RETURN_VALUE:
                         self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
@@ -321,7 +321,7 @@ This means that we have to store the exception for a little while, and do the ch
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
-                    if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                    if event.instruction == RETURN_VALUE:
                         # exception was discarded
                         print(f'{event.function} returned: {event.arg}. Duration: {delta:.4f}s\n')
                     else:
@@ -384,7 +384,7 @@ Behold, a `ProfileAction` that works in any mode:
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
-                    if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
+                    if event.instruction == RETURN_VALUE:
                         # exception was discarded
                         self.output(
                             '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',

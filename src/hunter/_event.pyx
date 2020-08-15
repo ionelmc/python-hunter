@@ -100,12 +100,25 @@ cdef class Event:
         self._threadidn = UNSET
         self._threadname = UNSET
         self._thread = UNSET
+        self._instruction = UNSET
 
     def detach(self, value_filter=None):
         return fast_detach(self, value_filter)
 
     def clone(self):
         return fast_clone(self)
+
+    cdef instruction_getter(self):
+        if self._instruction is UNSET:
+            if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
+                self._instruction = self.frame.f_code.co_code[self.frame.f_lasti]
+            else:
+                self._instruction = None
+        return self._instruction
+
+    @property
+    def instruction(self):
+        return self.instruction_getter()
 
     cdef threadid_getter(self):
         cdef long current
@@ -348,17 +361,18 @@ def yield_lines(filename, module_globals, start, list collector,
 cdef inline Event fast_detach(Event self, object value_filter):
     event = <Event>Event.__new__(Event)
 
-    event._code = self.code
-    event._filename = self.filename
-    event._fullsource = self.fullsource
+    event._code = self.code_getter()
+    event._filename = self.filename_getter()
+    event._fullsource = self.fullsource_getter()
     event._function_object = self._function_object
-    event._function = self.function
-    event._lineno = self.lineno
-    event._module = self.module
-    event._source = self.source
-    event._stdlib = self.stdlib
-    event._threadidn = self.threadid
-    event._threadname = self.threadname
+    event._function = self.function_getter()
+    event._lineno = self.lineno_getter()
+    event._module = self.module_getter()
+    event._source = self.source_getter()
+    event._stdlib = self.stdlib_getter()
+    event._threadidn = self.threadid_getter()
+    event._threadname = self.threadname_getter()
+    event._instruction = self.instruction_getter()
 
     if value_filter:
         event._globals = {key: value_filter(value) for key, value in self.globals.items()}
@@ -402,4 +416,5 @@ cdef inline Event fast_clone(Event self):
     event._threadidn = self._threadidn
     event._threadname = self._threadname
     event._thread = self._thread
+    event._instruction = self._instruction
     return event

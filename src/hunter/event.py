@@ -150,6 +150,7 @@ class Event(object):
         event.__dict__['stdlib'] = self.stdlib
         event.__dict__['threadid'] = self.threadid
         event.__dict__['threadname'] = self.threadname
+        event.__dict__['instruction'] = self.instruction
 
         if value_filter:
             event.__dict__['arg'] = value_filter(self.arg)
@@ -174,6 +175,17 @@ class Event(object):
         event = Event.__new__(Event)
         event.__dict__ = dict(self.__dict__)
         return event
+
+    @cached_property
+    def instruction(self):
+        """
+        Last byte instruction. None if no bytecode wan't used (eg: Cython code).
+        Depending on Python version it might be an int or a single char string.
+
+        :type: int or single char string or None
+        """
+        if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
+            return self.frame.f_code.co_code[self.frame.f_lasti]
 
     @cached_property
     def threadid(self):
