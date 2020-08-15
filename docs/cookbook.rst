@@ -316,7 +316,8 @@ This means that we have to store the exception for a little while, and do the ch
                 start_time, depth, exception = self.timings.pop(frame_id)
 
                 if event.kind == 'exception':
-                    # store the exception (there will be a followup 'return' event in which we deal with it)
+                    # store the exception
+                    # (there will be a followup 'return' event in which we deal with it)
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
@@ -335,7 +336,7 @@ of ``sys.setrace``. However there are some downsides with that API:
 * exception data will be missing (most likely because profiling is designed for speed and tracebacks are costly to build)
 * trace events for builtin functions do not have their own frame objects (so we need to cater for that)
 
-Behold, a `ProfileAction` that works in profile mode:
+Behold, a `ProfileAction` that works in any mode:
 
 .. code-block:: python
 
@@ -343,12 +344,16 @@ Behold, a `ProfileAction` that works in profile mode:
     from hunter.actions import RETURN_VALUE
 
     class ProfileAction(ColorStreamAction):
+        # using ColorStreamAction brings this more in line with the other actions
+        # (stream option, coloring and such, see the other examples for colors)
         def __init__(self, **kwargs):
             self.timings = {}
             super(ProfileAction, self).__init__(**kwargs)
 
         def __call__(self, event):
             current_time = time()
+            # include event.builtin in the id so we don't have problems
+            # with Python reusing frame objects from the previous call for builtin calls
             frame_id = id(event.frame), str(event.builtin)
 
             if event.kind == 'call':
@@ -362,19 +367,31 @@ Behold, a `ProfileAction` that works in profile mode:
                     function = '<builtin>.{}'.format(event.builtin.__name__)
                 elif function_object:
                     if hasattr(function_object, '__qualname__'):
-                        function = '{}.{}'.format(function_object.__module__, function_object.__qualname__)
+                        function = '{}.{}'.format(
+                            function_object.__module__, function_object.__qualname__
+                        )
                     else:
-                        function = '{}.{}'.format(function_object.__module__, function_object.__name__)
+                        function = '{}.{}'.format(
+                            function_object.__module__,
+                            function_object.__name__
+                        )
                 else:
                     function = event.function
 
                 if event.kind == 'exception':
-                    # store the exception (there will be a followup 'return' event in which we deal with it)
+                    # store the exception
+                    # (there will be a followup 'return' event in which we deal with it)
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
                     if event.code.co_code[event.frame.f_lasti] == RETURN_VALUE:
                         # exception was discarded
-                        self.output('{} returned: {}. Duration: {:.4f}s\n', function, event.arg, delta)
+                        self.output(
+                            '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',
+                            function, event.arg, delta
+                        )
                     else:
-                        self.output('{} raised exception: {}. Duration: {:.4f}s\n', function, exception, delta)
+                        self.output(
+                            '{fore(RED)}{} raised exception: {}. Duration: {:.4f}s{RESET}\n',
+                            function, exception, delta
+                        )
