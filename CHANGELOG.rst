@@ -2,7 +2,7 @@
 Changelog
 =========
 
-3.2.0 (2020-05-??)
+3.2.0 (2020-08-16)
 ------------------
 
 * Implemented the :class:`~hunter.actions.StackPrinter` action.
@@ -12,6 +12,12 @@ Changelog
   Contributed by Tom Schraitle in `#85 <https://github.com/ionelmc/python-hunter/pull/85>`_.
 * Improved filtering performance by avoiding a lot of unnecessary
   ``PyObject_GetAttr`` calls in the Cython implementation of :class:`~hunter.predicates.Backlog`.
+* Implemented the :class:`~hunter.actions.ErrorSnooper` action.
+* Added support for profiling mode (eg: ``trace(profile=True)``).
+  This mode will use ``setprofile`` instead of ``settrace``.
+* Added ARM64 wheels and CI.
+* Added :ref:`~hunter.event.Event.instruction` and :ref:`~hunter.event.Event.builtin` (usable in profile mode).
+* Added more cookbook entries.
 
 3.1.3 (2020-02-02)
 ------------------
