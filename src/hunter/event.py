@@ -179,7 +179,7 @@ class Event(object):
     @cached_property
     def instruction(self):
         """
-        Last byte instruction. None if no bytecode wan't used (eg: Cython code).
+        Last byte instruction. If no bytecode was used (Cython code) then it returns ``None``.
         Depending on Python version it might be an int or a single char string.
 
         :type: int or single char string or None
