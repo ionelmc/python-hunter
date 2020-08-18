@@ -7,6 +7,8 @@ from collections import Counter
 from collections import OrderedDict
 from collections import defaultdict
 from collections import deque
+from datetime import date
+from datetime import datetime
 from inspect import CO_VARARGS
 from inspect import CO_VARKEYWORDS
 
@@ -39,6 +41,17 @@ try:
     from types import InstanceType
 except ImportError:
     InstanceType = object()
+
+try:
+    from re import Pattern
+except ImportError:
+    Pattern = type(re.compile(''))
+
+
+try:
+    from re import RegexFlag
+except ImportError:
+    RegexFlag = int
 
 PY3 = sys.version_info[0] == 3
 
@@ -207,6 +220,23 @@ def safe_repr(obj, maxdepth=5):
                 safe_repr(k, maxdepth),
                 safe_repr(v, newdepth)
             ) for k, v in obj.items())
+        )
+    elif obj_type is Pattern:
+        if obj.flags:
+            return 're.compile(%s, flags=%s)' % (
+                safe_repr(obj.pattern),
+                RegexFlag(obj.flags),
+            )
+        else:
+            return 're.compile(%s)' % safe_repr(obj.pattern)
+    elif obj_type is date:
+        return repr(obj)
+    elif obj_type is datetime:
+        return '%s(%d, %d, %d, %d, %d, %d, %d, tzinfo=%s)' % (
+            obj_type.__name__,
+            obj.year, obj.month, obj.day,
+            obj.hour, obj.minute, obj.second, obj.microsecond,
+            safe_repr(obj.tzinfo)
         )
     elif obj_type is types.MethodType:  # noqa
         self = obj.__self__

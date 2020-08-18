@@ -1,7 +1,11 @@
+import re
 from array import array
 from collections import OrderedDict
 from collections import deque
 from collections import namedtuple
+from datetime import date
+from datetime import datetime
+from datetime import tzinfo
 from decimal import Decimal
 from socket import _socket
 from socket import socket
@@ -47,6 +51,27 @@ class Bad1:
         pass
 
 
+class String(str):
+    def __repr__(self):
+        raise Exception("Bad!")
+
+    __str__ = __repr__
+
+
+class Int(int):
+    def __repr__(self):
+        raise Exception("Bad!")
+
+    __str__ = __repr__
+
+
+class TzInfo(tzinfo):
+    def __repr__(self):
+        raise Exception("Bad!")
+
+    __str__ = __repr__
+
+
 class Bad2(object):
     def __repr__(self):
         raise Exception("Bad!")
@@ -76,8 +101,14 @@ def test_safe_repr():
         'od': OrderedDict({'a': 'b'}),
         'nt': MyTuple(1, 2),
         'bad1': Bad1().method,
-        'bad2': Bad2().method
+        'bad2': Bad2().method,
+        'regex': re.compile('123', 0),
+        'badregex': re.compile(String('123')),
+        'badregex2': re.compile(String('123'), Int(re.IGNORECASE)),
+        'date': date(Int(2000), Int(1), Int(2)),
+        'datetime': datetime(Int(2000), Int(1), Int(2), Int(3), Int(4), Int(5), Int(600), tzinfo=TzInfo()),
     }
+    print(re.compile(String('123'), Int(re.IGNORECASE)).match('123'))
     print(safe_repr(data))
     print(safe_repr([data]))
     print(safe_repr([[data]]))
