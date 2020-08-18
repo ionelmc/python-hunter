@@ -7,6 +7,8 @@ from collections import Counter
 from collections import OrderedDict
 from collections import defaultdict
 from collections import deque
+from inspect import CO_VARARGS
+from inspect import CO_VARKEYWORDS
 
 from .vendor.colorama import Back
 from .vendor.colorama import Fore
@@ -82,6 +84,43 @@ MISSING = type('MISSING', (), {'__repr__': lambda _: '?'})()
 BUILTIN_SYMBOLS = set(vars(builtins))
 CYTHON_SUFFIX_RE = re.compile(r'([.].+)?[.](so|pyd)$', re.IGNORECASE)
 LEADING_WHITESPACE_RE = re.compile('(^[ \t]*)(?:[^ \t\n])', re.MULTILINE)
+
+if PY3:
+    def get_arguments(code):
+        co_varnames = code.co_varnames
+        co_argcount = code.co_argcount
+        co_kwonlyargcount = code.co_kwonlyargcount
+        kwonlyargs = co_varnames[co_argcount:co_argcount + co_kwonlyargcount]
+        for arg in co_varnames[:co_argcount]:
+            yield '', arg
+        co_argcount += co_kwonlyargcount
+        if code.co_flags & CO_VARARGS:
+            yield '*', co_varnames[co_argcount]
+            co_argcount = co_argcount + 1
+        for arg in kwonlyargs:
+            yield '', arg
+        if code.co_flags & CO_VARKEYWORDS:
+            yield '**', co_varnames[co_argcount]
+else:
+    from inspect import getargs
+
+    def get_arguments(code):
+        arguments = getargs(code)
+        for arg in flatten(arguments.args):
+            yield '', arg
+        if arguments.varargs:
+            yield '*', arguments.varargs
+        if arguments.keywords:
+            yield '**', arguments.keywords
+
+
+def flatten(something):
+    if isinstance(something, (list, tuple)):
+        for element in something:
+            for subelement in flatten(element):
+                yield subelement
+    else:
+        yield something
 
 
 class cached_property(object):

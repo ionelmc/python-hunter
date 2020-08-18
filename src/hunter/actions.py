@@ -18,6 +18,7 @@ from .util import PY3
 from .util import StringType
 from .util import builtins
 from .util import frame_iterator
+from .util import get_arguments
 from .util import iter_symbols
 from .util import safe_repr
 from .vendor.colorama import AnsiToWin32
@@ -474,11 +475,12 @@ class CallPrinter(CodePrinter):
                 event.kind,
                 '   ' * (len(stack) - 1),
                 event.function,
-                ', '.join('{VARS}{VARS-NAME}{0}{VARS}={RESET}{1}'.format(
+                ', '.join('{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
+                    prefix,
                     var,
                     self.try_str(event.locals.get(var, MISSING)) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
                     **self.other_colors
-                ) for var in code.co_varnames[:code.co_argcount]),
+                ) for prefix, var in get_arguments(code)),
                 COLOR=self.event_colors.get(event.kind),
             )
         elif event.kind == 'exception':
