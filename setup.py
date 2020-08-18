@@ -113,7 +113,7 @@ setup(
     use_scm_version={
         'local_scheme': 'dirty-tag',
         'write_to': 'src/hunter/_version.py',
-        'fallback_version': '3.2.0',
+        'fallback_version': '3.2.1',
     },
     license='BSD-2-Clause',
     description='Hunter is a flexible code tracing toolkit.',
