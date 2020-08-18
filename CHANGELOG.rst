@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.2.1 (2020-08-18)
+------------------
+
+* Added support for regex, date and datetime in ``safe_repr``.
+* Fixed call argument display when positional and keyword arguments are used in :class:`hunter.actions.CallPrinter`.
+
 3.2.0 (2020-08-16)
 ------------------
 
