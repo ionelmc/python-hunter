@@ -182,28 +182,24 @@ def test_tracing_bare(LineMatcher):
 @pytest.mark.parametrize('module', ['sys', 'builtins'])
 def test_profile_mode(LineMatcher, module):
     lines = StringIO()
-    with trace(profile=True, module=module, action=CallPrinter(stream=lines)):
+    with trace(profile=True, action=CallPrinter(stream=lines)):
         def a():
-            sys.getsizeof(1)
-            return getattr(a, 'b', 'c')
+            foo = 1
+            sys.getsizeof(foo)
+            return getattr(a, 'b', foo)
 
-        b = a()
-        b = 2
-        try:
-            raise Exception('BOOM!')
-        except Exception:
-            pass
+        a()
     print(lines.getvalue())
     lm = LineMatcher(lines.getvalue().splitlines())
     if module == 'sys':
         lm.fnmatch_lines([
-            '* <sys>       call      => getsizeof: sys.getsizeof(1)',
-            '* <sys>       return    <= getsizeof',
+            '* <sys>       call   * => getsizeof: *',
+            '* <sys>       return * <= getsizeof',
         ])
     else:
         lm.fnmatch_lines([
-            "* <builtins>       call      => getattr: return getattr(a, 'b', 'c')",
-            '* <builtins>       return    <= getattr',
+            "* <*builtin*> * call   * => getattr: *",
+            '* <*builtin*> * return * <= getattr',
         ])
 
 def test_tracing_reinstall(LineMatcher):
