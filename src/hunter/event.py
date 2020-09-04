@@ -65,14 +65,13 @@ class Event(object):
 
         if kind.startswith('c_'):
             kind = kind[2:]
-            builtin = arg
-            arg = None
+            builtin = True
         else:
             builtin = False
 
         #: If kind of the event is one of ``'c_call'``, ``'c_return'``, or ``'c_exception'`` then this will be True.
         #:
-        #: :type: builtin function or False
+        #: :type: bool
         self.builtin = builtin
 
         #: The kind of the event, could be one of ``'call'``, ``'line'``, ``'return'``, ``'exception'``.
@@ -246,7 +245,7 @@ class Event(object):
         :type: str
         """
         if self.builtin:
-            return self.builtin.__name__
+            return self.arg.__name__
         else:
             return self.code.co_name
 
@@ -299,7 +298,7 @@ class Event(object):
         :type: str
         """
         if self.builtin:
-            return self.builtin.__module__
+            return self.arg.__module__
 
         module = self.frame.f_globals.get('__name__', '')
         if module is None:

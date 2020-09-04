@@ -364,7 +364,7 @@ Behold, a `ProfileAction` that works in any mode:
                 # try to find a complete function name for display
                 function_object = event.function_object
                 if event.builtin:
-                    function = '<builtin>.{}'.format(event.builtin.__name__)
+                    function = '<builtin>.{}'.format(event.arg.__name__)
                 elif function_object:
                     if hasattr(function_object, '__qualname__'):
                         function = '{}.{}'.format(

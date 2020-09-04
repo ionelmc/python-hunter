@@ -71,12 +71,6 @@ cdef class Event:
             calls = tracer.calls
             threading_support = tracer.threading_support
 
-        if kind > 3:
-            builtin = arg
-            arg = None
-        else:
-            builtin = False
-
         self.arg = arg
         self.frame = frame
         self.kind = <str>KIND_NAMES[kind]
@@ -84,7 +78,7 @@ cdef class Event:
         self.calls = calls
         self.threading_support = threading_support
         self.detached = False
-        self.builtin = builtin
+        self.builtin = kind > 3
 
         self._code = UNSET
         self._filename = UNSET
@@ -175,7 +169,7 @@ cdef class Event:
     cdef function_getter(self):
         if self._function is UNSET:
             if self.builtin:
-                self._function = self.builtin.__name__
+                self._function = self.arg.__name__
             else:
                 self._function = self.frame.f_code.co_name
         return self._function
@@ -217,7 +211,7 @@ cdef class Event:
     cdef module_getter(self):
         if self._module is UNSET:
             if self.builtin:
-                module = self.builtin.__module__
+                module = self.arg.__module__
             else:
                 module = self.frame.f_globals.get('__name__', '')
                 if module is None:
