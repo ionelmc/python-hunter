@@ -185,7 +185,7 @@ def test_profile_mode(LineMatcher, module):
     with trace(profile=True, action=CallPrinter(stream=lines)):
         def a():
             foo = 1
-            sys.getsizeof(foo)
+            sys.getsizeof(foo, 2)
             return getattr(a, 'b', foo)
 
         a()
