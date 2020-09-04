@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.2.2 (2020-09-04)
+------------------
+
+* Fixed oversight over what value is in :ref:`~hunter.event.Event.builtin`. Now it's always a boolean, and can be used consistently
+  in filters (eg: ``builtin=True,function='getattr'``).
+
 3.2.1 (2020-08-18)
 ------------------
 
