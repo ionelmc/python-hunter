@@ -106,6 +106,11 @@ class Event(object):
         #: :type: bool
         self.detached = False
 
+    def __repr__(self):
+        return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (
+            self.kind, self.function, self.module, self.filename, self.lineno
+        )
+
     def __eq__(self, other):
         return (
             type(self) == type(other) and

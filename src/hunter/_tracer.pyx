@@ -43,8 +43,8 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
         fast_call(handler, event)
     except Exception as exc:
         traceback.print_exc(file=hunter._default_stream)
-        hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
-            handler, exc))
+        hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
+            handler, exc, event))
         self.stop()
         return 0
 

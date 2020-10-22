@@ -79,12 +79,13 @@ class Tracer(object):
         if self._handler is not None:
             if kind == 'return' and self.depth > 0:
                 self.depth -= 1
+            event = Event(frame, kind, arg, self)
             try:
-                self._handler(Event(frame, kind, arg, self))
+                self._handler(event)
             except Exception as exc:
                 traceback.print_exc(file=hunter._default_stream)
-                hunter._default_stream.write('Disabling tracer because handler {} failed ({!r}).\n\n'.format(
-                    self._handler, exc))
+                hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
+                    self._handler, exc, event))
                 self.stop()
                 return
             if kind == 'call':

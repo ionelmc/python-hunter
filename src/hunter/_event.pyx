@@ -96,6 +96,11 @@ cdef class Event:
         self._thread = UNSET
         self._instruction = UNSET
 
+    def __repr__(self):
+        return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (
+            self.kind, self.function, self.module, self.filename, self.lineno
+        )
+
     def detach(self, value_filter=None):
         return fast_detach(self, value_filter)
 
