@@ -302,7 +302,7 @@ class Event(object):
         else:
             module = self.frame.f_globals.get('__name__', '')
         if module is None:
-            module = ''
+            module = '?'
         return module
 
     @cached_property
@@ -321,7 +321,7 @@ class Event(object):
         if not filename:
             filename = self.frame.f_globals.get('__file__')
         if not filename:
-            filename = ''
+            filename = '?'
         if filename.endswith(('.pyc', '.pyo')):
             filename = filename[:-1]
         elif filename.endswith('$py.class'):  # Jython

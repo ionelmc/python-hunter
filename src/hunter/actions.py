@@ -259,12 +259,10 @@ class ColorStreamAction(Action):
         Returns: string
         """
         if event:
-            if event.builtin:
-                filename = '<{}>'.format(event.module or '?')
-                lineno = '      '
-            else:
-                filename = event.filename or '<???>'
-                lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
+            filename = event.filename
+            if filename == '?':
+                filename = '{SOURCE-FAILURE}?'.format(**self.other_colors)
+            lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
             if len(filename) > self.filename_alignment:
                 filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
             return '{:>{}}{} '.format(

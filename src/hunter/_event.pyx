@@ -215,7 +215,7 @@ cdef class Event:
             else:
                 module = self.frame.f_globals.get('__name__', '')
             if module is None:
-                module = ''
+                module = '?'
             self._module = module
         return self._module
 
@@ -229,7 +229,7 @@ cdef class Event:
             if not filename:
                 filename = self.frame.f_globals.get('__file__')
             if not filename:
-                filename = ''
+                filename = '?'
             elif filename.endswith(('.pyc', '.pyo')):
                 filename = filename[:-1]
             elif filename.endswith(('.so', '.pyd')):
