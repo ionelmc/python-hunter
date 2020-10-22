@@ -477,10 +477,12 @@ class CallPrinter(CodePrinter):
                     event.function,
                     ', '.join('{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
                         prefix,
-                        var,
-                        self.try_str(event.locals.get(var, MISSING)) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
+                        var_display,
+                        self.try_str(event.locals.get(var_lookup, MISSING))
+                        if event.detached
+                        else self.try_repr(event.locals.get(var_lookup, MISSING)),
                         **self.other_colors
-                    ) for prefix, var in get_arguments(code)),
+                    ) for prefix, var_lookup, var_display in get_arguments(code)),
                     COLOR=self.event_colors.get(event.kind),
                 )
         elif event.kind == 'exception':
