@@ -178,7 +178,6 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
-
 @pytest.mark.parametrize('module', ['sys', 'builtins'])
 def test_profile_mode(LineMatcher, module):
     lines = StringIO()
@@ -201,6 +200,7 @@ def test_profile_mode(LineMatcher, module):
             "* <*builtin*> * call   * => getattr: *",
             '* <*builtin*> * return * <= getattr',
         ])
+
 
 def test_tracing_reinstall(LineMatcher):
     lines = StringIO()
