@@ -1467,44 +1467,17 @@ def test_backlog_specific(LineMatcher, size, stack, vars, condition, filter):
     ])
 
 
-@pytest.mark.skipif("not PY3")
+@pytest.mark.skipif("PY3")
 def test_packed_arguments(LineMatcher):
     lines = StringIO()
 
-    with trace(action=CallPrinter(stream=lines)):
-        from sample10py2 import foo
-        foo()
+    with trace(module='sample9py2', action=CallPrinter(stream=lines)):
+        from sample9py2 import foo
+        foo(1, (2, ), (3, 4), (5, (6, 7), 8))
 
     lm = LineMatcher(lines.getvalue().splitlines())
     lm.fnmatch_lines([
-        "*sample10py2.py:?     line         foo(1, (2, ), (3, 4), (5, (6, 7), 8))",
-        "*sample10py2.py:?     call         => foo(a=1, (b,)=(2,), (c, d)=(3, 4), (e, (f, g), h)=(5, (6, 7), 8))",
-        "*sample10py2.py:?     line            def foo(a, (b,), (c, d), (e, (f, g), h)):",
-    ])
-
-def test_profile(LineMatcher):
-    lines = StringIO()
-
-    with trace(action=CallPrinter(stream=lines), profile=True):
-        from sample9prof import one
-        one()
-
-    lm = LineMatcher(lines.getvalue().splitlines())
-    lm.fnmatch_lines([
-        "* => one()",
-        "*    => two()",
-        "*       => three()",
-        "*        > builtins.setattr: setattr(obj, 'attr', 3)  # asdf",
-        "*        < builtins.setattr",
-        "*          => four()",
-        "*           > builtins.setattr: setattr(None, 'attr', 4)  # qwer",
-        "*           ! builtins.setattr",
-        "*             => five()",
-        "*              > builtins.setattr: setattr(obj, 'attr', 5)  # zxcv",
-        "*              < builtins.setattr",
-        "*             <= five: 0",
-        "*          <= four: None",
-        "*       <= three: None",
-        "*    <= two: None",
-        "* <= one: None",
+        "* call      => foo(a=1, (b,)=(2,), (c, d)=(3, 4), (e, (f, g), h)=(5, (6, 7), 8))",
+        "* line         def foo(a, (b,), (c, d), (e, (f, g), h)):",
+        "* return    <= foo: None",
     ])

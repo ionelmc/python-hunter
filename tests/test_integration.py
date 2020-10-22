@@ -192,13 +192,13 @@ def test_profile_mode(LineMatcher, module):
     lm = LineMatcher(lines.getvalue().splitlines())
     if module == 'sys':
         lm.fnmatch_lines([
-            '* <sys>       call   * => getsizeof: *',
-            '* <sys>       return * <= getsizeof',
+            '*test_integration.py:* call   * > sys.getsizeof: *',
+            '*test_integration.py:* return * < sys.getsizeof',
         ])
     else:
         lm.fnmatch_lines([
-            "* <*builtin*> * call   * => getattr: *",
-            '* <*builtin*> * return * <= getattr',
+            "*test_integration.py:* call   * > *builtin*.getattr: *",
+            '*test_integration.py:* return * < *builtin*.getattr',
         ])
 
 
