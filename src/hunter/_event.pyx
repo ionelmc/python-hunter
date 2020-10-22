@@ -214,9 +214,8 @@ cdef class Event:
                 module = self.arg.__module__
             else:
                 module = self.frame.f_globals.get('__name__', '')
-                if module is None:
-                    module = ''
-
+            if module is None:
+                module = ''
             self._module = module
         return self._module
 

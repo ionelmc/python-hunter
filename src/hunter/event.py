@@ -298,9 +298,9 @@ class Event(object):
         :type: str
         """
         if self.builtin:
-            return self.arg.__module__
-
-        module = self.frame.f_globals.get('__name__', '')
+            module = self.arg.__module__
+        else:
+            module = self.frame.f_globals.get('__name__', '')
         if module is None:
             module = ''
         return module
