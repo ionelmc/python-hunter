@@ -249,8 +249,8 @@ class ColorStreamAction(Action):
         elif source:
             return source
         else:
-            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for module {!r} is empty.'.format(
-                event.module, **self.other_colors)
+            return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for {!r} is empty.'.format(
+                event.filename, **self.other_colors)
 
     def filename_prefix(self, event=None):
         """
@@ -263,6 +263,7 @@ class ColorStreamAction(Action):
             if filename == '?':
                 filename = '{SOURCE-FAILURE}?'.format(**self.other_colors)
             lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
+
             if len(filename) > self.filename_alignment:
                 filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
             return '{:>{}}{} '.format(
@@ -449,38 +450,39 @@ class CallPrinter(CodePrinter):
         thread_prefix = self.thread_prefix(event)
         filename_prefix = self.filename_prefix(event)
 
-        if event.builtin and event.kind == 'call':
-            stack.append(ident)
-            self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}: {}{RESET}\n',
-                pid_prefix,
-                thread_prefix,
-                filename_prefix,
-                event.kind,
-                '   ' * (len(stack) - 1),
-                event.function,
-                self.try_source(event).strip(),
-                COLOR=self.event_colors.get(event.kind),
-            )
-        elif event.kind == 'call':
-            code = event.code
-            stack.append(ident)
-            self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}({}{COLOR}{NORMAL}){RESET}\n',
-                pid_prefix,
-                thread_prefix,
-                filename_prefix,
-                event.kind,
-                '   ' * (len(stack) - 1),
-                event.function,
-                ', '.join('{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
-                    prefix,
-                    var,
-                    self.try_str(event.locals.get(var, MISSING)) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
-                    **self.other_colors
-                ) for prefix, var in get_arguments(code)),
-                COLOR=self.event_colors.get(event.kind),
-            )
+        if event.kind == 'call':
+            if event.builtin:
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR} >{NORMAL} {}.{}: {}{RESET}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.module,
+                    event.function,
+                    self.try_source(event).strip(),
+                    COLOR=self.event_colors['builtin'],
+                )
+            else:
+                code = event.code
+                stack.append(ident)
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR}=>{NORMAL} {}({}{COLOR}{NORMAL}){RESET}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.function,
+                    ', '.join('{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
+                        prefix,
+                        var,
+                        self.try_str(event.locals.get(var, MISSING)) if event.detached else self.try_repr(event.locals.get(var, MISSING)),
+                        **self.other_colors
+                    ) for prefix, var in get_arguments(code)),
+                    COLOR=self.event_colors.get(event.kind),
+                )
         elif event.kind == 'exception':
             self.output(
                 '{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n',
@@ -493,22 +495,34 @@ class CallPrinter(CodePrinter):
                 self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
                 COLOR=self.event_colors.get(event.kind),
             )
-
         elif event.kind == 'return':
-            self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}{}{RESET}{}\n',
-                pid_prefix,
-                thread_prefix,
-                filename_prefix,
-                event.kind,
-                '   ' * (len(stack) - 1),
-                event.function,
-                '' if event.builtin else ': ',
-                '' if event.builtin else (self.try_str(event.arg) if event.detached else self.try_repr(event.arg)),
-                COLOR=self.event_colors.get(event.kind),
-            )
-            if stack and stack[-1] == ident:
-                stack.pop()
+            if event.builtin:
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR} <{NORMAL} {}.{}{RESET}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.module,
+                    event.function,
+                    COLOR=self.event_colors['builtin'],
+                )
+            else:
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR}<={NORMAL} {}{}{RESET}{}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.function,
+                    '' if event.builtin else ': ',
+                    '' if event.builtin else (self.try_str(event.arg) if event.detached else self.try_repr(event.arg)),
+                    COLOR=self.event_colors.get(event.kind),
+                )
+                if stack and stack[-1] == ident:
+                    stack.pop()
         else:
             self.output(
                 '{}{}{}{KIND}{:9} {RESET}{}{}{RESET}\n',

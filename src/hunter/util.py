@@ -83,6 +83,7 @@ for name, group in [
         OTHER_COLORS['{}({})'.format(name, key) if name else key] = getattr(group, key)
 CALL_COLORS = {
     'call': Style.BRIGHT + Fore.BLUE,
+    'builtin': Style.BRIGHT + Fore.MAGENTA,
     'line': Fore.RESET,
     'return': Style.BRIGHT + Fore.GREEN,
     'exception': Style.BRIGHT + Fore.RED,
