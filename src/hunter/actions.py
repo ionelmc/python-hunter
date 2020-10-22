@@ -260,7 +260,7 @@ class ColorStreamAction(Action):
         """
         if event:
             if event.builtin:
-                filename = '<{}>'.format(event.module)
+                filename = '<{}>'.format(event.module or '?')
                 lineno = '      '
             else:
                 filename = event.filename or '<???>'
