@@ -453,7 +453,7 @@ class CallPrinter(CodePrinter):
         if event.kind == 'call':
             if event.builtin:
                 self.output(
-                    '{}{}{}{KIND}{:9} {}{COLOR} >{NORMAL} {}.{}: {}{RESET}\n',
+                    '{}{}{}{KIND}{:9} {}{COLOR} >{BUILTIN} {}.{}: {}{RESET}\n',
                     pid_prefix,
                     thread_prefix,
                     filename_prefix,
@@ -462,7 +462,7 @@ class CallPrinter(CodePrinter):
                     event.module,
                     event.function,
                     self.try_source(event).strip(),
-                    COLOR=self.event_colors['builtin'],
+                    COLOR=self.event_colors.get(event.kind),
                 )
             else:
                 code = event.code
@@ -484,21 +484,9 @@ class CallPrinter(CodePrinter):
                     COLOR=self.event_colors.get(event.kind),
                 )
         elif event.kind == 'exception':
-            self.output(
-                '{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n',
-                pid_prefix,
-                thread_prefix,
-                filename_prefix,
-                event.kind,
-                '   ' * (len(stack) - 1),
-                event.function,
-                self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
-                COLOR=self.event_colors.get(event.kind),
-            )
-        elif event.kind == 'return':
             if event.builtin:
                 self.output(
-                    '{}{}{}{KIND}{:9} {}{COLOR} <{NORMAL} {}.{}{RESET}\n',
+                    '{}{}{}{KIND}{:9} {}{COLOR} ! {BUILTIN}{}.{}{RESET}\n',
                     pid_prefix,
                     thread_prefix,
                     filename_prefix,
@@ -506,7 +494,32 @@ class CallPrinter(CodePrinter):
                     '   ' * (len(stack) - 1),
                     event.module,
                     event.function,
-                    COLOR=self.event_colors['builtin'],
+                    COLOR=self.event_colors.get(event.kind),
+                )
+            else:
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR} !{NORMAL} {}: {RESET}{}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.function,
+                    self.try_str(event.arg) if event.detached else self.try_repr(event.arg),
+                    COLOR=self.event_colors.get(event.kind),
+                )
+        elif event.kind == 'return':
+            if event.builtin:
+                self.output(
+                    '{}{}{}{KIND}{:9} {}{COLOR} <{BUILTIN} {}.{}{RESET}\n',
+                    pid_prefix,
+                    thread_prefix,
+                    filename_prefix,
+                    event.kind,
+                    '   ' * (len(stack) - 1),
+                    event.module,
+                    event.function,
+                    COLOR=self.event_colors.get(event.kind),
                 )
             else:
                 self.output(
