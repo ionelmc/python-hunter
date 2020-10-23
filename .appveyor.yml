@@ -254,10 +254,12 @@ test_script:
       } else {
         cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox
       }
-      if ($LastExitCode -ne 0) {
+      $result = $LastExitCode
+      if ($result -ne 0) {
         Get-ChildItem Env:
         Get-Content .tox\*\log\*
       }
+      exit $result
 
 ### To enable remote debugging uncomment this (also, see: http://www.appveyor.com/docs/how-to/rdp-to-build-worker):
 # on_finish:
