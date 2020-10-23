@@ -258,8 +258,9 @@ test_script:
       if ($result -ne 0) {
         Get-ChildItem Env:
         Get-Content .tox\*\log\*
+        exit $result
       }
-      exit $result
+
 
 ### To enable remote debugging uncomment this (also, see: http://www.appveyor.com/docs/how-to/rdp-to-build-worker):
 # on_finish:
