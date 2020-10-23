@@ -5,22 +5,22 @@ Changelog
 3.3.0 (2020-10-23)
 ------------------
 
-* Fixed handling so that :ref:`~hunter.event.Event.module` is always the ``"?"`` string instead of `None`.
+* Fixed handling so that :any:`hunter.event.Event.module` is always the ``"?"`` string instead of `None`.
   Previously it was ``None`` when tracing particularly broken code and broke various predicates.
-* Similarly :ref:`~hunter.event.Event.filename` is now ``"?"`` if there's no filename available.
+* Similarly :any:`hunter.event.Event.filename` is now ``"?"`` if there's no filename available.
 * Building on the previous changes the actions have simpler code for displaying missing module/filenames.
 * Changed :class:`hunter.actions.CallPrinter` so that trace events for builtin functions are displayed differently.
   These events appear when using profile mode (eg: ``trace(profile=True)``).
-* Fixed failure that could occur if :ref:`~hunter.event.Event.module` is an unicode string. Now it's always a regular string.
-  Only applies to Python 2.
+* Fixed failure that could occur if :any:`hunter.event.Event.module` is an unicode string. Now it's always a regular string.
+  *Only applies to Python 2.*
 * Fixed argument display when tracing functions with tuple arguments.
-  Closes `#88 <https://github.com/ionelmc/python-hunter/issues/88>`_. Only applies to Python 2.
+  Closes `#88 <https://github.com/ionelmc/python-hunter/issues/88>`_. *Only applies to Python 2.*
 * Improved error reporting when internal failures occur. Now some details about the triggering event are logged.
 
 3.2.2 (2020-09-04)
 ------------------
 
-* Fixed oversight over what value is in :ref:`~hunter.event.Event.builtin`. Now it's always a boolean, and can be used consistently
+* Fixed oversight over what value is in :any:`hunter.event.Event.builtin`. Now it's always a boolean, and can be used consistently
   in filters (eg: ``builtin=True,function='getattr'``).
 
 3.2.1 (2020-08-18)
@@ -43,7 +43,7 @@ Changelog
 * Added support for profiling mode (eg: ``trace(profile=True)``).
   This mode will use ``setprofile`` instead of ``settrace``.
 * Added ARM64 wheels and CI.
-* Added :ref:`~hunter.event.Event.instruction` and :ref:`~hunter.event.Event.builtin` (usable in profile mode).
+* Added :any:`hunter.event.Event.instruction` and :any:`hunter.event.Event.builtin` (usable in profile mode).
 * Added more cookbook entries.
 
 3.1.3 (2020-02-02)
