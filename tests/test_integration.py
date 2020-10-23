@@ -50,7 +50,7 @@ def test_pth_activation():
     expected_call = 'call      def join{0}:'.format(func_spec)
 
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample.py')],
         env=dict(os.environ, PYTHONHUNTER=hunter_env),
         stderr=subprocess.STDOUT,
     )
@@ -63,7 +63,7 @@ def test_pth_sample4():
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample4.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample4.py')],
         env=env,
         stderr=subprocess.STDOUT,
     )
@@ -75,7 +75,7 @@ def test_pth_sample2(LineMatcher):
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample2.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample2.py')],
         env=env,
         stderr=subprocess.STDOUT,
     )
@@ -347,7 +347,7 @@ def test_depth_limit(LineMatcher, depth):
 def test_depth_limit_subprocess(LineMatcher, depth):
     hunter_env = "action=CallPrinter,depth_lt={!r},kind_in=['call','return'],stdlib=0".format(depth + 1)
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample7.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample7.py')],
         env=dict(os.environ, PYTHONHUNTER=hunter_env, COV_CORE_DATAFILE=''),
         stderr=subprocess.STDOUT,
     )
@@ -705,7 +705,7 @@ def test_backlog(LineMatcher, stack):
 
 def test_backlog_subprocess(LineMatcher):
     output = subprocess.check_output(
-        ['python', os.path.join(os.path.dirname(__file__), 'sample7args.py')],
+        [sys.executable, os.path.join(os.path.dirname(__file__), 'sample7args.py')],
         stderr=subprocess.STDOUT,
         universal_newlines=True,
     )
