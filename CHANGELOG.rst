@@ -2,6 +2,21 @@
 Changelog
 =========
 
+3.3.0 (2020-10-23)
+------------------
+
+* Fixed handling so that :ref:`~hunter.event.Event.module` is always the ``"?"`` string instead of `None`.
+  Previously it was ``None`` when tracing particularly broken code and broke various predicates.
+* Similarly :ref:`~hunter.event.Event.filename` is now ``"?"`` if there's no filename available.
+* Building on the previous changes the actions have simpler code for displaying missing module/filenames.
+* Changed :class:`hunter.actions.CallPrinter` so that trace events for builtin functions are displayed differently.
+  These events appear when using profile mode (eg: ``trace(profile=True)``).
+* Fixed failure that could occur if :ref:`~hunter.event.Event.module` is an unicode string. Now it's always a regular string.
+  Only applies to Python 2.
+* Fixed argument display when tracing functions with tuple arguments.
+  Closes `#88 <https://github.com/ionelmc/python-hunter/issues/88>`_. Only applies to Python 2.
+* Improved error reporting when internal failures occur. Now some details about the triggering event are logged.
+
 3.2.2 (2020-09-04)
 ------------------
 
