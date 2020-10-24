@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.3.1 (2020-10-24)
+------------------
+
+* Fixed CI/test issues that prevented all of 21 wheels being published.
+
 3.3.0 (2020-10-23)
 ------------------
 
