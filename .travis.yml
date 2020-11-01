@@ -45,7 +45,7 @@ matrix:
     - env:
         - TOXENV=py27-pure-cover,codecov
       python: '2.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py27-pure-cover,codecov
       python: '2.7'
@@ -71,7 +71,7 @@ matrix:
     - env:
         - TOXENV=py27-cython-cover,codecov
       python: '2.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py27-cython-cover,codecov
       python: '2.7'
@@ -91,7 +91,7 @@ matrix:
     - env:
         - TOXENV=py35-pure-cover,codecov
       python: '3.5'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py35-pure-cover,codecov
       python: '3.5'
@@ -100,7 +100,7 @@ matrix:
         - TOXENV=py35-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp35"
       python: '3.5'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py35-pure-nocov
         - WHEEL_MANYLINUX="1 cp35"
@@ -109,7 +109,7 @@ matrix:
     - env:
         - TOXENV=py35-cython-cover,codecov
       python: '3.5'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py35-cython-cover,codecov
       python: '3.5'
@@ -118,7 +118,7 @@ matrix:
         - TOXENV=py35-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp35"
       python: '3.5'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py35-cython-nocov
         - WHEEL_MANYLINUX="1 cp35"
@@ -127,7 +127,7 @@ matrix:
     - env:
         - TOXENV=py36-pure-cover,codecov
       python: '3.6'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py36-pure-cover,codecov
       python: '3.6'
@@ -136,7 +136,7 @@ matrix:
         - TOXENV=py36-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp36"
       python: '3.6'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py36-pure-nocov
         - WHEEL_MANYLINUX="1 cp36"
@@ -145,7 +145,7 @@ matrix:
     - env:
         - TOXENV=py36-cython-cover,codecov
       python: '3.6'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py36-cython-cover,codecov
       python: '3.6'
@@ -154,7 +154,7 @@ matrix:
         - TOXENV=py36-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp36"
       python: '3.6'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py36-cython-nocov
         - WHEEL_MANYLINUX="1 cp36"
@@ -163,7 +163,7 @@ matrix:
     - env:
         - TOXENV=py37-pure-cover,codecov
       python: '3.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py37-pure-cover,codecov
       python: '3.7'
@@ -172,7 +172,7 @@ matrix:
         - TOXENV=py37-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp37"
       python: '3.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py37-pure-nocov
         - WHEEL_MANYLINUX="1 cp37"
@@ -181,7 +181,7 @@ matrix:
     - env:
         - TOXENV=py37-cython-cover,codecov
       python: '3.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py37-cython-cover,codecov
       python: '3.7'
@@ -190,7 +190,7 @@ matrix:
         - TOXENV=py37-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp37"
       python: '3.7'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py37-cython-nocov
         - WHEEL_MANYLINUX="1 cp37"
@@ -205,7 +205,7 @@ matrix:
     - env:
         - TOXENV=py38-pure-cover,codecov
       python: '3.8'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py38-pure-cover,codecov
       python: '3.8'
@@ -221,7 +221,7 @@ matrix:
         - TOXENV=py38-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp38"
       python: '3.8'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py38-pure-nocov
         - WHEEL_MANYLINUX="1 cp38"
@@ -236,7 +236,7 @@ matrix:
     - env:
         - TOXENV=py38-cython-cover,codecov
       python: '3.8'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py38-cython-cover,codecov
       python: '3.8'
@@ -252,7 +252,7 @@ matrix:
         - TOXENV=py38-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp38"
       python: '3.8'
-      arch: arm64
+      arch: arm64-graviton2
     - env:
         - TOXENV=py38-cython-nocov
         - WHEEL_MANYLINUX="1 cp38"

@@ -64,7 +64,7 @@ matrix:
 {%- else %}{{ '' }}
       python: '{{ '{0[2]}.{0[3]}'.format(env) }}'
 {%- endif %}{{ '' }}
-      arch: {{ arch }}
+      arch: {% if arch == 'arm64' %}{{ arch }}-graviton2{% else %}{{ arch }}{% endif %}
 {%- endif %}{{ '' }}
 {%- endfor %}{{ '' }}
 {%- endfor %}{{ '' }}
