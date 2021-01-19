@@ -4,7 +4,7 @@ Configuration
 
 Default predicates and action kwargs defaults can be configured via a ``PYTHONHUNTERCONFIG`` environment variable.
 
-All the action kwargs:
+All the :ref:`actions <reference:actions>` kwargs:
 
 * ``klass``
 * ``stream``
