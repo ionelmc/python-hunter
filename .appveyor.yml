@@ -1,5 +1,6 @@
 version: '{branch}-{build}'
 build: off
+image: Visual Studio 2019
 environment:
   global:
     TWINE_USERNAME: ionel
@@ -55,48 +56,6 @@ environment:
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
       WINDOWS_SDK_VERSION: v7.0
-    - TOXENV: py35-pure-cover,codecov
-      TOXPYTHON: C:\Python35\python.exe
-      PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
-    - TOXENV: py35-pure-cover,codecov
-      TOXPYTHON: C:\Python35-x64\python.exe
-      PYTHON_HOME: C:\Python35-x64
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '64'
-    - TOXENV: py35-pure-nocov
-      TOXPYTHON: C:\Python35\python.exe
-      PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
-    - TOXENV: py35-pure-nocov
-      TOXPYTHON: C:\Python35-x64\python.exe
-      PYTHON_HOME: C:\Python35-x64
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '64'
-    - TOXENV: py35-cython-cover,codecov
-      TOXPYTHON: C:\Python35\python.exe
-      PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
-    - TOXENV: py35-cython-cover,codecov
-      TOXPYTHON: C:\Python35-x64\python.exe
-      PYTHON_HOME: C:\Python35-x64
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '64'
-    - TOXENV: py35-cython-nocov
-      TOXPYTHON: C:\Python35\python.exe
-      PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
-      WHEEL_PATH: .tox/dist
-    - TOXENV: py35-cython-nocov
-      TOXPYTHON: C:\Python35-x64\python.exe
-      PYTHON_HOME: C:\Python35-x64
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '64'
-      WHEEL_PATH: .tox/dist
     - TOXENV: py36-pure-cover,codecov
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
@@ -221,6 +180,48 @@ environment:
       TOXPYTHON: C:\Python38-x64\python.exe
       PYTHON_HOME: C:\Python38-x64
       PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '64'
+      WHEEL_PATH: .tox/dist
+    - TOXENV: py39-pure-cover,codecov
+      TOXPYTHON: C:\Python39\python.exe
+      PYTHON_HOME: C:\Python39
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '32'
+    - TOXENV: py39-pure-cover,codecov
+      TOXPYTHON: C:\Python39-x64\python.exe
+      PYTHON_HOME: C:\Python39-x64
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '64'
+    - TOXENV: py39-pure-nocov
+      TOXPYTHON: C:\Python39\python.exe
+      PYTHON_HOME: C:\Python39
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '32'
+    - TOXENV: py39-pure-nocov
+      TOXPYTHON: C:\Python39-x64\python.exe
+      PYTHON_HOME: C:\Python39-x64
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '64'
+    - TOXENV: py39-cython-cover,codecov
+      TOXPYTHON: C:\Python39\python.exe
+      PYTHON_HOME: C:\Python39
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '32'
+    - TOXENV: py39-cython-cover,codecov
+      TOXPYTHON: C:\Python39-x64\python.exe
+      PYTHON_HOME: C:\Python39-x64
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '64'
+    - TOXENV: py39-cython-nocov
+      TOXPYTHON: C:\Python39\python.exe
+      PYTHON_HOME: C:\Python39
+      PYTHON_VERSION: '3.9'
+      PYTHON_ARCH: '32'
+      WHEEL_PATH: .tox/dist
+    - TOXENV: py39-cython-nocov
+      TOXPYTHON: C:\Python39-x64\python.exe
+      PYTHON_HOME: C:\Python39-x64
+      PYTHON_VERSION: '3.9'
       PYTHON_ARCH: '64'
       WHEEL_PATH: .tox/dist
 init:

@@ -10,16 +10,18 @@ Overview
     * - docs
       - |docs|
     * - tests
-      - | |travis| |appveyor| |requires| |codecov|
+      - | |travis| |appveyor| |requires|
+        | |codecov|
     * - package
-      - | |version| |wheel| |supported-versions| |supported-implementations| |commits-since|
+      - | |version| |wheel| |supported-versions| |supported-implementations|
+        | |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
     :target: https://readthedocs.org/projects/python-hunter
     :alt: Documentation Status
 
-.. |travis| image:: https://api.travis-ci.org/ionelmc/python-hunter.svg?branch=master
+.. |travis| image:: https://api.travis-ci.com/ionelmc/python-hunter.svg?branch=master
     :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/ionelmc/python-hunter
+    :target: https://travis-ci.com/github/ionelmc/python-hunter
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/python-hunter?branch=master&svg=true
     :alt: AppVeyor Build Status
@@ -29,7 +31,7 @@ Overview
     :alt: Requirements Status
     :target: https://requires.io/github/ionelmc/python-hunter/requirements/?branch=master
 
-.. |codecov| image:: https://codecov.io/github/ionelmc/python-hunter/coverage.svg?branch=master
+.. |codecov| image:: https://codecov.io/gh/ionelmc/python-hunter/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage Status
     :target: https://codecov.io/github/ionelmc/python-hunter
 

@@ -89,42 +89,6 @@ matrix:
       python: '2.7'
       arch: amd64
     - env:
-        - TOXENV=py35-pure-cover,codecov
-      python: '3.5'
-      arch: arm64
-    - env:
-        - TOXENV=py35-pure-cover,codecov
-      python: '3.5'
-      arch: amd64
-    - env:
-        - TOXENV=py35-pure-nocov
-        - WHEEL_MANYLINUX="2014-arm cp35"
-      python: '3.5'
-      arch: arm64
-    - env:
-        - TOXENV=py35-pure-nocov
-        - WHEEL_MANYLINUX="1 cp35"
-      python: '3.5'
-      arch: amd64
-    - env:
-        - TOXENV=py35-cython-cover,codecov
-      python: '3.5'
-      arch: arm64
-    - env:
-        - TOXENV=py35-cython-cover,codecov
-      python: '3.5'
-      arch: amd64
-    - env:
-        - TOXENV=py35-cython-nocov
-        - WHEEL_MANYLINUX="2014-arm cp35"
-      python: '3.5'
-      arch: arm64
-    - env:
-        - TOXENV=py35-cython-nocov
-        - WHEEL_MANYLINUX="1 cp35"
-      python: '3.5'
-      arch: amd64
-    - env:
         - TOXENV=py36-pure-cover,codecov
       python: '3.6'
       arch: arm64
@@ -257,6 +221,42 @@ matrix:
         - TOXENV=py38-cython-nocov
         - WHEEL_MANYLINUX="1 cp38"
       python: '3.8'
+      arch: amd64
+    - env:
+        - TOXENV=py39-pure-cover,codecov
+      python: '3.9'
+      arch: arm64
+    - env:
+        - TOXENV=py39-pure-cover,codecov
+      python: '3.9'
+      arch: amd64
+    - env:
+        - TOXENV=py39-pure-nocov
+        - WHEEL_MANYLINUX="2014-arm cp39"
+      python: '3.9'
+      arch: arm64
+    - env:
+        - TOXENV=py39-pure-nocov
+        - WHEEL_MANYLINUX="1 cp39"
+      python: '3.9'
+      arch: amd64
+    - env:
+        - TOXENV=py39-cython-cover,codecov
+      python: '3.9'
+      arch: arm64
+    - env:
+        - TOXENV=py39-cython-cover,codecov
+      python: '3.9'
+      arch: amd64
+    - env:
+        - TOXENV=py39-cython-nocov
+        - WHEEL_MANYLINUX="2014-arm cp39"
+      python: '3.9'
+      arch: arm64
+    - env:
+        - TOXENV=py39-cython-nocov
+        - WHEEL_MANYLINUX="1 cp39"
+      python: '3.9'
       arch: amd64
     - env:
         - TOXENV=pypy-pure-cover,codecov
