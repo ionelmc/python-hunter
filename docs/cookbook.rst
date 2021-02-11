@@ -65,6 +65,25 @@ directory (assuming the filename is going to be a relative path):
 .. sourcecode:: shell
 
     PYTHONHUNTER='~Q(filename_startswith="/")' python setup.py build
+    
+Debugging a test
+================
+
+In tests it is convenient to ignore everything that is in ``stdlib`` and ``site-packages`` and start hunter right before
+the tested function.
+
+.. sourcecode:: python
+
+    from hunter import trace, Q
+    trace(Q(stdlib=False), ~Q(filename_contains='site-packages'))
+
+It also helps to save output into a file to compare different runs. An example below uses ``pytest`` with ``-k`` option
+to select and tun a test or tests with string ``some`` in name. The output is then piped to ``testout1`` file.
+
+.. sourcecode:: python
+
+    pytest test/test_simple.py -k some &> testout1
+
 
 Needle in the haystack
 ======================
