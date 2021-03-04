@@ -175,6 +175,8 @@ of tracing just inside the target function (eg: ``probe('module.func', local=Tru
 filtering to trim irrelevant events from around the function (like return from tracer setup, and the internals of the
 decorator), in addition to what :func:`hunter.trace` does. Not exactly lightweight...
 
+.. _silenced-exception-runtime-analysis:
+
 Silenced exception runtime analysis
 ===================================
 

@@ -199,7 +199,7 @@ Changelog
 * Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``), ``contains`` (``has``)
   and ``regex`` (``rx``).
 * Added a convenience :func:`hunter.wrap` decorator to start tracing around a function.
-* Added support for remote tracing (with two backends: `manhole <https://pypi.python.org/pypi/manhole>`__ and GDB) via
+* Added support for remote tracing (with two backends: `manhole <https://pypi.org/project/manhole/>`__ and GDB) via
   the ``hunter-trace`` bin. Note: **Windows is NOT SUPPORTED**.
 * Changed the default action to :class:`hunter.actions.CallPrinter`.
   You'll need to use ``action=CodePrinter`` if you want the old output.
@@ -223,8 +223,8 @@ Changelog
   (available for filtering with :func:`hunter.Q`).
 * Added :attr:`hunter.event.Event.threading_support` argument to :func:`hunter.trace`.
   It makes new threads be traced and changes action output to include thread name.
-* Added support for using `pdb++ <https://pypi.python.org/pypi/pdbpp>`_ in the :class:`hunter.actions.Debugger` action.
-* Added support for using `manhole <https://pypi.python.org/pypi/manhole>`_ via a new :class:`hunter.actions.Manhole`
+* Added support for using `pdb++ <https://pypi.org/project/pdbpp/>`_ in the :class:`hunter.actions.Debugger` action.
+* Added support for using `manhole <https://pypi.org/project/manhole/>`_ via a new :class:`hunter.actions.Manhole`
   action.
 * Made the :attr:`hunter.event.Event.handler` a public but readonly property.
 

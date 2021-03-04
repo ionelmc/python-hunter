@@ -10,6 +10,7 @@ Contents
    introduction
    remote
    configuration
+   filtering
    cookbook
    reference
    contributing
