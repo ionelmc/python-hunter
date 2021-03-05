@@ -26,10 +26,10 @@ A list of all the keyword filters that :obj:`hunter.trace` or :obj:`hunter.Q` ac
 
 You can append operators to the above filters. Note that some of of the filters won't work well with the `bool` or `int` types.
 
-* ``contains`` - works best with `str` as, for
+* ``contains`` - works best with `str`, for
   example ``module_contains='foobar'`` translates to ``'foobar' in event.module``
 * ``has`` - alias for ``contains``
-* ``endswith`` - works best with `str` as, for
+* ``endswith`` - works best with `str`, for
   example ``module_endswith='foobar'`` translates to ``event.module.endswith('foobar')``. You can also pass in a iterable,
   example ``module_endswith=('foo', 'bar')`` is `acceptable <https://docs.python.org/3/library/stdtypes.html#str.startswith>`_
 * ``ew`` - alias for ``endswith``
@@ -43,7 +43,7 @@ You can append operators to the above filters. Note that some of of the filters 
 * ``regex`` - works best with `str`, for
   example ``module_regex=r'(test|test.*)\b'`` translates to ``re.match(r'(test|test.*)\b', event.module)``
 * ``rx`` - alias for ``regex``
-* ``startswith`` - works best with `str` as, for
+* ``startswith`` - works best with `str`, for
   example ``module_startswith='foobar'`` translates to ``event.module.startswith('foobar')``. You can also pass in a iterable,
   example ``module_startswith=('foo', 'bar')`` is `acceptable <https://docs.python.org/3/library/stdtypes.html#str.startswith>`_
 * ``sw`` - alias for ``startswith``
