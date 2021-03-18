@@ -11,6 +11,7 @@ env:
   global:
     - LD_PRELOAD=libSegFault.so
     - SEGFAULT_SIGNALS=all
+    - LANG=en_US.UTF-8
     - PYTEST_ADDOPTS=--benchmark-disable
     - TWINE_USERNAME=ionel
 matrix:

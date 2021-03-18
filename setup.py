@@ -163,10 +163,10 @@ setup(
         ':platform_system != "Windows"': ['manhole >= 1.5'],
     },
     setup_requires=[
-        'setuptools_scm>=3.3.1,!=4.0.0',
+        'setuptools_scm>=3.3.1,!=4.0.0,<6.0',
         'cython',
     ] if Cython else [
-        'setuptools_scm>=3.3.1,!=4.0.0',
+        'setuptools_scm>=3.3.1,!=4.0.0,<6.0',
     ],
     entry_points={
         'console_scripts': [

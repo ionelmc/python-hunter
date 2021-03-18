@@ -28,9 +28,6 @@ environment:
 {% if "cython-nocov" in env %}
       WHEEL_PATH: .tox/dist
 {% endif %}
-{% if env.startswith('py2') %}
-      WINDOWS_SDK_VERSION: v7.0
-{% endif %}
 {% endif %}{% endfor %}
 init:
   - ps: echo $env:TOXENV
