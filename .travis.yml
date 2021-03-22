@@ -45,10 +45,12 @@ matrix:
         - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py27-pure-cover,codecov
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: arm64
     - env:
         - TOXENV=py27-pure-cover,codecov
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: amd64
     - os: osx
@@ -61,6 +63,7 @@ matrix:
     - env:
         - TOXENV=py27-pure-nocov
         - WHEEL_MANYLINUX="1 cp27"
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: amd64
     - os: osx
@@ -71,10 +74,12 @@ matrix:
         - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py27-cython-cover,codecov
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: arm64
     - env:
         - TOXENV=py27-cython-cover,codecov
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: amd64
     - os: osx
@@ -87,6 +92,7 @@ matrix:
     - env:
         - TOXENV=py27-cython-nocov
         - WHEEL_MANYLINUX="1 cp27"
+        - TOXPYTHON=python2.7
       python: '2.7'
       arch: amd64
     - env:
