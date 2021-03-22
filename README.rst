@@ -457,3 +457,14 @@ recording.
 
 In other words, filtering events is the main selling point of Hunter - it's fast (cython implementation) and the query API is
 flexible enough.
+
+Projects using Hunter
+=====================
+
+Noteworthy usages or Hunter (submit a PR with your project if you built a tool that relies on hunter):
+
+* [Crunch-io/diagnose](https://github.com/Crunch-io/diagnose) - a runtime instrumentation library
+* [talwrii/huntrace](https://github.com/talwrii/huntrace) - an alternative cli (similar to ltrace)
+* [anki-code/xunter](https://github.com/anki-code/xunter) - a profiling tool made specifically for the xonsh shell
+
+More projects using it at https://github.com/ionelmc/python-hunter/network/dependents
