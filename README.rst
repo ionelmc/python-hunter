@@ -16,7 +16,7 @@ Overview
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
-    :target: https://readthedocs.org/projects/python-hunter
+    :target: https://python-hunter.readthedocs.io/
     :alt: Documentation Status
 
 .. |travis| image:: https://api.travis-ci.com/ionelmc/python-hunter.svg?branch=master
