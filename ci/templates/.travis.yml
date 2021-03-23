@@ -87,9 +87,9 @@ before_install:
 install:
   - python -mpip install --progress-bar=off twine tox-wheel -rci/requirements.txt
   - virtualenv --version
-  - easy_install --version
   - pip --version
   - tox --version
+  - pip list --format=freeze
 script:
   - |
     (
