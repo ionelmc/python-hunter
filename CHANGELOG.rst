@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.3.2 (2021-03-25)
+------------------
+
+* Changed CI to build Python 3.9 wheels. Python 3.5 no longer tested and wheels no longer built to keep things simple.
+* Documentation improvements.
+
 3.3.1 (2020-10-24)
 ------------------
 
