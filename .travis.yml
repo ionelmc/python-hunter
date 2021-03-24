@@ -38,7 +38,7 @@ matrix:
       env:
         - TOXENV=docs
     - os: osx
-      osx_image: xcode11
+      osx_image: xcode12.2
       language: generic
       env:
         - TOXENV=py27-pure-cover
@@ -54,7 +54,7 @@ matrix:
       python: '2.7'
       arch: amd64
     - os: osx
-      osx_image: xcode11
+      osx_image: xcode12.2
       language: generic
       env:
         - TOXENV=py27-pure-nocov
@@ -67,7 +67,7 @@ matrix:
       python: '2.7'
       arch: amd64
     - os: osx
-      osx_image: xcode11
+      osx_image: xcode12.2
       language: generic
       env:
         - TOXENV=py27-cython-cover
@@ -83,7 +83,7 @@ matrix:
       python: '2.7'
       arch: amd64
     - os: osx
-      osx_image: xcode11
+      osx_image: xcode12.2
       language: generic
       env:
         - TOXENV=py27-cython-nocov
@@ -167,12 +167,6 @@ matrix:
         - WHEEL_MANYLINUX="1 cp37"
       python: '3.7'
       arch: amd64
-    - os: osx
-      osx_image: xcode11
-      language: generic
-      env:
-        - TOXENV=py38-pure-cover
-        - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py38-pure-cover,codecov
       python: '3.8'
@@ -181,13 +175,6 @@ matrix:
         - TOXENV=py38-pure-cover,codecov
       python: '3.8'
       arch: amd64
-    - os: osx
-      osx_image: xcode11
-      language: generic
-      env:
-        - TOXENV=py38-pure-nocov
-        - SETUPPY_CFLAGS=
-        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py38-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp38"
@@ -198,12 +185,6 @@ matrix:
         - WHEEL_MANYLINUX="1 cp38"
       python: '3.8'
       arch: amd64
-    - os: osx
-      osx_image: xcode11
-      language: generic
-      env:
-        - TOXENV=py38-cython-cover
-        - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py38-cython-cover,codecov
       python: '3.8'
@@ -212,13 +193,6 @@ matrix:
         - TOXENV=py38-cython-cover,codecov
       python: '3.8'
       arch: amd64
-    - os: osx
-      osx_image: xcode11
-      language: generic
-      env:
-        - TOXENV=py38-cython-nocov
-        - SETUPPY_CFLAGS=
-        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py38-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp38"
@@ -229,6 +203,12 @@ matrix:
         - WHEEL_MANYLINUX="1 cp38"
       python: '3.8'
       arch: amd64
+    - os: osx
+      osx_image: xcode12.2
+      language: generic
+      env:
+        - TOXENV=py39-pure-cover
+        - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py39-pure-cover,codecov
       python: '3.9'
@@ -237,6 +217,13 @@ matrix:
         - TOXENV=py39-pure-cover,codecov
       python: '3.9'
       arch: amd64
+    - os: osx
+      osx_image: xcode12.2
+      language: generic
+      env:
+        - TOXENV=py39-pure-nocov
+        - SETUPPY_CFLAGS=
+        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py39-pure-nocov
         - WHEEL_MANYLINUX="2014-arm cp39"
@@ -247,6 +234,12 @@ matrix:
         - WHEEL_MANYLINUX="1 cp39"
       python: '3.9'
       arch: amd64
+    - os: osx
+      osx_image: xcode12.2
+      language: generic
+      env:
+        - TOXENV=py39-cython-cover
+        - SETUPPY_CFLAGS=
     - env:
         - TOXENV=py39-cython-cover,codecov
       python: '3.9'
@@ -255,6 +248,13 @@ matrix:
         - TOXENV=py39-cython-cover,codecov
       python: '3.9'
       arch: amd64
+    - os: osx
+      osx_image: xcode12.2
+      language: generic
+      env:
+        - TOXENV=py39-cython-nocov
+        - SETUPPY_CFLAGS=
+        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py39-cython-nocov
         - WHEEL_MANYLINUX="2014-arm cp39"
