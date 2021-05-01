@@ -7,6 +7,9 @@ import sys
 from pprint import pprint
 
 import pytest
+from process_tests import TestProcess
+from process_tests import dump_on_error
+from process_tests import wait_for_strings
 
 from hunter import Backlog
 from hunter import CallPrinter
@@ -22,6 +25,7 @@ from hunter import When
 from hunter import trace
 from hunter import wrap
 
+from utils import TIMEOUT
 from utils import DebugCallPrinter
 
 try:
@@ -763,3 +767,16 @@ def test_backlog_subprocess(LineMatcher):
         "depth=5 calls=16  *sample7args.py:34    line                     return i  # five",
         "depth=4 calls=16  *sample7args.py:34    return                <= five: 0",
     ])
+
+
+@pytest.mark.parametrize('pdb', ['pdb', 'ipdb'])
+@pytest.mark.parametrize('mode', ['postmortem', 'settrace', 'debugger'])
+def test_pdb(LineMatcher, pdb, mode):
+    with TestProcess('python', '-msamplepdb', pdb, mode, stdin=subprocess.PIPE) as target, dump_on_error(target.read):
+        wait_for_strings(target.read, TIMEOUT, '-> ')
+        target.proc.stdin.write('c\n')
+    output = target.read()
+    assert 'TypeError' not in output
+    assert "'NoneType' object is not callable" not in output
+    assert 'Disabling tracer because handler' not in output
+    assert 'Traceback (most recent call last)' not in output

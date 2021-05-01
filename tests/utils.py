@@ -1,5 +1,8 @@
+import os
+
 from hunter import CallPrinter
 
+TIMEOUT = int(os.getenv('HUNTER_TEST_TIMEOUT', 10))
 
 class DebugCallPrinter(CallPrinter):
     def __init__(self, suffix='', **kwargs):

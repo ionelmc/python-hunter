@@ -818,7 +818,7 @@ static const char *__pyx_f[] = {
   "stringsource",
   "src/hunter/vendor/_cymem/cymem.pyx",
   "src/hunter/vendor/_cymem/cymem.pxd",
-  ".tox/cythonize/lib64/python3.8/site-packages/Cython/Includes/cpython/type.pxd",
+  ".tox/cythonize/lib64/python3.9/site-packages/Cython/Includes/cpython/type.pxd",
 };
 
 /*--- Type declarations ---*/

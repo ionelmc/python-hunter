@@ -1,5 +1,4 @@
 import distutils.spawn
-import os
 import platform
 import signal
 import sys
@@ -9,7 +8,7 @@ from process_tests import TestProcess
 from process_tests import dump_on_error
 from process_tests import wait_for_strings
 
-TIMEOUT = int(os.getenv('HUNTER_TEST_TIMEOUT', 10))
+from utils import TIMEOUT
 
 platform, distutils.spawn
 

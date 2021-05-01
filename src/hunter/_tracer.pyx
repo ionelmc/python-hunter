@@ -32,6 +32,14 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
 
     handler = self.handler
 
+    if handler is None:  # the tracer was stopped
+        # make sure it's uninstalled even for running threads
+        if self.profiling_mode:
+            PyEval_SetProfile(NULL, NULL)
+        else:
+            PyEval_SetTrace(NULL, NULL)
+        return 0
+
     if kind == 3 and self.depth > 0:
         self.depth -= 1
 

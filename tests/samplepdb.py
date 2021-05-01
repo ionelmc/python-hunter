@@ -9,7 +9,7 @@ def on_postmortem():
     try:
         raise Exception("BOOM!")
     except Exception:
-        pdb.pm()
+        pdb.post_mortem()
 
 
 def on_settrace():
@@ -38,14 +38,16 @@ def on_debugger():
 if __name__ == '__main__':
     if sys.argv[1] == 'pdb':
         import pdb
+        from pdb import Pdb
     elif sys.argv[1] == 'ipdb':
         import ipdb as pdb
+        Pdb = lambda: pdb
 
     if sys.argv[2] == 'debugger':
-        with hunter.trace(source__has='Debugme!', action=hunter.Debugger(lambda: pdb)):
+        with hunter.trace(source__has='Debugme!', action=hunter.Debugger(Pdb)):
             on_debugger()
     else:
-        with hunter.trace():
+        with hunter.trace(module='samplepdb'):
             if sys.argv[2] == 'postmortem':
                 on_postmortem()
             elif sys.argv[2] == 'settrace':
