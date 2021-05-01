@@ -1,6 +1,16 @@
 version: '{branch}-{build}'
 build: off
-image: Visual Studio 2019
+image:
+  - Visual Studio 2019
+  - Visual Studio 2015
+matrix:
+  exclude:
+    - image: Visual Studio 2019
+      PYTHON_VERSION: 2.7
+{% for version in ['3.6', '3.7', '3.8', '3.9'] %}
+    - image: Visual Studio 2015
+      PYTHON_VERSION: '{{ version }}'
+{% endfor %}
 environment:
   global:
     TWINE_USERNAME: ionel

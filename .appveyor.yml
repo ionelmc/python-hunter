@@ -1,6 +1,20 @@
 version: '{branch}-{build}'
 build: off
-image: Visual Studio 2019
+image:
+  - Visual Studio 2019
+  - Visual Studio 2015
+matrix:
+  exclude:
+    - image: Visual Studio 2019
+      PYTHON_VERSION: 2.7
+    - image: Visual Studio 2015
+      PYTHON_VERSION: '3.6'
+    - image: Visual Studio 2015
+      PYTHON_VERSION: '3.7'
+    - image: Visual Studio 2015
+      PYTHON_VERSION: '3.8'
+    - image: Visual Studio 2015
+      PYTHON_VERSION: '3.9'
 environment:
   global:
     TWINE_USERNAME: ionel
