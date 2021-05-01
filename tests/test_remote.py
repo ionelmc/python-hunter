@@ -16,7 +16,7 @@ platform, distutils.spawn
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 def test_manhole():
-    with TestProcess('python', '-mtarget', 'manhole') as target, dump_on_error(target.read):
+    with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
         wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
 
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
@@ -32,7 +32,7 @@ def test_manhole():
 
 @pytest.mark.skipif('platform.system() == "Windows"')
 def test_manhole_clean_exit():
-    with TestProcess('python', '-mtarget', 'manhole') as target, dump_on_error(target.read):
+    with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
         wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
 
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
@@ -57,7 +57,7 @@ def test_manhole_clean_exit():
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
 @pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb():
-    with TestProcess('python', '-mtarget', 'manhole') as target, dump_on_error(target.read):
+    with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
         with TestProcess('hunter-trace', '-p', str(target.proc.pid),
                          '--gdb', 'stdlib=False') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
@@ -76,7 +76,7 @@ def test_gdb():
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
 @pytest.mark.skipif('not distutils.spawn.find_executable("gdb")')
 def test_gdb_clean_exit():
-    with TestProcess(sys.executable, '-mtarget', 'manhole') as target, dump_on_error(target.read):
+    with TestProcess(sys.executable, '-msamplemanhole') as target, dump_on_error(target.read):
         with TestProcess('hunter-trace', '-p', str(target.proc.pid),
                          'stdlib=False', '--gdb') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
