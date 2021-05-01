@@ -3,14 +3,9 @@ from __future__ import absolute_import
 
 from collections import deque
 from inspect import isclass
-from itertools import chain
 from re import compile as re_compile
 
 cimport cython
-from cpython cimport bool
-from cpython.object cimport Py_EQ
-from cpython.object cimport Py_NE
-from cpython.object cimport PyObject_RichCompare
 
 from ._event cimport Event
 from ._event cimport fast_clone

@@ -8,8 +8,6 @@ from cpython.ref cimport Py_CLEAR
 from cpython.ref cimport Py_INCREF
 
 from ._event cimport Event
-from ._predicates cimport From
-from ._predicates cimport When
 from ._predicates cimport fast_call
 
 import hunter
