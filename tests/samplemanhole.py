@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 
 
@@ -9,10 +8,9 @@ def stuff():
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == 'manhole':
-        from hunter import remote
+    from hunter import remote
 
-        remote.install()
+    remote.install()
 
     while True:
         stuff()
