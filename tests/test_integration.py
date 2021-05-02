@@ -772,7 +772,7 @@ def test_backlog_subprocess(LineMatcher):
 @pytest.mark.parametrize('pdb', ['pdb', 'ipdb'])
 @pytest.mark.parametrize('mode', ['postmortem', 'settrace', 'debugger'])
 def test_pdb(LineMatcher, pdb, mode):
-    with TestProcess('python', '-msamplepdb', pdb, mode, stdin=subprocess.PIPE) as target, dump_on_error(target.read):
+    with TestProcess(sys.executable, '-msamplepdb', pdb, mode, bufsize=0, stdin=subprocess.PIPE) as target, dump_on_error(target.read):
         wait_for_strings(target.read, TIMEOUT, '-> ')
         target.proc.stdin.write('c\n')
     output = target.read()
