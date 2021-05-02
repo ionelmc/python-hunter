@@ -1,8 +1,8 @@
 version: '{branch}-{build}'
 build: off
 image:
-  - Visual Studio 2019
   - Visual Studio 2015
+  - Visual Studio 2019
 matrix:
   exclude:
     - image: Visual Studio 2019
@@ -65,7 +65,7 @@ test_script:
         if ($LastExitCode -eq 0) {
           $ErrorActionPreference = "Stop"
           iex "$Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl"
-          iex "$Env:PYTHON_HOME\Scripts\twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
+          iex "$Env:PYTHON_HOME\Scripts\twine upload --verbose --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
         }
       } else {
         cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox

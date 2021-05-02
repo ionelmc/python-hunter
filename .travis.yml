@@ -338,7 +338,7 @@ script:
     fi
     if [[ -n ${WHEEL_PATH:-} ]]; then
       twine check $WHEEL_PATH/*.whl
-      twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*.whl
+      twine upload --verbose --repository-url https://test.pypi.org/legacy/ --skip-existing $WHEEL_PATH/*.whl
     fi
     )
 after_failure:
