@@ -2,6 +2,18 @@
 Changelog
 =========
 
+
+3.3.3 (2021-05-04)
+------------------
+
+* Fixed tracer still being active for other threads after it was stopped.
+
+  Python unfortunatelly only allows removing the trace function for the current thread - 
+  now :obj:`~hunter.tracer.Tracer` will uninstall itself if it's marked as stopped.
+
+  This fixes bogus errors that appear when using ``ipdb`` with
+  the :class:`hunter.actions.Debugger` action while thread support is enabled (the default).
+
 3.3.2 (2021-03-25)
 ------------------
 
