@@ -256,14 +256,14 @@ test_script:
   - ps: |
       Set-PSDebug -Trace 1
       if ($Env:WHEEL_PATH) {
-        cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox --wheel
+        $Env:PYTHON_HOME\Scripts\tox --wheel
         if ($LastExitCode -eq 0) {
           $ErrorActionPreference = "Stop"
           iex "$Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl"
           iex "$Env:PYTHON_HOME\Scripts\twine upload --verbose --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
         }
       } else {
-        cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd $Env:PYTHON_HOME\Scripts\tox
+        $Env:PYTHON_HOME\Scripts\tox
       }
       $result = $LastExitCode
       if ($result -ne 0) {
