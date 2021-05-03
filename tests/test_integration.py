@@ -769,6 +769,7 @@ def test_backlog_subprocess(LineMatcher):
     ])
 
 
+@pytest.mark.skipif(sys.platform == 'win32' and sys.version_info[0] == 2, reason='broken on windows 2.7')
 @pytest.mark.parametrize('pdb', ['pdb', 'ipdb'])
 @pytest.mark.parametrize('mode', ['postmortem', 'settrace', 'debugger'])
 def test_pdb(LineMatcher, pdb, mode):
