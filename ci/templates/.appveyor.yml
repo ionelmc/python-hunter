@@ -61,14 +61,14 @@ test_script:
   - ps: |
       Set-PSDebug -Trace 1
       if ($Env:WHEEL_PATH) {
-        $Env:PYTHON_HOME\Scripts\tox --wheel
+        iex "$Env:PYTHON_HOME\Scripts\tox --wheel"
         if ($LastExitCode -eq 0) {
           $ErrorActionPreference = "Stop"
           iex "$Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl"
           iex "$Env:PYTHON_HOME\Scripts\twine upload --verbose --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
         }
       } else {
-        $Env:PYTHON_HOME\Scripts\tox
+        iex "$Env:PYTHON_HOME\Scripts\tox"
       }
       $result = $LastExitCode
       if ($result -ne 0) {
