@@ -266,6 +266,38 @@ matrix:
       python: '3.9'
       arch: amd64
     - env:
+        - TOXENV=py310-pure-cover,codecov
+      python: '3.10-dev'
+      arch: arm64
+    - env:
+        - TOXENV=py310-pure-cover,codecov
+      python: '3.10-dev'
+      arch: amd64
+    - env:
+        - TOXENV=py310-pure-nocov
+      python: '3.10-dev'
+      arch: arm64
+    - env:
+        - TOXENV=py310-pure-nocov
+      python: '3.10-dev'
+      arch: amd64
+    - env:
+        - TOXENV=py310-cython-cover,codecov
+      python: '3.10-dev'
+      arch: arm64
+    - env:
+        - TOXENV=py310-cython-cover,codecov
+      python: '3.10-dev'
+      arch: amd64
+    - env:
+        - TOXENV=py310-cython-nocov
+      python: '3.10-dev'
+      arch: arm64
+    - env:
+        - TOXENV=py310-cython-nocov
+      python: '3.10-dev'
+      arch: amd64
+    - env:
         - TOXENV=pypy-pure-cover,codecov
         - TOXPYTHON=pypy
       python: 'pypy'
