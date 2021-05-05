@@ -2,14 +2,23 @@ import os
 import site
 import stat
 import sys
-from distutils.sysconfig import get_python_lib
+import sysconfig
 
 SITE_PACKAGES_PATHS = set()
+for scheme in sysconfig.get_scheme_names():
+    for name in ['platlib', 'purelib']:
+        try:
+            SITE_PACKAGES_PATHS.add(sysconfig.get_path(name, scheme))
+        except KeyError:
+            pass
 if hasattr(site, 'getsitepackages'):
     SITE_PACKAGES_PATHS.update(site.getsitepackages())
 if hasattr(site, 'getusersitepackages'):
     SITE_PACKAGES_PATHS.add(site.getusersitepackages())
-SITE_PACKAGES_PATHS.add(get_python_lib())
+if sys.version_info >= (3, 10):
+    from distutils.sysconfig import get_python_lib
+
+    SITE_PACKAGES_PATHS.add(get_python_lib())
 SITE_PACKAGES_PATHS.add(os.path.dirname(os.path.dirname(__file__)))
 SITE_PACKAGES_PATHS = tuple(SITE_PACKAGES_PATHS)
 
