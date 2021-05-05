@@ -15,7 +15,7 @@ if hasattr(site, 'getsitepackages'):
     SITE_PACKAGES_PATHS.update(site.getsitepackages())
 if hasattr(site, 'getusersitepackages'):
     SITE_PACKAGES_PATHS.add(site.getusersitepackages())
-if sys.version_info <= (3, 10):
+if sys.version_info < (3, 10):
     from distutils.sysconfig import get_python_lib
 
     SITE_PACKAGES_PATHS.add(get_python_lib())
