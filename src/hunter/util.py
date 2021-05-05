@@ -41,7 +41,7 @@ else:
 try:
     from types import InstanceType
 except ImportError:
-    InstanceType = object()
+    InstanceType = type(object())
 
 try:
     from re import Pattern
