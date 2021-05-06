@@ -85,7 +85,7 @@ def test_pth_sample2(LineMatcher):
     )
     lm = LineMatcher(output.decode('utf-8').splitlines())
     lm.fnmatch_lines([
-        '*tests*sample2.py:* call      if __name__ == "__main__":  #*',
+        '*tests*sample2.py:* call      *',
         '*tests*sample2.py:* line      if __name__ == "__main__":  #*',
         '*tests*sample2.py:* line          import functools',
         '*tests*sample2.py:* line          def deco(opt):',
