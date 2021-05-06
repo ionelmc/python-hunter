@@ -177,10 +177,10 @@ def test_threading_support(LineMatcher):
     assert 'MainThread' in names
     assert any(name.startswith('Thread-') for name in names)
     lm.fnmatch_lines_random([
-        'Thread-*   *test_tracer.py:*   call              def foo(a=1):',
-        'Thread-*   *test_tracer.py:*   call      [[]a => 1[]]',
-        'Thread-*   *test_tracer.py:*   call         => foo(a=1)',
-        'Thread-*   *test_tracer.py:*   call      [[]a => 1[]]',
+        'Thread-* *test_tracer.py:*   call              def foo(a=1):',
+        'Thread-* *test_tracer.py:*   call      [[]a => 1[]]',
+        'Thread-* *test_tracer.py:*   call         => foo(a=1)',
+        'Thread-* *test_tracer.py:*   call      [[]a => 1[]]',
         'MainThread *test_tracer.py:*   call              def foo(a=1):',
         'MainThread *test_tracer.py:*   call      [[]a => 1[]]',
         'MainThread *test_tracer.py:*   call         => foo(a=1)',
@@ -221,10 +221,10 @@ def test_thread_filtering(LineMatcher, query):
     assert 'MainThread' not in names
     pprint(lm.lines)
     lm.fnmatch_lines_random([
-        'Thread-*   *test_tracer.py:*   call              def foo(a=1):',
-        'Thread-*   *test_tracer.py:*   call      [[]a => 1[]]',
-        'Thread-*   *test_tracer.py:*   call         => foo(a=1)',
-        'Thread-*   *test_tracer.py:*   call      [[]a => 1[]]',
+        'Thread-* *test_tracer.py:*   call              def foo(a=1):',
+        'Thread-* *test_tracer.py:*   call      [[]a => 1[]]',
+        'Thread-* *test_tracer.py:*   call         => foo(a=1)',
+        'Thread-* *test_tracer.py:*   call      [[]a => 1[]]',
     ])
 
 
