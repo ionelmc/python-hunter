@@ -53,7 +53,7 @@ Overview
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/python-hunter/v3.3.3.svg
     :alt: Commits since latest release
-    :target: https://github.com/ionelmc/python-hunter/compare/v3.3.1...master
+    :target: https://github.com/ionelmc/python-hunter/compare/v3.3.3...master
 
 
 
