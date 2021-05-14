@@ -8,7 +8,7 @@ Changelog
 
 * Fixed tracer still being active for other threads after it was stopped.
 
-  Python unfortunatelly only allows removing the trace function for the current thread - 
+  Python unfortunately only allows removing the trace function for the current thread -
   now :obj:`~hunter.tracer.Tracer` will uninstall itself if it's marked as stopped.
 
   This fixes bogus errors that appear when using ``ipdb`` with
@@ -28,7 +28,7 @@ Changelog
 3.3.0 (2020-10-23)
 ------------------
 
-* Fixed handling so that :any:`hunter.event.Event.module` is always the ``"?"`` string instead of `None`.
+* Fixed handling so that :any:`hunter.event.Event.module` is always the ``"?"`` string instead of ``None``.
   Previously it was ``None`` when tracing particularly broken code and broke various predicates.
 * Similarly :any:`hunter.event.Event.filename` is now ``"?"`` if there's no filename available.
 * Building on the previous changes the actions have simpler code for displaying missing module/filenames.
@@ -212,7 +212,7 @@ Changelog
 2.0.0 (2017-09-02)
 ------------------
 
-* Added the :attr:`hunter.event.Event.count` and :attr:`hunter.event.Event.calls`` attributes.
+* Added the :attr:`hunter.event.Event.count` and :attr:`hunter.event.Event.calls` attributes.
 * Added the ``lt``/``lte``/``gt``/``gte`` lookups.
 * Added convenience aliases for ``startswith`` (``sw``), ``endswith`` (``ew``), ``contains`` (``has``)
   and ``regex`` (``rx``).
@@ -250,7 +250,7 @@ Changelog
 1.2.2 (2016-01-28)
 ------------------
 
-* Fix broken import. Require `fields>=4.0`.
+* Fix broken import. Require ``fields>=4.0``.
 * Simplify a string check in Cython code.
 
 1.2.1 (2016-01-27)
@@ -304,7 +304,7 @@ Changelog
 
 * Removed the ``merge`` option. Now when you call ``hunter.trace(...)`` multiple times only the last one is active.
   **BACKWARDS INCOMPATIBLE**
-* Remove the `previous_tracer handling`. Now when you call ``hunter.trace(...)`` the previous tracer (whatever was in
+* Remove the ``previous_tracer`` handling. Now when you call ``hunter.trace(...)`` the previous tracer (whatever was in
   ``sys.gettrace()``) is disabled and restored when ``hunter.stop()`` is called. **BACKWARDS INCOMPATIBLE**
 * Fixed ``CodePrinter`` to show module name if it fails to get any sources.
 
@@ -316,7 +316,7 @@ Changelog
 * Allowed setting the `stream` to a file name (option on :class:`hunter.actions.VarsPrinter` and
   :class:`hunter.actions.CodePrinter`).
 * Bumped up the filename alignment to 40 cols.
-* If not merging then `self` is not kept as a previous tracer anymore.
+* If not merging then ``self`` is not kept as a previous tracer anymore.
   Closes `#16 <https://github.com/ionelmc/python-hunter/issues/16>`_.
 * Fixed handling in VarsPrinter: properly print eval errors and don't try to show anything if there's an AttributeError.
   Closes `#18 <https://github.com/ionelmc/python-hunter/issues/18>`_.
