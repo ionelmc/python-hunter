@@ -1,0 +1,86 @@
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: {{ '${{ matrix.os }}' }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+{% for env in tox_environments %}
+{% set python %}
+  {%- if env.startswith('pypy3') -%}
+    pypy-3.7
+  {%- elif env.startswith('pypy') -%}
+    pypy-2.7
+  {%- elif env.startswith('py310') %}
+    3.10-dev
+  {%- else -%}
+    {{ env[2] }}.{{ env[3] }}
+  {%- endif -%}
+{% endset %}
+{% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
+{% for os in ['linux', 'windows', 'macos'] %}
+{% for arch in ['x64', 'x86', 'native', 'aarch64'] %}
+{% for wheel in [cpython, False] %}
+{%- if
+   env.endswith('-cover') and not wheel
+   or
+   not env.startswith('pypy') and (
+     os == 'linux' and arch in 'native aarch64' or
+     os == 'windows' and arch in 'x64 x86' or
+     os == 'macos' and arch in 'native'
+   )
+ %}
+          - name: '{{ os }}/{{ arch }}:{{ env }}'
+            python: '{{ python }}'
+            tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
+            architecture: '{{ arch }}'
+{% if wheel %}
+            wheel: '{{ wheel }}'
+{% else %}
+            wheel: false
+{% endif %}
+            os: '{{ os }}-latest'
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+    steps:
+    - uses: docker/setup-qemu-action@v1
+      if: 'matrix.arch == "aarch64"'
+      with:
+        platforms: arm64
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v2
+      with:
+        python-version: {{ '${{ matrix.python }} ' }}
+    - name: install dependencies
+      run: |
+        python -mpip install --progress-bar=off twine tox-wheel cibuildwheel -rci/requirements.txt
+        virtualenv --version
+        pip --version
+        tox --version
+        pip list --format=freeze
+    - name: build wheel
+      if: 'matrix.wheel'
+      run: cibuildwheel
+      env:
+        CIBW_ARCHS: '{{ '${{ matrix.arch }}' }}'
+        CIBW_BUILD: '{{ '${{ matrix.wheel }}' }}'
+    - name: test with manylinux wheel
+      if: 'matrix.wheel'
+      run: tox --installpkg wheelhouse/*.whl -v
+    - name: test with wheel
+      if: '!matrix.wheel'
+      run: tox -v
+    - name: check wheel
+      if: 'matrix.wheel_path'
+      run: '{{ 'twine check ${{ matrix.wheel_path }}/*.whl' }}'
+    - uses: actions/upload-artifact@v2
+      if: 'matrix.wheel'
+      with:
+        path: './wheelhouse/*.whl'
