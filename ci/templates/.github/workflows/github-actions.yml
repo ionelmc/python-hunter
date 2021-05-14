@@ -7,6 +7,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: 'check'
+            python: '3.9'
+            tox_env: 'check'
+          - name: 'docs'
+            python: '3.9'
+            tox_env: 'docs'
 {% for env in tox_environments %}
 {% set python %}
   {%- if env.startswith('pypy3') -%}
@@ -19,37 +25,36 @@ jobs:
     {{ env[2] }}.{{ env[3] }}
   {%- endif -%}
 {% endset %}
-{% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
-{% for os in ['linux', 'windows', 'macos'] %}
-{% for arch in ['x64', 'x86', 'native', 'aarch64'] %}
-{% for wheel in [cpython, False] %}
-{%- if
-   env.endswith('-cover') and not wheel
-   or
-   not env.startswith('pypy') and (
-     os == 'linux' and arch in 'native aarch64' or
-     os == 'windows' and arch in 'x64 x86' or
-     os == 'macos' and arch in 'native'
-   )
- %}
-          - name: '{{ os }}/{{ arch }}:{{ env }}'
+{% set cpython %}
+  {%- if env.startswith('py27') -%}
+    cp{{ env[2] }}{{ env[3] }}-cp27mu*
+  {%- else -%}
+    cp{{ env[2] }}{{ env[3] }}-*
+  {%- endif -%}
+{% endset %}
+{% for os, arch, platform in [
+    ['linux',   'x64', 'native'],
+    ['linux',   'x64', 'aarch64'],
+    ['windows', 'x64', 'native'],
+    ['windows', 'x86', 'native'],
+    ['macos',   'x64', 'native'],
+] %}
+          - name: '{{ os }}/{{ arch }}/{{ platform }}:{{ env }}'
             python: '{{ python }}'
+            python_arch: '{{ arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
-            architecture: '{{ arch }}'
-{% if wheel %}
-            wheel: '{{ wheel }}'
+            cibw_arch: '{{ platform }}'
+{% if env.endswith('cover') or env.startswith('pypy') %}
+            cibw_build: false
 {% else %}
-            wheel: false
+            cibw_build: '{{ cpython }}'
 {% endif %}
             os: '{{ os }}-latest'
-{% endif %}
-{% endfor %}
-{% endfor %}
 {% endfor %}
 {% endfor %}
     steps:
     - uses: docker/setup-qemu-action@v1
-      if: 'matrix.arch == "aarch64"'
+      if: "matrix.platform == 'aarch64'"
       with:
         platforms: arm64
     - uses: actions/checkout@v2
@@ -57,30 +62,35 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-python@v2
       with:
-        python-version: {{ '${{ matrix.python }} ' }}
+        python-version: {{ '${{ matrix.python }}' }}
+        architecture: {{ '${{ matrix.python_arch }}' }}
     - name: install dependencies
       run: |
-        python -mpip install --progress-bar=off twine tox-wheel cibuildwheel -rci/requirements.txt
+        python -mpip install --progress-bar=off twine tox cibuildwheel -rci/requirements.txt
         virtualenv --version
         pip --version
         tox --version
         pip list --format=freeze
-    - name: build wheel
-      if: 'matrix.wheel'
+
+    - name: cibw build and test
+      if: 'matrix.cibw_build'
       run: cibuildwheel
       env:
-        CIBW_ARCHS: '{{ '${{ matrix.arch }}' }}'
-        CIBW_BUILD: '{{ '${{ matrix.wheel }}' }}'
-    - name: test with manylinux wheel
-      if: 'matrix.wheel'
-      run: tox --installpkg wheelhouse/*.whl -v
-    - name: test with wheel
-      if: '!matrix.wheel'
-      run: tox -v
+        CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
+        CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
+        CIBW_TEST_REQUIRES: 'tox tox-direct'
+        CIBW_TEST_COMMAND: 'cd {project}; tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v'
+
+    - name: regular build and test
+      if: '!matrix.cibw_build'
+      run: tox -e {{ '${{ matrix.tox_env }}' }} -v
+
     - name: check wheel
-      if: 'matrix.wheel_path'
+      if: 'matrix.cibw_build'
       run: '{{ 'twine check ${{ matrix.wheel_path }}/*.whl' }}'
-    - uses: actions/upload-artifact@v2
-      if: 'matrix.wheel'
+    - name: upload wheel
+      uses: actions/upload-artifact@v2
+      if: 'matrix.cibw_build'
       with:
-        path: './wheelhouse/*.whl'
+        path: 'wheelhouse/*.whl'
