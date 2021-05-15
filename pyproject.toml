@@ -6,3 +6,38 @@ requires = [
 ]
 
 [tool.ipdb]
+
+[tool.tbump]
+github_url = "https://github.com/ionelmc/python-hunter/"
+
+[tool.tbump.version]
+current = "3.3.3"
+regex = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
+
+[tool.tbump.git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"
+
+[[tool.tbump.file]]
+src = "setup.py"
+search = "'fallback_version': '{current_version}'"
+
+[[tool.tbump.file]]
+src = "README.rst"
+search = "/v{current_version}.svg"
+
+[[tool.tbump.file]]
+src = "README.rst"
+search = "/v{current_version}...master"
+
+[[tool.tbump.file]]
+src = "docs/conf.py"
+search = "version = release = '{current_version}'"
+
+[[tool.tbump.file]]
+src = "src/hunter/__init__.py"
+search = "__version__ = '{current_version}'"
+
+[[tool.tbump.before_commit]]
+name = "check changelog"
+cmd = "grep -q {new_version} CHANGELOG.rst"
