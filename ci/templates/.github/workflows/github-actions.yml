@@ -27,13 +27,7 @@ jobs:
     {{ env[2] }}.{{ env[3] }}
   {%- endif -%}
 {% endset %}
-{% set cpython %}
-  {%- if env.startswith('py27') -%}
-    cp{{ env[2] }}{{ env[3] }}-cp27mu*
-  {%- else -%}
-    cp{{ env[2] }}{{ env[3] }}-*
-  {%- endif -%}
-{% endset %}
+{% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
 {% for os, arch, platform in [
     ['linux',   'x64', 'native'],
     ['linux',   'x64', 'aarch64'],
