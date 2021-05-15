@@ -1,7 +1,7 @@
 on: [push, pull_request]
 jobs:
   test:
-    name: ' '
+    name: {{ '${{ matrix.name }}' }}
     runs-on: {{ '${{ matrix.os }}' }}
     timeout-minutes: 30
     strategy:
@@ -38,12 +38,12 @@ jobs:
 ] %}
 {% if platform == 'native' %}
 {% if arch == 'x64' %}
-          - name: '{{ os }}:{{ env }}'
+          - name: '{{ env }} ({{ os }})'
 {% else %}
-          - name: '{{ os }}/{{ arch }}:{{ env }}'
+          - name: '{{ env }} ({{ os }}/{{ arch }})'
 {% endif %}
 {% else %}
-          - name: '{{ platform }}:{{ env }}'
+          - name: '{{ env }} ({{ platform }})'
 {% endif %}
             python: '{{ python }}'
             python_arch: '{{ arch }}'
@@ -71,7 +71,7 @@ jobs:
         architecture: {{ '${{ matrix.python_arch }}' }}
     - name: install dependencies
       run: |
-        python -mpip install --progress-bar=off twine tox cibuildwheel -rci/requirements.txt
+        python -mpip install --progress-bar=off twine tox cibuildwheel -r ci/requirements.txt
         virtualenv --version
         pip --version
         tox --version
