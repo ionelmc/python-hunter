@@ -1,7 +1,7 @@
 on: [push, pull_request]
 jobs:
   test:
-    name: ''
+    name: ' '
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
