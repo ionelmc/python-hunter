@@ -10,14 +10,19 @@ Overview
     * - docs
       - |docs|
     * - tests
-      - | |travis| |appveyor| |requires|
+      - | |github-actions| |travis| |appveyor| |requires|
         | |codecov|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
+
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
     :target: https://python-hunter.readthedocs.io/
     :alt: Documentation Status
+
+.. |github-actions| image:: https://github.com/ionelmc/python-hunter/actions/workflows/github-actions.yml/badge.svg
+    :alt: GitHub Actions Build Status
+    :target: https://github.com/ionelmc/python-hunter/actions
 
 .. |travis| image:: https://api.travis-ci.com/ionelmc/python-hunter.svg?branch=master
     :alt: Travis-CI Build Status
