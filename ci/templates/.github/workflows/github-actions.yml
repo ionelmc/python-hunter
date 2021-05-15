@@ -10,9 +10,11 @@ jobs:
           - name: 'check'
             python: '3.9'
             tox_env: 'check'
+            os: 'linux-latest'
           - name: 'docs'
             python: '3.9'
             tox_env: 'docs'
+            os: 'linux-latest'
 {% for env in tox_environments %}
 {% set python %}
   {%- if env.startswith('pypy3') -%}
