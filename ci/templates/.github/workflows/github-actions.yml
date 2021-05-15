@@ -1,6 +1,7 @@
 on: [push, pull_request]
 jobs:
   test:
+    name: ''
     runs-on: {{ '${{ matrix.os }}' }}
     timeout-minutes: 30
     strategy:
@@ -35,7 +36,15 @@ jobs:
     ['windows', 'x86', 'native'],
     ['macos',   'x64', 'native'],
 ] %}
-          - name: '{{ os }}/{{ arch }}/{{ platform }}:{{ env }}'
+{% if platform == 'native' %}
+{% if arch == 'x64' %}
+          - name: '{{ os }}:{{ env }}'
+{% else %}
+          - name: '{{ os }}/{{ arch }}:{{ env }}'
+{% endif %}
+{% else %}
+          - name: '{{ platform }}:{{ env }}'
+{% endif %}
             python: '{{ python }}'
             python_arch: '{{ arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
