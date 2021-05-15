@@ -1138,12 +1138,10 @@ jobs:
             os: 'macos-latest'
     steps:
     - uses: docker/setup-qemu-action@v1
-      if: "matrix.platform == 'aarch64'"
+      if: matrix.cibw_arch == 'aarch64'
       with:
         platforms: arm64
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python }}
@@ -1157,25 +1155,31 @@ jobs:
         pip list --format=freeze
 
     - name: cibw build and test
-      if: 'matrix.cibw_build'
+      if: matrix.cibw_build
       run: cibuildwheel
       env:
         CIBW_ARCHS: '${{ matrix.cibw_arch }}'
         CIBW_BUILD: '${{ matrix.cibw_build }}'
-        CIBW_MANYLINUX_X86_64_IMAGE: 'manylinux1'
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
         CIBW_BUILD_VERBOSITY: '1'
-        CIBW_TEST_REQUIRES: 'tox tox-direct'
-        CIBW_TEST_COMMAND: 'cd {project} && tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v'
+        CIBW_TEST_REQUIRES: >
+          tox
+          tox-direct
+        CIBW_TEST_COMMAND: >
+          cd {project} &&
+          tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
 
     - name: regular build and test
-      if: '!matrix.cibw_build'
-      run: tox -e ${{ matrix.tox_env }} -v
+      if: >
+        !matrix.cibw_build
+      run: >
+        tox -e ${{ matrix.tox_env }} -v
 
     - name: check wheel
-      if: 'matrix.cibw_build'
-      run: 'twine check wheelhouse/*.whl'
+      if: matrix.cibw_build
+      run: twine check wheelhouse/*.whl
     - name: upload wheel
       uses: actions/upload-artifact@v2
-      if: 'matrix.cibw_build'
+      if: matrix.cibw_build
       with:
-        path: 'wheelhouse/*.whl'
+        path: wheelhouse/*.whl

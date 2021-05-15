@@ -29,26 +29,26 @@ jobs:
   {%- endif -%}
 {% endset %}
 {% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
-{% for os, arch, platform in [
+{% for os, python_arch, cibw_arch in [
     ['linux',   'x64', 'native'],
     ['linux',   'x64', 'aarch64'],
     ['windows', 'x64', 'native'],
     ['windows', 'x86', 'native'],
     ['macos',   'x64', 'native'],
 ] %}
-{% if platform == 'native' %}
-{% if arch == 'x64' %}
+{% if cibw_arch == 'native' %}
+{% if python_arch == 'x64' %}
           - name: '{{ env }} ({{ os }})'
 {% else %}
-          - name: '{{ env }} ({{ os }}/{{ arch }})'
+          - name: '{{ env }} ({{ os }}/{{ python_arch }})'
 {% endif %}
 {% else %}
-          - name: '{{ env }} ({{ platform }})'
+          - name: '{{ env }} ({{ cibw_arch }})'
 {% endif %}
             python: '{{ python }}'
-            python_arch: '{{ arch }}'
+            python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
-            cibw_arch: '{{ platform }}'
+            cibw_arch: '{{ cibw_arch }}'
 {% if env.endswith('cover') or env.startswith('pypy') %}
             cibw_build: false
 {% else %}
@@ -59,12 +59,10 @@ jobs:
 {% endfor %}
     steps:
     - uses: docker/setup-qemu-action@v1
-      if: "matrix.platform == 'aarch64'"
+      if: matrix.cibw_arch == 'aarch64'
       with:
         platforms: arm64
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - uses: actions/setup-python@v2
       with:
         python-version: {{ '${{ matrix.python }}' }}
@@ -78,25 +76,31 @@ jobs:
         pip list --format=freeze
 
     - name: cibw build and test
-      if: 'matrix.cibw_build'
+      if: matrix.cibw_build
       run: cibuildwheel
       env:
         CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
         CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
-        CIBW_MANYLINUX_X86_64_IMAGE: 'manylinux1'
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
         CIBW_BUILD_VERBOSITY: '1'
-        CIBW_TEST_REQUIRES: 'tox tox-direct'
-        CIBW_TEST_COMMAND: 'cd {project} && tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v'
+        CIBW_TEST_REQUIRES: >
+          tox
+          tox-direct
+        CIBW_TEST_COMMAND: >
+          cd {project} &&
+          tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v
 
     - name: regular build and test
-      if: '!matrix.cibw_build'
-      run: tox -e {{ '${{ matrix.tox_env }}' }} -v
+      if: >
+        !matrix.cibw_build
+      run: >
+        tox -e {{ '${{ matrix.tox_env }}' }} -v
 
     - name: check wheel
-      if: 'matrix.cibw_build'
-      run: 'twine check wheelhouse/*.whl'
+      if: matrix.cibw_build
+      run: twine check wheelhouse/*.whl
     - name: upload wheel
       uses: actions/upload-artifact@v2
-      if: 'matrix.cibw_build'
+      if: matrix.cibw_build
       with:
-        path: 'wheelhouse/*.whl'
+        path: wheelhouse/*.whl
