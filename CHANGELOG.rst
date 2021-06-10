@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.4.0 (2021-06-11)
+------------------
+
+* Added support for Python 3.10.
+* Added support for ``time`` objects and the ``fold`` option in ``safe_repr``.
 
 3.3.3 (2021-05-04)
 ------------------
