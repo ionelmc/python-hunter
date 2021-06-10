@@ -10,6 +10,8 @@ from collections import defaultdict
 from collections import deque
 from datetime import date
 from datetime import datetime
+from datetime import time
+from datetime import timedelta
 from inspect import CO_VARARGS
 from inspect import CO_VARKEYWORDS
 
@@ -279,14 +281,22 @@ def safe_repr(obj, maxdepth=5):
             )
         else:
             return 're.compile(%s)' % safe_repr(obj.pattern)
-    elif obj_type is date:
+    elif obj_type in (date, timedelta):
         return repr(obj)
     elif obj_type is datetime:
-        return '%s(%d, %d, %d, %d, %d, %d, %d, tzinfo=%s)' % (
+        return '%s(%d, %d, %d, %d, %d, %d, %d, tzinfo=%s%s)' % (
             obj_type.__name__,
             obj.year, obj.month, obj.day,
             obj.hour, obj.minute, obj.second, obj.microsecond,
-            safe_repr(obj.tzinfo)
+            safe_repr(obj.tzinfo),
+            ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
+        )
+    elif obj_type is time:
+        return '%s(%d, %d, %d, %d, tzinfo=%s%s)' % (
+            obj_type.__name__,
+            obj.hour, obj.minute, obj.second, obj.microsecond,
+            safe_repr(obj.tzinfo),
+            ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
         )
     elif obj_type is types.MethodType:  # noqa
         self = obj.__self__

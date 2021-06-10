@@ -5,6 +5,8 @@ from collections import deque
 from collections import namedtuple
 from datetime import date
 from datetime import datetime
+from datetime import time
+from datetime import timedelta
 from datetime import tzinfo
 from decimal import Decimal
 from socket import _socket
@@ -107,6 +109,8 @@ def test_safe_repr():
         'badregex2': re.compile(String('123'), Int(re.IGNORECASE)),
         'date': date(Int(2000), Int(1), Int(2)),
         'datetime': datetime(Int(2000), Int(1), Int(2), Int(3), Int(4), Int(5), Int(600), tzinfo=TzInfo()),
+        'time': time(Int(3), Int(4), Int(5), Int(600), tzinfo=TzInfo()),
+        'timedelta': timedelta(Int(1), Int(2), Int(3), Int(4), Int(5), Int(6), Int(7)),
     }
     print(re.compile(String('123'), Int(re.IGNORECASE)).match('123'))
     print(safe_repr(data))
