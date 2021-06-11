@@ -31,7 +31,7 @@ try:
     version = release = get_distribution('hunter').version
 except Exception:
     traceback.print_exc()
-    version = release = '3.3.3'
+    version = release = '3.3.4'
 
 pygments_style = 'trac'
 templates_path = ['.']
