@@ -260,7 +260,7 @@ test_script:
         if ($LastExitCode -eq 0) {
           $ErrorActionPreference = "Stop"
           iex "$Env:PYTHON_HOME\Scripts\twine check $Env:WHEEL_PATH/*.whl"
-          iex "$Env:PYTHON_HOME\Scripts\twine upload --verbose --repository-url https://test.pypi.org/legacy/ --skip-existing $Env:WHEEL_PATH/*.whl"
+          iex "$Env:PYTHON_HOME\Scripts\twine upload --verbose --repository-url https://test.pypi.org/legacy/ $Env:WHEEL_PATH/*.whl"
         }
       } else {
         iex "$Env:PYTHON_HOME\Scripts\tox"
