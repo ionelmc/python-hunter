@@ -7,6 +7,9 @@ import sysconfig
 
 SITE_PACKAGES_PATHS = set()
 for scheme in sysconfig.get_scheme_names():
+    if scheme == 'posix_home':
+        # it would appear this scheme is not for site-packages
+        continue
     for name in ['platlib', 'purelib']:
         try:
             SITE_PACKAGES_PATHS.add(sysconfig.get_path(name, scheme))
