@@ -2,6 +2,14 @@
 Changelog
 =========
 
+3.3.6 (2021-06-23)
+------------------
+
+* Fixed regression from *3.3.4*: ``stdlib`` filter was broken.
+* Improved the pth file (``PYTHONHUNTER`` environment variable activation) to use a clean eval environment.
+  No bogus variables like ``line`` (from the ``site.py`` machinery) will be available anymore.
+* Fixed a bug in ``VarsSnooper`` that would make it fail in rare situation where a double `return` event is emitted.
+
 3.3.5 (2021-06-11)
 ------------------
 
