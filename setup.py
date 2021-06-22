@@ -42,14 +42,7 @@ def read(*names, **kwargs):
 class BuildWithPTH(build):
     def run(self):
         build.run(self)
-        src = join(dirname(__file__), 'src', 'hunter.embed')
         path = join(dirname(__file__), 'src', 'hunter.pth')
-        with open(src) as sh:
-            with open(path, 'w') as fh:
-                fh.write(
-                    'import os, sys;'
-                    'exec(%r)' % sh.read().replace('    ', ' ')
-                )
         dest = join(self.build_lib, basename(path))
         self.copy_file(path, dest)
 

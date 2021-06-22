@@ -64,7 +64,6 @@ __all__ = (
     'VarsPrinter',
     'VarsSnooper',
     'When',
-    'Backlog',
 
     'stop',
     'trace',
@@ -82,6 +81,32 @@ _last_tracer = None
 _default_trace_args = None
 _default_config = {}
 _default_stream = sys.stderr
+
+
+def _embed_via_environment():
+    if 'PYTHONHUNTER' in os.environ:
+        try:
+            eval('trace({[PYTHONHUNTER]})'.format(os.environ), {
+                'And': And,
+                'Backlog': Backlog,
+                'CallPrinter': CallPrinter,
+                'CodePrinter': CodePrinter,
+                'Debugger': Debugger,
+                'ErrorSnooper': ErrorSnooper,
+                'From': From,
+                'Manhole': Manhole,
+                'Not': Not,
+                'Or': Or,
+                'Q': Q,
+                'Query': Query,
+                'StackPrinter': StackPrinter,
+                'VarsPrinter': VarsPrinter,
+                'VarsSnooper': VarsSnooper,
+                'When': When,
+                'trace': trace,
+            })
+        except Exception as exc:
+            sys.stderr.write('Failed to load hunter from PYTHONHUNTER environ variable {[PYTHONHUNTER]!r}: {!r}\n'.format(os.environ, exc))
 
 
 def _prepare_config(*args, **kwargs):
