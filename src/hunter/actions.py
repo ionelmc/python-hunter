@@ -713,7 +713,8 @@ class VarsSnooper(ColorStreamAction):
                         current_repr,
                     )
         if event.kind == 'return':
-            del self.stored_reprs[scope_key]
+            if scope_key in self.stored_reprs:
+                del self.stored_reprs[scope_key]
 
 
 RETURN_VALUE = opcode.opmap['RETURN_VALUE']
