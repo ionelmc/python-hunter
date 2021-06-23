@@ -15,8 +15,6 @@ for scheme in sysconfig.get_scheme_names():
             SITE_PACKAGES_PATHS.add(sysconfig.get_path(name, scheme))
         except KeyError:
             pass
-if hasattr(site, 'getsitepackages'):
-    SITE_PACKAGES_PATHS.update(site.getsitepackages())
 if hasattr(site, 'getusersitepackages'):
     SITE_PACKAGES_PATHS.add(site.getusersitepackages())
 if sys.version_info < (3, 10):

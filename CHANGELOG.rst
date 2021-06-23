@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.3.7 (2021-06-23)
+------------------
+
+* Fixed a bug with how ``stdlib`` is detected on Windows (at least).
+
 3.3.6 (2021-06-23)
 ------------------
 
