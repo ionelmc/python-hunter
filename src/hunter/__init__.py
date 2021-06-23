@@ -45,7 +45,7 @@ except ImportError:
 try:
     from ._version import version as __version__
 except ImportError:
-    __version__ = '3.3.7'
+    __version__ = '3.3.8'
 
 __all__ = (
     'And',
