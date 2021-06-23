@@ -45,7 +45,7 @@ matrix:
       env:
         - TOXENV={{ env }}
         - SETUPPY_CFLAGS=
-{%- if 'nocov' in env %}{{ '' }}
+{%- if 'nocov' in env and 'cython' in env %}{{ '' }}
         - WHEEL_PATH=.tox/dist
 {%- endif %}
 {%- endif %}{{ '' }}
@@ -53,7 +53,7 @@ matrix:
 {%- if arch == 'amd64' or env.startswith('py3') or ('cover' in env and not env.startswith('pypy')) %}{{ '' }}
     - env:
         - TOXENV={{ env }}{% if 'cover' in env %},codecov{% endif %}
-{%- if 'pypy' not in env and 'nocov' in env and not env.startswith('py310') %}{{ '' }}
+{%- if 'pypy' not in env and 'nocov' in env and 'cython' in env and not env.startswith('py310') %}{{ '' }}
         - WHEEL_MANYLINUX="{% if arch == 'arm64' %}2014-arm{% else %}1{% endif %}{{ '' }} cp{{ env.split('-')[0][2:] }}"
 {%- endif %}
 {%- if env.startswith('pypy3') %}{{ '' }}

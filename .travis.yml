@@ -59,10 +59,8 @@ matrix:
       env:
         - TOXENV=py27-pure-nocov
         - SETUPPY_CFLAGS=
-        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py27-pure-nocov
-        - WHEEL_MANYLINUX="1 cp27"
         - TOXPYTHON=python2.7
       python: '2.7'
       arch: amd64
@@ -105,12 +103,10 @@ matrix:
       arch: amd64
     - env:
         - TOXENV=py36-pure-nocov
-        - WHEEL_MANYLINUX="2014-arm cp36"
       python: '3.6'
       arch: arm64
     - env:
         - TOXENV=py36-pure-nocov
-        - WHEEL_MANYLINUX="1 cp36"
       python: '3.6'
       arch: amd64
     - env:
@@ -141,12 +137,10 @@ matrix:
       arch: amd64
     - env:
         - TOXENV=py37-pure-nocov
-        - WHEEL_MANYLINUX="2014-arm cp37"
       python: '3.7'
       arch: arm64
     - env:
         - TOXENV=py37-pure-nocov
-        - WHEEL_MANYLINUX="1 cp37"
       python: '3.7'
       arch: amd64
     - env:
@@ -177,12 +171,10 @@ matrix:
       arch: amd64
     - env:
         - TOXENV=py38-pure-nocov
-        - WHEEL_MANYLINUX="2014-arm cp38"
       python: '3.8'
       arch: arm64
     - env:
         - TOXENV=py38-pure-nocov
-        - WHEEL_MANYLINUX="1 cp38"
       python: '3.8'
       arch: amd64
     - env:
@@ -223,15 +215,12 @@ matrix:
       env:
         - TOXENV=py39-pure-nocov
         - SETUPPY_CFLAGS=
-        - WHEEL_PATH=.tox/dist
     - env:
         - TOXENV=py39-pure-nocov
-        - WHEEL_MANYLINUX="2014-arm cp39"
       python: '3.9'
       arch: arm64
     - env:
         - TOXENV=py39-pure-nocov
-        - WHEEL_MANYLINUX="1 cp39"
       python: '3.9'
       arch: amd64
     - os: osx

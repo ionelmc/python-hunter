@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.3.8 (2021-06-23)
+------------------
+
+* Fixed CI problem that publishes same type of wheels two times.
+
 3.3.7 (2021-06-23)
 ------------------
 
