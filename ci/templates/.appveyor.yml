@@ -21,19 +21,20 @@ environment:
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
 {% for env in tox_environments %}
+{% set prefix = env.split('-')[0] %}
 {% if env.startswith(('py2', 'py3')) %}
     - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ "" }}
-      TOXPYTHON: C:\Python{{ env[2:4] }}\python.exe
-      PYTHON_HOME: C:\Python{{ env[2:4] }}
-      PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
+      TOXPYTHON: C:\Python{{ prefix[2:] }}\python.exe
+      PYTHON_HOME: C:\Python{{ prefix[2:] }}
+      PYTHON_VERSION: '{{ prefix[2] }}.{{ prefix[3:] }}'
       PYTHON_ARCH: '32'
 {% if "cython-nocov" in env %}
       WHEEL_PATH: .tox/dist
 {% endif %}
     - TOXENV: {{ env }}{% if env.endswith('-cover') %},codecov{% endif %}{{ '' }}
-      TOXPYTHON: C:\Python{{ env[2:4] }}-x64\python.exe
-      PYTHON_HOME: C:\Python{{ env[2:4] }}-x64
-      PYTHON_VERSION: '{{ env[2] }}.{{ env[3] }}'
+      TOXPYTHON: C:\Python{{ prefix[2:] }}-x64\python.exe
+      PYTHON_HOME: C:\Python{{ prefix[2:] }}-x64
+      PYTHON_VERSION: '{{ prefix[2] }}.{{ prefix[3:] }}'
       PYTHON_ARCH: '64'
 {% if "cython-nocov" in env %}
       WHEEL_PATH: .tox/dist

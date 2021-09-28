@@ -25,7 +25,8 @@ jobs:
   {%- elif env.startswith('py310') %}
     3.10-dev
   {%- else -%}
-    {{ env[2] }}.{{ env[3] }}
+    {% set prefix = env.split('-')[0] -%}
+    {{ prefix[2] }}.{{ prefix[3:] }}
   {%- endif -%}
 {% endset %}
 {% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
