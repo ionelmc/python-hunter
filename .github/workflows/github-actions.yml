@@ -1161,14 +1161,16 @@ jobs:
         CIBW_ARCHS: '${{ matrix.cibw_arch }}'
         CIBW_BUILD: '${{ matrix.cibw_build }}'
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
-        CIBW_BUILD_VERBOSITY: '1'
+        CIBW_BUILD_VERBOSITY: '3'
         CIBW_TEST_REQUIRES: >
           tox
           tox-direct
         CIBW_TEST_COMMAND: >
           cd {project} &&
           tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
-
+        CIBW_TEST_COMMAND_WINDOWS: >
+          cd /d {project} &&
+          tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
     - name: regular build and test
       if: >
         !matrix.cibw_build
