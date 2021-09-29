@@ -45,7 +45,7 @@ jobs:
             python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
             cibw_arch: '{{ cibw_arch }}'
-{% if env.endswith('cover') or env.startswith('pypy') %}
+{% if env.endswith('cover') or prefix in ('pypy', 'py310') %}
             cibw_build: false
 {% else %}
             cibw_build: '{{ cpython }}'
