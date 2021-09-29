@@ -11,11 +11,11 @@ jobs:
           - name: 'check'
             python: '3.9'
             tox_env: 'check'
-            os: 'linux-latest'
+            os: 'ubuntu-latest'
           - name: 'docs'
             python: '3.9'
             tox_env: 'docs'
-            os: 'linux-latest'
+            os: 'ubuntu-latest'
 {% for env in tox_environments %}
 {% set python %}
   {%- if env.startswith('pypy3') -%}
@@ -31,11 +31,11 @@ jobs:
 {% endset %}
 {% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
 {% for os, python_arch, cibw_arch in [
-    ['linux',   'x64', 'native'],
-    ['linux',   'x64', 'aarch64'],
+    ['ubuntu', 'x64', 'native'],
+    ['ubuntu', 'x64', 'aarch64'],
     ['windows', 'x64', 'native'],
     ['windows', 'x86', 'native'],
-    ['macos',   'x64', 'native'],
+    ['macos', 'x64', 'native'],
 ] %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
@@ -75,7 +75,6 @@ jobs:
         pip --version
         tox --version
         pip list --format=freeze
-
     - name: cibw build and test
       if: matrix.cibw_build
       run: cibuildwheel
@@ -98,7 +97,6 @@ jobs:
         !matrix.cibw_build
       run: >
         tox -e {{ '${{ matrix.tox_env }}' }} -v
-
     - name: check wheel
       if: matrix.cibw_build
       run: twine check wheelhouse/*.whl
