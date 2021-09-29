@@ -32,11 +32,6 @@ jobs:
     ['windows', 'x86', 'native'],
     ['macos', 'x64', 'native'],
 ] %}
-{% if os == 'windows' %}
-{#          - uses: ilammy/msvc-dev-cmd@v1 #}
-{% elif os == 'ubuntu' %}
-          - run: sudo apt-get install gdb
-{% endif %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
           - name: '{{ env }} ({{ os }})'
@@ -75,6 +70,11 @@ jobs:
         pip --version
         tox --version
         pip list --format=freeze
+    - name: install dependencies (gdb)
+      if: >
+        !matrix.cibw_build
+      run: >
+        sudo apt-get install gdb
     - name: cibw build and test
       if: matrix.cibw_build
       run: cibuildwheel

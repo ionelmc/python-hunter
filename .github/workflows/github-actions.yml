@@ -16,7 +16,6 @@ jobs:
             python: '3.9'
             tox_env: 'docs'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-pure-cover (ubuntu)'
             python: '3.6'
             python_arch: 'x64'
@@ -24,7 +23,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-pure-cover (aarch64)'
             python: '3.6'
             python_arch: 'x64'
@@ -53,7 +51,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-pure-nocov (ubuntu)'
             python: '3.6'
             python_arch: 'x64'
@@ -61,7 +58,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp36-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-pure-nocov (aarch64)'
             python: '3.6'
             python_arch: 'x64'
@@ -90,7 +86,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp36-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-cython-cover (ubuntu)'
             python: '3.6'
             python_arch: 'x64'
@@ -98,7 +93,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-cython-cover (aarch64)'
             python: '3.6'
             python_arch: 'x64'
@@ -127,7 +121,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-cython-nocov (ubuntu)'
             python: '3.6'
             python_arch: 'x64'
@@ -135,7 +128,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp36-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py36-cython-nocov (aarch64)'
             python: '3.6'
             python_arch: 'x64'
@@ -164,7 +156,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp36-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-pure-cover (ubuntu)'
             python: '3.7'
             python_arch: 'x64'
@@ -172,7 +163,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-pure-cover (aarch64)'
             python: '3.7'
             python_arch: 'x64'
@@ -201,7 +191,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-pure-nocov (ubuntu)'
             python: '3.7'
             python_arch: 'x64'
@@ -209,7 +198,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp37-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-pure-nocov (aarch64)'
             python: '3.7'
             python_arch: 'x64'
@@ -238,7 +226,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp37-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-cython-cover (ubuntu)'
             python: '3.7'
             python_arch: 'x64'
@@ -246,7 +233,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-cython-cover (aarch64)'
             python: '3.7'
             python_arch: 'x64'
@@ -275,7 +261,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-cython-nocov (ubuntu)'
             python: '3.7'
             python_arch: 'x64'
@@ -283,7 +268,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp37-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py37-cython-nocov (aarch64)'
             python: '3.7'
             python_arch: 'x64'
@@ -312,7 +296,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp37-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-pure-cover (ubuntu)'
             python: '3.8'
             python_arch: 'x64'
@@ -320,7 +303,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-pure-cover (aarch64)'
             python: '3.8'
             python_arch: 'x64'
@@ -349,7 +331,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-pure-nocov (ubuntu)'
             python: '3.8'
             python_arch: 'x64'
@@ -357,7 +338,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp38-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-pure-nocov (aarch64)'
             python: '3.8'
             python_arch: 'x64'
@@ -386,7 +366,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp38-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-cython-cover (ubuntu)'
             python: '3.8'
             python_arch: 'x64'
@@ -394,7 +373,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-cython-cover (aarch64)'
             python: '3.8'
             python_arch: 'x64'
@@ -423,7 +401,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-cython-nocov (ubuntu)'
             python: '3.8'
             python_arch: 'x64'
@@ -431,7 +408,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp38-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py38-cython-nocov (aarch64)'
             python: '3.8'
             python_arch: 'x64'
@@ -460,7 +436,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp38-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-pure-cover (ubuntu)'
             python: '3.9'
             python_arch: 'x64'
@@ -468,7 +443,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-pure-cover (aarch64)'
             python: '3.9'
             python_arch: 'x64'
@@ -497,7 +471,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-pure-nocov (ubuntu)'
             python: '3.9'
             python_arch: 'x64'
@@ -505,7 +478,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp39-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-pure-nocov (aarch64)'
             python: '3.9'
             python_arch: 'x64'
@@ -534,7 +506,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp39-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-cython-cover (ubuntu)'
             python: '3.9'
             python_arch: 'x64'
@@ -542,7 +513,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-cython-cover (aarch64)'
             python: '3.9'
             python_arch: 'x64'
@@ -571,7 +541,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-cython-nocov (ubuntu)'
             python: '3.9'
             python_arch: 'x64'
@@ -579,7 +548,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp39-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py39-cython-nocov (aarch64)'
             python: '3.9'
             python_arch: 'x64'
@@ -608,7 +576,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp39-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-pure-cover (ubuntu)'
             python: '3.10'
             python_arch: 'x64'
@@ -616,7 +583,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-pure-cover (aarch64)'
             python: '3.10'
             python_arch: 'x64'
@@ -645,7 +611,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-pure-nocov (ubuntu)'
             python: '3.10'
             python_arch: 'x64'
@@ -653,7 +618,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp310-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-pure-nocov (aarch64)'
             python: '3.10'
             python_arch: 'x64'
@@ -682,7 +646,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp310-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-cython-cover (ubuntu)'
             python: '3.10'
             python_arch: 'x64'
@@ -690,7 +653,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-cython-cover (aarch64)'
             python: '3.10'
             python_arch: 'x64'
@@ -719,7 +681,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-cython-nocov (ubuntu)'
             python: '3.10'
             python_arch: 'x64'
@@ -727,7 +688,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp310-*'
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'py310-cython-nocov (aarch64)'
             python: '3.10'
             python_arch: 'x64'
@@ -756,7 +716,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: 'cp310-*'
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-pure-cover (ubuntu)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -764,7 +723,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-pure-cover (aarch64)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -793,7 +751,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-pure-nocov (ubuntu)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -801,7 +758,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-pure-nocov (aarch64)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -830,7 +786,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-cython-cover (ubuntu)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -838,7 +793,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-cython-cover (aarch64)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -867,7 +821,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'macos-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-cython-nocov (ubuntu)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -875,7 +828,6 @@ jobs:
             cibw_arch: 'native'
             cibw_build: false
             os: 'ubuntu-latest'
-          - run: sudo apt-get install gdb
           - name: 'pypy3-cython-nocov (aarch64)'
             python: 'pypy-3.7'
             python_arch: 'x64'
@@ -921,6 +873,11 @@ jobs:
         pip --version
         tox --version
         pip list --format=freeze
+    - name: install dependencies (gdb)
+      if: >
+        !matrix.cibw_build
+      run: >
+        sudo apt-get install gdb
     - name: cibw build and test
       if: matrix.cibw_build
       run: cibuildwheel
