@@ -17,6 +17,7 @@ jobs:
             tox_env: 'docs'
             os: 'ubuntu-latest'
 {% for env in tox_environments %}
+{% set prefix = env.split('-')[0] -%}
 {% set python %}
   {%- if env.startswith('pypy3') -%}
     pypy-3.7
@@ -25,11 +26,10 @@ jobs:
   {%- elif env.startswith('py310') %}
     3.10-dev
   {%- else -%}
-    {% set prefix = env.split('-')[0] -%}
     {{ prefix[2] }}.{{ prefix[3:] }}
   {%- endif -%}
 {% endset %}
-{% set cpython %}cp{{ env[2] }}{{ env[3] }}-*{% endset %}
+{% set cpython %}cp{{ prefix[2:] }}-*{% endset %}
 {% for os, python_arch, cibw_arch in [
     ['ubuntu', 'x64', 'native'],
     ['ubuntu', 'x64', 'aarch64'],
