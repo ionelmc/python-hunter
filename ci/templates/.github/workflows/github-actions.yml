@@ -18,18 +18,13 @@ jobs:
             os: 'ubuntu-latest'
 {% for env in tox_environments %}
 {% set prefix = env.split('-')[0] -%}
-{% set python %}
-  {%- if env.startswith('pypy3') -%}
-    pypy-3.7
-  {%- elif env.startswith('pypy') -%}
-    pypy-2.7
-  {%- elif env.startswith('py310') %}
-    3.10-dev
-  {%- else -%}
-    {{ prefix[2] }}.{{ prefix[3:] }}
-  {%- endif -%}
-{% endset %}
+{% if prefix == 'pypy3' %}
+{% set python = 'pypy-3.7' %}
+{% set cpython %}pp37-*{% endset %}
+{% else %}
+{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}-*{% endset %}
+{% endif %}
 {% for os, python_arch, cibw_arch in [
     ['ubuntu', 'x64', 'native'],
     ['ubuntu', 'x64', 'aarch64'],
@@ -37,6 +32,11 @@ jobs:
     ['windows', 'x86', 'native'],
     ['macos', 'x64', 'native'],
 ] %}
+{% if os == 'windows' %}
+{#          - uses: ilammy/msvc-dev-cmd@v1 #}
+{% elif os == 'ubuntu' %}
+          - run: sudo apt-get install gdb
+{% endif %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
           - name: '{{ env }} ({{ os }})'
