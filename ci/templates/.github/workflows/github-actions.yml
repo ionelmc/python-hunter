@@ -22,7 +22,7 @@ jobs:
 {% set python = 'pypy-3.7' %}
 {% set cpython %}pp37-*{% endset %}
 {% else %}
-{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
+{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% if prefix == 'py310' %}-dev{% endif %}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}-*{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch in [
