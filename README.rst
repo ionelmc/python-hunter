@@ -121,6 +121,14 @@ In a terminal it would look like:
 .. image:: https://raw.githubusercontent.com/ionelmc/python-hunter/master/docs/code-trace.png
 
 
+Another useful scenario is to ignore all standard modules and force colors to make them stay even if the output is
+redirected to a file.
+
+.. sourcecode:: python
+
+    import hunter
+    hunter.trace(stdlib=False, action=hunter.CallPrinter(force_colors=True))
+
 Actions
 -------
 
