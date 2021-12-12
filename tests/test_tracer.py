@@ -778,7 +778,7 @@ def test_from_predicate_with_subpredicate(LineMatcher):
     assert 'four' not in output
     assert 'one()' not in output
     assert '# one' not in output
-    assert len(lm.lines) == 5
+    assert 5 <= len(lm.lines) <= 6, lm.lines
 
 
 def test_from_predicate_line(LineMatcher):
