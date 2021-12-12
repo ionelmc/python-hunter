@@ -22,7 +22,7 @@ jobs:
 {% set python = 'pypy-3.7' %}
 {% set cpython %}pp37-*{% endset %}
 {% else %}
-{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% if prefix == 'py310' %}-dev{% endif %}{% endset %}
+{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}-*{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch in [
@@ -45,7 +45,7 @@ jobs:
             python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
             cibw_arch: '{{ cibw_arch }}'
-{% if env.endswith('cover') or prefix in ('pypy', 'py310') %}
+{% if env.endswith('cover') %}
             cibw_build: false
 {% else %}
             cibw_build: '{{ cpython }}'
