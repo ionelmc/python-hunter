@@ -127,7 +127,7 @@ class ProfileAction(ColorStreamAction):
 @pytest.mark.parametrize('options', [
     {'kind__in': ['call', 'return', 'exception']},
     {'profile': True}
-])
+], ids=['kind__in=call,return,exception', 'profile=True'])
 def test_profile(LineMatcher, options):
     stream = StringIO()
     with hunter.trace(action=ProfileAction(stream=stream), **options):
