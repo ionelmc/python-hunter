@@ -18,20 +18,23 @@ jobs:
             os: 'ubuntu-latest'
 {% for env in tox_environments %}
 {% set prefix = env.split('-')[0] -%}
-{% if prefix == 'pypy3' %}
-{% set python = 'pypy-3.7' %}
-{% set cpython %}pp37-*{% endset %}
+{% if prefix.startswith('pypy') %}
+{% set python %}pypy{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
+{% set cpython %}pp{{ prefix[4:5] }}-*{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
-{% set cpython %}cp{{ prefix[2:] }}-*{% endset %}
+{% set cpython %}cp{{ prefix[2:] }}{% endset %}
 {% endif %}
-{% for os, python_arch, cibw_arch in [
-    ['ubuntu', 'x64', 'native'],
-    ['ubuntu', 'x64', 'aarch64'],
-    ['windows', 'x64', 'native'],
-    ['windows', 'x86', 'native'],
-    ['macos', 'x64', 'native'],
+{% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
+    ['ubuntu', 'x64', 'native', '*manylinux*', True],
+    ['ubuntu', 'x64', 'aarch64', '*manylinux*', False],
+    ['ubuntu', 'x64', 'native', '*musllinux*', False],
+    ['ubuntu', 'x64', 'aarch64', '*musllinux*', False],
+    ['windows', 'x64', 'native', '*', True],
+    ['windows', 'x86', 'native', '*', False],
+    ['macos', 'x64', 'native', '*', True],
 ] %}
+{% if include_cover or not env.endswith('cover') %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
           - name: '{{ env }} ({{ os }})'
@@ -48,9 +51,10 @@ jobs:
 {% if env.endswith('cover') %}
             cibw_build: false
 {% else %}
-            cibw_build: '{{ cpython }}'
+            cibw_build: '{{ cpython }}-{{ wheel_arch }}'
 {% endif %}
             os: '{{ os }}-latest'
+{% endif %}
 {% endfor %}
 {% endfor %}
     steps:
