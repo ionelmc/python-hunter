@@ -27,8 +27,8 @@ jobs:
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'native', '*manylinux*', True],
-    ['ubuntu', 'x64', 'aarch64', '*manylinux*', False],
     ['ubuntu', 'x64', 'native', '*musllinux*', False],
+    ['ubuntu', 'x64', 'aarch64', '*manylinux*', False],
     ['ubuntu', 'x64', 'aarch64', '*musllinux*', False],
     ['windows', 'x64', 'native', '*', True],
     ['windows', 'x86', 'native', '*', False],
@@ -37,12 +37,12 @@ jobs:
 {% if include_cover or not env.endswith('cover') %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
-          - name: '{{ env }} ({{ os }})'
+          - name: '{{ env }} ({{ os }}/{{ wheel_arch }})'
 {% else %}
-          - name: '{{ env }} ({{ os }}/{{ python_arch }})'
+          - name: '{{ env }} ({{ os }}/{{ python_arch }}/{{ wheel_arch }})'
 {% endif %}
 {% else %}
-          - name: '{{ env }} ({{ cibw_arch }})'
+          - name: '{{ env }} ({{ cibw_arch }}/{{ wheel_arch }})'
 {% endif %}
             python: '{{ python }}'
             python_arch: '{{ python_arch }}'
