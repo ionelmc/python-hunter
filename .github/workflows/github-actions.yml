@@ -888,6 +888,8 @@ jobs:
           cd /d {project} &&
           tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
     - name: regular build and test
+      env:
+        TOXPYTHON: '${{ matrix.toxpython }}'
       if: >
         !matrix.cibw_build
       run: >
