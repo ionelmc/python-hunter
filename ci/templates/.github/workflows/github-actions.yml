@@ -35,14 +35,16 @@ jobs:
     ['macos', 'x64', 'native', '*', True],
 ] %}
 {% if include_cover or not env.endswith('cover') %}
+{% set wheel_suffix = wheel_arch.strip('*') %}
+{% set name_suffix = '/' + wheel_suffix if wheel_suffix else '' %}
 {% if cibw_arch == 'native' %}
 {% if python_arch == 'x64' %}
-          - name: '{{ env }} ({{ os }}/{{ wheel_arch }})'
+          - name: '{{ env }} ({{ os }}{{ name_suffix }})'
 {% else %}
-          - name: '{{ env }} ({{ os }}/{{ python_arch }}/{{ wheel_arch }})'
+          - name: '{{ env }} ({{ os }}/{{ python_arch }}{{ name_suffix }})'
 {% endif %}
 {% else %}
-          - name: '{{ env }} ({{ cibw_arch }}/{{ wheel_arch }})'
+          - name: '{{ env }} ({{ cibw_arch }}{{ name_suffix }})'
 {% endif %}
             python: '{{ python }}'
             python_arch: '{{ python_arch }}'
