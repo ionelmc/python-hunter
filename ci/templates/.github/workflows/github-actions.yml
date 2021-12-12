@@ -34,7 +34,7 @@ jobs:
     ['windows', 'x86', 'native', '*', False],
     ['macos', 'x64', 'native', '*', True],
 ] %}
-{% if include_cover or not env.endswith('cover') %}
+{% if include_cover or env.endswith('cython-nocov') %}
 {% set wheel_suffix = wheel_arch.strip('*') %}
 {% set name_suffix = '/' + wheel_suffix if wheel_suffix else '' %}
 {% if cibw_arch == 'native' %}
@@ -50,10 +50,10 @@ jobs:
             python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
             cibw_arch: '{{ cibw_arch }}'
-{% if env.endswith('cover') %}
-            cibw_build: false
-{% else %}
+{% if env.endswith('cython-nocov') %}
             cibw_build: '{{ cpython }}-{{ wheel_arch }}'
+{% else %}
+            cibw_build: false
 {% endif %}
             os: '{{ os }}-latest'
 {% endif %}
