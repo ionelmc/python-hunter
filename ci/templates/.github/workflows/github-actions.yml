@@ -21,9 +21,11 @@ jobs:
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
+{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
+{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'native', '*manylinux*', True],
@@ -47,6 +49,7 @@ jobs:
           - name: '{{ env }} ({{ cibw_arch }}{{ name_suffix }})'
 {% endif %}
             python: '{{ python }}'
+            toxpython: '{{ toxpython }}'
             python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
             cibw_arch: '{{ cibw_arch }}'
@@ -85,6 +88,7 @@ jobs:
       if: matrix.cibw_build
       run: cibuildwheel
       env:
+        TOXPYTHON: '{{ '${{ matrix.toxpython }}' }}'
         CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
         CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
         CIBW_BUILD_VERBOSITY: '3'
