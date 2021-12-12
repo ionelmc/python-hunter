@@ -770,7 +770,10 @@ def test_backlog_subprocess(LineMatcher):
 
 
 @pytest.mark.skipif(sys.platform == 'win32' and sys.version_info[0] == 2, reason='broken on windows 2.7')
-@pytest.mark.parametrize('pdb', ['pdb', 'ipdb'])
+@pytest.mark.parametrize('pdb', [
+    'pdb',
+    pytest.param('ipdb', marks=pytest.mark.skipif('platform.processor()=="aarch64"')),
+])
 @pytest.mark.parametrize('mode', ['postmortem', 'settrace', 'debugger'])
 def test_pdb(LineMatcher, pdb, mode):
     with TestProcess(sys.executable, '-msamplepdb', pdb, mode, bufsize=0, stdin=subprocess.PIPE) as target, dump_on_error(target.read):
