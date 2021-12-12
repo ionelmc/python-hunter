@@ -21,9 +21,11 @@ jobs:
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
+{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
+{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'native', '*manylinux*', True],
@@ -34,7 +36,7 @@ jobs:
     ['windows', 'x86', 'native', '*', False],
     ['macos', 'x64', 'native', '*', True],
 ] %}
-{% if include_cover or env.endswith('cython-nocov') %}
+{% if include_cover or (env.endswith('cython-nocov') and not prefix.startswith('pypy')) %}
 {% set wheel_suffix = env.endswith('cython-nocov') and wheel_arch.strip('*') %}
 {% set name_suffix = '/' + wheel_suffix if wheel_suffix else '' %}
 {% if cibw_arch == 'native' %}
@@ -47,10 +49,11 @@ jobs:
           - name: '{{ env }} ({{ cibw_arch }}{{ name_suffix }})'
 {% endif %}
             python: '{{ python }}'
+            toxpython: '{{ toxpython }}'
             python_arch: '{{ python_arch }}'
             tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
             cibw_arch: '{{ cibw_arch }}'
-{% if env.endswith('cython-nocov') %}
+{% if env.endswith('cython-nocov') and not prefix.startswith('pypy') %}
             cibw_build: '{{ cpython }}-{{ wheel_arch }}'
 {% else %}
             cibw_build: false
@@ -85,6 +88,7 @@ jobs:
       if: matrix.cibw_build
       run: cibuildwheel
       env:
+        TOXPYTHON: '{{ '${{ matrix.toxpython }}' }}'
         CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
         CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
         CIBW_BUILD_VERBOSITY: '3'
@@ -98,6 +102,8 @@ jobs:
           cd /d {project} &&
           tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v
     - name: regular build and test
+      env:
+        TOXPYTHON: '{{ '${{ matrix.toxpython }}' }}'
       if: >
         !matrix.cibw_build
       run: >
