@@ -778,7 +778,10 @@ def test_from_predicate_with_subpredicate(LineMatcher):
     assert 'four' not in output
     assert 'one()' not in output
     assert '# one' not in output
-    assert 5 <= len(lm.lines) <= 6, lm.lines
+    if 'with trace' in output:
+        assert len(lm.lines) == 6, lm.lines
+    else:
+        assert len(lm.lines) == 5, lm.lines
 
 
 def test_from_predicate_line(LineMatcher):
@@ -1117,7 +1120,6 @@ def test_tracing_bare(LineMatcher):
     ])
 
 
-@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
 def test_debugger(LineMatcher):
     out = StringIO()
     calls = []
@@ -1191,7 +1193,6 @@ def test_varssnooper(LineMatcher):
     assert snooper.stored_reprs == {}
 
 
-@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
 def test_errorsnooper(LineMatcher):
     lines = StringIO()
     snooper = ErrorSnooper(stream=lines, max_backlog=50, max_events=100)
@@ -1320,7 +1321,6 @@ def test_errorsnooper(LineMatcher):
     ])
 
 
-@pytest.mark.skipif("not os.environ.get('PUREPYTHONHUNTER')")
 def test_errorsnooper_fastmode(LineMatcher):
     lines = StringIO()
     snooper = ErrorSnooper(stream=lines, max_backlog=0, max_events=100)
