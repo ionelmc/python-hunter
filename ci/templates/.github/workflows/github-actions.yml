@@ -20,7 +20,7 @@ jobs:
 {% set prefix = env.split('-')[0] -%}
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
-{% set cpython %}pp{{ prefix[4:5] }}-*{% endset %}
+{% set cpython %}pp{{ prefix[4:5] }}{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
