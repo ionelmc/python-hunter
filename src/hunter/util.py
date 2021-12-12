@@ -58,6 +58,7 @@ except ImportError:
 
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
+PY310 = sys.version_info >= (3, 10)
 
 if PY3:
     StringType = str,

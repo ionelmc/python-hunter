@@ -12,6 +12,7 @@ from tokenize import generate_tokens
 from cpython.pythread cimport PyThread_get_thread_ident
 from cpython.ref cimport Py_XINCREF
 from cpython.ref cimport PyObject
+from cpython.version cimport PY_VERSION_HEX
 
 from ._tracer cimport Tracer
 from .vendor._cymem.cymem cimport Pool
@@ -110,7 +111,11 @@ cdef class Event:
     cdef instruction_getter(self):
         if self._instruction is UNSET:
             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
-                self._instruction = self.frame.f_code.co_code[self.frame.f_lasti]
+                if PY_VERSION_HEX >= 0x030A00A7:
+                    position = self.frame.f_lasti * 2
+                else:
+                    position = self.frame.f_lasti
+                self._instruction = self.frame.f_code.co_code[position]
             else:
                 self._instruction = None
         return self._instruction

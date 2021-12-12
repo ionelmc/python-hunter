@@ -14,6 +14,7 @@ from .util import CYTHON_SUFFIX_RE
 from .util import LEADING_WHITESPACE_RE
 from .util import MISSING
 from .util import PY2
+from .util import PY310
 from .util import cached_property
 from .util import get_func_in_mro
 from .util import get_main_thread
@@ -190,7 +191,11 @@ class Event(object):
         :type: int or single char string or None
         """
         if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
-            return self.frame.f_code.co_code[self.frame.f_lasti]
+            if PY310:
+                position = self.frame.f_lasti * 2
+            else:
+                position = self.frame.f_lasti
+            return self.frame.f_code.co_code[position]
 
     @cached_property
     def threadid(self):
