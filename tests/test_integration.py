@@ -52,10 +52,12 @@ def test_pth_activation():
     hunter_env = 'action=CodePrinter,module={!r},function="join"'.format(module_name)
     func_spec = _get_func_spec(os.path.join)
     expected_call = 'call      def join{0}:'.format(func_spec)
-
+    env = dict(os.environ, PYTHONHUNTER=hunter_env)
+    env.pop('COVERAGE_PROCESS_START', None)
+    env.pop('COV_CORE_SOURCE', None)
     output = subprocess.check_output(
         [sys.executable, os.path.join(os.path.dirname(__file__), 'sample.py')],
-        env=dict(os.environ, PYTHONHUNTER=hunter_env),
+        env=env,
         stderr=subprocess.STDOUT,
     )
     assert expected_module.encode() in output
