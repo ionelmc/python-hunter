@@ -112,7 +112,7 @@ cdef class Event:
         if self._instruction is UNSET:
             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
                 if PY_VERSION_HEX >= 0x030A00A7:
-                    position = self.frame.f_lasti * 2
+                    position = self.frame.f_lasti * sizeof(unsigned short)
                 else:
                     position = self.frame.f_lasti
                 self._instruction = self.frame.f_code.co_code[position]

@@ -3493,7 +3493,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter
  */
 
 static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
-  long __pyx_v_position;
+  size_t __pyx_v_position;
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -3524,7 +3524,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:             # <<<<<<<<<<<<<<
  *                 if PY_VERSION_HEX >= 0x030A00A7:
- *                     position = self.frame.f_lasti * 2
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)
  */
     __Pyx_TraceLine(113,0,__PYX_ERR(0, 113, __pyx_L1_error))
     __pyx_t_1 = ((__pyx_v_self->frame->f_lasti >= 0) != 0);
@@ -3542,7 +3542,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:             # <<<<<<<<<<<<<<
- *                     position = self.frame.f_lasti * 2
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)
  *                 else:
  */
       __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
@@ -3552,25 +3552,25 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
         /* "hunter/_event.pyx":115
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:
- *                     position = self.frame.f_lasti * 2             # <<<<<<<<<<<<<<
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)             # <<<<<<<<<<<<<<
  *                 else:
  *                     position = self.frame.f_lasti
  */
         __Pyx_TraceLine(115,0,__PYX_ERR(0, 115, __pyx_L1_error))
-        __pyx_v_position = (__pyx_v_self->frame->f_lasti * 2);
+        __pyx_v_position = (__pyx_v_self->frame->f_lasti * (sizeof(unsigned short)));
 
         /* "hunter/_event.pyx":114
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:             # <<<<<<<<<<<<<<
- *                     position = self.frame.f_lasti * 2
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)
  *                 else:
  */
         goto __pyx_L7;
       }
 
       /* "hunter/_event.pyx":117
- *                     position = self.frame.f_lasti * 2
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)
  *                 else:
  *                     position = self.frame.f_lasti             # <<<<<<<<<<<<<<
  *                 self._instruction = self.frame.f_code.co_code[position]
@@ -3591,7 +3591,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *                 self._instruction = None
  */
       __Pyx_TraceLine(118,0,__PYX_ERR(0, 118, __pyx_L1_error))
-      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_self->frame->f_code->co_code, __pyx_v_position, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_self->frame->f_code->co_code, __pyx_v_position, size_t, 0, __Pyx_PyInt_FromSize_t, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_4);
       __Pyx_GOTREF(__pyx_v_self->_instruction);
@@ -3604,7 +3604,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:             # <<<<<<<<<<<<<<
  *                 if PY_VERSION_HEX >= 0x030A00A7:
- *                     position = self.frame.f_lasti * 2
+ *                     position = self.frame.f_lasti * sizeof(unsigned short)
  */
       goto __pyx_L4;
     }
