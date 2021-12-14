@@ -2,6 +2,17 @@
 Changelog
 =========
 
+3.4.0 (2021-12-14)
+------------------
+
+* Switched CI to GitHub Actions, this has a couple consequences:
+
+  * Support for Python 2.7 is dropped. You can still install it there but it's not tested anymore and
+    Python 2 specific handling will be removed at some point.
+  * Linux wheels are now provided in `musllinux` and `manylinux2014` variants.
+* Extension building is now completely skipped on PyPy.
+* A pure but tagged as platform specific wheel is now provided for PyPy (to have fast installs there as well).
+
 3.3.8 (2021-06-23)
 ------------------
 
