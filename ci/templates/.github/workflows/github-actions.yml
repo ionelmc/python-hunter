@@ -1,11 +1,11 @@
 on: [push, pull_request]
-env:
-  HUNTER_TEST_TIMEOUT: 30
 jobs:
   test:
     name: {{ '${{ matrix.name }}' }}
     runs-on: {{ '${{ matrix.os }}' }}
     timeout-minutes: 30
+    env:
+      HUNTER_TEST_TIMEOUT: 30
     strategy:
       fail-fast: false
       matrix:
