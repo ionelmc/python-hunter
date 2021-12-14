@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.4.1 (2021-12-14)
+------------------
+
+* Add support for building a ``pp37.pp38`` tagged wheel
+  (basically an universal wheel installable just for those two PyPy versions).
+
 3.4.0 (2021-12-14)
 ------------------
 
