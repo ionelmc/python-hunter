@@ -6,6 +6,7 @@ from __future__ import print_function
 import io
 import os
 import re
+import sys
 from distutils.command.build import build
 from glob import glob
 from itertools import chain
@@ -22,6 +23,7 @@ from setuptools.command.build_ext import build_ext
 from setuptools.command.develop import develop
 from setuptools.command.easy_install import easy_install
 from setuptools.command.install_lib import install_lib
+from setuptools.dist import Distribution
 
 try:
     # Allow installing package without any Cython available. This
@@ -101,6 +103,12 @@ class OptionalBuildExt(build_ext):
         print('*' * 80)
 
 
+class BinaryDistribution(Distribution):
+    """Distribution which always forces a binary package with platform name"""
+    def has_ext_modules(_):
+        return True
+
+
 setup(
     name='hunter',
     use_scm_version={
@@ -174,7 +182,7 @@ setup(
         'develop': DevelopWithPTH,
         'build_ext': OptionalBuildExt,
     },
-    ext_modules=[
+    ext_modules=[] if hasattr(sys, 'pypy_version_info') else [
         Extension(
             splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
             sources=[path],
@@ -184,4 +192,5 @@ setup(
         for root, _, _ in os.walk('src')
         for path in glob(join(root, '*.pyx' if Cython else '*.c'))
     ],
+    distclass=BinaryDistribution,
 )

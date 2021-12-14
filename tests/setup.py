@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import os
+import sys
 from glob import glob
 from os.path import dirname
 from os.path import join
@@ -27,7 +28,7 @@ if __name__ == '__main__':
         setup_requires=[
             'cython',
         ] if Cython else [],
-        ext_modules=[
+        ext_modules=[] if hasattr(sys, 'pypy_version_info') else [
             Extension(
                 splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
                 sources=[path],
@@ -36,5 +37,5 @@ if __name__ == '__main__':
             )
             for root, _, _ in os.walk('tests')
             for path in glob(join(root, '*.pyx' if Cython else '*.c'))
-        ],
+        ] ,
     )
