@@ -1,4 +1,6 @@
 on: [push, pull_request]
+env:
+  HUNTER_TEST_TIMEOUT: 30
 jobs:
   test:
     name: {{ '${{ matrix.name }}' }}
