@@ -2,7 +2,7 @@
 
 default_context:
     allow_tests_inside_package: no
-    appveyor: yes
+    appveyor: no
     c_extension_function: '-'
     c_extension_module: '-'
     c_extension_optional: yes
@@ -16,11 +16,11 @@ default_context:
     command_line_interface: argparse
     command_line_interface_bin_name: hunter-trace
     coveralls: no
-    coveralls_token: '-'
     distribution_name: hunter
     email: contact@ionelmc.ro
     full_name: Ionel Cristian Mărieș
-    legacy_python: yes
+    github_actions: yes
+    legacy_python: no
     license: BSD 2-Clause License
     linter: flake8
     package_name: hunter
@@ -29,9 +29,10 @@ default_context:
     project_short_description: Hunter is a flexible code tracing toolkit, not for measuring coverage, but for debugging, logging, inspection and other nefarious purposes. It has a simple Python API and a convenient terminal API (see `Environment variable activation <env-var-activation_>`_).
     pypi_badge: yes
     pypi_disable_upload: no
-    release_date: '2020-10-24'
+    release_date: '2021-12-14'
     repo_hosting: github.com
     repo_hosting_domain: github.com
+    repo_main_branch: master
     repo_name: python-hunter
     repo_username: ionelmc
     requiresio: yes
@@ -45,9 +46,10 @@ default_context:
     test_matrix_configurator: no
     test_matrix_separate_coverage: yes
     test_runner: pytest
-    travis: yes
+    travis: no
     travis_osx: no
-    version: 3.3.1
+    version: 3.4.1
+    version_manager: bump2version
     website: https://blog.ionelmc.ro
     year_from: '2015'
     year_to: '2021'

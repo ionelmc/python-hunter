@@ -81,9 +81,9 @@ class OptionalBuildExt(build_ext):
     """Allow the building of C extensions to fail."""
     def run(self):
         try:
-            if 'SETUPPY_FORCE_PURE' in os.environ:
+            if os.environ.get('SETUPPY_FORCE_PURE'):
                 raise Exception('C extensions disabled (SETUPPY_FORCE_PURE)!')
-            build_ext.run(self)
+            super().build_ext()
         except Exception as e:
             self._unavailable(e)
             self.extensions = []  # avoid copying missing files (it would fail).
@@ -106,7 +106,7 @@ class OptionalBuildExt(build_ext):
 class BinaryDistribution(Distribution):
     """Distribution which almost always forces a binary package with platform name"""
     def has_ext_modules(self):
-        return super().has_ext_modules() or 'SETUPPY_ALLOW_PURE' not in os.environ
+        return super().has_ext_modules() or not os.environ.get('SETUPPY_ALLOW_PURE')
 
 
 setup(
