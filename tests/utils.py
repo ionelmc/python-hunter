@@ -2,7 +2,7 @@ import os
 
 from hunter import CallPrinter
 
-TIMEOUT = int(os.getenv('HUNTER_TEST_TIMEOUT', 10))
+TIMEOUT = int(os.getenv('HUNTER_TEST_TIMEOUT', 60))
 
 
 class DebugCallPrinter(CallPrinter):
