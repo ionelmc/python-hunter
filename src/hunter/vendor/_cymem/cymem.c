@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_25"
 #define CYTHON_HEX_VERSION 0x001D19F0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -899,14 +899,16 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyFree;
 struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool;
 struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Address;
 
-/* "hunter/vendor/_cymem/cymem.pxd":1
+/* "hunter/vendor/_cymem/cymem.pxd":2
+ * # cython: language_level=3str
  * ctypedef void* (*malloc_t)(size_t n)             # <<<<<<<<<<<<<<
  * ctypedef void (*free_t)(void *p)
  * 
  */
 typedef void *(*__pyx_t_6hunter_6vendor_6_cymem_5cymem_malloc_t)(size_t);
 
-/* "hunter/vendor/_cymem/cymem.pxd":2
+/* "hunter/vendor/_cymem/cymem.pxd":3
+ * # cython: language_level=3str
  * ctypedef void* (*malloc_t)(size_t n)
  * ctypedef void (*free_t)(void *p)             # <<<<<<<<<<<<<<
  * 
@@ -914,7 +916,7 @@ typedef void *(*__pyx_t_6hunter_6vendor_6_cymem_5cymem_malloc_t)(size_t);
  */
 typedef void (*__pyx_t_6hunter_6vendor_6_cymem_5cymem_free_t)(void *);
 
-/* "hunter/vendor/_cymem/cymem.pxd":4
+/* "hunter/vendor/_cymem/cymem.pxd":5
  * ctypedef void (*free_t)(void *p)
  * 
  * cdef class PyMalloc:             # <<<<<<<<<<<<<<
@@ -928,7 +930,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyMalloc {
 };
 
 
-/* "hunter/vendor/_cymem/cymem.pxd":10
+/* "hunter/vendor/_cymem/cymem.pxd":11
  * cdef PyMalloc WrapMalloc(malloc_t malloc)
  * 
  * cdef class PyFree:             # <<<<<<<<<<<<<<
@@ -942,7 +944,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyFree {
 };
 
 
-/* "hunter/vendor/_cymem/cymem.pxd":16
+/* "hunter/vendor/_cymem/cymem.pxd":17
  * cdef PyFree WrapFree(free_t free)
  * 
  * cdef class Pool:             # <<<<<<<<<<<<<<
@@ -960,7 +962,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool {
 };
 
 
-/* "hunter/vendor/_cymem/cymem.pxd":28
+/* "hunter/vendor/_cymem/cymem.pxd":29
  * 
  * 
  * cdef class Address:             # <<<<<<<<<<<<<<
@@ -2984,7 +2986,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_4own_pyref(struct
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":17
+/* "hunter/vendor/_cymem/cymem.pxd":18
  * 
  * cdef class Pool:
  *     cdef readonly size_t size             # <<<<<<<<<<<<<<
@@ -3014,7 +3016,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_4size___get__(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 17, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3031,7 +3033,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_4size___get__(str
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":18
+/* "hunter/vendor/_cymem/cymem.pxd":19
  * cdef class Pool:
  *     cdef readonly size_t size
  *     cdef readonly dict addresses             # <<<<<<<<<<<<<<
@@ -3068,7 +3070,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_9addresses___get_
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":19
+/* "hunter/vendor/_cymem/cymem.pxd":20
  *     cdef readonly size_t size
  *     cdef readonly dict addresses
  *     cdef readonly list refs             # <<<<<<<<<<<<<<
@@ -3105,7 +3107,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_4refs___get__(str
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":20
+/* "hunter/vendor/_cymem/cymem.pxd":21
  *     cdef readonly dict addresses
  *     cdef readonly list refs
  *     cdef readonly PyMalloc pymalloc             # <<<<<<<<<<<<<<
@@ -3142,7 +3144,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_4Pool_8pymalloc___get__
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":21
+/* "hunter/vendor/_cymem/cymem.pxd":22
  *     cdef readonly list refs
  *     cdef readonly PyMalloc pymalloc
  *     cdef readonly PyFree pyfree             # <<<<<<<<<<<<<<
@@ -3745,7 +3747,7 @@ static void __pyx_pf_6hunter_6vendor_6_cymem_5cymem_7Address_4__dealloc__(struct
   __Pyx_RefNannyFinishContext();
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":30
+/* "hunter/vendor/_cymem/cymem.pxd":31
  * cdef class Address:
  *     cdef void* ptr
  *     cdef readonly PyMalloc pymalloc             # <<<<<<<<<<<<<<
@@ -3781,7 +3783,7 @@ static PyObject *__pyx_pf_6hunter_6vendor_6_cymem_5cymem_7Address_8pymalloc___ge
   return __pyx_r;
 }
 
-/* "hunter/vendor/_cymem/cymem.pxd":31
+/* "hunter/vendor/_cymem/cymem.pxd":32
  *     cdef void* ptr
  *     cdef readonly PyMalloc pymalloc
  *     cdef readonly PyFree pyfree             # <<<<<<<<<<<<<<
@@ -5040,7 +5042,7 @@ if (!__Pyx_RefNanny) {
  * 
  * WARN_ZERO_ALLOC = False
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_warnings, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_warnings, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_warnings, __pyx_t_1) < 0) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5127,7 +5129,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_1 = 0;
 
   /* "hunter/vendor/_cymem/cymem.pyx":1
- * # cython: embedsignature=True             # <<<<<<<<<<<<<<
+ * # cython: embedsignature=True, language_level=3str             # <<<<<<<<<<<<<<
  * 
  * from cpython.mem cimport PyMem_Malloc, PyMem_Free
  */

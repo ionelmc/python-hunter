@@ -907,14 +907,16 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Address;
 struct __pyx_obj_6hunter_6_event_Event;
 struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines;
 
-/* "vendor/_cymem/cymem.pxd":1
+/* "vendor/_cymem/cymem.pxd":2
+ * # cython: language_level=3str
  * ctypedef void* (*malloc_t)(size_t n)             # <<<<<<<<<<<<<<
  * ctypedef void (*free_t)(void *p)
  * 
  */
 typedef void *(*__pyx_t_6hunter_6vendor_6_cymem_5cymem_malloc_t)(size_t);
 
-/* "vendor/_cymem/cymem.pxd":2
+/* "vendor/_cymem/cymem.pxd":3
+ * # cython: language_level=3str
  * ctypedef void* (*malloc_t)(size_t n)
  * ctypedef void (*free_t)(void *p)             # <<<<<<<<<<<<<<
  * 
@@ -943,7 +945,7 @@ struct __pyx_obj_6hunter_7_tracer_Tracer {
 };
 
 
-/* "vendor/_cymem/cymem.pxd":4
+/* "vendor/_cymem/cymem.pxd":5
  * ctypedef void (*free_t)(void *p)
  * 
  * cdef class PyMalloc:             # <<<<<<<<<<<<<<
@@ -957,7 +959,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyMalloc {
 };
 
 
-/* "vendor/_cymem/cymem.pxd":10
+/* "vendor/_cymem/cymem.pxd":11
  * cdef PyMalloc WrapMalloc(malloc_t malloc)
  * 
  * cdef class PyFree:             # <<<<<<<<<<<<<<
@@ -971,7 +973,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyFree {
 };
 
 
-/* "vendor/_cymem/cymem.pxd":16
+/* "vendor/_cymem/cymem.pxd":17
  * cdef PyFree WrapFree(free_t free)
  * 
  * cdef class Pool:             # <<<<<<<<<<<<<<
@@ -989,7 +991,7 @@ struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool {
 };
 
 
-/* "vendor/_cymem/cymem.pxd":28
+/* "vendor/_cymem/cymem.pxd":29
  * 
  * 
  * cdef class Address:             # <<<<<<<<<<<<<<
@@ -1040,7 +1042,7 @@ struct __pyx_obj_6hunter_6_event_Event {
 };
 
 
-/* "hunter/_event.pyx":351
+/* "hunter/_event.pyx":348
  * 
  * 
  * def yield_lines(filename, module_globals, start, list collector,             # <<<<<<<<<<<<<<
@@ -1064,7 +1066,7 @@ struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines {
 
 
 
-/* "vendor/_cymem/cymem.pxd":4
+/* "vendor/_cymem/cymem.pxd":5
  * ctypedef void (*free_t)(void *p)
  * 
  * cdef class PyMalloc:             # <<<<<<<<<<<<<<
@@ -1078,7 +1080,7 @@ struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyMalloc {
 static struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyMalloc *__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyMalloc;
 
 
-/* "vendor/_cymem/cymem.pxd":10
+/* "vendor/_cymem/cymem.pxd":11
  * cdef PyMalloc WrapMalloc(malloc_t malloc)
  * 
  * cdef class PyFree:             # <<<<<<<<<<<<<<
@@ -1092,7 +1094,7 @@ struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyFree {
 static struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyFree *__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyFree;
 
 
-/* "vendor/_cymem/cymem.pxd":16
+/* "vendor/_cymem/cymem.pxd":17
  * cdef PyFree WrapFree(free_t free)
  * 
  * cdef class Pool:             # <<<<<<<<<<<<<<
@@ -1108,7 +1110,7 @@ struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool {
 static struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool *__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_Pool;
 
 
-/* "hunter/_event.pyx":47
+/* "hunter/_event.pyx":46
  * 
  * 
  * cdef class Event:             # <<<<<<<<<<<<<<
@@ -2061,8 +2063,7 @@ static const char __pyx_k__5[] = "";
 static const char __pyx_k__7[] = "?";
 static const char __pyx_k_py[] = ".py";
 static const char __pyx_k_so[] = ".so";
-static const char __pyx_k_PY2[] = "PY2";
-static const char __pyx_k__13[] = ".";
+static const char __pyx_k__12[] = ".";
 static const char __pyx_k_all[] = "__all__";
 static const char __pyx_k_arg[] = "arg";
 static const char __pyx_k_def[] = "def";
@@ -2089,7 +2090,6 @@ static const char __pyx_k_site[] = "site";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_util[] = "util";
 static const char __pyx_k_Event[] = "Event";
-static const char __pyx_k_ascii[] = "ascii";
 static const char __pyx_k_calls[] = "calls";
 static const char __pyx_k_class[] = "class";
 static const char __pyx_k_close[] = "close";
@@ -2104,7 +2104,6 @@ static const char __pyx_k_start[] = "start";
 static const char __pyx_k_throw[] = "throw";
 static const char __pyx_k_amount[] = "amount";
 static const char __pyx_k_dedent[] = "dedent";
-static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_exists[] = "exists";
 static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
@@ -2128,7 +2127,6 @@ static const char __pyx_k_getline[] = "getline";
 static const char __pyx_k_globals[] = "globals";
 static const char __pyx_k_os_path[] = "os.path";
 static const char __pyx_k_partial[] = "partial";
-static const char __pyx_k_replace[] = "replace";
 static const char __pyx_k_basename[] = "basename";
 static const char __pyx_k_endswith[] = "endswith";
 static const char __pyx_k_filename[] = "filename";
@@ -2199,20 +2197,18 @@ static PyObject *__pyx_kp_s_Missing_argument_depth_required;
 static PyObject *__pyx_kp_s_Missing_argument_threading_suppo;
 static PyObject *__pyx_kp_s_NO_SOURCE_not_reading_file;
 static PyObject *__pyx_kp_s_NO_SOURCE_r;
-static PyObject *__pyx_n_s_PY2;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_SITE_PACKAGES_PATHS;
 static PyObject *__pyx_n_s_SYS_PREFIX_PATHS;
 static PyObject *__pyx_n_s_TokenError;
 static PyObject *__pyx_n_s_TypeError;
-static PyObject *__pyx_kp_s__13;
+static PyObject *__pyx_kp_s__12;
 static PyObject *__pyx_kp_s__5;
 static PyObject *__pyx_kp_s__7;
 static PyObject *__pyx_n_s_all;
 static PyObject *__pyx_n_s_amount;
 static PyObject *__pyx_n_s_arg;
 static PyObject *__pyx_n_s_args;
-static PyObject *__pyx_n_s_ascii;
 static PyObject *__pyx_n_s_basename;
 static PyObject *__pyx_n_s_call;
 static PyObject *__pyx_n_s_calls;
@@ -2230,7 +2226,6 @@ static PyObject *__pyx_n_s_dedent;
 static PyObject *__pyx_n_s_def;
 static PyObject *__pyx_n_s_depth;
 static PyObject *__pyx_n_s_dict;
-static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_endswith;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_exception;
@@ -2293,7 +2288,6 @@ static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
-static PyObject *__pyx_n_s_replace;
 static PyObject *__pyx_n_s_return;
 static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_setstate;
@@ -2357,23 +2351,22 @@ static PyObject *__pyx_int_10;
 static PyObject *__pyx_int_235031988;
 static PyObject *__pyx_int_neg_1;
 static PyObject *__pyx_k_;
+static PyObject *__pyx_slice__9;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__8;
-static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_slice__10;
+static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
-static PyObject *__pyx_tuple__12;
+static PyObject *__pyx_tuple__15;
 static PyObject *__pyx_tuple__16;
 static PyObject *__pyx_tuple__17;
-static PyObject *__pyx_tuple__18;
+static PyObject *__pyx_codeobj__13;
 static PyObject *__pyx_codeobj__14;
-static PyObject *__pyx_codeobj__15;
 /* Late includes */
 
-/* "hunter/_event.pyx":37
+/* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
@@ -2398,40 +2391,40 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("make_kind_names", 0);
-  __Pyx_TraceCall("make_kind_names", __pyx_f[0], 37, 0, __PYX_ERR(0, 37, __pyx_L1_error));
+  __Pyx_TraceCall("make_kind_names", __pyx_f[0], 36, 0, __PYX_ERR(0, 36, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":38
+  /* "hunter/_event.pyx":37
  * 
  * cdef PyObject** make_kind_names(list strings):
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))             # <<<<<<<<<<<<<<
  *     cdef object name
  *     for i, string in enumerate(strings):
  */
-  __Pyx_TraceLine(38,0,__PYX_ERR(0, 38, __pyx_L1_error))
+  __Pyx_TraceLine(37,0,__PYX_ERR(0, 37, __pyx_L1_error))
   if (unlikely(__pyx_v_strings == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 38, __pyx_L1_error)
+    __PYX_ERR(0, 37, __pyx_L1_error)
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_strings); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 38, __pyx_L1_error)
-  __pyx_t_2 = ((struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_v_6hunter_6_event_mem->__pyx_vtab)->alloc(__pyx_v_6hunter_6_event_mem, __pyx_t_1, (sizeof(PyObject *))); if (unlikely(__pyx_t_2 == ((void *)NULL))) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_strings); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_v_6hunter_6_event_mem->__pyx_vtab)->alloc(__pyx_v_6hunter_6_event_mem, __pyx_t_1, (sizeof(PyObject *))); if (unlikely(__pyx_t_2 == ((void *)NULL))) __PYX_ERR(0, 37, __pyx_L1_error)
   __pyx_v_array = ((PyObject **)__pyx_t_2);
 
-  /* "hunter/_event.pyx":40
+  /* "hunter/_event.pyx":39
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  *     for i, string in enumerate(strings):             # <<<<<<<<<<<<<<
  *         name = intern(string)
  *         Py_XINCREF(<PyObject*>name)
  */
-  __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L1_error))
+  __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L1_error))
   __pyx_t_1 = 0;
   __pyx_t_3 = __pyx_v_strings; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
   for (;;) {
     if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_5 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
     #else
-    __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
+    __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 39, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_string, __pyx_t_5);
@@ -2439,62 +2432,62 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
     __pyx_v_i = __pyx_t_1;
     __pyx_t_1 = (__pyx_t_1 + 1);
 
-    /* "hunter/_event.pyx":41
+    /* "hunter/_event.pyx":40
  *     cdef object name
  *     for i, string in enumerate(strings):
  *         name = intern(string)             # <<<<<<<<<<<<<<
  *         Py_XINCREF(<PyObject*>name)
  *         array[i] = <PyObject*>name
  */
-    __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L1_error))
-    __pyx_t_5 = __Pyx_Intern(__pyx_v_string); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L1_error))
+    __pyx_t_5 = __Pyx_Intern(__pyx_v_string); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hunter/_event.pyx":42
+    /* "hunter/_event.pyx":41
  *     for i, string in enumerate(strings):
  *         name = intern(string)
  *         Py_XINCREF(<PyObject*>name)             # <<<<<<<<<<<<<<
  *         array[i] = <PyObject*>name
  *     return <PyObject**>array
  */
-    __Pyx_TraceLine(42,0,__PYX_ERR(0, 42, __pyx_L1_error))
+    __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L1_error))
     Py_XINCREF(((PyObject *)__pyx_v_name));
 
-    /* "hunter/_event.pyx":43
+    /* "hunter/_event.pyx":42
  *         name = intern(string)
  *         Py_XINCREF(<PyObject*>name)
  *         array[i] = <PyObject*>name             # <<<<<<<<<<<<<<
  *     return <PyObject**>array
  * 
  */
-    __Pyx_TraceLine(43,0,__PYX_ERR(0, 43, __pyx_L1_error))
+    __Pyx_TraceLine(42,0,__PYX_ERR(0, 42, __pyx_L1_error))
     (__pyx_v_array[__pyx_v_i]) = ((PyObject *)__pyx_v_name);
 
-    /* "hunter/_event.pyx":40
+    /* "hunter/_event.pyx":39
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  *     for i, string in enumerate(strings):             # <<<<<<<<<<<<<<
  *         name = intern(string)
  *         Py_XINCREF(<PyObject*>name)
  */
-    __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L1_error))
+    __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L1_error))
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hunter/_event.pyx":44
+  /* "hunter/_event.pyx":43
  *         Py_XINCREF(<PyObject*>name)
  *         array[i] = <PyObject*>name
  *     return <PyObject**>array             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __Pyx_TraceLine(44,0,__PYX_ERR(0, 44, __pyx_L1_error))
+  __Pyx_TraceLine(43,0,__PYX_ERR(0, 43, __pyx_L1_error))
   __pyx_r = ((PyObject **)__pyx_v_array);
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":37
+  /* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
@@ -2516,7 +2509,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":61
+/* "hunter/_event.pyx":60
  *             Needed for the ``calls`` and ``depth`` fields.
  *     """
  *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
@@ -2577,13 +2570,13 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kind)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, 1); __PYX_ERR(0, 61, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, 1); __PYX_ERR(0, 60, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_arg)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, 2); __PYX_ERR(0, 61, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, 2); __PYX_ERR(0, 60, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -2611,7 +2604,7 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 61, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 60, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2631,7 +2624,7 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
       }
     }
     __pyx_v_frame = ((PyFrameObject *)values[0]);
-    __pyx_v_kind = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_kind == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
+    __pyx_v_kind = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_kind == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
     __pyx_v_arg = values[2];
     __pyx_v_tracer = ((struct __pyx_obj_6hunter_7_tracer_Tracer *)values[3]);
     __pyx_v_depth = values[4];
@@ -2640,14 +2633,14 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 61, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._event.Event.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_frame), __pyx_ptype_6hunter_7_tracer_FrameType, 1, "frame", 0))) __PYX_ERR(0, 61, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tracer), __pyx_ptype_6hunter_7_tracer_Tracer, 1, "tracer", 0))) __PYX_ERR(0, 61, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_frame), __pyx_ptype_6hunter_7_tracer_FrameType, 1, "frame", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tracer), __pyx_ptype_6hunter_7_tracer_Tracer, 1, "tracer", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
   __pyx_r = __pyx_pf_6hunter_6_event_5Event___init__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), __pyx_v_frame, __pyx_v_kind, __pyx_v_arg, __pyx_v_tracer, __pyx_v_depth, __pyx_v_calls, __pyx_v_threading_support);
 
   /* function exit code */
@@ -2671,50 +2664,50 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
-  __Pyx_TraceCall("__init__", __pyx_f[0], 61, 0, __PYX_ERR(0, 61, __pyx_L1_error));
+  __Pyx_TraceCall("__init__", __pyx_f[0], 60, 0, __PYX_ERR(0, 60, __pyx_L1_error));
   __Pyx_INCREF(__pyx_v_depth);
   __Pyx_INCREF(__pyx_v_calls);
   __Pyx_INCREF(__pyx_v_threading_support);
 
-  /* "hunter/_event.pyx":63
+  /* "hunter/_event.pyx":62
  *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):
  *         if tracer is None:             # <<<<<<<<<<<<<<
  *             if depth is None:
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  */
-  __Pyx_TraceLine(63,0,__PYX_ERR(0, 63, __pyx_L1_error))
+  __Pyx_TraceLine(62,0,__PYX_ERR(0, 62, __pyx_L1_error))
   __pyx_t_1 = (((PyObject *)__pyx_v_tracer) == Py_None);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":64
+    /* "hunter/_event.pyx":63
  *                  object threading_support=MISSING):
  *         if tracer is None:
  *             if depth is None:             # <<<<<<<<<<<<<<
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  *             if calls is None:
  */
-    __Pyx_TraceLine(64,0,__PYX_ERR(0, 64, __pyx_L1_error))
+    __Pyx_TraceLine(63,0,__PYX_ERR(0, 63, __pyx_L1_error))
     __pyx_t_2 = (__pyx_v_depth == Py_None);
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "hunter/_event.pyx":65
+      /* "hunter/_event.pyx":64
  *         if tracer is None:
  *             if depth is None:
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  */
-      __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
+      __Pyx_TraceLine(64,0,__PYX_ERR(0, 64, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 65, __pyx_L1_error)
+      __PYX_ERR(0, 64, __pyx_L1_error)
 
-      /* "hunter/_event.pyx":64
+      /* "hunter/_event.pyx":63
  *                  object threading_support=MISSING):
  *         if tracer is None:
  *             if depth is None:             # <<<<<<<<<<<<<<
@@ -2723,33 +2716,33 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
  */
     }
 
-    /* "hunter/_event.pyx":66
+    /* "hunter/_event.pyx":65
  *             if depth is None:
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  *             if calls is None:             # <<<<<<<<<<<<<<
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  *             if threading_support is MISSING:
  */
-    __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
+    __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
     __pyx_t_1 = (__pyx_v_calls == Py_None);
     __pyx_t_2 = (__pyx_t_1 != 0);
     if (unlikely(__pyx_t_2)) {
 
-      /* "hunter/_event.pyx":67
+      /* "hunter/_event.pyx":66
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *             if threading_support is MISSING:
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')
  */
-      __Pyx_TraceLine(67,0,__PYX_ERR(0, 67, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
+      __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 67, __pyx_L1_error)
+      __PYX_ERR(0, 66, __pyx_L1_error)
 
-      /* "hunter/_event.pyx":66
+      /* "hunter/_event.pyx":65
  *             if depth is None:
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  *             if calls is None:             # <<<<<<<<<<<<<<
@@ -2758,36 +2751,36 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
  */
     }
 
-    /* "hunter/_event.pyx":68
+    /* "hunter/_event.pyx":67
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  *             if threading_support is MISSING:             # <<<<<<<<<<<<<<
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')
  *         else:
  */
-    __Pyx_TraceLine(68,0,__PYX_ERR(0, 68, __pyx_L1_error))
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MISSING); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __Pyx_TraceLine(67,0,__PYX_ERR(0, 67, __pyx_L1_error))
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MISSING); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_2 = (__pyx_v_threading_support == __pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "hunter/_event.pyx":69
+      /* "hunter/_event.pyx":68
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  *             if threading_support is MISSING:
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *         else:
  *             depth = tracer.depth
  */
-      __Pyx_TraceLine(69,0,__PYX_ERR(0, 69, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __Pyx_TraceLine(68,0,__PYX_ERR(0, 68, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 69, __pyx_L1_error)
+      __PYX_ERR(0, 68, __pyx_L1_error)
 
-      /* "hunter/_event.pyx":68
+      /* "hunter/_event.pyx":67
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  *             if threading_support is MISSING:             # <<<<<<<<<<<<<<
@@ -2796,7 +2789,7 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
  */
     }
 
-    /* "hunter/_event.pyx":63
+    /* "hunter/_event.pyx":62
  *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):
  *         if tracer is None:             # <<<<<<<<<<<<<<
@@ -2806,41 +2799,41 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
     goto __pyx_L3;
   }
 
-  /* "hunter/_event.pyx":71
+  /* "hunter/_event.pyx":70
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')
  *         else:
  *             depth = tracer.depth             # <<<<<<<<<<<<<<
  *             calls = tracer.calls
  *             threading_support = tracer.threading_support
  */
-  __Pyx_TraceLine(71,0,__PYX_ERR(0, 71, __pyx_L1_error))
+  __Pyx_TraceLine(70,0,__PYX_ERR(0, 70, __pyx_L1_error))
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_tracer->depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_tracer->depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_depth, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":72
+    /* "hunter/_event.pyx":71
  *         else:
  *             depth = tracer.depth
  *             calls = tracer.calls             # <<<<<<<<<<<<<<
  *             threading_support = tracer.threading_support
  * 
  */
-    __Pyx_TraceLine(72,0,__PYX_ERR(0, 72, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_tracer->calls); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __Pyx_TraceLine(71,0,__PYX_ERR(0, 71, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_tracer->calls); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_calls, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":73
+    /* "hunter/_event.pyx":72
  *             depth = tracer.depth
  *             calls = tracer.calls
  *             threading_support = tracer.threading_support             # <<<<<<<<<<<<<<
  * 
  *         self.arg = arg
  */
-    __Pyx_TraceLine(73,0,__PYX_ERR(0, 73, __pyx_L1_error))
+    __Pyx_TraceLine(72,0,__PYX_ERR(0, 72, __pyx_L1_error))
     __pyx_t_3 = __pyx_v_tracer->threading_support;
     __Pyx_INCREF(__pyx_t_3);
     __Pyx_DECREF_SET(__pyx_v_threading_support, __pyx_t_3);
@@ -2848,42 +2841,42 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   }
   __pyx_L3:;
 
-  /* "hunter/_event.pyx":75
+  /* "hunter/_event.pyx":74
  *             threading_support = tracer.threading_support
  * 
  *         self.arg = arg             # <<<<<<<<<<<<<<
  *         self.frame = frame
  *         self.kind = <str>KIND_NAMES[kind]
  */
-  __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
+  __Pyx_TraceLine(74,0,__PYX_ERR(0, 74, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_arg);
   __Pyx_GIVEREF(__pyx_v_arg);
   __Pyx_GOTREF(__pyx_v_self->arg);
   __Pyx_DECREF(__pyx_v_self->arg);
   __pyx_v_self->arg = __pyx_v_arg;
 
-  /* "hunter/_event.pyx":76
+  /* "hunter/_event.pyx":75
  * 
  *         self.arg = arg
  *         self.frame = frame             # <<<<<<<<<<<<<<
  *         self.kind = <str>KIND_NAMES[kind]
  *         self.depth = depth
  */
-  __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
+  __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
   __Pyx_INCREF(((PyObject *)__pyx_v_frame));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_frame));
   __Pyx_GOTREF(__pyx_v_self->frame);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->frame));
   __pyx_v_self->frame = __pyx_v_frame;
 
-  /* "hunter/_event.pyx":77
+  /* "hunter/_event.pyx":76
  *         self.arg = arg
  *         self.frame = frame
  *         self.kind = <str>KIND_NAMES[kind]             # <<<<<<<<<<<<<<
  *         self.depth = depth
  *         self.calls = calls
  */
-  __Pyx_TraceLine(77,0,__PYX_ERR(0, 77, __pyx_L1_error))
+  __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
   __pyx_t_3 = ((PyObject *)(__pyx_v_6hunter_6_event_KIND_NAMES[__pyx_v_kind]));
   __Pyx_INCREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
@@ -2892,58 +2885,58 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   __pyx_v_self->kind = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hunter/_event.pyx":78
+  /* "hunter/_event.pyx":77
  *         self.frame = frame
  *         self.kind = <str>KIND_NAMES[kind]
  *         self.depth = depth             # <<<<<<<<<<<<<<
  *         self.calls = calls
  *         self.threading_support = threading_support
  */
-  __Pyx_TraceLine(78,0,__PYX_ERR(0, 78, __pyx_L1_error))
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_depth); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_TraceLine(77,0,__PYX_ERR(0, 77, __pyx_L1_error))
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_depth); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
   __pyx_v_self->depth = __pyx_t_4;
 
-  /* "hunter/_event.pyx":79
+  /* "hunter/_event.pyx":78
  *         self.kind = <str>KIND_NAMES[kind]
  *         self.depth = depth
  *         self.calls = calls             # <<<<<<<<<<<<<<
  *         self.threading_support = threading_support
  *         self.detached = False
  */
-  __Pyx_TraceLine(79,0,__PYX_ERR(0, 79, __pyx_L1_error))
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_calls); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
+  __Pyx_TraceLine(78,0,__PYX_ERR(0, 78, __pyx_L1_error))
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_calls); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_v_self->calls = __pyx_t_4;
 
-  /* "hunter/_event.pyx":80
+  /* "hunter/_event.pyx":79
  *         self.depth = depth
  *         self.calls = calls
  *         self.threading_support = threading_support             # <<<<<<<<<<<<<<
  *         self.detached = False
  *         self.builtin = kind > 3
  */
-  __Pyx_TraceLine(80,0,__PYX_ERR(0, 80, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_TraceLine(79,0,__PYX_ERR(0, 79, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_threading_support); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   __pyx_v_self->threading_support = __pyx_t_1;
 
-  /* "hunter/_event.pyx":81
+  /* "hunter/_event.pyx":80
  *         self.calls = calls
  *         self.threading_support = threading_support
  *         self.detached = False             # <<<<<<<<<<<<<<
  *         self.builtin = kind > 3
  * 
  */
-  __Pyx_TraceLine(81,0,__PYX_ERR(0, 81, __pyx_L1_error))
+  __Pyx_TraceLine(80,0,__PYX_ERR(0, 80, __pyx_L1_error))
   __pyx_v_self->detached = 0;
 
-  /* "hunter/_event.pyx":82
+  /* "hunter/_event.pyx":81
  *         self.threading_support = threading_support
  *         self.detached = False
  *         self.builtin = kind > 3             # <<<<<<<<<<<<<<
  * 
  *         self._code = UNSET
  */
-  __Pyx_TraceLine(82,0,__PYX_ERR(0, 82, __pyx_L1_error))
-  __pyx_t_3 = __Pyx_PyBool_FromLong((__pyx_v_kind > 3)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_TraceLine(81,0,__PYX_ERR(0, 81, __pyx_L1_error))
+  __pyx_t_3 = __Pyx_PyBool_FromLong((__pyx_v_kind > 3)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->builtin);
@@ -2951,217 +2944,217 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   __pyx_v_self->builtin = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hunter/_event.pyx":84
+  /* "hunter/_event.pyx":83
  *         self.builtin = kind > 3
  * 
  *         self._code = UNSET             # <<<<<<<<<<<<<<
  *         self._filename = UNSET
  *         self._fullsource = UNSET
  */
-  __Pyx_TraceLine(84,0,__PYX_ERR(0, 84, __pyx_L1_error))
+  __Pyx_TraceLine(83,0,__PYX_ERR(0, 83, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_code);
   __Pyx_DECREF(__pyx_v_self->_code);
   __pyx_v_self->_code = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":85
+  /* "hunter/_event.pyx":84
  * 
  *         self._code = UNSET
  *         self._filename = UNSET             # <<<<<<<<<<<<<<
  *         self._fullsource = UNSET
  *         self._function_object = UNSET
  */
-  __Pyx_TraceLine(85,0,__PYX_ERR(0, 85, __pyx_L1_error))
+  __Pyx_TraceLine(84,0,__PYX_ERR(0, 84, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_filename);
   __Pyx_DECREF(__pyx_v_self->_filename);
   __pyx_v_self->_filename = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":86
+  /* "hunter/_event.pyx":85
  *         self._code = UNSET
  *         self._filename = UNSET
  *         self._fullsource = UNSET             # <<<<<<<<<<<<<<
  *         self._function_object = UNSET
  *         self._function = UNSET
  */
-  __Pyx_TraceLine(86,0,__PYX_ERR(0, 86, __pyx_L1_error))
+  __Pyx_TraceLine(85,0,__PYX_ERR(0, 85, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_fullsource);
   __Pyx_DECREF(__pyx_v_self->_fullsource);
   __pyx_v_self->_fullsource = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":87
+  /* "hunter/_event.pyx":86
  *         self._filename = UNSET
  *         self._fullsource = UNSET
  *         self._function_object = UNSET             # <<<<<<<<<<<<<<
  *         self._function = UNSET
  *         self._globals = UNSET
  */
-  __Pyx_TraceLine(87,0,__PYX_ERR(0, 87, __pyx_L1_error))
+  __Pyx_TraceLine(86,0,__PYX_ERR(0, 86, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_function_object);
   __Pyx_DECREF(__pyx_v_self->_function_object);
   __pyx_v_self->_function_object = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":88
+  /* "hunter/_event.pyx":87
  *         self._fullsource = UNSET
  *         self._function_object = UNSET
  *         self._function = UNSET             # <<<<<<<<<<<<<<
  *         self._globals = UNSET
  *         self._lineno = UNSET
  */
-  __Pyx_TraceLine(88,0,__PYX_ERR(0, 88, __pyx_L1_error))
+  __Pyx_TraceLine(87,0,__PYX_ERR(0, 87, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_function);
   __Pyx_DECREF(__pyx_v_self->_function);
   __pyx_v_self->_function = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":89
+  /* "hunter/_event.pyx":88
  *         self._function_object = UNSET
  *         self._function = UNSET
  *         self._globals = UNSET             # <<<<<<<<<<<<<<
  *         self._lineno = UNSET
  *         self._locals = UNSET
  */
-  __Pyx_TraceLine(89,0,__PYX_ERR(0, 89, __pyx_L1_error))
+  __Pyx_TraceLine(88,0,__PYX_ERR(0, 88, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_globals);
   __Pyx_DECREF(__pyx_v_self->_globals);
   __pyx_v_self->_globals = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":90
+  /* "hunter/_event.pyx":89
  *         self._function = UNSET
  *         self._globals = UNSET
  *         self._lineno = UNSET             # <<<<<<<<<<<<<<
  *         self._locals = UNSET
  *         self._module = UNSET
  */
-  __Pyx_TraceLine(90,0,__PYX_ERR(0, 90, __pyx_L1_error))
+  __Pyx_TraceLine(89,0,__PYX_ERR(0, 89, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_lineno);
   __Pyx_DECREF(__pyx_v_self->_lineno);
   __pyx_v_self->_lineno = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":91
+  /* "hunter/_event.pyx":90
  *         self._globals = UNSET
  *         self._lineno = UNSET
  *         self._locals = UNSET             # <<<<<<<<<<<<<<
  *         self._module = UNSET
  *         self._source = UNSET
  */
-  __Pyx_TraceLine(91,0,__PYX_ERR(0, 91, __pyx_L1_error))
+  __Pyx_TraceLine(90,0,__PYX_ERR(0, 90, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_locals);
   __Pyx_DECREF(__pyx_v_self->_locals);
   __pyx_v_self->_locals = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":92
+  /* "hunter/_event.pyx":91
  *         self._lineno = UNSET
  *         self._locals = UNSET
  *         self._module = UNSET             # <<<<<<<<<<<<<<
  *         self._source = UNSET
  *         self._stdlib = UNSET
  */
-  __Pyx_TraceLine(92,0,__PYX_ERR(0, 92, __pyx_L1_error))
+  __Pyx_TraceLine(91,0,__PYX_ERR(0, 91, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_module);
   __Pyx_DECREF(__pyx_v_self->_module);
   __pyx_v_self->_module = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":93
+  /* "hunter/_event.pyx":92
  *         self._locals = UNSET
  *         self._module = UNSET
  *         self._source = UNSET             # <<<<<<<<<<<<<<
  *         self._stdlib = UNSET
  *         self._threadidn = UNSET
  */
-  __Pyx_TraceLine(93,0,__PYX_ERR(0, 93, __pyx_L1_error))
+  __Pyx_TraceLine(92,0,__PYX_ERR(0, 92, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_source);
   __Pyx_DECREF(__pyx_v_self->_source);
   __pyx_v_self->_source = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":94
+  /* "hunter/_event.pyx":93
  *         self._module = UNSET
  *         self._source = UNSET
  *         self._stdlib = UNSET             # <<<<<<<<<<<<<<
  *         self._threadidn = UNSET
  *         self._threadname = UNSET
  */
-  __Pyx_TraceLine(94,0,__PYX_ERR(0, 94, __pyx_L1_error))
+  __Pyx_TraceLine(93,0,__PYX_ERR(0, 93, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_stdlib);
   __Pyx_DECREF(__pyx_v_self->_stdlib);
   __pyx_v_self->_stdlib = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":95
+  /* "hunter/_event.pyx":94
  *         self._source = UNSET
  *         self._stdlib = UNSET
  *         self._threadidn = UNSET             # <<<<<<<<<<<<<<
  *         self._threadname = UNSET
  *         self._thread = UNSET
  */
-  __Pyx_TraceLine(95,0,__PYX_ERR(0, 95, __pyx_L1_error))
+  __Pyx_TraceLine(94,0,__PYX_ERR(0, 94, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_threadidn);
   __Pyx_DECREF(__pyx_v_self->_threadidn);
   __pyx_v_self->_threadidn = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":96
+  /* "hunter/_event.pyx":95
  *         self._stdlib = UNSET
  *         self._threadidn = UNSET
  *         self._threadname = UNSET             # <<<<<<<<<<<<<<
  *         self._thread = UNSET
  *         self._instruction = UNSET
  */
-  __Pyx_TraceLine(96,0,__PYX_ERR(0, 96, __pyx_L1_error))
+  __Pyx_TraceLine(95,0,__PYX_ERR(0, 95, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_threadname);
   __Pyx_DECREF(__pyx_v_self->_threadname);
   __pyx_v_self->_threadname = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":97
+  /* "hunter/_event.pyx":96
  *         self._threadidn = UNSET
  *         self._threadname = UNSET
  *         self._thread = UNSET             # <<<<<<<<<<<<<<
  *         self._instruction = UNSET
  * 
  */
-  __Pyx_TraceLine(97,0,__PYX_ERR(0, 97, __pyx_L1_error))
+  __Pyx_TraceLine(96,0,__PYX_ERR(0, 96, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_thread);
   __Pyx_DECREF(__pyx_v_self->_thread);
   __pyx_v_self->_thread = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":98
+  /* "hunter/_event.pyx":97
  *         self._threadname = UNSET
  *         self._thread = UNSET
  *         self._instruction = UNSET             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-  __Pyx_TraceLine(98,0,__PYX_ERR(0, 98, __pyx_L1_error))
+  __Pyx_TraceLine(97,0,__PYX_ERR(0, 97, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GIVEREF(__pyx_v_6hunter_6_event_UNSET);
   __Pyx_GOTREF(__pyx_v_self->_instruction);
   __Pyx_DECREF(__pyx_v_self->_instruction);
   __pyx_v_self->_instruction = __pyx_v_6hunter_6_event_UNSET;
 
-  /* "hunter/_event.pyx":61
+  /* "hunter/_event.pyx":60
  *             Needed for the ``calls`` and ``depth`` fields.
  *     """
  *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
@@ -3185,7 +3178,7 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":100
+/* "hunter/_event.pyx":99
  *         self._instruction = UNSET
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -3219,35 +3212,35 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2__repr__(struct __pyx_obj_6hun
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 0);
-  __Pyx_TraceCall("__repr__", __pyx_f[0], 100, 0, __PYX_ERR(0, 100, __pyx_L1_error));
+  __Pyx_TraceCall("__repr__", __pyx_f[0], 99, 0, __PYX_ERR(0, 99, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":101
+  /* "hunter/_event.pyx":100
  * 
  *     def __repr__(self):
  *         return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (             # <<<<<<<<<<<<<<
  *             self.kind, self.function, self.module, self.filename, self.lineno
  *         )
  */
-  __Pyx_TraceLine(101,0,__PYX_ERR(0, 101, __pyx_L1_error))
+  __Pyx_TraceLine(100,0,__PYX_ERR(0, 100, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
 
-  /* "hunter/_event.pyx":102
+  /* "hunter/_event.pyx":101
  *     def __repr__(self):
  *         return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (
  *             self.kind, self.function, self.module, self.filename, self.lineno             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __Pyx_TraceLine(102,0,__PYX_ERR(0, 102, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_function); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __Pyx_TraceLine(101,0,__PYX_ERR(0, 101, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_function); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_v_self->kind);
   __Pyx_GIVEREF(__pyx_v_self->kind);
@@ -3265,22 +3258,22 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2__repr__(struct __pyx_obj_6hun
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
 
-  /* "hunter/_event.pyx":101
+  /* "hunter/_event.pyx":100
  * 
  *     def __repr__(self):
  *         return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (             # <<<<<<<<<<<<<<
  *             self.kind, self.function, self.module, self.filename, self.lineno
  *         )
  */
-  __Pyx_TraceLine(101,0,__PYX_ERR(0, 101, __pyx_L1_error))
-  __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Event_kind_r_function_r_module, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_TraceLine(100,0,__PYX_ERR(0, 100, __pyx_L1_error))
+  __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Event_kind_r_function_r_module, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":100
+  /* "hunter/_event.pyx":99
  *         self._instruction = UNSET
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -3304,7 +3297,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_2__repr__(struct __pyx_obj_6hun
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":105
+/* "hunter/_event.pyx":104
  *         )
  * 
  *     def detach(self, value_filter=None):             # <<<<<<<<<<<<<<
@@ -3344,7 +3337,7 @@ static PyObject *__pyx_pw_6hunter_6_event_5Event_5detach(PyObject *__pyx_v_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "detach") < 0)) __PYX_ERR(0, 105, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "detach") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3358,7 +3351,7 @@ static PyObject *__pyx_pw_6hunter_6_event_5Event_5detach(PyObject *__pyx_v_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("detach", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 105, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("detach", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._event.Event.detach", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3380,24 +3373,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4detach(struct __pyx_obj_6hunte
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("detach", 0);
-  __Pyx_TraceCall("detach", __pyx_f[0], 105, 0, __PYX_ERR(0, 105, __pyx_L1_error));
+  __Pyx_TraceCall("detach", __pyx_f[0], 104, 0, __PYX_ERR(0, 104, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":106
+  /* "hunter/_event.pyx":105
  * 
  *     def detach(self, value_filter=None):
  *         return fast_detach(self, value_filter)             # <<<<<<<<<<<<<<
  * 
  *     def clone(self):
  */
-  __Pyx_TraceLine(106,0,__PYX_ERR(0, 106, __pyx_L1_error))
+  __Pyx_TraceLine(105,0,__PYX_ERR(0, 105, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_6hunter_6_event_fast_detach(__pyx_v_self, __pyx_v_value_filter)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6hunter_6_event_fast_detach(__pyx_v_self, __pyx_v_value_filter)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":105
+  /* "hunter/_event.pyx":104
  *         )
  * 
  *     def detach(self, value_filter=None):             # <<<<<<<<<<<<<<
@@ -3417,7 +3410,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4detach(struct __pyx_obj_6hunte
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":108
+/* "hunter/_event.pyx":107
  *         return fast_detach(self, value_filter)
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
@@ -3447,24 +3440,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("clone", 0);
-  __Pyx_TraceCall("clone", __pyx_f[0], 108, 0, __PYX_ERR(0, 108, __pyx_L1_error));
+  __Pyx_TraceCall("clone", __pyx_f[0], 107, 0, __PYX_ERR(0, 107, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":109
+  /* "hunter/_event.pyx":108
  * 
  *     def clone(self):
  *         return fast_clone(self)             # <<<<<<<<<<<<<<
  * 
  *     cdef instruction_getter(self):
  */
-  __Pyx_TraceLine(109,0,__PYX_ERR(0, 109, __pyx_L1_error))
+  __Pyx_TraceLine(108,0,__PYX_ERR(0, 108, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_6hunter_6_event_fast_clone(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_6hunter_6_event_fast_clone(__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":108
+  /* "hunter/_event.pyx":107
  *         return fast_detach(self, value_filter)
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
@@ -3484,7 +3477,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":111
+/* "hunter/_event.pyx":110
  *         return fast_clone(self)
  * 
  *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
@@ -3505,61 +3498,61 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("instruction_getter", 0);
-  __Pyx_TraceCall("instruction_getter", __pyx_f[0], 111, 0, __PYX_ERR(0, 111, __pyx_L1_error));
+  __Pyx_TraceCall("instruction_getter", __pyx_f[0], 110, 0, __PYX_ERR(0, 110, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":112
+  /* "hunter/_event.pyx":111
  * 
  *     cdef instruction_getter(self):
  *         if self._instruction is UNSET:             # <<<<<<<<<<<<<<
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:
  */
-  __Pyx_TraceLine(112,0,__PYX_ERR(0, 112, __pyx_L1_error))
+  __Pyx_TraceLine(111,0,__PYX_ERR(0, 111, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_instruction == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":113
+    /* "hunter/_event.pyx":112
  *     cdef instruction_getter(self):
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:             # <<<<<<<<<<<<<<
  *                 if PY_VERSION_HEX >= 0x030A00A7:
  *                     position = self.frame.f_lasti * sizeof(unsigned short)
  */
-    __Pyx_TraceLine(113,0,__PYX_ERR(0, 113, __pyx_L1_error))
+    __Pyx_TraceLine(112,0,__PYX_ERR(0, 112, __pyx_L1_error))
     __pyx_t_1 = ((__pyx_v_self->frame->f_lasti >= 0) != 0);
     if (__pyx_t_1) {
     } else {
       __pyx_t_2 = __pyx_t_1;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->frame->f_code->co_code); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->frame->f_code->co_code); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 112, __pyx_L1_error)
     __pyx_t_2 = __pyx_t_1;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":114
+      /* "hunter/_event.pyx":113
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:             # <<<<<<<<<<<<<<
  *                     position = self.frame.f_lasti * sizeof(unsigned short)
  *                 else:
  */
-      __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
+      __Pyx_TraceLine(113,0,__PYX_ERR(0, 113, __pyx_L1_error))
       __pyx_t_2 = ((PY_VERSION_HEX >= 0x030A00A7) != 0);
       if (__pyx_t_2) {
 
-        /* "hunter/_event.pyx":115
+        /* "hunter/_event.pyx":114
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:
  *                     position = self.frame.f_lasti * sizeof(unsigned short)             # <<<<<<<<<<<<<<
  *                 else:
  *                     position = self.frame.f_lasti
  */
-        __Pyx_TraceLine(115,0,__PYX_ERR(0, 115, __pyx_L1_error))
+        __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
         __pyx_v_position = (__pyx_v_self->frame->f_lasti * (sizeof(unsigned short)));
 
-        /* "hunter/_event.pyx":114
+        /* "hunter/_event.pyx":113
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  *                 if PY_VERSION_HEX >= 0x030A00A7:             # <<<<<<<<<<<<<<
@@ -3569,29 +3562,29 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
         goto __pyx_L7;
       }
 
-      /* "hunter/_event.pyx":117
+      /* "hunter/_event.pyx":116
  *                     position = self.frame.f_lasti * sizeof(unsigned short)
  *                 else:
  *                     position = self.frame.f_lasti             # <<<<<<<<<<<<<<
  *                 self._instruction = self.frame.f_code.co_code[position]
  *             else:
  */
-      __Pyx_TraceLine(117,0,__PYX_ERR(0, 117, __pyx_L1_error))
+      __Pyx_TraceLine(116,0,__PYX_ERR(0, 116, __pyx_L1_error))
       /*else*/ {
         __pyx_t_3 = __pyx_v_self->frame->f_lasti;
         __pyx_v_position = __pyx_t_3;
       }
       __pyx_L7:;
 
-      /* "hunter/_event.pyx":118
+      /* "hunter/_event.pyx":117
  *                 else:
  *                     position = self.frame.f_lasti
  *                 self._instruction = self.frame.f_code.co_code[position]             # <<<<<<<<<<<<<<
  *             else:
  *                 self._instruction = None
  */
-      __Pyx_TraceLine(118,0,__PYX_ERR(0, 118, __pyx_L1_error))
-      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_self->frame->f_code->co_code, __pyx_v_position, size_t, 0, __Pyx_PyInt_FromSize_t, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __Pyx_TraceLine(117,0,__PYX_ERR(0, 117, __pyx_L1_error))
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_self->frame->f_code->co_code, __pyx_v_position, size_t, 0, __Pyx_PyInt_FromSize_t, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_4);
       __Pyx_GOTREF(__pyx_v_self->_instruction);
@@ -3599,7 +3592,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
       __pyx_v_self->_instruction = __pyx_t_4;
       __pyx_t_4 = 0;
 
-      /* "hunter/_event.pyx":113
+      /* "hunter/_event.pyx":112
  *     cdef instruction_getter(self):
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:             # <<<<<<<<<<<<<<
@@ -3609,14 +3602,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":120
+    /* "hunter/_event.pyx":119
  *                 self._instruction = self.frame.f_code.co_code[position]
  *             else:
  *                 self._instruction = None             # <<<<<<<<<<<<<<
  *         return self._instruction
  * 
  */
-    __Pyx_TraceLine(120,0,__PYX_ERR(0, 120, __pyx_L1_error))
+    __Pyx_TraceLine(119,0,__PYX_ERR(0, 119, __pyx_L1_error))
     /*else*/ {
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
@@ -3626,7 +3619,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":112
+    /* "hunter/_event.pyx":111
  * 
  *     cdef instruction_getter(self):
  *         if self._instruction is UNSET:             # <<<<<<<<<<<<<<
@@ -3635,20 +3628,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  */
   }
 
-  /* "hunter/_event.pyx":121
+  /* "hunter/_event.pyx":120
  *             else:
  *                 self._instruction = None
  *         return self._instruction             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(121,0,__PYX_ERR(0, 121, __pyx_L1_error))
+  __Pyx_TraceLine(120,0,__PYX_ERR(0, 120, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_instruction);
   __pyx_r = __pyx_v_self->_instruction;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":111
+  /* "hunter/_event.pyx":110
  *         return fast_clone(self)
  * 
  *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
@@ -3668,7 +3661,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":124
+/* "hunter/_event.pyx":123
  * 
  *     @property
  *     def instruction(self):             # <<<<<<<<<<<<<<
@@ -3698,24 +3691,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_11instruction___get__(struct __
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 124, 0, __PYX_ERR(0, 124, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 123, 0, __PYX_ERR(0, 123, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":125
+  /* "hunter/_event.pyx":124
  *     @property
  *     def instruction(self):
  *         return self.instruction_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef threadid_getter(self):
  */
-  __Pyx_TraceLine(125,0,__PYX_ERR(0, 125, __pyx_L1_error))
+  __Pyx_TraceLine(124,0,__PYX_ERR(0, 124, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_instruction_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_instruction_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":124
+  /* "hunter/_event.pyx":123
  * 
  *     @property
  *     def instruction(self):             # <<<<<<<<<<<<<<
@@ -3735,7 +3728,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_11instruction___get__(struct __
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":127
+/* "hunter/_event.pyx":126
  *         return self.instruction_getter()
  * 
  *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
@@ -3759,39 +3752,39 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("threadid_getter", 0);
-  __Pyx_TraceCall("threadid_getter", __pyx_f[0], 127, 0, __PYX_ERR(0, 127, __pyx_L1_error));
+  __Pyx_TraceCall("threadid_getter", __pyx_f[0], 126, 0, __PYX_ERR(0, 126, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":130
+  /* "hunter/_event.pyx":129
  *         cdef long current
  * 
  *         if self._threadidn is UNSET:             # <<<<<<<<<<<<<<
  *             current = PyThread_get_thread_ident()
  *             main = get_main_thread()
  */
-  __Pyx_TraceLine(130,0,__PYX_ERR(0, 130, __pyx_L1_error))
+  __Pyx_TraceLine(129,0,__PYX_ERR(0, 129, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_threadidn == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":131
+    /* "hunter/_event.pyx":130
  * 
  *         if self._threadidn is UNSET:
  *             current = PyThread_get_thread_ident()             # <<<<<<<<<<<<<<
  *             main = get_main_thread()
  *             if main is not None and current == main.ident:
  */
-    __Pyx_TraceLine(131,0,__PYX_ERR(0, 131, __pyx_L1_error))
+    __Pyx_TraceLine(130,0,__PYX_ERR(0, 130, __pyx_L1_error))
     __pyx_v_current = PyThread_get_thread_ident();
 
-    /* "hunter/_event.pyx":132
+    /* "hunter/_event.pyx":131
  *         if self._threadidn is UNSET:
  *             current = PyThread_get_thread_ident()
  *             main = get_main_thread()             # <<<<<<<<<<<<<<
  *             if main is not None and current == main.ident:
  *                 self._threadidn = None
  */
-    __Pyx_TraceLine(132,0,__PYX_ERR(0, 132, __pyx_L1_error))
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_main_thread); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
+    __Pyx_TraceLine(131,0,__PYX_ERR(0, 131, __pyx_L1_error))
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_main_thread); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -3805,20 +3798,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
     }
     __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_main = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":133
+    /* "hunter/_event.pyx":132
  *             current = PyThread_get_thread_ident()
  *             main = get_main_thread()
  *             if main is not None and current == main.ident:             # <<<<<<<<<<<<<<
  *                 self._threadidn = None
  *             else:
  */
-    __Pyx_TraceLine(133,0,__PYX_ERR(0, 133, __pyx_L1_error))
+    __Pyx_TraceLine(132,0,__PYX_ERR(0, 132, __pyx_L1_error))
     __pyx_t_1 = (__pyx_v_main != Py_None);
     __pyx_t_6 = (__pyx_t_1 != 0);
     if (__pyx_t_6) {
@@ -3826,34 +3819,34 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
       __pyx_t_2 = __pyx_t_6;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_current); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_current); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_main, __pyx_n_s_ident); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_main, __pyx_n_s_ident); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_2 = __pyx_t_6;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":134
+      /* "hunter/_event.pyx":133
  *             main = get_main_thread()
  *             if main is not None and current == main.ident:
  *                 self._threadidn = None             # <<<<<<<<<<<<<<
  *             else:
  *                 self._threadidn = current
  */
-      __Pyx_TraceLine(134,0,__PYX_ERR(0, 134, __pyx_L1_error))
+      __Pyx_TraceLine(133,0,__PYX_ERR(0, 133, __pyx_L1_error))
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
       __Pyx_GOTREF(__pyx_v_self->_threadidn);
       __Pyx_DECREF(__pyx_v_self->_threadidn);
       __pyx_v_self->_threadidn = Py_None;
 
-      /* "hunter/_event.pyx":133
+      /* "hunter/_event.pyx":132
  *             current = PyThread_get_thread_ident()
  *             main = get_main_thread()
  *             if main is not None and current == main.ident:             # <<<<<<<<<<<<<<
@@ -3863,16 +3856,16 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":136
+    /* "hunter/_event.pyx":135
  *                 self._threadidn = None
  *             else:
  *                 self._threadidn = current             # <<<<<<<<<<<<<<
  *         return self._threadidn
  * 
  */
-    __Pyx_TraceLine(136,0,__PYX_ERR(0, 136, __pyx_L1_error))
+    __Pyx_TraceLine(135,0,__PYX_ERR(0, 135, __pyx_L1_error))
     /*else*/ {
-      __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_current); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_5);
       __Pyx_GOTREF(__pyx_v_self->_threadidn);
@@ -3882,7 +3875,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":130
+    /* "hunter/_event.pyx":129
  *         cdef long current
  * 
  *         if self._threadidn is UNSET:             # <<<<<<<<<<<<<<
@@ -3891,20 +3884,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
  */
   }
 
-  /* "hunter/_event.pyx":137
+  /* "hunter/_event.pyx":136
  *             else:
  *                 self._threadidn = current
  *         return self._threadidn             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(137,0,__PYX_ERR(0, 137, __pyx_L1_error))
+  __Pyx_TraceLine(136,0,__PYX_ERR(0, 136, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_threadidn);
   __pyx_r = __pyx_v_self->_threadidn;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":127
+  /* "hunter/_event.pyx":126
  *         return self.instruction_getter()
  * 
  *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
@@ -3927,7 +3920,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":140
+/* "hunter/_event.pyx":139
  * 
  *     @property
  *     def threadid(self):             # <<<<<<<<<<<<<<
@@ -3957,24 +3950,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 140, 0, __PYX_ERR(0, 140, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 139, 0, __PYX_ERR(0, 139, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":141
+  /* "hunter/_event.pyx":140
  *     @property
  *     def threadid(self):
  *         return self.threadid_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef threadname_getter(self):
  */
-  __Pyx_TraceLine(141,0,__PYX_ERR(0, 141, __pyx_L1_error))
+  __Pyx_TraceLine(140,0,__PYX_ERR(0, 140, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_threadid_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_threadid_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":140
+  /* "hunter/_event.pyx":139
  * 
  *     @property
  *     def threadid(self):             # <<<<<<<<<<<<<<
@@ -3994,7 +3987,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":143
+/* "hunter/_event.pyx":142
  *         return self.threadid_getter()
  * 
  *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
@@ -4015,41 +4008,41 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("threadname_getter", 0);
-  __Pyx_TraceCall("threadname_getter", __pyx_f[0], 143, 0, __PYX_ERR(0, 143, __pyx_L1_error));
+  __Pyx_TraceCall("threadname_getter", __pyx_f[0], 142, 0, __PYX_ERR(0, 142, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":144
+  /* "hunter/_event.pyx":143
  * 
  *     cdef threadname_getter(self):
  *         if self._threadname is UNSET:             # <<<<<<<<<<<<<<
  *             if self._thread is UNSET:
  *                 self._thread = current_thread()
  */
-  __Pyx_TraceLine(144,0,__PYX_ERR(0, 144, __pyx_L1_error))
+  __Pyx_TraceLine(143,0,__PYX_ERR(0, 143, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_threadname == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":145
+    /* "hunter/_event.pyx":144
  *     cdef threadname_getter(self):
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:             # <<<<<<<<<<<<<<
  *                 self._thread = current_thread()
  *             self._threadname = self._thread.name
  */
-    __Pyx_TraceLine(145,0,__PYX_ERR(0, 145, __pyx_L1_error))
+    __Pyx_TraceLine(144,0,__PYX_ERR(0, 144, __pyx_L1_error))
     __pyx_t_2 = (__pyx_v_self->_thread == __pyx_v_6hunter_6_event_UNSET);
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":146
+      /* "hunter/_event.pyx":145
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:
  *                 self._thread = current_thread()             # <<<<<<<<<<<<<<
  *             self._threadname = self._thread.name
  *         return self._threadname
  */
-      __Pyx_TraceLine(146,0,__PYX_ERR(0, 146, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_current_thread); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
+      __Pyx_TraceLine(145,0,__PYX_ERR(0, 145, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_current_thread); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -4063,7 +4056,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
       }
       __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GIVEREF(__pyx_t_3);
@@ -4072,7 +4065,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
       __pyx_v_self->_thread = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":145
+      /* "hunter/_event.pyx":144
  *     cdef threadname_getter(self):
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:             # <<<<<<<<<<<<<<
@@ -4081,15 +4074,15 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
  */
     }
 
-    /* "hunter/_event.pyx":147
+    /* "hunter/_event.pyx":146
  *             if self._thread is UNSET:
  *                 self._thread = current_thread()
  *             self._threadname = self._thread.name             # <<<<<<<<<<<<<<
  *         return self._threadname
  * 
  */
-    __Pyx_TraceLine(147,0,__PYX_ERR(0, 147, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_thread, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 147, __pyx_L1_error)
+    __Pyx_TraceLine(146,0,__PYX_ERR(0, 146, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_thread, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->_threadname);
@@ -4097,7 +4090,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
     __pyx_v_self->_threadname = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":144
+    /* "hunter/_event.pyx":143
  * 
  *     cdef threadname_getter(self):
  *         if self._threadname is UNSET:             # <<<<<<<<<<<<<<
@@ -4106,20 +4099,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
  */
   }
 
-  /* "hunter/_event.pyx":148
+  /* "hunter/_event.pyx":147
  *                 self._thread = current_thread()
  *             self._threadname = self._thread.name
  *         return self._threadname             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(148,0,__PYX_ERR(0, 148, __pyx_L1_error))
+  __Pyx_TraceLine(147,0,__PYX_ERR(0, 147, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_threadname);
   __pyx_r = __pyx_v_self->_threadname;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":143
+  /* "hunter/_event.pyx":142
  *         return self.threadid_getter()
  * 
  *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
@@ -4141,7 +4134,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":151
+/* "hunter/_event.pyx":150
  * 
  *     @property
  *     def threadname(self):             # <<<<<<<<<<<<<<
@@ -4171,24 +4164,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10threadname___get__(struct __p
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 151, 0, __PYX_ERR(0, 151, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 150, 0, __PYX_ERR(0, 150, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":152
+  /* "hunter/_event.pyx":151
  *     @property
  *     def threadname(self):
  *         return self.threadname_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef locals_getter(self):
  */
-  __Pyx_TraceLine(152,0,__PYX_ERR(0, 152, __pyx_L1_error))
+  __Pyx_TraceLine(151,0,__PYX_ERR(0, 151, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_threadname_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_threadname_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":151
+  /* "hunter/_event.pyx":150
  * 
  *     @property
  *     def threadname(self):             # <<<<<<<<<<<<<<
@@ -4208,7 +4201,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10threadname___get__(struct __p
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":154
+/* "hunter/_event.pyx":153
  *         return self.threadname_getter()
  * 
  *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
@@ -4227,40 +4220,40 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("locals_getter", 0);
-  __Pyx_TraceCall("locals_getter", __pyx_f[0], 154, 0, __PYX_ERR(0, 154, __pyx_L1_error));
+  __Pyx_TraceCall("locals_getter", __pyx_f[0], 153, 0, __PYX_ERR(0, 153, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":155
+  /* "hunter/_event.pyx":154
  * 
  *     cdef locals_getter(self):
  *         if self._locals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
  */
-  __Pyx_TraceLine(155,0,__PYX_ERR(0, 155, __pyx_L1_error))
+  __Pyx_TraceLine(154,0,__PYX_ERR(0, 154, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_locals == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":156
+    /* "hunter/_event.pyx":155
  *     cdef locals_getter(self):
  *         if self._locals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
  *             else:
  */
-    __Pyx_TraceLine(156,0,__PYX_ERR(0, 156, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __Pyx_TraceLine(155,0,__PYX_ERR(0, 155, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 155, __pyx_L1_error)
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":157
+      /* "hunter/_event.pyx":156
  *         if self._locals is UNSET:
  *             if self.builtin:
  *                 self._locals = {}             # <<<<<<<<<<<<<<
  *             else:
  *                 PyFrame_FastToLocals(self.frame)
  */
-      __Pyx_TraceLine(157,0,__PYX_ERR(0, 157, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
+      __Pyx_TraceLine(156,0,__PYX_ERR(0, 156, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->_locals);
@@ -4268,7 +4261,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
       __pyx_v_self->_locals = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":156
+      /* "hunter/_event.pyx":155
  *     cdef locals_getter(self):
  *         if self._locals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
@@ -4278,28 +4271,28 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":159
+    /* "hunter/_event.pyx":158
  *                 self._locals = {}
  *             else:
  *                 PyFrame_FastToLocals(self.frame)             # <<<<<<<<<<<<<<
  *                 self._locals = self.frame.f_locals
  *         return self._locals
  */
-    __Pyx_TraceLine(159,0,__PYX_ERR(0, 159, __pyx_L1_error))
+    __Pyx_TraceLine(158,0,__PYX_ERR(0, 158, __pyx_L1_error))
     /*else*/ {
       __pyx_t_3 = ((PyObject *)__pyx_v_self->frame);
       __Pyx_INCREF(__pyx_t_3);
       PyFrame_FastToLocals(((PyFrameObject *)__pyx_t_3));
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":160
+      /* "hunter/_event.pyx":159
  *             else:
  *                 PyFrame_FastToLocals(self.frame)
  *                 self._locals = self.frame.f_locals             # <<<<<<<<<<<<<<
  *         return self._locals
  * 
  */
-      __Pyx_TraceLine(160,0,__PYX_ERR(0, 160, __pyx_L1_error))
+      __Pyx_TraceLine(159,0,__PYX_ERR(0, 159, __pyx_L1_error))
       __pyx_t_3 = __pyx_v_self->frame->f_locals;
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
@@ -4310,7 +4303,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":155
+    /* "hunter/_event.pyx":154
  * 
  *     cdef locals_getter(self):
  *         if self._locals is UNSET:             # <<<<<<<<<<<<<<
@@ -4319,20 +4312,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
  */
   }
 
-  /* "hunter/_event.pyx":161
+  /* "hunter/_event.pyx":160
  *                 PyFrame_FastToLocals(self.frame)
  *                 self._locals = self.frame.f_locals
  *         return self._locals             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(161,0,__PYX_ERR(0, 161, __pyx_L1_error))
+  __Pyx_TraceLine(160,0,__PYX_ERR(0, 160, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_locals);
   __pyx_r = __pyx_v_self->_locals;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":154
+  /* "hunter/_event.pyx":153
  *         return self.threadname_getter()
  * 
  *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
@@ -4352,7 +4345,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":164
+/* "hunter/_event.pyx":163
  * 
  *     @property
  *     def locals(self):             # <<<<<<<<<<<<<<
@@ -4382,24 +4375,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6locals___get__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 164, 0, __PYX_ERR(0, 164, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 163, 0, __PYX_ERR(0, 163, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":165
+  /* "hunter/_event.pyx":164
  *     @property
  *     def locals(self):
  *         return self.locals_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef globals_getter(self):
  */
-  __Pyx_TraceLine(165,0,__PYX_ERR(0, 165, __pyx_L1_error))
+  __Pyx_TraceLine(164,0,__PYX_ERR(0, 164, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_locals_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_locals_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":164
+  /* "hunter/_event.pyx":163
  * 
  *     @property
  *     def locals(self):             # <<<<<<<<<<<<<<
@@ -4419,7 +4412,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6locals___get__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":167
+/* "hunter/_event.pyx":166
  *         return self.locals_getter()
  * 
  *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
@@ -4438,40 +4431,40 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("globals_getter", 0);
-  __Pyx_TraceCall("globals_getter", __pyx_f[0], 167, 0, __PYX_ERR(0, 167, __pyx_L1_error));
+  __Pyx_TraceCall("globals_getter", __pyx_f[0], 166, 0, __PYX_ERR(0, 166, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":168
+  /* "hunter/_event.pyx":167
  * 
  *     cdef globals_getter(self):
  *         if self._globals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
  */
-  __Pyx_TraceLine(168,0,__PYX_ERR(0, 168, __pyx_L1_error))
+  __Pyx_TraceLine(167,0,__PYX_ERR(0, 167, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_globals == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":169
+    /* "hunter/_event.pyx":168
  *     cdef globals_getter(self):
  *         if self._globals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
  *             else:
  */
-    __Pyx_TraceLine(169,0,__PYX_ERR(0, 169, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 169, __pyx_L1_error)
+    __Pyx_TraceLine(168,0,__PYX_ERR(0, 168, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":170
+      /* "hunter/_event.pyx":169
  *         if self._globals is UNSET:
  *             if self.builtin:
  *                 self._locals = {}             # <<<<<<<<<<<<<<
  *             else:
  *                 self._globals = self.frame.f_globals
  */
-      __Pyx_TraceLine(170,0,__PYX_ERR(0, 170, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
+      __Pyx_TraceLine(169,0,__PYX_ERR(0, 169, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 169, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->_locals);
@@ -4479,7 +4472,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
       __pyx_v_self->_locals = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":169
+      /* "hunter/_event.pyx":168
  *     cdef globals_getter(self):
  *         if self._globals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
@@ -4489,14 +4482,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":172
+    /* "hunter/_event.pyx":171
  *                 self._locals = {}
  *             else:
  *                 self._globals = self.frame.f_globals             # <<<<<<<<<<<<<<
  *         return self._globals
  * 
  */
-    __Pyx_TraceLine(172,0,__PYX_ERR(0, 172, __pyx_L1_error))
+    __Pyx_TraceLine(171,0,__PYX_ERR(0, 171, __pyx_L1_error))
     /*else*/ {
       __pyx_t_3 = __pyx_v_self->frame->f_globals;
       __Pyx_INCREF(__pyx_t_3);
@@ -4508,7 +4501,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":168
+    /* "hunter/_event.pyx":167
  * 
  *     cdef globals_getter(self):
  *         if self._globals is UNSET:             # <<<<<<<<<<<<<<
@@ -4517,20 +4510,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
  */
   }
 
-  /* "hunter/_event.pyx":173
+  /* "hunter/_event.pyx":172
  *             else:
  *                 self._globals = self.frame.f_globals
  *         return self._globals             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(173,0,__PYX_ERR(0, 173, __pyx_L1_error))
+  __Pyx_TraceLine(172,0,__PYX_ERR(0, 172, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_globals);
   __pyx_r = __pyx_v_self->_globals;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":167
+  /* "hunter/_event.pyx":166
  *         return self.locals_getter()
  * 
  *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
@@ -4550,7 +4543,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":176
+/* "hunter/_event.pyx":175
  * 
  *     @property
  *     def globals(self):             # <<<<<<<<<<<<<<
@@ -4580,24 +4573,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_7globals___get__(struct __pyx_o
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 176, 0, __PYX_ERR(0, 176, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 175, 0, __PYX_ERR(0, 175, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":177
+  /* "hunter/_event.pyx":176
  *     @property
  *     def globals(self):
  *         return self.globals_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef function_getter(self):
  */
-  __Pyx_TraceLine(177,0,__PYX_ERR(0, 177, __pyx_L1_error))
+  __Pyx_TraceLine(176,0,__PYX_ERR(0, 176, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_globals_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_globals_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":176
+  /* "hunter/_event.pyx":175
  * 
  *     @property
  *     def globals(self):             # <<<<<<<<<<<<<<
@@ -4617,7 +4610,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_7globals___get__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":179
+/* "hunter/_event.pyx":178
  *         return self.globals_getter()
  * 
  *     cdef function_getter(self):             # <<<<<<<<<<<<<<
@@ -4636,40 +4629,40 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("function_getter", 0);
-  __Pyx_TraceCall("function_getter", __pyx_f[0], 179, 0, __PYX_ERR(0, 179, __pyx_L1_error));
+  __Pyx_TraceCall("function_getter", __pyx_f[0], 178, 0, __PYX_ERR(0, 178, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":180
+  /* "hunter/_event.pyx":179
  * 
  *     cdef function_getter(self):
  *         if self._function is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._function = self.arg.__name__
  */
-  __Pyx_TraceLine(180,0,__PYX_ERR(0, 180, __pyx_L1_error))
+  __Pyx_TraceLine(179,0,__PYX_ERR(0, 179, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_function == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":181
+    /* "hunter/_event.pyx":180
  *     cdef function_getter(self):
  *         if self._function is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._function = self.arg.__name__
  *             else:
  */
-    __Pyx_TraceLine(181,0,__PYX_ERR(0, 181, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __Pyx_TraceLine(180,0,__PYX_ERR(0, 180, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 180, __pyx_L1_error)
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":182
+      /* "hunter/_event.pyx":181
  *         if self._function is UNSET:
  *             if self.builtin:
  *                 self._function = self.arg.__name__             # <<<<<<<<<<<<<<
  *             else:
  *                 self._function = self.frame.f_code.co_name
  */
-      __Pyx_TraceLine(182,0,__PYX_ERR(0, 182, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->arg, __pyx_n_s_name_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
+      __Pyx_TraceLine(181,0,__PYX_ERR(0, 181, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->arg, __pyx_n_s_name_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->_function);
@@ -4677,7 +4670,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
       __pyx_v_self->_function = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":181
+      /* "hunter/_event.pyx":180
  *     cdef function_getter(self):
  *         if self._function is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
@@ -4687,16 +4680,16 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":184
+    /* "hunter/_event.pyx":183
  *                 self._function = self.arg.__name__
  *             else:
  *                 self._function = self.frame.f_code.co_name             # <<<<<<<<<<<<<<
  *         return self._function
  * 
  */
-    __Pyx_TraceLine(184,0,__PYX_ERR(0, 184, __pyx_L1_error))
+    __Pyx_TraceLine(183,0,__PYX_ERR(0, 183, __pyx_L1_error))
     /*else*/ {
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->frame->f_code), __pyx_n_s_co_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->frame->f_code), __pyx_n_s_co_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->_function);
@@ -4706,7 +4699,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":180
+    /* "hunter/_event.pyx":179
  * 
  *     cdef function_getter(self):
  *         if self._function is UNSET:             # <<<<<<<<<<<<<<
@@ -4715,20 +4708,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
  */
   }
 
-  /* "hunter/_event.pyx":185
+  /* "hunter/_event.pyx":184
  *             else:
  *                 self._function = self.frame.f_code.co_name
  *         return self._function             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(185,0,__PYX_ERR(0, 185, __pyx_L1_error))
+  __Pyx_TraceLine(184,0,__PYX_ERR(0, 184, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_function);
   __pyx_r = __pyx_v_self->_function;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":179
+  /* "hunter/_event.pyx":178
  *         return self.globals_getter()
  * 
  *     cdef function_getter(self):             # <<<<<<<<<<<<<<
@@ -4748,7 +4741,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":188
+/* "hunter/_event.pyx":187
  * 
  *     @property
  *     def function(self):             # <<<<<<<<<<<<<<
@@ -4778,24 +4771,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8function___get__(struct __pyx_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 188, 0, __PYX_ERR(0, 188, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 187, 0, __PYX_ERR(0, 187, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":189
+  /* "hunter/_event.pyx":188
  *     @property
  *     def function(self):
  *         return self.function_getter()             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(189,0,__PYX_ERR(0, 189, __pyx_L1_error))
+  __Pyx_TraceLine(188,0,__PYX_ERR(0, 188, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_function_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_function_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":188
+  /* "hunter/_event.pyx":187
  * 
  *     @property
  *     def function(self):             # <<<<<<<<<<<<<<
@@ -4815,7 +4808,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8function___get__(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":192
+/* "hunter/_event.pyx":191
  * 
  *     @property
  *     def function_object(self):             # <<<<<<<<<<<<<<
@@ -4861,33 +4854,33 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 192, 0, __PYX_ERR(0, 192, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 191, 0, __PYX_ERR(0, 191, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":193
+  /* "hunter/_event.pyx":192
  *     @property
  *     def function_object(self):
  *         if self.builtin:             # <<<<<<<<<<<<<<
  *             return self.builtin
  *         elif self._function_object is UNSET:
  */
-  __Pyx_TraceLine(193,0,__PYX_ERR(0, 193, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __Pyx_TraceLine(192,0,__PYX_ERR(0, 192, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "hunter/_event.pyx":194
+    /* "hunter/_event.pyx":193
  *     def function_object(self):
  *         if self.builtin:
  *             return self.builtin             # <<<<<<<<<<<<<<
  *         elif self._function_object is UNSET:
  *             code = self.code
  */
-    __Pyx_TraceLine(194,0,__PYX_ERR(0, 194, __pyx_L1_error))
+    __Pyx_TraceLine(193,0,__PYX_ERR(0, 193, __pyx_L1_error))
     __Pyx_XDECREF(__pyx_r);
     __Pyx_INCREF(__pyx_v_self->builtin);
     __pyx_r = __pyx_v_self->builtin;
     goto __pyx_L0;
 
-    /* "hunter/_event.pyx":193
+    /* "hunter/_event.pyx":192
  *     @property
  *     def function_object(self):
  *         if self.builtin:             # <<<<<<<<<<<<<<
@@ -4896,59 +4889,59 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
   }
 
-  /* "hunter/_event.pyx":195
+  /* "hunter/_event.pyx":194
  *         if self.builtin:
  *             return self.builtin
  *         elif self._function_object is UNSET:             # <<<<<<<<<<<<<<
  *             code = self.code
  *             if code.co_name is None:
  */
-  __Pyx_TraceLine(195,0,__PYX_ERR(0, 195, __pyx_L1_error))
+  __Pyx_TraceLine(194,0,__PYX_ERR(0, 194, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_function_object == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":196
+    /* "hunter/_event.pyx":195
  *             return self.builtin
  *         elif self._function_object is UNSET:
  *             code = self.code             # <<<<<<<<<<<<<<
  *             if code.co_name is None:
  *                 return None
  */
-    __Pyx_TraceLine(196,0,__PYX_ERR(0, 196, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_code); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
+    __Pyx_TraceLine(195,0,__PYX_ERR(0, 195, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_code); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_code = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":197
+    /* "hunter/_event.pyx":196
  *         elif self._function_object is UNSET:
  *             code = self.code
  *             if code.co_name is None:             # <<<<<<<<<<<<<<
  *                 return None
  *             # First, try to find the function in globals
  */
-    __Pyx_TraceLine(197,0,__PYX_ERR(0, 197, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __Pyx_TraceLine(196,0,__PYX_ERR(0, 196, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_2 = (__pyx_t_3 == Py_None);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":198
+      /* "hunter/_event.pyx":197
  *             code = self.code
  *             if code.co_name is None:
  *                 return None             # <<<<<<<<<<<<<<
  *             # First, try to find the function in globals
  *             candidate = self.globals.get(code.co_name, None)
  */
-      __Pyx_TraceLine(198,0,__PYX_ERR(0, 198, __pyx_L1_error))
+      __Pyx_TraceLine(197,0,__PYX_ERR(0, 197, __pyx_L1_error))
       __Pyx_XDECREF(__pyx_r);
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "hunter/_event.pyx":197
+      /* "hunter/_event.pyx":196
  *         elif self._function_object is UNSET:
  *             code = self.code
  *             if code.co_name is None:             # <<<<<<<<<<<<<<
@@ -4957,20 +4950,20 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
     }
 
-    /* "hunter/_event.pyx":200
+    /* "hunter/_event.pyx":199
  *                 return None
  *             # First, try to find the function in globals
  *             candidate = self.globals.get(code.co_name, None)             # <<<<<<<<<<<<<<
  *             func = if_same_code(candidate, code)
  *             # If that failed, as will be the case with class and instance methods, try
  */
-    __Pyx_TraceLine(200,0,__PYX_ERR(0, 200, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __Pyx_TraceLine(199,0,__PYX_ERR(0, 199, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     __pyx_t_7 = 0;
@@ -4987,7 +4980,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, Py_None};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4996,14 +4989,14 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, Py_None};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_6) {
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -5014,7 +5007,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __Pyx_GIVEREF(Py_None);
       PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, Py_None);
       __pyx_t_4 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
@@ -5022,15 +5015,15 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     __pyx_v_candidate = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":201
+    /* "hunter/_event.pyx":200
  *             # First, try to find the function in globals
  *             candidate = self.globals.get(code.co_name, None)
  *             func = if_same_code(candidate, code)             # <<<<<<<<<<<<<<
  *             # If that failed, as will be the case with class and instance methods, try
  *             # to look up the function from the first argument. In the case of class/instance
  */
-    __Pyx_TraceLine(201,0,__PYX_ERR(0, 201, __pyx_L1_error))
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_if_same_code); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 201, __pyx_L1_error)
+    __Pyx_TraceLine(200,0,__PYX_ERR(0, 200, __pyx_L1_error))
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_if_same_code); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_8 = NULL;
     __pyx_t_7 = 0;
@@ -5047,7 +5040,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_candidate, __pyx_v_code};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
@@ -5055,13 +5048,13 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_candidate, __pyx_v_code};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       if (__pyx_t_8) {
         __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -5072,7 +5065,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __Pyx_INCREF(__pyx_v_code);
       __Pyx_GIVEREF(__pyx_v_code);
       PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_7, __pyx_v_code);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 201, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -5080,14 +5073,14 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
     __pyx_v_func = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":206
+    /* "hunter/_event.pyx":205
  *             # methods, this should be the class (or an instance of the class) on which our
  *             # method is defined.
  *             if func is None and code.co_argcount >= 1:             # <<<<<<<<<<<<<<
  *                 first_arg = self.locals.get(code.co_varnames[0])
  *                 func = get_func_in_mro(first_arg, code)
  */
-    __Pyx_TraceLine(206,0,__PYX_ERR(0, 206, __pyx_L1_error))
+    __Pyx_TraceLine(205,0,__PYX_ERR(0, 205, __pyx_L1_error))
     __pyx_t_2 = (__pyx_v_func == Py_None);
     __pyx_t_9 = (__pyx_t_2 != 0);
     if (__pyx_t_9) {
@@ -5095,32 +5088,32 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __pyx_t_1 = __pyx_t_9;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_argcount); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_argcount); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_int_1, Py_GE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_3, __pyx_int_1, Py_GE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 206, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_1 = __pyx_t_9;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":207
+      /* "hunter/_event.pyx":206
  *             # method is defined.
  *             if func is None and code.co_argcount >= 1:
  *                 first_arg = self.locals.get(code.co_varnames[0])             # <<<<<<<<<<<<<<
  *                 func = get_func_in_mro(first_arg, code)
  *             # If we still can't find the function, as will be the case with static methods,
  */
-      __Pyx_TraceLine(207,0,__PYX_ERR(0, 207, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_locals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __Pyx_TraceLine(206,0,__PYX_ERR(0, 206, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_locals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_get); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_get); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_varnames); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_code, __pyx_n_s_co_varnames); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 207, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_3 = NULL;
@@ -5136,21 +5129,21 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __pyx_t_5 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_t_8) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_8);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_first_arg = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "hunter/_event.pyx":208
+      /* "hunter/_event.pyx":207
  *             if func is None and code.co_argcount >= 1:
  *                 first_arg = self.locals.get(code.co_varnames[0])
  *                 func = get_func_in_mro(first_arg, code)             # <<<<<<<<<<<<<<
  *             # If we still can't find the function, as will be the case with static methods,
  *             # try looking at classes in global scope.
  */
-      __Pyx_TraceLine(208,0,__PYX_ERR(0, 208, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 208, __pyx_L1_error)
+      __Pyx_TraceLine(207,0,__PYX_ERR(0, 207, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 207, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_8 = NULL;
       __pyx_t_7 = 0;
@@ -5167,7 +5160,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_first_arg, __pyx_v_code};
-        __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 208, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_5);
       } else
@@ -5175,13 +5168,13 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_first_arg, __pyx_v_code};
-        __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 208, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_5);
       } else
       #endif
       {
-        __pyx_t_3 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 208, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         if (__pyx_t_8) {
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -5192,7 +5185,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
         __Pyx_INCREF(__pyx_v_code);
         __Pyx_GIVEREF(__pyx_v_code);
         PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_7, __pyx_v_code);
-        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 208, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 207, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
@@ -5200,7 +5193,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __Pyx_DECREF_SET(__pyx_v_func, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "hunter/_event.pyx":206
+      /* "hunter/_event.pyx":205
  *             # methods, this should be the class (or an instance of the class) on which our
  *             # method is defined.
  *             if func is None and code.co_argcount >= 1:             # <<<<<<<<<<<<<<
@@ -5209,34 +5202,34 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
     }
 
-    /* "hunter/_event.pyx":211
+    /* "hunter/_event.pyx":210
  *             # If we still can't find the function, as will be the case with static methods,
  *             # try looking at classes in global scope.
  *             if func is None:             # <<<<<<<<<<<<<<
  *                 for v in self.globals.values():
  *                     if not isinstance(v, type):
  */
-    __Pyx_TraceLine(211,0,__PYX_ERR(0, 211, __pyx_L1_error))
+    __Pyx_TraceLine(210,0,__PYX_ERR(0, 210, __pyx_L1_error))
     __pyx_t_1 = (__pyx_v_func == Py_None);
     __pyx_t_9 = (__pyx_t_1 != 0);
     if (__pyx_t_9) {
 
-      /* "hunter/_event.pyx":212
+      /* "hunter/_event.pyx":211
  *             # try looking at classes in global scope.
  *             if func is None:
  *                 for v in self.globals.values():             # <<<<<<<<<<<<<<
  *                     if not isinstance(v, type):
  *                         continue
  */
-      __Pyx_TraceLine(212,0,__PYX_ERR(0, 212, __pyx_L1_error))
+      __Pyx_TraceLine(211,0,__PYX_ERR(0, 211, __pyx_L1_error))
       __pyx_t_10 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       if (unlikely(__pyx_t_4 == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "values");
-        __PYX_ERR(0, 212, __pyx_L1_error)
+        __PYX_ERR(0, 211, __pyx_L1_error)
       }
-      __pyx_t_3 = __Pyx_dict_iterator(__pyx_t_4, 0, __pyx_n_s_values, (&__pyx_t_11), (&__pyx_t_7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_dict_iterator(__pyx_t_4, 0, __pyx_n_s_values, (&__pyx_t_11), (&__pyx_t_7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF(__pyx_t_5);
@@ -5245,34 +5238,34 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       while (1) {
         __pyx_t_12 = __Pyx_dict_iter_next(__pyx_t_5, __pyx_t_11, &__pyx_t_10, NULL, &__pyx_t_3, NULL, __pyx_t_7);
         if (unlikely(__pyx_t_12 == 0)) break;
-        if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 212, __pyx_L1_error)
+        if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "hunter/_event.pyx":213
+        /* "hunter/_event.pyx":212
  *             if func is None:
  *                 for v in self.globals.values():
  *                     if not isinstance(v, type):             # <<<<<<<<<<<<<<
  *                         continue
  *                     func = get_func_in_mro(v, code)
  */
-        __Pyx_TraceLine(213,0,__PYX_ERR(0, 213, __pyx_L1_error))
+        __Pyx_TraceLine(212,0,__PYX_ERR(0, 212, __pyx_L1_error))
         __pyx_t_9 = PyType_Check(__pyx_v_v); 
         __pyx_t_1 = ((!(__pyx_t_9 != 0)) != 0);
         if (__pyx_t_1) {
 
-          /* "hunter/_event.pyx":214
+          /* "hunter/_event.pyx":213
  *                 for v in self.globals.values():
  *                     if not isinstance(v, type):
  *                         continue             # <<<<<<<<<<<<<<
  *                     func = get_func_in_mro(v, code)
  *                     if func is not None:
  */
-          __Pyx_TraceLine(214,0,__PYX_ERR(0, 214, __pyx_L1_error))
+          __Pyx_TraceLine(213,0,__PYX_ERR(0, 213, __pyx_L1_error))
           goto __pyx_L9_continue;
 
-          /* "hunter/_event.pyx":213
+          /* "hunter/_event.pyx":212
  *             if func is None:
  *                 for v in self.globals.values():
  *                     if not isinstance(v, type):             # <<<<<<<<<<<<<<
@@ -5281,15 +5274,15 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
         }
 
-        /* "hunter/_event.pyx":215
+        /* "hunter/_event.pyx":214
  *                     if not isinstance(v, type):
  *                         continue
  *                     func = get_func_in_mro(v, code)             # <<<<<<<<<<<<<<
  *                     if func is not None:
  *                         break
  */
-        __Pyx_TraceLine(215,0,__PYX_ERR(0, 215, __pyx_L1_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
+        __Pyx_TraceLine(214,0,__PYX_ERR(0, 214, __pyx_L1_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_8 = NULL;
         __pyx_t_12 = 0;
@@ -5306,7 +5299,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_v, __pyx_v_code};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_3);
         } else
@@ -5314,13 +5307,13 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_v_v, __pyx_v_code};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_3);
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 214, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_8) {
             __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -5331,7 +5324,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
           __Pyx_INCREF(__pyx_v_code);
           __Pyx_GIVEREF(__pyx_v_code);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_12, __pyx_v_code);
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
@@ -5339,29 +5332,29 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
         __Pyx_DECREF_SET(__pyx_v_func, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "hunter/_event.pyx":216
+        /* "hunter/_event.pyx":215
  *                         continue
  *                     func = get_func_in_mro(v, code)
  *                     if func is not None:             # <<<<<<<<<<<<<<
  *                         break
  *             self._function_object = func
  */
-        __Pyx_TraceLine(216,0,__PYX_ERR(0, 216, __pyx_L1_error))
+        __Pyx_TraceLine(215,0,__PYX_ERR(0, 215, __pyx_L1_error))
         __pyx_t_1 = (__pyx_v_func != Py_None);
         __pyx_t_9 = (__pyx_t_1 != 0);
         if (__pyx_t_9) {
 
-          /* "hunter/_event.pyx":217
+          /* "hunter/_event.pyx":216
  *                     func = get_func_in_mro(v, code)
  *                     if func is not None:
  *                         break             # <<<<<<<<<<<<<<
  *             self._function_object = func
  *         return self._function_object
  */
-          __Pyx_TraceLine(217,0,__PYX_ERR(0, 217, __pyx_L1_error))
+          __Pyx_TraceLine(216,0,__PYX_ERR(0, 216, __pyx_L1_error))
           goto __pyx_L10_break;
 
-          /* "hunter/_event.pyx":216
+          /* "hunter/_event.pyx":215
  *                         continue
  *                     func = get_func_in_mro(v, code)
  *                     if func is not None:             # <<<<<<<<<<<<<<
@@ -5374,7 +5367,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
       __pyx_L10_break:;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "hunter/_event.pyx":211
+      /* "hunter/_event.pyx":210
  *             # If we still can't find the function, as will be the case with static methods,
  *             # try looking at classes in global scope.
  *             if func is None:             # <<<<<<<<<<<<<<
@@ -5383,21 +5376,21 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
     }
 
-    /* "hunter/_event.pyx":218
+    /* "hunter/_event.pyx":217
  *                     if func is not None:
  *                         break
  *             self._function_object = func             # <<<<<<<<<<<<<<
  *         return self._function_object
  * 
  */
-    __Pyx_TraceLine(218,0,__PYX_ERR(0, 218, __pyx_L1_error))
+    __Pyx_TraceLine(217,0,__PYX_ERR(0, 217, __pyx_L1_error))
     __Pyx_INCREF(__pyx_v_func);
     __Pyx_GIVEREF(__pyx_v_func);
     __Pyx_GOTREF(__pyx_v_self->_function_object);
     __Pyx_DECREF(__pyx_v_self->_function_object);
     __pyx_v_self->_function_object = __pyx_v_func;
 
-    /* "hunter/_event.pyx":195
+    /* "hunter/_event.pyx":194
  *         if self.builtin:
  *             return self.builtin
  *         elif self._function_object is UNSET:             # <<<<<<<<<<<<<<
@@ -5406,20 +5399,20 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  */
   }
 
-  /* "hunter/_event.pyx":219
+  /* "hunter/_event.pyx":218
  *                         break
  *             self._function_object = func
  *         return self._function_object             # <<<<<<<<<<<<<<
  * 
  *     cdef module_getter(self):
  */
-  __Pyx_TraceLine(219,0,__PYX_ERR(0, 219, __pyx_L1_error))
+  __Pyx_TraceLine(218,0,__PYX_ERR(0, 218, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_function_object);
   __pyx_r = __pyx_v_self->_function_object;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":192
+  /* "hunter/_event.pyx":191
  * 
  *     @property
  *     def function_object(self):             # <<<<<<<<<<<<<<
@@ -5448,7 +5441,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":221
+/* "hunter/_event.pyx":220
  *         return self._function_object
  * 
  *     cdef module_getter(self):             # <<<<<<<<<<<<<<
@@ -5469,45 +5462,45 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("module_getter", 0);
-  __Pyx_TraceCall("module_getter", __pyx_f[0], 221, 0, __PYX_ERR(0, 221, __pyx_L1_error));
+  __Pyx_TraceCall("module_getter", __pyx_f[0], 220, 0, __PYX_ERR(0, 220, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":222
+  /* "hunter/_event.pyx":221
  * 
  *     cdef module_getter(self):
  *         if self._module is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 module = self.arg.__module__
  */
-  __Pyx_TraceLine(222,0,__PYX_ERR(0, 222, __pyx_L1_error))
+  __Pyx_TraceLine(221,0,__PYX_ERR(0, 221, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_module == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":223
+    /* "hunter/_event.pyx":222
  *     cdef module_getter(self):
  *         if self._module is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 module = self.arg.__module__
  *             else:
  */
-    __Pyx_TraceLine(223,0,__PYX_ERR(0, 223, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __Pyx_TraceLine(222,0,__PYX_ERR(0, 222, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->builtin); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":224
+      /* "hunter/_event.pyx":223
  *         if self._module is UNSET:
  *             if self.builtin:
  *                 module = self.arg.__module__             # <<<<<<<<<<<<<<
  *             else:
  *                 module = self.frame.f_globals.get('__name__', '')
  */
-      __Pyx_TraceLine(224,0,__PYX_ERR(0, 224, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->arg, __pyx_n_s_module_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
+      __Pyx_TraceLine(223,0,__PYX_ERR(0, 223, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->arg, __pyx_n_s_module_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_v_module = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":223
+      /* "hunter/_event.pyx":222
  *     cdef module_getter(self):
  *         if self._module is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
@@ -5517,18 +5510,18 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":226
+    /* "hunter/_event.pyx":225
  *                 module = self.arg.__module__
  *             else:
  *                 module = self.frame.f_globals.get('__name__', '')             # <<<<<<<<<<<<<<
  *             if module is None:
  *                 module = '?'
  */
-    __Pyx_TraceLine(226,0,__PYX_ERR(0, 226, __pyx_L1_error))
+    __Pyx_TraceLine(225,0,__PYX_ERR(0, 225, __pyx_L1_error))
     /*else*/ {
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->frame->f_globals, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->frame->f_globals, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_module = __pyx_t_4;
@@ -5536,92 +5529,53 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":227
+    /* "hunter/_event.pyx":226
  *             else:
  *                 module = self.frame.f_globals.get('__name__', '')
  *             if module is None:             # <<<<<<<<<<<<<<
  *                 module = '?'
- *             if PY2:
+ *             self._module = module
  */
-    __Pyx_TraceLine(227,0,__PYX_ERR(0, 227, __pyx_L1_error))
+    __Pyx_TraceLine(226,0,__PYX_ERR(0, 226, __pyx_L1_error))
     __pyx_t_2 = (__pyx_v_module == Py_None);
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":228
+      /* "hunter/_event.pyx":227
  *                 module = self.frame.f_globals.get('__name__', '')
  *             if module is None:
  *                 module = '?'             # <<<<<<<<<<<<<<
- *             if PY2:
- *                 module = module.encode('ascii', 'replace')
+ *             self._module = module
+ *         return self._module
  */
-      __Pyx_TraceLine(228,0,__PYX_ERR(0, 228, __pyx_L1_error))
+      __Pyx_TraceLine(227,0,__PYX_ERR(0, 227, __pyx_L1_error))
       __Pyx_INCREF(__pyx_kp_s__7);
       __Pyx_DECREF_SET(__pyx_v_module, __pyx_kp_s__7);
 
-      /* "hunter/_event.pyx":227
+      /* "hunter/_event.pyx":226
  *             else:
  *                 module = self.frame.f_globals.get('__name__', '')
  *             if module is None:             # <<<<<<<<<<<<<<
  *                 module = '?'
- *             if PY2:
- */
-    }
-
-    /* "hunter/_event.pyx":229
- *             if module is None:
- *                 module = '?'
- *             if PY2:             # <<<<<<<<<<<<<<
- *                 module = module.encode('ascii', 'replace')
- *             self._module = module
- */
-    __Pyx_TraceLine(229,0,__PYX_ERR(0, 229, __pyx_L1_error))
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_PY2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 229, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 229, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (__pyx_t_1) {
-
-      /* "hunter/_event.pyx":230
- *                 module = '?'
- *             if PY2:
- *                 module = module.encode('ascii', 'replace')             # <<<<<<<<<<<<<<
- *             self._module = module
- *         return self._module
- */
-      __Pyx_TraceLine(230,0,__PYX_ERR(0, 230, __pyx_L1_error))
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_module, __pyx_n_s_encode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF_SET(__pyx_v_module, __pyx_t_3);
-      __pyx_t_3 = 0;
-
-      /* "hunter/_event.pyx":229
- *             if module is None:
- *                 module = '?'
- *             if PY2:             # <<<<<<<<<<<<<<
- *                 module = module.encode('ascii', 'replace')
  *             self._module = module
  */
     }
 
-    /* "hunter/_event.pyx":231
- *             if PY2:
- *                 module = module.encode('ascii', 'replace')
+    /* "hunter/_event.pyx":228
+ *             if module is None:
+ *                 module = '?'
  *             self._module = module             # <<<<<<<<<<<<<<
  *         return self._module
  * 
  */
-    __Pyx_TraceLine(231,0,__PYX_ERR(0, 231, __pyx_L1_error))
+    __Pyx_TraceLine(228,0,__PYX_ERR(0, 228, __pyx_L1_error))
     __Pyx_INCREF(__pyx_v_module);
     __Pyx_GIVEREF(__pyx_v_module);
     __Pyx_GOTREF(__pyx_v_self->_module);
     __Pyx_DECREF(__pyx_v_self->_module);
     __pyx_v_self->_module = __pyx_v_module;
 
-    /* "hunter/_event.pyx":222
+    /* "hunter/_event.pyx":221
  * 
  *     cdef module_getter(self):
  *         if self._module is UNSET:             # <<<<<<<<<<<<<<
@@ -5630,20 +5584,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
  */
   }
 
-  /* "hunter/_event.pyx":232
- *                 module = module.encode('ascii', 'replace')
+  /* "hunter/_event.pyx":229
+ *                 module = '?'
  *             self._module = module
  *         return self._module             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(232,0,__PYX_ERR(0, 232, __pyx_L1_error))
+  __Pyx_TraceLine(229,0,__PYX_ERR(0, 229, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_module);
   __pyx_r = __pyx_v_self->_module;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":221
+  /* "hunter/_event.pyx":220
  *         return self._function_object
  * 
  *     cdef module_getter(self):             # <<<<<<<<<<<<<<
@@ -5665,7 +5619,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":235
+/* "hunter/_event.pyx":232
  * 
  *     @property
  *     def module(self):             # <<<<<<<<<<<<<<
@@ -5695,24 +5649,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6module___get__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 235, 0, __PYX_ERR(0, 235, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 232, 0, __PYX_ERR(0, 232, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":236
+  /* "hunter/_event.pyx":233
  *     @property
  *     def module(self):
  *         return self.module_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef filename_getter(self):
  */
-  __Pyx_TraceLine(236,0,__PYX_ERR(0, 236, __pyx_L1_error))
+  __Pyx_TraceLine(233,0,__PYX_ERR(0, 233, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_module_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_module_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":235
+  /* "hunter/_event.pyx":232
  * 
  *     @property
  *     def module(self):             # <<<<<<<<<<<<<<
@@ -5732,7 +5686,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6module___get__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":238
+/* "hunter/_event.pyx":235
  *         return self.module_getter()
  * 
  *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
@@ -5760,54 +5714,54 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("filename_getter", 0);
-  __Pyx_TraceCall("filename_getter", __pyx_f[0], 238, 0, __PYX_ERR(0, 238, __pyx_L1_error));
+  __Pyx_TraceCall("filename_getter", __pyx_f[0], 235, 0, __PYX_ERR(0, 235, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":239
+  /* "hunter/_event.pyx":236
  * 
  *     cdef filename_getter(self):
  *         if self._filename is UNSET:             # <<<<<<<<<<<<<<
  *             filename = self.frame.f_code.co_filename
  *             if not filename:
  */
-  __Pyx_TraceLine(239,0,__PYX_ERR(0, 239, __pyx_L1_error))
+  __Pyx_TraceLine(236,0,__PYX_ERR(0, 236, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_filename == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":240
+    /* "hunter/_event.pyx":237
  *     cdef filename_getter(self):
  *         if self._filename is UNSET:
  *             filename = self.frame.f_code.co_filename             # <<<<<<<<<<<<<<
  *             if not filename:
  *                 filename = self.frame.f_globals.get('__file__')
  */
-    __Pyx_TraceLine(240,0,__PYX_ERR(0, 240, __pyx_L1_error))
+    __Pyx_TraceLine(237,0,__PYX_ERR(0, 237, __pyx_L1_error))
     __pyx_t_3 = __pyx_v_self->frame->f_code->co_filename;
     __Pyx_INCREF(__pyx_t_3);
     __pyx_v_filename = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":241
+    /* "hunter/_event.pyx":238
  *         if self._filename is UNSET:
  *             filename = self.frame.f_code.co_filename
  *             if not filename:             # <<<<<<<<<<<<<<
  *                 filename = self.frame.f_globals.get('__file__')
  *             if not filename:
  */
-    __Pyx_TraceLine(241,0,__PYX_ERR(0, 241, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_filename); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __Pyx_TraceLine(238,0,__PYX_ERR(0, 238, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_filename); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 238, __pyx_L1_error)
     __pyx_t_1 = ((!__pyx_t_2) != 0);
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":242
+      /* "hunter/_event.pyx":239
  *             filename = self.frame.f_code.co_filename
  *             if not filename:
  *                 filename = self.frame.f_globals.get('__file__')             # <<<<<<<<<<<<<<
  *             if not filename:
  *                 filename = '?'
  */
-      __Pyx_TraceLine(242,0,__PYX_ERR(0, 242, __pyx_L1_error))
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->frame->f_globals, __pyx_n_s_get); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
+      __Pyx_TraceLine(239,0,__PYX_ERR(0, 239, __pyx_L1_error))
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->frame->f_globals, __pyx_n_s_get); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -5821,13 +5775,13 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       }
       __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_n_s_file) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_n_s_file);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF_SET(__pyx_v_filename, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":241
+      /* "hunter/_event.pyx":238
  *         if self._filename is UNSET:
  *             filename = self.frame.f_code.co_filename
  *             if not filename:             # <<<<<<<<<<<<<<
@@ -5836,30 +5790,30 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
  */
     }
 
-    /* "hunter/_event.pyx":243
+    /* "hunter/_event.pyx":240
  *             if not filename:
  *                 filename = self.frame.f_globals.get('__file__')
  *             if not filename:             # <<<<<<<<<<<<<<
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):
  */
-    __Pyx_TraceLine(243,0,__PYX_ERR(0, 243, __pyx_L1_error))
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_filename); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __Pyx_TraceLine(240,0,__PYX_ERR(0, 240, __pyx_L1_error))
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_filename); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 240, __pyx_L1_error)
     __pyx_t_2 = ((!__pyx_t_1) != 0);
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":244
+      /* "hunter/_event.pyx":241
  *                 filename = self.frame.f_globals.get('__file__')
  *             if not filename:
  *                 filename = '?'             # <<<<<<<<<<<<<<
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]
  */
-      __Pyx_TraceLine(244,0,__PYX_ERR(0, 244, __pyx_L1_error))
+      __Pyx_TraceLine(241,0,__PYX_ERR(0, 241, __pyx_L1_error))
       __Pyx_INCREF(__pyx_kp_s__7);
       __Pyx_DECREF_SET(__pyx_v_filename, __pyx_kp_s__7);
 
-      /* "hunter/_event.pyx":243
+      /* "hunter/_event.pyx":240
  *             if not filename:
  *                 filename = self.frame.f_globals.get('__file__')
  *             if not filename:             # <<<<<<<<<<<<<<
@@ -5869,15 +5823,15 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       goto __pyx_L5;
     }
 
-    /* "hunter/_event.pyx":245
+    /* "hunter/_event.pyx":242
  *             if not filename:
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):             # <<<<<<<<<<<<<<
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):
  */
-    __Pyx_TraceLine(245,0,__PYX_ERR(0, 245, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_filename, __pyx_n_s_endswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __Pyx_TraceLine(242,0,__PYX_ERR(0, 242, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_filename, __pyx_n_s_endswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -5889,29 +5843,29 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
         __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_tuple__9) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_tuple__9);
+    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_tuple__8) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_tuple__8);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":246
+      /* "hunter/_event.pyx":243
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]             # <<<<<<<<<<<<<<
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  */
-      __Pyx_TraceLine(246,0,__PYX_ERR(0, 246, __pyx_L1_error))
-      __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_filename, 0, -1L, NULL, NULL, &__pyx_slice__10, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+      __Pyx_TraceLine(243,0,__PYX_ERR(0, 243, __pyx_L1_error))
+      __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_filename, 0, -1L, NULL, NULL, &__pyx_slice__9, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_filename, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":245
+      /* "hunter/_event.pyx":242
  *             if not filename:
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):             # <<<<<<<<<<<<<<
@@ -5921,15 +5875,15 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       goto __pyx_L5;
     }
 
-    /* "hunter/_event.pyx":247
+    /* "hunter/_event.pyx":244
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):
  */
-    __Pyx_TraceLine(247,0,__PYX_ERR(0, 247, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_filename, __pyx_n_s_endswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __Pyx_TraceLine(244,0,__PYX_ERR(0, 244, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_filename, __pyx_n_s_endswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -5941,26 +5895,26 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
         __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_tuple__11) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_tuple__11);
+    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_tuple__10) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_tuple__10);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":248
+      /* "hunter/_event.pyx":245
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)             # <<<<<<<<<<<<<<
  *                 for ext in ('.pyx', '.py'):
  *                     cyfilename = basename + ext
  */
-      __Pyx_TraceLine(248,0,__PYX_ERR(0, 248, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_CYTHON_SUFFIX_RE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 248, __pyx_L1_error)
+      __Pyx_TraceLine(245,0,__PYX_ERR(0, 245, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_CYTHON_SUFFIX_RE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sub); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 248, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sub); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -5978,7 +5932,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_kp_s__5, __pyx_v_filename};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
@@ -5986,13 +5940,13 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_kp_s__5, __pyx_v_filename};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 248, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         if (__pyx_t_4) {
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6003,7 +5957,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
         __Pyx_INCREF(__pyx_v_filename);
         __Pyx_GIVEREF(__pyx_v_filename);
         PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_v_filename);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
@@ -6011,48 +5965,48 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
       __pyx_v_basename = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":249
+      /* "hunter/_event.pyx":246
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):             # <<<<<<<<<<<<<<
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):
  */
-      __Pyx_TraceLine(249,0,__PYX_ERR(0, 249, __pyx_L1_error))
-      __pyx_t_3 = __pyx_tuple__12; __Pyx_INCREF(__pyx_t_3); __pyx_t_8 = 0;
+      __Pyx_TraceLine(246,0,__PYX_ERR(0, 246, __pyx_L1_error))
+      __pyx_t_3 = __pyx_tuple__11; __Pyx_INCREF(__pyx_t_3); __pyx_t_8 = 0;
       for (;;) {
         if (__pyx_t_8 >= 2) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_5); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 249, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_5); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 246, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 249, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 246, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
         __Pyx_XDECREF_SET(__pyx_v_ext, __pyx_t_5);
         __pyx_t_5 = 0;
 
-        /* "hunter/_event.pyx":250
+        /* "hunter/_event.pyx":247
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):
  *                     cyfilename = basename + ext             # <<<<<<<<<<<<<<
  *                     if exists(cyfilename):
  *                         filename = cyfilename
  */
-        __Pyx_TraceLine(250,0,__PYX_ERR(0, 250, __pyx_L1_error))
-        __pyx_t_5 = PyNumber_Add(__pyx_v_basename, __pyx_v_ext); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 250, __pyx_L1_error)
+        __Pyx_TraceLine(247,0,__PYX_ERR(0, 247, __pyx_L1_error))
+        __pyx_t_5 = PyNumber_Add(__pyx_v_basename, __pyx_v_ext); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 247, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_XDECREF_SET(__pyx_v_cyfilename, __pyx_t_5);
         __pyx_t_5 = 0;
 
-        /* "hunter/_event.pyx":251
+        /* "hunter/_event.pyx":248
  *                 for ext in ('.pyx', '.py'):
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):             # <<<<<<<<<<<<<<
  *                         filename = cyfilename
  *                         break
  */
-        __Pyx_TraceLine(251,0,__PYX_ERR(0, 251, __pyx_L1_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_exists); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 251, __pyx_L1_error)
+        __Pyx_TraceLine(248,0,__PYX_ERR(0, 248, __pyx_L1_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_exists); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 248, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -6066,35 +6020,35 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
         }
         __pyx_t_5 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_4, __pyx_v_cyfilename) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_cyfilename);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 251, __pyx_L1_error)
+        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 248, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 251, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 248, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         if (__pyx_t_2) {
 
-          /* "hunter/_event.pyx":252
+          /* "hunter/_event.pyx":249
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):
  *                         filename = cyfilename             # <<<<<<<<<<<<<<
  *                         break
  * 
  */
-          __Pyx_TraceLine(252,0,__PYX_ERR(0, 252, __pyx_L1_error))
+          __Pyx_TraceLine(249,0,__PYX_ERR(0, 249, __pyx_L1_error))
           __Pyx_INCREF(__pyx_v_cyfilename);
           __Pyx_DECREF_SET(__pyx_v_filename, __pyx_v_cyfilename);
 
-          /* "hunter/_event.pyx":253
+          /* "hunter/_event.pyx":250
  *                     if exists(cyfilename):
  *                         filename = cyfilename
  *                         break             # <<<<<<<<<<<<<<
  * 
  *             self._filename = filename
  */
-          __Pyx_TraceLine(253,0,__PYX_ERR(0, 253, __pyx_L1_error))
+          __Pyx_TraceLine(250,0,__PYX_ERR(0, 250, __pyx_L1_error))
           goto __pyx_L7_break;
 
-          /* "hunter/_event.pyx":251
+          /* "hunter/_event.pyx":248
  *                 for ext in ('.pyx', '.py'):
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):             # <<<<<<<<<<<<<<
@@ -6103,19 +6057,19 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
  */
         }
 
-        /* "hunter/_event.pyx":249
+        /* "hunter/_event.pyx":246
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):             # <<<<<<<<<<<<<<
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):
  */
-        __Pyx_TraceLine(249,0,__PYX_ERR(0, 249, __pyx_L1_error))
+        __Pyx_TraceLine(246,0,__PYX_ERR(0, 246, __pyx_L1_error))
       }
       __pyx_L7_break:;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":247
+      /* "hunter/_event.pyx":244
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
@@ -6125,21 +6079,21 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
     }
     __pyx_L5:;
 
-    /* "hunter/_event.pyx":255
+    /* "hunter/_event.pyx":252
  *                         break
  * 
  *             self._filename = filename             # <<<<<<<<<<<<<<
  *         return self._filename
  * 
  */
-    __Pyx_TraceLine(255,0,__PYX_ERR(0, 255, __pyx_L1_error))
+    __Pyx_TraceLine(252,0,__PYX_ERR(0, 252, __pyx_L1_error))
     __Pyx_INCREF(__pyx_v_filename);
     __Pyx_GIVEREF(__pyx_v_filename);
     __Pyx_GOTREF(__pyx_v_self->_filename);
     __Pyx_DECREF(__pyx_v_self->_filename);
     __pyx_v_self->_filename = __pyx_v_filename;
 
-    /* "hunter/_event.pyx":239
+    /* "hunter/_event.pyx":236
  * 
  *     cdef filename_getter(self):
  *         if self._filename is UNSET:             # <<<<<<<<<<<<<<
@@ -6148,20 +6102,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
  */
   }
 
-  /* "hunter/_event.pyx":256
+  /* "hunter/_event.pyx":253
  * 
  *             self._filename = filename
  *         return self._filename             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(256,0,__PYX_ERR(0, 256, __pyx_L1_error))
+  __Pyx_TraceLine(253,0,__PYX_ERR(0, 253, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_filename);
   __pyx_r = __pyx_v_self->_filename;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":238
+  /* "hunter/_event.pyx":235
  *         return self.module_getter()
  * 
  *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
@@ -6188,7 +6142,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":259
+/* "hunter/_event.pyx":256
  * 
  *     @property
  *     def filename(self):             # <<<<<<<<<<<<<<
@@ -6218,24 +6172,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8filename___get__(struct __pyx_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 259, 0, __PYX_ERR(0, 259, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 256, 0, __PYX_ERR(0, 256, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":260
+  /* "hunter/_event.pyx":257
  *     @property
  *     def filename(self):
  *         return self.filename_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef lineno_getter(self):
  */
-  __Pyx_TraceLine(260,0,__PYX_ERR(0, 260, __pyx_L1_error))
+  __Pyx_TraceLine(257,0,__PYX_ERR(0, 257, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_filename_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_filename_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":259
+  /* "hunter/_event.pyx":256
  * 
  *     @property
  *     def filename(self):             # <<<<<<<<<<<<<<
@@ -6255,7 +6209,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8filename___get__(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":262
+/* "hunter/_event.pyx":259
  *         return self.filename_getter()
  * 
  *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
@@ -6274,29 +6228,29 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("lineno_getter", 0);
-  __Pyx_TraceCall("lineno_getter", __pyx_f[0], 262, 0, __PYX_ERR(0, 262, __pyx_L1_error));
+  __Pyx_TraceCall("lineno_getter", __pyx_f[0], 259, 0, __PYX_ERR(0, 259, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":263
+  /* "hunter/_event.pyx":260
  * 
  *     cdef lineno_getter(self):
  *         if self._lineno is UNSET:             # <<<<<<<<<<<<<<
  *             self._lineno = self.frame.f_lineno
  *         return self._lineno
  */
-  __Pyx_TraceLine(263,0,__PYX_ERR(0, 263, __pyx_L1_error))
+  __Pyx_TraceLine(260,0,__PYX_ERR(0, 260, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_lineno == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":264
+    /* "hunter/_event.pyx":261
  *     cdef lineno_getter(self):
  *         if self._lineno is UNSET:
  *             self._lineno = self.frame.f_lineno             # <<<<<<<<<<<<<<
  *         return self._lineno
  * 
  */
-    __Pyx_TraceLine(264,0,__PYX_ERR(0, 264, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->frame->f_lineno); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
+    __Pyx_TraceLine(261,0,__PYX_ERR(0, 261, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->frame->f_lineno); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 261, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->_lineno);
@@ -6304,7 +6258,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
     __pyx_v_self->_lineno = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":263
+    /* "hunter/_event.pyx":260
  * 
  *     cdef lineno_getter(self):
  *         if self._lineno is UNSET:             # <<<<<<<<<<<<<<
@@ -6313,20 +6267,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
  */
   }
 
-  /* "hunter/_event.pyx":265
+  /* "hunter/_event.pyx":262
  *         if self._lineno is UNSET:
  *             self._lineno = self.frame.f_lineno
  *         return self._lineno             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(265,0,__PYX_ERR(0, 265, __pyx_L1_error))
+  __Pyx_TraceLine(262,0,__PYX_ERR(0, 262, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_lineno);
   __pyx_r = __pyx_v_self->_lineno;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":262
+  /* "hunter/_event.pyx":259
  *         return self.filename_getter()
  * 
  *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
@@ -6346,7 +6300,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":268
+/* "hunter/_event.pyx":265
  * 
  *     @property
  *     def lineno(self):             # <<<<<<<<<<<<<<
@@ -6376,24 +6330,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6lineno___get__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 268, 0, __PYX_ERR(0, 268, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 265, 0, __PYX_ERR(0, 265, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":269
+  /* "hunter/_event.pyx":266
  *     @property
  *     def lineno(self):
  *         return self.lineno_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef code_getter(self):
  */
-  __Pyx_TraceLine(269,0,__PYX_ERR(0, 269, __pyx_L1_error))
+  __Pyx_TraceLine(266,0,__PYX_ERR(0, 266, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_lineno_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_lineno_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":268
+  /* "hunter/_event.pyx":265
  * 
  *     @property
  *     def lineno(self):             # <<<<<<<<<<<<<<
@@ -6413,7 +6367,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6lineno___get__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":271
+/* "hunter/_event.pyx":268
  *         return self.lineno_getter()
  * 
  *     cdef code_getter(self):             # <<<<<<<<<<<<<<
@@ -6431,34 +6385,34 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj_6hu
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("code_getter", 0);
-  __Pyx_TraceCall("code_getter", __pyx_f[0], 271, 0, __PYX_ERR(0, 271, __pyx_L1_error));
+  __Pyx_TraceCall("code_getter", __pyx_f[0], 268, 0, __PYX_ERR(0, 268, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":272
+  /* "hunter/_event.pyx":269
  * 
  *     cdef code_getter(self):
  *         if self._code is UNSET:             # <<<<<<<<<<<<<<
  *             return self.frame.f_code
  *         else:
  */
-  __Pyx_TraceLine(272,0,__PYX_ERR(0, 272, __pyx_L1_error))
+  __Pyx_TraceLine(269,0,__PYX_ERR(0, 269, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_code == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":273
+    /* "hunter/_event.pyx":270
  *     cdef code_getter(self):
  *         if self._code is UNSET:
  *             return self.frame.f_code             # <<<<<<<<<<<<<<
  *         else:
  *             return self._code
  */
-    __Pyx_TraceLine(273,0,__PYX_ERR(0, 273, __pyx_L1_error))
+    __Pyx_TraceLine(270,0,__PYX_ERR(0, 270, __pyx_L1_error))
     __Pyx_XDECREF(__pyx_r);
     __Pyx_INCREF(((PyObject *)__pyx_v_self->frame->f_code));
     __pyx_r = ((PyObject *)__pyx_v_self->frame->f_code);
     goto __pyx_L0;
 
-    /* "hunter/_event.pyx":272
+    /* "hunter/_event.pyx":269
  * 
  *     cdef code_getter(self):
  *         if self._code is UNSET:             # <<<<<<<<<<<<<<
@@ -6467,14 +6421,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj_6hu
  */
   }
 
-  /* "hunter/_event.pyx":275
+  /* "hunter/_event.pyx":272
  *             return self.frame.f_code
  *         else:
  *             return self._code             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(275,0,__PYX_ERR(0, 275, __pyx_L1_error))
+  __Pyx_TraceLine(272,0,__PYX_ERR(0, 272, __pyx_L1_error))
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
     __Pyx_INCREF(__pyx_v_self->_code);
@@ -6482,7 +6436,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj_6hu
     goto __pyx_L0;
   }
 
-  /* "hunter/_event.pyx":271
+  /* "hunter/_event.pyx":268
  *         return self.lineno_getter()
  * 
  *     cdef code_getter(self):             # <<<<<<<<<<<<<<
@@ -6501,7 +6455,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj_6hu
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":278
+/* "hunter/_event.pyx":275
  * 
  *     @property
  *     def code(self):             # <<<<<<<<<<<<<<
@@ -6531,24 +6485,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4code___get__(struct __pyx_obj_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 278, 0, __PYX_ERR(0, 278, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 275, 0, __PYX_ERR(0, 275, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":279
+  /* "hunter/_event.pyx":276
  *     @property
  *     def code(self):
  *         return self.code_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef stdlib_getter(self):
  */
-  __Pyx_TraceLine(279,0,__PYX_ERR(0, 279, __pyx_L1_error))
+  __Pyx_TraceLine(276,0,__PYX_ERR(0, 276, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_code_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_code_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 276, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":278
+  /* "hunter/_event.pyx":275
  * 
  *     @property
  *     def code(self):             # <<<<<<<<<<<<<<
@@ -6568,7 +6522,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4code___get__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":281
+/* "hunter/_event.pyx":278
  *         return self.code_getter()
  * 
  *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
@@ -6591,31 +6545,31 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("stdlib_getter", 0);
-  __Pyx_TraceCall("stdlib_getter", __pyx_f[0], 281, 0, __PYX_ERR(0, 281, __pyx_L1_error));
+  __Pyx_TraceCall("stdlib_getter", __pyx_f[0], 278, 0, __PYX_ERR(0, 278, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":282
+  /* "hunter/_event.pyx":279
  * 
  *     cdef stdlib_getter(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
  *             module_parts = self.module.split('.')
  *             if 'pkg_resources' in module_parts:
  */
-  __Pyx_TraceLine(282,0,__PYX_ERR(0, 282, __pyx_L1_error))
+  __Pyx_TraceLine(279,0,__PYX_ERR(0, 279, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_stdlib == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":283
+    /* "hunter/_event.pyx":280
  *     cdef stdlib_getter(self):
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')             # <<<<<<<<<<<<<<
  *             if 'pkg_resources' in module_parts:
  *                 # skip this over-vendored module
  */
-    __Pyx_TraceLine(283,0,__PYX_ERR(0, 283, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 283, __pyx_L1_error)
+    __Pyx_TraceLine(280,0,__PYX_ERR(0, 280, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 280, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_split); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_split); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 280, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -6628,41 +6582,41 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
         __Pyx_DECREF_SET(__pyx_t_5, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_kp_s__13) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_kp_s__13);
+    __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_kp_s__12) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_kp_s__12);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 280, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_module_parts = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hunter/_event.pyx":284
+    /* "hunter/_event.pyx":281
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  *             if 'pkg_resources' in module_parts:             # <<<<<<<<<<<<<<
  *                 # skip this over-vendored module
  *                 self._stdlib = True
  */
-    __Pyx_TraceLine(284,0,__PYX_ERR(0, 284, __pyx_L1_error))
-    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_pkg_resources, __pyx_v_module_parts, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 284, __pyx_L1_error)
+    __Pyx_TraceLine(281,0,__PYX_ERR(0, 281, __pyx_L1_error))
+    __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_pkg_resources, __pyx_v_module_parts, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 281, __pyx_L1_error)
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":286
+      /* "hunter/_event.pyx":283
  *             if 'pkg_resources' in module_parts:
  *                 # skip this over-vendored module
  *                 self._stdlib = True             # <<<<<<<<<<<<<<
  *             elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):
  *                 # skip namedtuple exec garbage
  */
-      __Pyx_TraceLine(286,0,__PYX_ERR(0, 286, __pyx_L1_error))
+      __Pyx_TraceLine(283,0,__PYX_ERR(0, 283, __pyx_L1_error))
       __Pyx_INCREF(Py_True);
       __Pyx_GIVEREF(Py_True);
       __Pyx_GOTREF(__pyx_v_self->_stdlib);
       __Pyx_DECREF(__pyx_v_self->_stdlib);
       __pyx_v_self->_stdlib = Py_True;
 
-      /* "hunter/_event.pyx":284
+      /* "hunter/_event.pyx":281
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  *             if 'pkg_resources' in module_parts:             # <<<<<<<<<<<<<<
@@ -6672,26 +6626,26 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":287
+    /* "hunter/_event.pyx":284
  *                 # skip this over-vendored module
  *                 self._stdlib = True
  *             elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):             # <<<<<<<<<<<<<<
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True
  */
-    __Pyx_TraceLine(287,0,__PYX_ERR(0, 287, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __Pyx_TraceLine(284,0,__PYX_ERR(0, 284, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_kp_s_string, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_kp_s_string, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
     } else {
       __pyx_t_1 = __pyx_t_2;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_5 = NULL;
@@ -6706,39 +6660,39 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
     }
     __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_n_s_namedtuple) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_n_s_namedtuple);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 287, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (!__pyx_t_2) {
     } else {
       __pyx_t_1 = __pyx_t_2;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_module); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_n_s_site, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 287, __pyx_L1_error)
+    __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_n_s_site, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_1 = __pyx_t_2;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":289
+      /* "hunter/_event.pyx":286
  *             elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True             # <<<<<<<<<<<<<<
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
  *                 # if it's in site-packages then its definitely not stdlib
  */
-      __Pyx_TraceLine(289,0,__PYX_ERR(0, 289, __pyx_L1_error))
+      __Pyx_TraceLine(286,0,__PYX_ERR(0, 286, __pyx_L1_error))
       __Pyx_INCREF(Py_True);
       __Pyx_GIVEREF(Py_True);
       __Pyx_GOTREF(__pyx_v_self->_stdlib);
       __Pyx_DECREF(__pyx_v_self->_stdlib);
       __pyx_v_self->_stdlib = Py_True;
 
-      /* "hunter/_event.pyx":287
+      /* "hunter/_event.pyx":284
  *                 # skip this over-vendored module
  *                 self._stdlib = True
  *             elif self.filename == '<string>' and (self.module.startswith('namedtuple_') or self.module == 'site'):             # <<<<<<<<<<<<<<
@@ -6748,20 +6702,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":290
+    /* "hunter/_event.pyx":287
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
  *                 # if it's in site-packages then its definitely not stdlib
  *                 self._stdlib = False
  */
-    __Pyx_TraceLine(290,0,__PYX_ERR(0, 290, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 290, __pyx_L1_error)
+    __Pyx_TraceLine(287,0,__PYX_ERR(0, 287, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_startswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 290, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_startswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_SITE_PACKAGES_PATHS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 290, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_SITE_PACKAGES_PATHS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -6776,28 +6730,28 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
     __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 290, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 290, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 287, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":292
+      /* "hunter/_event.pyx":289
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
  *                 # if it's in site-packages then its definitely not stdlib
  *                 self._stdlib = False             # <<<<<<<<<<<<<<
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):
  *                 self._stdlib = True
  */
-      __Pyx_TraceLine(292,0,__PYX_ERR(0, 292, __pyx_L1_error))
+      __Pyx_TraceLine(289,0,__PYX_ERR(0, 289, __pyx_L1_error))
       __Pyx_INCREF(Py_False);
       __Pyx_GIVEREF(Py_False);
       __Pyx_GOTREF(__pyx_v_self->_stdlib);
       __Pyx_DECREF(__pyx_v_self->_stdlib);
       __pyx_v_self->_stdlib = Py_False;
 
-      /* "hunter/_event.pyx":290
+      /* "hunter/_event.pyx":287
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
@@ -6807,20 +6761,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":293
+    /* "hunter/_event.pyx":290
  *                 # if it's in site-packages then its definitely not stdlib
  *                 self._stdlib = False
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):             # <<<<<<<<<<<<<<
  *                 self._stdlib = True
  *             else:
  */
-    __Pyx_TraceLine(293,0,__PYX_ERR(0, 293, __pyx_L1_error))
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 293, __pyx_L1_error)
+    __Pyx_TraceLine(290,0,__PYX_ERR(0, 290, __pyx_L1_error))
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 293, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_SYS_PREFIX_PATHS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 293, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_SYS_PREFIX_PATHS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -6835,28 +6789,28 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
     __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 293, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 293, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 290, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_1) {
 
-      /* "hunter/_event.pyx":294
+      /* "hunter/_event.pyx":291
  *                 self._stdlib = False
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):
  *                 self._stdlib = True             # <<<<<<<<<<<<<<
  *             else:
  *                 self._stdlib = False
  */
-      __Pyx_TraceLine(294,0,__PYX_ERR(0, 294, __pyx_L1_error))
+      __Pyx_TraceLine(291,0,__PYX_ERR(0, 291, __pyx_L1_error))
       __Pyx_INCREF(Py_True);
       __Pyx_GIVEREF(Py_True);
       __Pyx_GOTREF(__pyx_v_self->_stdlib);
       __Pyx_DECREF(__pyx_v_self->_stdlib);
       __pyx_v_self->_stdlib = Py_True;
 
-      /* "hunter/_event.pyx":293
+      /* "hunter/_event.pyx":290
  *                 # if it's in site-packages then its definitely not stdlib
  *                 self._stdlib = False
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):             # <<<<<<<<<<<<<<
@@ -6866,14 +6820,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
       goto __pyx_L4;
     }
 
-    /* "hunter/_event.pyx":296
+    /* "hunter/_event.pyx":293
  *                 self._stdlib = True
  *             else:
  *                 self._stdlib = False             # <<<<<<<<<<<<<<
  *         return self._stdlib
  * 
  */
-    __Pyx_TraceLine(296,0,__PYX_ERR(0, 296, __pyx_L1_error))
+    __Pyx_TraceLine(293,0,__PYX_ERR(0, 293, __pyx_L1_error))
     /*else*/ {
       __Pyx_INCREF(Py_False);
       __Pyx_GIVEREF(Py_False);
@@ -6883,7 +6837,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
     }
     __pyx_L4:;
 
-    /* "hunter/_event.pyx":282
+    /* "hunter/_event.pyx":279
  * 
  *     cdef stdlib_getter(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
@@ -6892,20 +6846,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
  */
   }
 
-  /* "hunter/_event.pyx":297
+  /* "hunter/_event.pyx":294
  *             else:
  *                 self._stdlib = False
  *         return self._stdlib             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(297,0,__PYX_ERR(0, 297, __pyx_L1_error))
+  __Pyx_TraceLine(294,0,__PYX_ERR(0, 294, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_stdlib);
   __pyx_r = __pyx_v_self->_stdlib;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":281
+  /* "hunter/_event.pyx":278
  *         return self.code_getter()
  * 
  *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
@@ -6929,7 +6883,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":300
+/* "hunter/_event.pyx":297
  * 
  *     @property
  *     def stdlib(self):             # <<<<<<<<<<<<<<
@@ -6959,24 +6913,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 300, 0, __PYX_ERR(0, 300, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 297, 0, __PYX_ERR(0, 297, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":301
+  /* "hunter/_event.pyx":298
  *     @property
  *     def stdlib(self):
  *         return self.stdlib_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef fullsource_getter(self):
  */
-  __Pyx_TraceLine(301,0,__PYX_ERR(0, 301, __pyx_L1_error))
+  __Pyx_TraceLine(298,0,__PYX_ERR(0, 298, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_stdlib_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_stdlib_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":300
+  /* "hunter/_event.pyx":297
  * 
  *     @property
  *     def stdlib(self):             # <<<<<<<<<<<<<<
@@ -6996,7 +6950,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":303
+/* "hunter/_event.pyx":300
  *         return self.stdlib_getter()
  * 
  *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
@@ -7046,28 +7000,28 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fullsource_getter", 0);
-  __Pyx_TraceCall("fullsource_getter", __pyx_f[0], 303, 0, __PYX_ERR(0, 303, __pyx_L1_error));
+  __Pyx_TraceCall("fullsource_getter", __pyx_f[0], 300, 0, __PYX_ERR(0, 300, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":306
+  /* "hunter/_event.pyx":303
  *         cdef list lines
  * 
  *         if self._fullsource is UNSET:             # <<<<<<<<<<<<<<
  *             try:
  *                 self._fullsource = None
  */
-  __Pyx_TraceLine(306,0,__PYX_ERR(0, 306, __pyx_L1_error))
+  __Pyx_TraceLine(303,0,__PYX_ERR(0, 303, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_fullsource == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":307
+    /* "hunter/_event.pyx":304
  * 
  *         if self._fullsource is UNSET:
  *             try:             # <<<<<<<<<<<<<<
  *                 self._fullsource = None
  * 
  */
-    __Pyx_TraceLine(307,0,__PYX_ERR(0, 307, __pyx_L1_error))
+    __Pyx_TraceLine(304,0,__PYX_ERR(0, 304, __pyx_L1_error))
     {
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
@@ -7077,64 +7031,64 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
       __Pyx_XGOTREF(__pyx_t_5);
       /*try:*/ {
 
-        /* "hunter/_event.pyx":308
+        /* "hunter/_event.pyx":305
  *         if self._fullsource is UNSET:
  *             try:
  *                 self._fullsource = None             # <<<<<<<<<<<<<<
  * 
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
  */
-        __Pyx_TraceLine(308,0,__PYX_ERR(0, 308, __pyx_L4_error))
+        __Pyx_TraceLine(305,0,__PYX_ERR(0, 305, __pyx_L4_error))
         __Pyx_INCREF(Py_None);
         __Pyx_GIVEREF(Py_None);
         __Pyx_GOTREF(__pyx_v_self->_fullsource);
         __Pyx_DECREF(__pyx_v_self->_fullsource);
         __pyx_v_self->_fullsource = Py_None;
 
-        /* "hunter/_event.pyx":310
+        /* "hunter/_event.pyx":307
  *                 self._fullsource = None
  * 
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":             # <<<<<<<<<<<<<<
  *                     lines = []
  *                     try:
  */
-        __Pyx_TraceLine(310,0,__PYX_ERR(0, 310, __pyx_L4_error))
-        __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->kind, __pyx_n_s_call, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 310, __pyx_L4_error)
+        __Pyx_TraceLine(307,0,__PYX_ERR(0, 307, __pyx_L4_error))
+        __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->kind, __pyx_n_s_call, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 307, __pyx_L4_error)
         __pyx_t_6 = (__pyx_t_1 != 0);
         if (__pyx_t_6) {
         } else {
           __pyx_t_2 = __pyx_t_6;
           goto __pyx_L11_bool_binop_done;
         }
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->frame->f_code), __pyx_n_s_co_name); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 310, __pyx_L4_error)
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->frame->f_code), __pyx_n_s_co_name); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 307, __pyx_L4_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_kp_s_module_3, Py_NE)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 310, __pyx_L4_error)
+        __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_kp_s_module_3, Py_NE)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 307, __pyx_L4_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __pyx_t_2 = __pyx_t_6;
         __pyx_L11_bool_binop_done:;
         if (__pyx_t_2) {
 
-          /* "hunter/_event.pyx":311
+          /* "hunter/_event.pyx":308
  * 
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
  *                     lines = []             # <<<<<<<<<<<<<<
  *                     try:
  *                         for _, token, _, _, line in generate_tokens(partial(
  */
-          __Pyx_TraceLine(311,0,__PYX_ERR(0, 311, __pyx_L4_error))
-          __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 311, __pyx_L4_error)
+          __Pyx_TraceLine(308,0,__PYX_ERR(0, 308, __pyx_L4_error))
+          __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 308, __pyx_L4_error)
           __Pyx_GOTREF(__pyx_t_7);
           __pyx_v_lines = ((PyObject*)__pyx_t_7);
           __pyx_t_7 = 0;
 
-          /* "hunter/_event.pyx":312
+          /* "hunter/_event.pyx":309
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
  *                     lines = []
  *                     try:             # <<<<<<<<<<<<<<
  *                         for _, token, _, _, line in generate_tokens(partial(
  *                                 next,
  */
-          __Pyx_TraceLine(312,0,__PYX_ERR(0, 312, __pyx_L4_error))
+          __Pyx_TraceLine(309,0,__PYX_ERR(0, 309, __pyx_L4_error))
           {
             __Pyx_PyThreadState_declare
             __Pyx_PyThreadState_assign
@@ -7144,45 +7098,45 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
             __Pyx_XGOTREF(__pyx_t_10);
             /*try:*/ {
 
-              /* "hunter/_event.pyx":313
+              /* "hunter/_event.pyx":310
  *                     lines = []
  *                     try:
  *                         for _, token, _, _, line in generate_tokens(partial(             # <<<<<<<<<<<<<<
  *                                 next,
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  */
-              __Pyx_TraceLine(313,0,__PYX_ERR(0, 313, __pyx_L13_error))
-              __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_generate_tokens); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 313, __pyx_L13_error)
+              __Pyx_TraceLine(310,0,__PYX_ERR(0, 310, __pyx_L13_error))
+              __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_generate_tokens); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 310, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_11);
-              __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_partial); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 313, __pyx_L13_error)
+              __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_partial); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 310, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_13);
 
-              /* "hunter/_event.pyx":314
+              /* "hunter/_event.pyx":311
  *                     try:
  *                         for _, token, _, _, line in generate_tokens(partial(
  *                                 next,             # <<<<<<<<<<<<<<
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  *                         )):
  */
-              __Pyx_TraceLine(314,0,__PYX_ERR(0, 314, __pyx_L13_error))
-              __pyx_t_14 = __Pyx_GetBuiltinName(__pyx_n_s_next); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 314, __pyx_L13_error)
+              __Pyx_TraceLine(311,0,__PYX_ERR(0, 311, __pyx_L13_error))
+              __pyx_t_14 = __Pyx_GetBuiltinName(__pyx_n_s_next); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 311, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_14);
 
-              /* "hunter/_event.pyx":315
+              /* "hunter/_event.pyx":312
  *                         for _, token, _, _, line in generate_tokens(partial(
  *                                 next,
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)             # <<<<<<<<<<<<<<
  *                         )):
  *                             if token in ("def", "class", "lambda"):
  */
-              __Pyx_TraceLine(315,0,__PYX_ERR(0, 315, __pyx_L13_error))
-              __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_yield_lines); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 315, __pyx_L13_error)
+              __Pyx_TraceLine(312,0,__PYX_ERR(0, 312, __pyx_L13_error))
+              __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_yield_lines); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 312, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_16);
-              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 315, __pyx_L13_error)
+              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 312, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_17);
-              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 315, __pyx_L13_error)
+              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 312, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_18);
-              __pyx_t_19 = __Pyx_PyInt_SubtractObjC(__pyx_t_18, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 315, __pyx_L13_error)
+              __pyx_t_19 = __Pyx_PyInt_SubtractObjC(__pyx_t_18, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 312, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
               __pyx_t_18 = NULL;
@@ -7200,7 +7154,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_16)) {
                 PyObject *__pyx_temp[5] = {__pyx_t_18, __pyx_t_17, __pyx_v_self->frame->f_globals, __pyx_t_19, __pyx_v_lines};
-                __pyx_t_15 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_20, 4+__pyx_t_20); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 315, __pyx_L13_error)
+                __pyx_t_15 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_20, 4+__pyx_t_20); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 312, __pyx_L13_error)
                 __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
                 __Pyx_GOTREF(__pyx_t_15);
                 __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
@@ -7210,7 +7164,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
                 PyObject *__pyx_temp[5] = {__pyx_t_18, __pyx_t_17, __pyx_v_self->frame->f_globals, __pyx_t_19, __pyx_v_lines};
-                __pyx_t_15 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_20, 4+__pyx_t_20); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 315, __pyx_L13_error)
+                __pyx_t_15 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_20, 4+__pyx_t_20); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 312, __pyx_L13_error)
                 __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
                 __Pyx_GOTREF(__pyx_t_15);
                 __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
@@ -7218,7 +7172,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               } else
               #endif
               {
-                __pyx_t_21 = PyTuple_New(4+__pyx_t_20); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 315, __pyx_L13_error)
+                __pyx_t_21 = PyTuple_New(4+__pyx_t_20); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 312, __pyx_L13_error)
                 __Pyx_GOTREF(__pyx_t_21);
                 if (__pyx_t_18) {
                   __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_t_18); __pyx_t_18 = NULL;
@@ -7235,7 +7189,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                 PyTuple_SET_ITEM(__pyx_t_21, 3+__pyx_t_20, __pyx_v_lines);
                 __pyx_t_17 = 0;
                 __pyx_t_19 = 0;
-                __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_21, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 315, __pyx_L13_error)
+                __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_21, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 312, __pyx_L13_error)
                 __Pyx_GOTREF(__pyx_t_15);
                 __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
               }
@@ -7255,7 +7209,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_13)) {
                 PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_t_14, __pyx_t_15};
-                __pyx_t_12 = __Pyx_PyFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_20, 2+__pyx_t_20); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_12 = __Pyx_PyFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_20, 2+__pyx_t_20); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 310, __pyx_L13_error)
                 __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
                 __Pyx_GOTREF(__pyx_t_12);
                 __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -7265,7 +7219,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_13)) {
                 PyObject *__pyx_temp[3] = {__pyx_t_16, __pyx_t_14, __pyx_t_15};
-                __pyx_t_12 = __Pyx_PyCFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_20, 2+__pyx_t_20); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_12 = __Pyx_PyCFunction_FastCall(__pyx_t_13, __pyx_temp+1-__pyx_t_20, 2+__pyx_t_20); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 310, __pyx_L13_error)
                 __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
                 __Pyx_GOTREF(__pyx_t_12);
                 __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -7273,7 +7227,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               } else
               #endif
               {
-                __pyx_t_21 = PyTuple_New(2+__pyx_t_20); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_21 = PyTuple_New(2+__pyx_t_20); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 310, __pyx_L13_error)
                 __Pyx_GOTREF(__pyx_t_21);
                 if (__pyx_t_16) {
                   __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -7284,7 +7238,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                 PyTuple_SET_ITEM(__pyx_t_21, 1+__pyx_t_20, __pyx_t_15);
                 __pyx_t_14 = 0;
                 __pyx_t_15 = 0;
-                __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_21, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_21, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 310, __pyx_L13_error)
                 __Pyx_GOTREF(__pyx_t_12);
                 __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
               }
@@ -7302,25 +7256,25 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
               __pyx_t_7 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_13, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_12);
               __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-              if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 313, __pyx_L13_error)
+              if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 310, __pyx_L13_error)
               __Pyx_GOTREF(__pyx_t_7);
               __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-              /* "hunter/_event.pyx":313
+              /* "hunter/_event.pyx":310
  *                     lines = []
  *                     try:
  *                         for _, token, _, _, line in generate_tokens(partial(             # <<<<<<<<<<<<<<
  *                                 next,
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  */
-              __Pyx_TraceLine(313,0,__PYX_ERR(0, 313, __pyx_L13_error))
+              __Pyx_TraceLine(310,0,__PYX_ERR(0, 310, __pyx_L13_error))
               if (likely(PyList_CheckExact(__pyx_t_7)) || PyTuple_CheckExact(__pyx_t_7)) {
                 __pyx_t_11 = __pyx_t_7; __Pyx_INCREF(__pyx_t_11); __pyx_t_22 = 0;
                 __pyx_t_23 = NULL;
               } else {
-                __pyx_t_22 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_22 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 310, __pyx_L13_error)
                 __Pyx_GOTREF(__pyx_t_11);
-                __pyx_t_23 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 313, __pyx_L13_error)
+                __pyx_t_23 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_23)) __PYX_ERR(0, 310, __pyx_L13_error)
               }
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
               for (;;) {
@@ -7328,17 +7282,17 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                   if (likely(PyList_CheckExact(__pyx_t_11))) {
                     if (__pyx_t_22 >= PyList_GET_SIZE(__pyx_t_11)) break;
                     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                    __pyx_t_7 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_22); __Pyx_INCREF(__pyx_t_7); __pyx_t_22++; if (unlikely(0 < 0)) __PYX_ERR(0, 313, __pyx_L13_error)
+                    __pyx_t_7 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_22); __Pyx_INCREF(__pyx_t_7); __pyx_t_22++; if (unlikely(0 < 0)) __PYX_ERR(0, 310, __pyx_L13_error)
                     #else
-                    __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_22); __pyx_t_22++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 313, __pyx_L13_error)
+                    __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_22); __pyx_t_22++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 310, __pyx_L13_error)
                     __Pyx_GOTREF(__pyx_t_7);
                     #endif
                   } else {
                     if (__pyx_t_22 >= PyTuple_GET_SIZE(__pyx_t_11)) break;
                     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                    __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_22); __Pyx_INCREF(__pyx_t_7); __pyx_t_22++; if (unlikely(0 < 0)) __PYX_ERR(0, 313, __pyx_L13_error)
+                    __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_22); __Pyx_INCREF(__pyx_t_7); __pyx_t_22++; if (unlikely(0 < 0)) __PYX_ERR(0, 310, __pyx_L13_error)
                     #else
-                    __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_22); __pyx_t_22++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 313, __pyx_L13_error)
+                    __pyx_t_7 = PySequence_ITEM(__pyx_t_11, __pyx_t_22); __pyx_t_22++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 310, __pyx_L13_error)
                     __Pyx_GOTREF(__pyx_t_7);
                     #endif
                   }
@@ -7348,7 +7302,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                     PyObject* exc_type = PyErr_Occurred();
                     if (exc_type) {
                       if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                      else __PYX_ERR(0, 313, __pyx_L13_error)
+                      else __PYX_ERR(0, 310, __pyx_L13_error)
                     }
                     break;
                   }
@@ -7360,7 +7314,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                   if (unlikely(size != 5)) {
                     if (size > 5) __Pyx_RaiseTooManyValuesError(5);
                     else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-                    __PYX_ERR(0, 313, __pyx_L13_error)
+                    __PYX_ERR(0, 310, __pyx_L13_error)
                   }
                   #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
                   if (likely(PyTuple_CheckExact(sequence))) {
@@ -7386,7 +7340,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                     Py_ssize_t i;
                     PyObject** temps[5] = {&__pyx_t_12,&__pyx_t_13,&__pyx_t_21,&__pyx_t_15,&__pyx_t_14};
                     for (i=0; i < 5; i++) {
-                      PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 313, __pyx_L13_error)
+                      PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 310, __pyx_L13_error)
                       __Pyx_GOTREF(item);
                       *(temps[i]) = item;
                     }
@@ -7396,7 +7350,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                 } else {
                   Py_ssize_t index = -1;
                   PyObject** temps[5] = {&__pyx_t_12,&__pyx_t_13,&__pyx_t_21,&__pyx_t_15,&__pyx_t_14};
-                  __pyx_t_16 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 313, __pyx_L13_error)
+                  __pyx_t_16 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 310, __pyx_L13_error)
                   __Pyx_GOTREF(__pyx_t_16);
                   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
                   __pyx_t_24 = Py_TYPE(__pyx_t_16)->tp_iternext;
@@ -7405,7 +7359,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                     __Pyx_GOTREF(item);
                     *(temps[index]) = item;
                   }
-                  if (__Pyx_IternextUnpackEndCheck(__pyx_t_24(__pyx_t_16), 5) < 0) __PYX_ERR(0, 313, __pyx_L13_error)
+                  if (__Pyx_IternextUnpackEndCheck(__pyx_t_24(__pyx_t_16), 5) < 0) __PYX_ERR(0, 310, __pyx_L13_error)
                   __pyx_t_24 = NULL;
                   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
                   goto __pyx_L22_unpacking_done;
@@ -7413,7 +7367,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
                   __pyx_t_24 = NULL;
                   if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-                  __PYX_ERR(0, 313, __pyx_L13_error)
+                  __PYX_ERR(0, 310, __pyx_L13_error)
                   __pyx_L22_unpacking_done:;
                 }
                 __Pyx_XDECREF_SET(__pyx_v__, __pyx_t_12);
@@ -7427,44 +7381,44 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                 __Pyx_XDECREF_SET(__pyx_v_line, __pyx_t_14);
                 __pyx_t_14 = 0;
 
-                /* "hunter/_event.pyx":317
+                /* "hunter/_event.pyx":314
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  *                         )):
  *                             if token in ("def", "class", "lambda"):             # <<<<<<<<<<<<<<
  *                                 self._fullsource = ''.join(lines)
  *                                 break
  */
-                __Pyx_TraceLine(317,0,__PYX_ERR(0, 317, __pyx_L13_error))
+                __Pyx_TraceLine(314,0,__PYX_ERR(0, 314, __pyx_L13_error))
                 __Pyx_INCREF(__pyx_v_token);
                 __pyx_t_7 = __pyx_v_token;
-                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_def, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 317, __pyx_L13_error)
+                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_def, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 314, __pyx_L13_error)
                 if (!__pyx_t_6) {
                 } else {
                   __pyx_t_2 = __pyx_t_6;
                   goto __pyx_L24_bool_binop_done;
                 }
-                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_class, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 317, __pyx_L13_error)
+                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_class, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 314, __pyx_L13_error)
                 if (!__pyx_t_6) {
                 } else {
                   __pyx_t_2 = __pyx_t_6;
                   goto __pyx_L24_bool_binop_done;
                 }
-                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_lambda, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 317, __pyx_L13_error)
+                __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_lambda, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 314, __pyx_L13_error)
                 __pyx_t_2 = __pyx_t_6;
                 __pyx_L24_bool_binop_done:;
                 __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
                 __pyx_t_6 = (__pyx_t_2 != 0);
                 if (__pyx_t_6) {
 
-                  /* "hunter/_event.pyx":318
+                  /* "hunter/_event.pyx":315
  *                         )):
  *                             if token in ("def", "class", "lambda"):
  *                                 self._fullsource = ''.join(lines)             # <<<<<<<<<<<<<<
  *                                 break
  *                     except TokenError:
  */
-                  __Pyx_TraceLine(318,0,__PYX_ERR(0, 318, __pyx_L13_error))
-                  __pyx_t_7 = __Pyx_PyString_Join(__pyx_kp_s__5, __pyx_v_lines); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 318, __pyx_L13_error)
+                  __Pyx_TraceLine(315,0,__PYX_ERR(0, 315, __pyx_L13_error))
+                  __pyx_t_7 = __Pyx_PyString_Join(__pyx_kp_s__5, __pyx_v_lines); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L13_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   __Pyx_GIVEREF(__pyx_t_7);
                   __Pyx_GOTREF(__pyx_v_self->_fullsource);
@@ -7472,17 +7426,17 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
                   __pyx_v_self->_fullsource = __pyx_t_7;
                   __pyx_t_7 = 0;
 
-                  /* "hunter/_event.pyx":319
+                  /* "hunter/_event.pyx":316
  *                             if token in ("def", "class", "lambda"):
  *                                 self._fullsource = ''.join(lines)
  *                                 break             # <<<<<<<<<<<<<<
  *                     except TokenError:
  *                         pass
  */
-                  __Pyx_TraceLine(319,0,__PYX_ERR(0, 319, __pyx_L13_error))
+                  __Pyx_TraceLine(316,0,__PYX_ERR(0, 316, __pyx_L13_error))
                   goto __pyx_L20_break;
 
-                  /* "hunter/_event.pyx":317
+                  /* "hunter/_event.pyx":314
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  *                         )):
  *                             if token in ("def", "class", "lambda"):             # <<<<<<<<<<<<<<
@@ -7491,19 +7445,19 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
  */
                 }
 
-                /* "hunter/_event.pyx":313
+                /* "hunter/_event.pyx":310
  *                     lines = []
  *                     try:
  *                         for _, token, _, _, line in generate_tokens(partial(             # <<<<<<<<<<<<<<
  *                                 next,
  *                                 yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
  */
-                __Pyx_TraceLine(313,0,__PYX_ERR(0, 313, __pyx_L13_error))
+                __Pyx_TraceLine(310,0,__PYX_ERR(0, 310, __pyx_L13_error))
               }
               __pyx_L20_break:;
               __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-              /* "hunter/_event.pyx":312
+              /* "hunter/_event.pyx":309
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
  *                     lines = []
  *                     try:             # <<<<<<<<<<<<<<
@@ -7528,16 +7482,16 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
             __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
             __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-            /* "hunter/_event.pyx":320
+            /* "hunter/_event.pyx":317
  *                                 self._fullsource = ''.join(lines)
  *                                 break
  *                     except TokenError:             # <<<<<<<<<<<<<<
  *                         pass
  *                 if self._fullsource is None:
  */
-            __Pyx_TraceLine(320,0,__PYX_ERR(0, 320, __pyx_L15_except_error))
+            __Pyx_TraceLine(317,0,__PYX_ERR(0, 317, __pyx_L15_except_error))
             __Pyx_ErrFetch(&__pyx_t_11, &__pyx_t_7, &__pyx_t_14);
-            __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_TokenError); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 320, __pyx_L15_except_error)
+            __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_TokenError); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 317, __pyx_L15_except_error)
             __Pyx_GOTREF(__pyx_t_15);
             __pyx_t_20 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_11, __pyx_t_15);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
@@ -7550,7 +7504,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
             goto __pyx_L15_except_error;
             __pyx_L15_except_error:;
 
-            /* "hunter/_event.pyx":312
+            /* "hunter/_event.pyx":309
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
  *                     lines = []
  *                     try:             # <<<<<<<<<<<<<<
@@ -7570,7 +7524,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
             __pyx_L18_try_end:;
           }
 
-          /* "hunter/_event.pyx":310
+          /* "hunter/_event.pyx":307
  *                 self._fullsource = None
  * 
  *                 if self.kind == 'call' and self.frame.f_code.co_name != "<module>":             # <<<<<<<<<<<<<<
@@ -7579,31 +7533,31 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
  */
         }
 
-        /* "hunter/_event.pyx":322
+        /* "hunter/_event.pyx":319
  *                     except TokenError:
  *                         pass
  *                 if self._fullsource is None:             # <<<<<<<<<<<<<<
  *                     self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:
  */
-        __Pyx_TraceLine(322,0,__PYX_ERR(0, 322, __pyx_L4_error))
+        __Pyx_TraceLine(319,0,__PYX_ERR(0, 319, __pyx_L4_error))
         __pyx_t_6 = (__pyx_v_self->_fullsource == Py_None);
         __pyx_t_2 = (__pyx_t_6 != 0);
         if (__pyx_t_2) {
 
-          /* "hunter/_event.pyx":323
+          /* "hunter/_event.pyx":320
  *                         pass
  *                 if self._fullsource is None:
  *                     self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)             # <<<<<<<<<<<<<<
  *             except Exception as exc:
  *                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
  */
-          __Pyx_TraceLine(323,0,__PYX_ERR(0, 323, __pyx_L4_error))
-          __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_getline); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 323, __pyx_L4_error)
+          __Pyx_TraceLine(320,0,__PYX_ERR(0, 320, __pyx_L4_error))
+          __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_getline); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L4_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 323, __pyx_L4_error)
+          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 320, __pyx_L4_error)
           __Pyx_GOTREF(__pyx_t_11);
-          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 323, __pyx_L4_error)
+          __pyx_t_15 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 320, __pyx_L4_error)
           __Pyx_GOTREF(__pyx_t_15);
           __pyx_t_21 = NULL;
           __pyx_t_20 = 0;
@@ -7620,7 +7574,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           #if CYTHON_FAST_PYCALL
           if (PyFunction_Check(__pyx_t_7)) {
             PyObject *__pyx_temp[4] = {__pyx_t_21, __pyx_t_11, __pyx_t_15, __pyx_v_self->frame->f_globals};
-            __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_20, 3+__pyx_t_20); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 323, __pyx_L4_error)
+            __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_20, 3+__pyx_t_20); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 320, __pyx_L4_error)
             __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -7630,7 +7584,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           #if CYTHON_FAST_PYCCALL
           if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
             PyObject *__pyx_temp[4] = {__pyx_t_21, __pyx_t_11, __pyx_t_15, __pyx_v_self->frame->f_globals};
-            __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_20, 3+__pyx_t_20); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 323, __pyx_L4_error)
+            __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_20, 3+__pyx_t_20); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 320, __pyx_L4_error)
             __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -7638,7 +7592,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           } else
           #endif
           {
-            __pyx_t_13 = PyTuple_New(3+__pyx_t_20); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 323, __pyx_L4_error)
+            __pyx_t_13 = PyTuple_New(3+__pyx_t_20); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 320, __pyx_L4_error)
             __Pyx_GOTREF(__pyx_t_13);
             if (__pyx_t_21) {
               __Pyx_GIVEREF(__pyx_t_21); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_21); __pyx_t_21 = NULL;
@@ -7652,7 +7606,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
             PyTuple_SET_ITEM(__pyx_t_13, 2+__pyx_t_20, __pyx_v_self->frame->f_globals);
             __pyx_t_11 = 0;
             __pyx_t_15 = 0;
-            __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_13, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 323, __pyx_L4_error)
+            __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_13, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 320, __pyx_L4_error)
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           }
@@ -7663,7 +7617,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           __pyx_v_self->_fullsource = __pyx_t_14;
           __pyx_t_14 = 0;
 
-          /* "hunter/_event.pyx":322
+          /* "hunter/_event.pyx":319
  *                     except TokenError:
  *                         pass
  *                 if self._fullsource is None:             # <<<<<<<<<<<<<<
@@ -7672,7 +7626,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
  */
         }
 
-        /* "hunter/_event.pyx":307
+        /* "hunter/_event.pyx":304
  * 
  *         if self._fullsource is UNSET:
  *             try:             # <<<<<<<<<<<<<<
@@ -7697,18 +7651,18 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
       __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-      /* "hunter/_event.pyx":324
+      /* "hunter/_event.pyx":321
  *                 if self._fullsource is None:
  *                     self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:             # <<<<<<<<<<<<<<
  *                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
  *         return self._fullsource
  */
-      __Pyx_TraceLine(324,0,__PYX_ERR(0, 324, __pyx_L6_except_error))
+      __Pyx_TraceLine(321,0,__PYX_ERR(0, 321, __pyx_L6_except_error))
       __pyx_t_20 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
       if (__pyx_t_20) {
         __Pyx_AddTraceback("hunter._event.Event.fullsource_getter", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_14, &__pyx_t_7, &__pyx_t_13) < 0) __PYX_ERR(0, 324, __pyx_L6_except_error)
+        if (__Pyx_GetException(&__pyx_t_14, &__pyx_t_7, &__pyx_t_13) < 0) __PYX_ERR(0, 321, __pyx_L6_except_error)
         __Pyx_GOTREF(__pyx_t_14);
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GOTREF(__pyx_t_13);
@@ -7716,15 +7670,15 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
         __pyx_v_exc = __pyx_t_7;
         /*try:*/ {
 
-          /* "hunter/_event.pyx":325
+          /* "hunter/_event.pyx":322
  *                     self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:
  *                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)             # <<<<<<<<<<<<<<
  *         return self._fullsource
  * 
  */
-          __Pyx_TraceLine(325,0,__PYX_ERR(0, 325, __pyx_L33_error))
-          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_r, __pyx_n_s_format); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 325, __pyx_L33_error)
+          __Pyx_TraceLine(322,0,__PYX_ERR(0, 322, __pyx_L33_error))
+          __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_r, __pyx_n_s_format); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 322, __pyx_L33_error)
           __Pyx_GOTREF(__pyx_t_11);
           __pyx_t_21 = NULL;
           if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
@@ -7738,7 +7692,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           }
           __pyx_t_15 = (__pyx_t_21) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_21, __pyx_v_exc) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_v_exc);
           __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
-          if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 325, __pyx_L33_error)
+          if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 322, __pyx_L33_error)
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __Pyx_GIVEREF(__pyx_t_15);
@@ -7748,14 +7702,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
           __pyx_t_15 = 0;
         }
 
-        /* "hunter/_event.pyx":324
+        /* "hunter/_event.pyx":321
  *                 if self._fullsource is None:
  *                     self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:             # <<<<<<<<<<<<<<
  *                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
  *         return self._fullsource
  */
-        __Pyx_TraceLine(324,0,__PYX_ERR(0, 324, __pyx_L33_error))
+        __Pyx_TraceLine(321,0,__PYX_ERR(0, 321, __pyx_L33_error))
         /*finally:*/ {
           /*normal exit:*/{
             __Pyx_DECREF(__pyx_v_exc);
@@ -7812,7 +7766,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
       goto __pyx_L6_except_error;
       __pyx_L6_except_error:;
 
-      /* "hunter/_event.pyx":307
+      /* "hunter/_event.pyx":304
  * 
  *         if self._fullsource is UNSET:
  *             try:             # <<<<<<<<<<<<<<
@@ -7832,7 +7786,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
       __pyx_L9_try_end:;
     }
 
-    /* "hunter/_event.pyx":306
+    /* "hunter/_event.pyx":303
  *         cdef list lines
  * 
  *         if self._fullsource is UNSET:             # <<<<<<<<<<<<<<
@@ -7841,20 +7795,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
  */
   }
 
-  /* "hunter/_event.pyx":326
+  /* "hunter/_event.pyx":323
  *             except Exception as exc:
  *                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
  *         return self._fullsource             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(326,0,__PYX_ERR(0, 326, __pyx_L1_error))
+  __Pyx_TraceLine(323,0,__PYX_ERR(0, 323, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_fullsource);
   __pyx_r = __pyx_v_self->_fullsource;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":303
+  /* "hunter/_event.pyx":300
  *         return self.stdlib_getter()
  * 
  *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
@@ -7889,7 +7843,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":329
+/* "hunter/_event.pyx":326
  * 
  *     @property
  *     def fullsource(self):             # <<<<<<<<<<<<<<
@@ -7919,24 +7873,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __p
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 329, 0, __PYX_ERR(0, 329, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 326, 0, __PYX_ERR(0, 326, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":330
+  /* "hunter/_event.pyx":327
  *     @property
  *     def fullsource(self):
  *         return self.fullsource_getter()             # <<<<<<<<<<<<<<
  * 
  *     cdef source_getter(self):
  */
-  __Pyx_TraceLine(330,0,__PYX_ERR(0, 330, __pyx_L1_error))
+  __Pyx_TraceLine(327,0,__PYX_ERR(0, 327, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_fullsource_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 330, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_fullsource_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":329
+  /* "hunter/_event.pyx":326
  * 
  *     @property
  *     def fullsource(self):             # <<<<<<<<<<<<<<
@@ -7956,7 +7910,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __p
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":332
+/* "hunter/_event.pyx":329
  *         return self.fullsource_getter()
  * 
  *     cdef source_getter(self):             # <<<<<<<<<<<<<<
@@ -7995,31 +7949,31 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("source_getter", 0);
-  __Pyx_TraceCall("source_getter", __pyx_f[0], 332, 0, __PYX_ERR(0, 332, __pyx_L1_error));
+  __Pyx_TraceCall("source_getter", __pyx_f[0], 329, 0, __PYX_ERR(0, 329, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":333
+  /* "hunter/_event.pyx":330
  * 
  *     cdef source_getter(self):
  *         if self._source is UNSET:             # <<<<<<<<<<<<<<
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  */
-  __Pyx_TraceLine(333,0,__PYX_ERR(0, 333, __pyx_L1_error))
+  __Pyx_TraceLine(330,0,__PYX_ERR(0, 330, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->_source == __pyx_v_6hunter_6_event_UNSET);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hunter/_event.pyx":334
+    /* "hunter/_event.pyx":331
  *     cdef source_getter(self):
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  *             try:
  */
-    __Pyx_TraceLine(334,0,__PYX_ERR(0, 334, __pyx_L1_error))
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __Pyx_TraceLine(331,0,__PYX_ERR(0, 331, __pyx_L1_error))
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 331, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_endswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 331, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_4 = NULL;
@@ -8032,30 +7986,30 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         __Pyx_DECREF_SET(__pyx_t_5, function);
       }
     }
-    __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_tuple__11) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_tuple__11);
+    __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_tuple__10) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_tuple__10);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 334, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 331, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 334, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 331, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_2) {
 
-      /* "hunter/_event.pyx":335
+      /* "hunter/_event.pyx":332
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])             # <<<<<<<<<<<<<<
  *             try:
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)
  */
-      __Pyx_TraceLine(335,0,__PYX_ERR(0, 335, __pyx_L1_error))
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_not_reading_file, __pyx_n_s_format); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __Pyx_TraceLine(332,0,__PYX_ERR(0, 332, __pyx_L1_error))
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_not_reading_file, __pyx_n_s_format); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_splitext); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_splitext); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_basename); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_basename); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __pyx_t_10 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
@@ -8070,7 +8024,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_t_7 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_10, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9);
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 335, __pyx_L1_error)
+      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_8 = NULL;
@@ -8086,10 +8040,10 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_t_4 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_8, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 335, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -8105,7 +8059,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 335, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GIVEREF(__pyx_t_3);
@@ -8114,7 +8068,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_v_self->_source = __pyx_t_3;
       __pyx_t_3 = 0;
 
-      /* "hunter/_event.pyx":334
+      /* "hunter/_event.pyx":331
  *     cdef source_getter(self):
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
@@ -8123,14 +8077,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
  */
     }
 
-    /* "hunter/_event.pyx":336
+    /* "hunter/_event.pyx":333
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  *             try:             # <<<<<<<<<<<<<<
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:
  */
-    __Pyx_TraceLine(336,0,__PYX_ERR(0, 336, __pyx_L1_error))
+    __Pyx_TraceLine(333,0,__PYX_ERR(0, 333, __pyx_L1_error))
     {
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
@@ -8140,19 +8094,19 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __Pyx_XGOTREF(__pyx_t_13);
       /*try:*/ {
 
-        /* "hunter/_event.pyx":337
+        /* "hunter/_event.pyx":334
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  *             try:
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)             # <<<<<<<<<<<<<<
  *             except Exception as exc:
  *                 self._source = "??? NO SOURCE: {!r}".format(exc)
  */
-        __Pyx_TraceLine(337,0,__PYX_ERR(0, 337, __pyx_L5_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_getline); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 337, __pyx_L5_error)
+        __Pyx_TraceLine(334,0,__PYX_ERR(0, 334, __pyx_L5_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_getline); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 334, __pyx_L5_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 337, __pyx_L5_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_filename); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 334, __pyx_L5_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 337, __pyx_L5_error)
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lineno); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 334, __pyx_L5_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_7 = NULL;
         __pyx_t_14 = 0;
@@ -8169,7 +8123,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_6, __pyx_t_4, __pyx_v_self->frame->f_globals};
-          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_14, 3+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 337, __pyx_L5_error)
+          __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_14, 3+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 334, __pyx_L5_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -8179,7 +8133,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_6, __pyx_t_4, __pyx_v_self->frame->f_globals};
-          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_14, 3+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 337, __pyx_L5_error)
+          __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_14, 3+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 334, __pyx_L5_error)
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -8187,7 +8141,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         } else
         #endif
         {
-          __pyx_t_8 = PyTuple_New(3+__pyx_t_14); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 337, __pyx_L5_error)
+          __pyx_t_8 = PyTuple_New(3+__pyx_t_14); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 334, __pyx_L5_error)
           __Pyx_GOTREF(__pyx_t_8);
           if (__pyx_t_7) {
             __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -8201,7 +8155,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
           PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_14, __pyx_v_self->frame->f_globals);
           __pyx_t_6 = 0;
           __pyx_t_4 = 0;
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 337, __pyx_L5_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 334, __pyx_L5_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         }
@@ -8212,7 +8166,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         __pyx_v_self->_source = __pyx_t_3;
         __pyx_t_3 = 0;
 
-        /* "hunter/_event.pyx":336
+        /* "hunter/_event.pyx":333
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  *             try:             # <<<<<<<<<<<<<<
@@ -8234,18 +8188,18 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-      /* "hunter/_event.pyx":338
+      /* "hunter/_event.pyx":335
  *             try:
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:             # <<<<<<<<<<<<<<
  *                 self._source = "??? NO SOURCE: {!r}".format(exc)
  * 
  */
-      __Pyx_TraceLine(338,0,__PYX_ERR(0, 338, __pyx_L7_except_error))
+      __Pyx_TraceLine(335,0,__PYX_ERR(0, 335, __pyx_L7_except_error))
       __pyx_t_14 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
       if (__pyx_t_14) {
         __Pyx_AddTraceback("hunter._event.Event.source_getter", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 338, __pyx_L7_except_error)
+        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 335, __pyx_L7_except_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GOTREF(__pyx_t_8);
@@ -8253,15 +8207,15 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
         __pyx_v_exc = __pyx_t_5;
         /*try:*/ {
 
-          /* "hunter/_event.pyx":339
+          /* "hunter/_event.pyx":336
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:
  *                 self._source = "??? NO SOURCE: {!r}".format(exc)             # <<<<<<<<<<<<<<
  * 
  *         return self._source
  */
-          __Pyx_TraceLine(339,0,__PYX_ERR(0, 339, __pyx_L16_error))
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 339, __pyx_L16_error)
+          __Pyx_TraceLine(336,0,__PYX_ERR(0, 336, __pyx_L16_error))
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_NO_SOURCE_r, __pyx_n_s_format); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 336, __pyx_L16_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_t_7 = NULL;
           if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -8275,7 +8229,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
           }
           __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_v_exc) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_exc);
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-          if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 339, __pyx_L16_error)
+          if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 336, __pyx_L16_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GIVEREF(__pyx_t_4);
@@ -8285,14 +8239,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
           __pyx_t_4 = 0;
         }
 
-        /* "hunter/_event.pyx":338
+        /* "hunter/_event.pyx":335
  *             try:
  *                 self._source = getline(self.filename, self.lineno, self.frame.f_globals)
  *             except Exception as exc:             # <<<<<<<<<<<<<<
  *                 self._source = "??? NO SOURCE: {!r}".format(exc)
  * 
  */
-        __Pyx_TraceLine(338,0,__PYX_ERR(0, 338, __pyx_L16_error))
+        __Pyx_TraceLine(335,0,__PYX_ERR(0, 335, __pyx_L16_error))
         /*finally:*/ {
           /*normal exit:*/{
             __Pyx_DECREF(__pyx_v_exc);
@@ -8346,7 +8300,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       goto __pyx_L7_except_error;
       __pyx_L7_except_error:;
 
-      /* "hunter/_event.pyx":336
+      /* "hunter/_event.pyx":333
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
  *             try:             # <<<<<<<<<<<<<<
@@ -8366,7 +8320,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_L10_try_end:;
     }
 
-    /* "hunter/_event.pyx":333
+    /* "hunter/_event.pyx":330
  * 
  *     cdef source_getter(self):
  *         if self._source is UNSET:             # <<<<<<<<<<<<<<
@@ -8375,20 +8329,20 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
  */
   }
 
-  /* "hunter/_event.pyx":341
+  /* "hunter/_event.pyx":338
  *                 self._source = "??? NO SOURCE: {!r}".format(exc)
  * 
  *         return self._source             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_TraceLine(341,0,__PYX_ERR(0, 341, __pyx_L1_error))
+  __Pyx_TraceLine(338,0,__PYX_ERR(0, 338, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_source);
   __pyx_r = __pyx_v_self->_source;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":332
+  /* "hunter/_event.pyx":329
  *         return self.fullsource_getter()
  * 
  *     cdef source_getter(self):             # <<<<<<<<<<<<<<
@@ -8416,7 +8370,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":344
+/* "hunter/_event.pyx":341
  * 
  *     @property
  *     def source(self):             # <<<<<<<<<<<<<<
@@ -8446,24 +8400,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6source___get__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[0], 344, 0, __PYX_ERR(0, 344, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[0], 341, 0, __PYX_ERR(0, 341, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":345
+  /* "hunter/_event.pyx":342
  *     @property
  *     def source(self):
  *         return self.source_getter()             # <<<<<<<<<<<<<<
  * 
  *     def __getitem__(self, item):
  */
-  __Pyx_TraceLine(345,0,__PYX_ERR(0, 345, __pyx_L1_error))
+  __Pyx_TraceLine(342,0,__PYX_ERR(0, 342, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_source_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6hunter_6_event_5Event_source_getter(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":344
+  /* "hunter/_event.pyx":341
  * 
  *     @property
  *     def source(self):             # <<<<<<<<<<<<<<
@@ -8483,7 +8437,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6source___get__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":347
+/* "hunter/_event.pyx":344
  *         return self.source_getter()
  * 
  *     def __getitem__(self, item):             # <<<<<<<<<<<<<<
@@ -8513,24 +8467,24 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8__getitem__(struct __pyx_obj_6
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__getitem__", 0);
-  __Pyx_TraceCall("__getitem__", __pyx_f[0], 347, 0, __PYX_ERR(0, 347, __pyx_L1_error));
+  __Pyx_TraceCall("__getitem__", __pyx_f[0], 344, 0, __PYX_ERR(0, 344, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":348
+  /* "hunter/_event.pyx":345
  * 
  *     def __getitem__(self, item):
  *         return getattr(self, item)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __Pyx_TraceLine(348,0,__PYX_ERR(0, 348, __pyx_L1_error))
+  __Pyx_TraceLine(345,0,__PYX_ERR(0, 345, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_GetAttr(((PyObject *)__pyx_v_self), __pyx_v_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetAttr(((PyObject *)__pyx_v_self), __pyx_v_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 345, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":347
+  /* "hunter/_event.pyx":344
  *         return self.source_getter()
  * 
  *     def __getitem__(self, item):             # <<<<<<<<<<<<<<
@@ -9452,7 +9406,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_12__setstate_cython__(struct __
 }
 static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "hunter/_event.pyx":351
+/* "hunter/_event.pyx":348
  * 
  * 
  * def yield_lines(filename, module_globals, start, list collector,             # <<<<<<<<<<<<<<
@@ -9505,19 +9459,19 @@ static PyObject *__pyx_pw_6hunter_6_event_1yield_lines(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_module_globals)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 1); __PYX_ERR(0, 351, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 1); __PYX_ERR(0, 348, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_start)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 2); __PYX_ERR(0, 351, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 2); __PYX_ERR(0, 348, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_collector)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 3); __PYX_ERR(0, 351, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, 3); __PYX_ERR(0, 348, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -9527,7 +9481,7 @@ static PyObject *__pyx_pw_6hunter_6_event_1yield_lines(PyObject *__pyx_self, PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "yield_lines") < 0)) __PYX_ERR(0, 351, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "yield_lines") < 0)) __PYX_ERR(0, 348, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9549,13 +9503,13 @@ static PyObject *__pyx_pw_6hunter_6_event_1yield_lines(PyObject *__pyx_self, PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 351, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("yield_lines", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 348, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._event.yield_lines", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_collector), (&PyList_Type), 1, "collector", 1))) __PYX_ERR(0, 351, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_collector), (&PyList_Type), 1, "collector", 1))) __PYX_ERR(0, 348, __pyx_L1_error)
   __pyx_r = __pyx_pf_6hunter_6_event_yield_lines(__pyx_self, __pyx_v_filename, __pyx_v_module_globals, __pyx_v_start, __pyx_v_collector, __pyx_v_limit);
 
   /* function exit code */
@@ -9579,7 +9533,7 @@ static PyObject *__pyx_pf_6hunter_6_event_yield_lines(CYTHON_UNUSED PyObject *__
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_6hunter_6_event___pyx_scope_struct__yield_lines *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 351, __pyx_L1_error)
+    __PYX_ERR(0, 348, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -9599,7 +9553,7 @@ static PyObject *__pyx_pf_6hunter_6_event_yield_lines(CYTHON_UNUSED PyObject *__
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_limit);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_limit);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6hunter_6_event_2generator, __pyx_codeobj__14, (PyObject *) __pyx_cur_scope, __pyx_n_s_yield_lines, __pyx_n_s_yield_lines, __pyx_n_s_hunter__event); if (unlikely(!gen)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6hunter_6_event_2generator, __pyx_codeobj__13, (PyObject *) __pyx_cur_scope, __pyx_n_s_yield_lines, __pyx_n_s_yield_lines, __pyx_n_s_hunter__event); if (unlikely(!gen)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -9636,8 +9590,8 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("yield_lines", 0);
-  __Pyx_TraceFrameInit(__pyx_codeobj__14)
-  __Pyx_TraceCall("yield_lines", __pyx_f[0], 351, 0, __PYX_ERR(0, 351, __pyx_L1_error));
+  __Pyx_TraceFrameInit(__pyx_codeobj__13)
+  __Pyx_TraceCall("yield_lines", __pyx_f[0], 348, 0, __PYX_ERR(0, 348, __pyx_L1_error));
   switch (__pyx_generator->resume_label) {
     case 0: goto __pyx_L3_first_run;
     case 1: goto __pyx_L7_resume_from_yield;
@@ -9647,39 +9601,39 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 351, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 348, __pyx_L1_error)
 
-  /* "hunter/_event.pyx":353
+  /* "hunter/_event.pyx":350
  * def yield_lines(filename, module_globals, start, list collector,
  *                 limit=10):
  *     dedent = None             # <<<<<<<<<<<<<<
  *     amount = 0
  *     for line in getlines(filename, module_globals)[start:start + limit]:
  */
-  __Pyx_TraceLine(353,0,__PYX_ERR(0, 353, __pyx_L1_error))
+  __Pyx_TraceLine(350,0,__PYX_ERR(0, 350, __pyx_L1_error))
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __pyx_cur_scope->__pyx_v_dedent = Py_None;
 
-  /* "hunter/_event.pyx":354
+  /* "hunter/_event.pyx":351
  *                 limit=10):
  *     dedent = None
  *     amount = 0             # <<<<<<<<<<<<<<
  *     for line in getlines(filename, module_globals)[start:start + limit]:
  *         if dedent is None:
  */
-  __Pyx_TraceLine(354,0,__PYX_ERR(0, 354, __pyx_L1_error))
+  __Pyx_TraceLine(351,0,__PYX_ERR(0, 351, __pyx_L1_error))
   __pyx_cur_scope->__pyx_v_amount = 0;
 
-  /* "hunter/_event.pyx":355
+  /* "hunter/_event.pyx":352
  *     dedent = None
  *     amount = 0
  *     for line in getlines(filename, module_globals)[start:start + limit]:             # <<<<<<<<<<<<<<
  *         if dedent is None:
  *             dedent = LEADING_WHITESPACE_RE.findall(line)
  */
-  __Pyx_TraceLine(355,0,__PYX_ERR(0, 355, __pyx_L1_error))
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_getlines); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __Pyx_TraceLine(352,0,__PYX_ERR(0, 352, __pyx_L1_error))
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_getlines); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -9696,7 +9650,7 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_cur_scope->__pyx_v_filename, __pyx_cur_scope->__pyx_v_module_globals};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -9704,13 +9658,13 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_cur_scope->__pyx_v_filename, __pyx_cur_scope->__pyx_v_module_globals};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 352, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -9721,14 +9675,14 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     __Pyx_INCREF(__pyx_cur_scope->__pyx_v_module_globals);
     __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_module_globals);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_cur_scope->__pyx_v_module_globals);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Add(__pyx_cur_scope->__pyx_v_start, __pyx_cur_scope->__pyx_v_limit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Add(__pyx_cur_scope->__pyx_v_start, __pyx_cur_scope->__pyx_v_limit); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, 0, &__pyx_cur_scope->__pyx_v_start, &__pyx_t_2, NULL, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, 0, &__pyx_cur_scope->__pyx_v_start, &__pyx_t_2, NULL, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9736,9 +9690,9 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     __pyx_t_2 = __pyx_t_5; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 352, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   for (;;) {
@@ -9746,17 +9700,17 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 352, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 352, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 352, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 352, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -9766,7 +9720,7 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 355, __pyx_L1_error)
+          else __PYX_ERR(0, 352, __pyx_L1_error)
         }
         break;
       }
@@ -9777,29 +9731,29 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     __Pyx_GIVEREF(__pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "hunter/_event.pyx":356
+    /* "hunter/_event.pyx":353
  *     amount = 0
  *     for line in getlines(filename, module_globals)[start:start + limit]:
  *         if dedent is None:             # <<<<<<<<<<<<<<
  *             dedent = LEADING_WHITESPACE_RE.findall(line)
  *             dedent = dedent[0] if dedent else ""
  */
-    __Pyx_TraceLine(356,0,__PYX_ERR(0, 356, __pyx_L1_error))
+    __Pyx_TraceLine(353,0,__PYX_ERR(0, 353, __pyx_L1_error))
     __pyx_t_8 = (__pyx_cur_scope->__pyx_v_dedent == Py_None);
     __pyx_t_9 = (__pyx_t_8 != 0);
     if (__pyx_t_9) {
 
-      /* "hunter/_event.pyx":357
+      /* "hunter/_event.pyx":354
  *     for line in getlines(filename, module_globals)[start:start + limit]:
  *         if dedent is None:
  *             dedent = LEADING_WHITESPACE_RE.findall(line)             # <<<<<<<<<<<<<<
  *             dedent = dedent[0] if dedent else ""
  *             amount = len(dedent)
  */
-      __Pyx_TraceLine(357,0,__PYX_ERR(0, 357, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_LEADING_WHITESPACE_RE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+      __Pyx_TraceLine(354,0,__PYX_ERR(0, 354, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_LEADING_WHITESPACE_RE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_findall); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 357, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_findall); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 354, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = NULL;
@@ -9814,7 +9768,7 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
       }
       __pyx_t_5 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_cur_scope->__pyx_v_line) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_cur_scope->__pyx_v_line);
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 357, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 354, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_dedent);
@@ -9822,17 +9776,17 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
       __Pyx_GIVEREF(__pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "hunter/_event.pyx":358
+      /* "hunter/_event.pyx":355
  *         if dedent is None:
  *             dedent = LEADING_WHITESPACE_RE.findall(line)
  *             dedent = dedent[0] if dedent else ""             # <<<<<<<<<<<<<<
  *             amount = len(dedent)
  *         elif not line.startswith(dedent):
  */
-      __Pyx_TraceLine(358,0,__PYX_ERR(0, 358, __pyx_L1_error))
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_cur_scope->__pyx_v_dedent); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 358, __pyx_L1_error)
+      __Pyx_TraceLine(355,0,__PYX_ERR(0, 355, __pyx_L1_error))
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_cur_scope->__pyx_v_dedent); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 355, __pyx_L1_error)
       if (__pyx_t_9) {
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_cur_scope->__pyx_v_dedent, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 358, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_cur_scope->__pyx_v_dedent, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 355, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_5 = __pyx_t_3;
         __pyx_t_3 = 0;
@@ -9845,18 +9799,18 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
       __Pyx_GIVEREF(__pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "hunter/_event.pyx":359
+      /* "hunter/_event.pyx":356
  *             dedent = LEADING_WHITESPACE_RE.findall(line)
  *             dedent = dedent[0] if dedent else ""
  *             amount = len(dedent)             # <<<<<<<<<<<<<<
  *         elif not line.startswith(dedent):
  *             break
  */
-      __Pyx_TraceLine(359,0,__PYX_ERR(0, 359, __pyx_L1_error))
-      __pyx_t_10 = PyObject_Length(__pyx_cur_scope->__pyx_v_dedent); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 359, __pyx_L1_error)
+      __Pyx_TraceLine(356,0,__PYX_ERR(0, 356, __pyx_L1_error))
+      __pyx_t_10 = PyObject_Length(__pyx_cur_scope->__pyx_v_dedent); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 356, __pyx_L1_error)
       __pyx_cur_scope->__pyx_v_amount = __pyx_t_10;
 
-      /* "hunter/_event.pyx":356
+      /* "hunter/_event.pyx":353
  *     amount = 0
  *     for line in getlines(filename, module_globals)[start:start + limit]:
  *         if dedent is None:             # <<<<<<<<<<<<<<
@@ -9866,15 +9820,15 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
       goto __pyx_L6;
     }
 
-    /* "hunter/_event.pyx":360
+    /* "hunter/_event.pyx":357
  *             dedent = dedent[0] if dedent else ""
  *             amount = len(dedent)
  *         elif not line.startswith(dedent):             # <<<<<<<<<<<<<<
  *             break
  *         collector.append(line)
  */
-    __Pyx_TraceLine(360,0,__PYX_ERR(0, 360, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_line, __pyx_n_s_startswith); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 360, __pyx_L1_error)
+    __Pyx_TraceLine(357,0,__PYX_ERR(0, 357, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_line, __pyx_n_s_startswith); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 357, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -9888,25 +9842,25 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     }
     __pyx_t_5 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_cur_scope->__pyx_v_dedent) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_cur_scope->__pyx_v_dedent);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 360, __pyx_L1_error)
+    if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 357, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 360, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 357, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_8 = ((!__pyx_t_9) != 0);
     if (__pyx_t_8) {
 
-      /* "hunter/_event.pyx":361
+      /* "hunter/_event.pyx":358
  *             amount = len(dedent)
  *         elif not line.startswith(dedent):
  *             break             # <<<<<<<<<<<<<<
  *         collector.append(line)
  *         yield line[amount:]
  */
-      __Pyx_TraceLine(361,0,__PYX_ERR(0, 361, __pyx_L1_error))
+      __Pyx_TraceLine(358,0,__PYX_ERR(0, 358, __pyx_L1_error))
       goto __pyx_L5_break;
 
-      /* "hunter/_event.pyx":360
+      /* "hunter/_event.pyx":357
  *             dedent = dedent[0] if dedent else ""
  *             amount = len(dedent)
  *         elif not line.startswith(dedent):             # <<<<<<<<<<<<<<
@@ -9916,29 +9870,29 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     }
     __pyx_L6:;
 
-    /* "hunter/_event.pyx":362
+    /* "hunter/_event.pyx":359
  *         elif not line.startswith(dedent):
  *             break
  *         collector.append(line)             # <<<<<<<<<<<<<<
  *         yield line[amount:]
  * 
  */
-    __Pyx_TraceLine(362,0,__PYX_ERR(0, 362, __pyx_L1_error))
+    __Pyx_TraceLine(359,0,__PYX_ERR(0, 359, __pyx_L1_error))
     if (unlikely(__pyx_cur_scope->__pyx_v_collector == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-      __PYX_ERR(0, 362, __pyx_L1_error)
+      __PYX_ERR(0, 359, __pyx_L1_error)
     }
-    __pyx_t_11 = __Pyx_PyList_Append(__pyx_cur_scope->__pyx_v_collector, __pyx_cur_scope->__pyx_v_line); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 362, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyList_Append(__pyx_cur_scope->__pyx_v_collector, __pyx_cur_scope->__pyx_v_line); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 359, __pyx_L1_error)
 
-    /* "hunter/_event.pyx":363
+    /* "hunter/_event.pyx":360
  *             break
  *         collector.append(line)
  *         yield line[amount:]             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __Pyx_TraceLine(363,0,__PYX_ERR(0, 363, __pyx_L1_error))
-    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_cur_scope->__pyx_v_line, __pyx_cur_scope->__pyx_v_amount, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 363, __pyx_L1_error)
+    __Pyx_TraceLine(360,0,__PYX_ERR(0, 360, __pyx_L1_error))
+    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_cur_scope->__pyx_v_line, __pyx_cur_scope->__pyx_v_amount, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 360, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_r = __pyx_t_5;
     __pyx_t_5 = 0;
@@ -9959,22 +9913,22 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
     __Pyx_XGOTREF(__pyx_t_2);
     __pyx_t_6 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_7 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 363, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 360, __pyx_L1_error)
 
-    /* "hunter/_event.pyx":355
+    /* "hunter/_event.pyx":352
  *     dedent = None
  *     amount = 0
  *     for line in getlines(filename, module_globals)[start:start + limit]:             # <<<<<<<<<<<<<<
  *         if dedent is None:
  *             dedent = LEADING_WHITESPACE_RE.findall(line)
  */
-    __Pyx_TraceLine(355,0,__PYX_ERR(0, 355, __pyx_L1_error))
+    __Pyx_TraceLine(352,0,__PYX_ERR(0, 352, __pyx_L1_error))
   }
   __pyx_L5_break:;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "hunter/_event.pyx":351
+  /* "hunter/_event.pyx":348
  * 
  * 
  * def yield_lines(filename, module_globals, start, list collector,             # <<<<<<<<<<<<<<
@@ -10003,7 +9957,7 @@ static PyObject *__pyx_gb_6hunter_6_event_2generator(__pyx_CoroutineObject *__py
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":366
+/* "hunter/_event.pyx":363
  * 
  * 
  * cdef inline Event fast_detach(Event self, object value_filter):             # <<<<<<<<<<<<<<
@@ -10034,17 +9988,17 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fast_detach", 0);
-  __Pyx_TraceCall("fast_detach", __pyx_f[0], 366, 0, __PYX_ERR(0, 366, __pyx_L1_error));
+  __Pyx_TraceCall("fast_detach", __pyx_f[0], 363, 0, __PYX_ERR(0, 363, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":367
+  /* "hunter/_event.pyx":364
  * 
  * cdef inline Event fast_detach(Event self, object value_filter):
  *     event = <Event>Event.__new__(Event)             # <<<<<<<<<<<<<<
  * 
  *     event._code = self.code_getter()
  */
-  __Pyx_TraceLine(367,0,__PYX_ERR(0, 367, __pyx_L1_error))
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6hunter_6_event_Event(((PyTypeObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __Pyx_TraceLine(364,0,__PYX_ERR(0, 364, __pyx_L1_error))
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6hunter_6_event_Event(((PyTypeObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_t_2 = ((PyObject *)__pyx_t_1);
   __Pyx_INCREF(__pyx_t_2);
@@ -10052,15 +10006,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event = ((struct __pyx_obj_6hunter_6_event_Event *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":369
+  /* "hunter/_event.pyx":366
  *     event = <Event>Event.__new__(Event)
  * 
  *     event._code = self.code_getter()             # <<<<<<<<<<<<<<
  *     event._filename = self.filename_getter()
  *     event._fullsource = self.fullsource_getter()
  */
-  __Pyx_TraceLine(369,0,__PYX_ERR(0, 369, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_code_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 369, __pyx_L1_error)
+  __Pyx_TraceLine(366,0,__PYX_ERR(0, 366, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_code_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_code);
@@ -10068,15 +10022,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_code = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":370
+  /* "hunter/_event.pyx":367
  * 
  *     event._code = self.code_getter()
  *     event._filename = self.filename_getter()             # <<<<<<<<<<<<<<
  *     event._fullsource = self.fullsource_getter()
  *     event._function_object = self._function_object
  */
-  __Pyx_TraceLine(370,0,__PYX_ERR(0, 370, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_filename_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 370, __pyx_L1_error)
+  __Pyx_TraceLine(367,0,__PYX_ERR(0, 367, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_filename_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_filename);
@@ -10084,15 +10038,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_filename = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":371
+  /* "hunter/_event.pyx":368
  *     event._code = self.code_getter()
  *     event._filename = self.filename_getter()
  *     event._fullsource = self.fullsource_getter()             # <<<<<<<<<<<<<<
  *     event._function_object = self._function_object
  *     event._function = self.function_getter()
  */
-  __Pyx_TraceLine(371,0,__PYX_ERR(0, 371, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_fullsource_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
+  __Pyx_TraceLine(368,0,__PYX_ERR(0, 368, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_fullsource_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_fullsource);
@@ -10100,14 +10054,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_fullsource = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":372
+  /* "hunter/_event.pyx":369
  *     event._filename = self.filename_getter()
  *     event._fullsource = self.fullsource_getter()
  *     event._function_object = self._function_object             # <<<<<<<<<<<<<<
  *     event._function = self.function_getter()
  *     event._lineno = self.lineno_getter()
  */
-  __Pyx_TraceLine(372,0,__PYX_ERR(0, 372, __pyx_L1_error))
+  __Pyx_TraceLine(369,0,__PYX_ERR(0, 369, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_function_object;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10116,15 +10070,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_function_object = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":373
+  /* "hunter/_event.pyx":370
  *     event._fullsource = self.fullsource_getter()
  *     event._function_object = self._function_object
  *     event._function = self.function_getter()             # <<<<<<<<<<<<<<
  *     event._lineno = self.lineno_getter()
  *     event._module = self.module_getter()
  */
-  __Pyx_TraceLine(373,0,__PYX_ERR(0, 373, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_function_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 373, __pyx_L1_error)
+  __Pyx_TraceLine(370,0,__PYX_ERR(0, 370, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_function_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 370, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_function);
@@ -10132,15 +10086,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_function = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":374
+  /* "hunter/_event.pyx":371
  *     event._function_object = self._function_object
  *     event._function = self.function_getter()
  *     event._lineno = self.lineno_getter()             # <<<<<<<<<<<<<<
  *     event._module = self.module_getter()
  *     event._source = self.source_getter()
  */
-  __Pyx_TraceLine(374,0,__PYX_ERR(0, 374, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_lineno_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 374, __pyx_L1_error)
+  __Pyx_TraceLine(371,0,__PYX_ERR(0, 371, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_lineno_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_lineno);
@@ -10148,15 +10102,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_lineno = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":375
+  /* "hunter/_event.pyx":372
  *     event._function = self.function_getter()
  *     event._lineno = self.lineno_getter()
  *     event._module = self.module_getter()             # <<<<<<<<<<<<<<
  *     event._source = self.source_getter()
  *     event._stdlib = self.stdlib_getter()
  */
-  __Pyx_TraceLine(375,0,__PYX_ERR(0, 375, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_module_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 375, __pyx_L1_error)
+  __Pyx_TraceLine(372,0,__PYX_ERR(0, 372, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_module_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 372, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_module);
@@ -10164,15 +10118,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_module = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":376
+  /* "hunter/_event.pyx":373
  *     event._lineno = self.lineno_getter()
  *     event._module = self.module_getter()
  *     event._source = self.source_getter()             # <<<<<<<<<<<<<<
  *     event._stdlib = self.stdlib_getter()
  *     event._threadidn = self.threadid_getter()
  */
-  __Pyx_TraceLine(376,0,__PYX_ERR(0, 376, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_source_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 376, __pyx_L1_error)
+  __Pyx_TraceLine(373,0,__PYX_ERR(0, 373, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_source_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 373, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_source);
@@ -10180,15 +10134,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_source = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":377
+  /* "hunter/_event.pyx":374
  *     event._module = self.module_getter()
  *     event._source = self.source_getter()
  *     event._stdlib = self.stdlib_getter()             # <<<<<<<<<<<<<<
  *     event._threadidn = self.threadid_getter()
  *     event._threadname = self.threadname_getter()
  */
-  __Pyx_TraceLine(377,0,__PYX_ERR(0, 377, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_stdlib_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 377, __pyx_L1_error)
+  __Pyx_TraceLine(374,0,__PYX_ERR(0, 374, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_stdlib_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 374, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_stdlib);
@@ -10196,15 +10150,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_stdlib = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":378
+  /* "hunter/_event.pyx":375
  *     event._source = self.source_getter()
  *     event._stdlib = self.stdlib_getter()
  *     event._threadidn = self.threadid_getter()             # <<<<<<<<<<<<<<
  *     event._threadname = self.threadname_getter()
  *     event._instruction = self.instruction_getter()
  */
-  __Pyx_TraceLine(378,0,__PYX_ERR(0, 378, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_threadid_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 378, __pyx_L1_error)
+  __Pyx_TraceLine(375,0,__PYX_ERR(0, 375, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_threadid_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 375, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_threadidn);
@@ -10212,15 +10166,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_threadidn = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":379
+  /* "hunter/_event.pyx":376
  *     event._stdlib = self.stdlib_getter()
  *     event._threadidn = self.threadid_getter()
  *     event._threadname = self.threadname_getter()             # <<<<<<<<<<<<<<
  *     event._instruction = self.instruction_getter()
  * 
  */
-  __Pyx_TraceLine(379,0,__PYX_ERR(0, 379, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_threadname_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 379, __pyx_L1_error)
+  __Pyx_TraceLine(376,0,__PYX_ERR(0, 376, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_threadname_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 376, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_threadname);
@@ -10228,15 +10182,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_threadname = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":380
+  /* "hunter/_event.pyx":377
  *     event._threadidn = self.threadid_getter()
  *     event._threadname = self.threadname_getter()
  *     event._instruction = self.instruction_getter()             # <<<<<<<<<<<<<<
  * 
  *     if value_filter:
  */
-  __Pyx_TraceLine(380,0,__PYX_ERR(0, 380, __pyx_L1_error))
-  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_instruction_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 380, __pyx_L1_error)
+  __Pyx_TraceLine(377,0,__PYX_ERR(0, 377, __pyx_L1_error))
+  __pyx_t_2 = __pyx_f_6hunter_6_event_5Event_instruction_getter(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 377, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_event->_instruction);
@@ -10244,36 +10198,36 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_instruction = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":382
+  /* "hunter/_event.pyx":379
  *     event._instruction = self.instruction_getter()
  * 
  *     if value_filter:             # <<<<<<<<<<<<<<
  *         event._globals = {key: value_filter(value) for key, value in self.globals.items()}
  *         event._locals = {key: value_filter(value) for key, value in self.locals.items()}
  */
-  __Pyx_TraceLine(382,0,__PYX_ERR(0, 382, __pyx_L1_error))
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_value_filter); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 382, __pyx_L1_error)
+  __Pyx_TraceLine(379,0,__PYX_ERR(0, 379, __pyx_L1_error))
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_value_filter); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 379, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "hunter/_event.pyx":383
+    /* "hunter/_event.pyx":380
  * 
  *     if value_filter:
  *         event._globals = {key: value_filter(value) for key, value in self.globals.items()}             # <<<<<<<<<<<<<<
  *         event._locals = {key: value_filter(value) for key, value in self.locals.items()}
  *         event.arg = value_filter(self.arg)
  */
-    __Pyx_TraceLine(383,0,__PYX_ERR(0, 383, __pyx_L1_error))
+    __Pyx_TraceLine(380,0,__PYX_ERR(0, 380, __pyx_L1_error))
     { /* enter inner scope */
-      __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 383, __pyx_L6_error)
+      __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 380, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_4 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 383, __pyx_L6_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_globals); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 380, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_7);
       if (unlikely(__pyx_t_7 == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
-        __PYX_ERR(0, 383, __pyx_L6_error)
+        __PYX_ERR(0, 380, __pyx_L6_error)
       }
-      __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 0, __pyx_n_s_items, (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 383, __pyx_L6_error)
+      __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 0, __pyx_n_s_items, (&__pyx_t_5), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 380, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_XDECREF(__pyx_t_1);
@@ -10282,7 +10236,7 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
       while (1) {
         __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_5, &__pyx_t_4, &__pyx_t_8, &__pyx_t_7, NULL, __pyx_t_6);
         if (unlikely(__pyx_t_9 == 0)) break;
-        if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 383, __pyx_L6_error)
+        if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 380, __pyx_L6_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_XDECREF_SET(__pyx_7genexpr__pyx_v_key, __pyx_t_8);
@@ -10302,10 +10256,10 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
         }
         __pyx_t_7 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_10, __pyx_7genexpr__pyx_v_value) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_7genexpr__pyx_v_value);
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 383, __pyx_L6_error)
+        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 380, __pyx_L6_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(PyDict_SetItem(__pyx_t_2, (PyObject*)__pyx_7genexpr__pyx_v_key, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 383, __pyx_L6_error)
+        if (unlikely(PyDict_SetItem(__pyx_t_2, (PyObject*)__pyx_7genexpr__pyx_v_key, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 380, __pyx_L6_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10324,25 +10278,25 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     __pyx_v_event->_globals = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "hunter/_event.pyx":384
+    /* "hunter/_event.pyx":381
  *     if value_filter:
  *         event._globals = {key: value_filter(value) for key, value in self.globals.items()}
  *         event._locals = {key: value_filter(value) for key, value in self.locals.items()}             # <<<<<<<<<<<<<<
  *         event.arg = value_filter(self.arg)
  *     else:
  */
-    __Pyx_TraceLine(384,0,__PYX_ERR(0, 384, __pyx_L1_error))
+    __Pyx_TraceLine(381,0,__PYX_ERR(0, 381, __pyx_L1_error))
     { /* enter inner scope */
-      __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 384, __pyx_L12_error)
+      __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 381, __pyx_L12_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_5 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_locals); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 384, __pyx_L12_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_locals); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 381, __pyx_L12_error)
       __Pyx_GOTREF(__pyx_t_7);
       if (unlikely(__pyx_t_7 == Py_None)) {
         PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
-        __PYX_ERR(0, 384, __pyx_L12_error)
+        __PYX_ERR(0, 381, __pyx_L12_error)
       }
-      __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 0, __pyx_n_s_items, (&__pyx_t_4), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 384, __pyx_L12_error)
+      __pyx_t_8 = __Pyx_dict_iterator(__pyx_t_7, 0, __pyx_n_s_items, (&__pyx_t_4), (&__pyx_t_6)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 381, __pyx_L12_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_XDECREF(__pyx_t_1);
@@ -10351,7 +10305,7 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
       while (1) {
         __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_4, &__pyx_t_5, &__pyx_t_8, &__pyx_t_7, NULL, __pyx_t_6);
         if (unlikely(__pyx_t_9 == 0)) break;
-        if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 384, __pyx_L12_error)
+        if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 381, __pyx_L12_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_XDECREF_SET(__pyx_8genexpr1__pyx_v_key, __pyx_t_8);
@@ -10371,10 +10325,10 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
         }
         __pyx_t_7 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_10, __pyx_8genexpr1__pyx_v_value) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_8genexpr1__pyx_v_value);
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 384, __pyx_L12_error)
+        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 381, __pyx_L12_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (unlikely(PyDict_SetItem(__pyx_t_2, (PyObject*)__pyx_8genexpr1__pyx_v_key, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 384, __pyx_L12_error)
+        if (unlikely(PyDict_SetItem(__pyx_t_2, (PyObject*)__pyx_8genexpr1__pyx_v_key, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 381, __pyx_L12_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -10393,14 +10347,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     __pyx_v_event->_locals = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "hunter/_event.pyx":385
+    /* "hunter/_event.pyx":382
  *         event._globals = {key: value_filter(value) for key, value in self.globals.items()}
  *         event._locals = {key: value_filter(value) for key, value in self.locals.items()}
  *         event.arg = value_filter(self.arg)             # <<<<<<<<<<<<<<
  *     else:
  *         event._globals = {}
  */
-    __Pyx_TraceLine(385,0,__PYX_ERR(0, 385, __pyx_L1_error))
+    __Pyx_TraceLine(382,0,__PYX_ERR(0, 382, __pyx_L1_error))
     __Pyx_INCREF(__pyx_v_value_filter);
     __pyx_t_1 = __pyx_v_value_filter; __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -10414,7 +10368,7 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     }
     __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_7, __pyx_v_self->arg) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_self->arg);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 385, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 382, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_2);
@@ -10423,7 +10377,7 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     __pyx_v_event->arg = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "hunter/_event.pyx":382
+    /* "hunter/_event.pyx":379
  *     event._instruction = self.instruction_getter()
  * 
  *     if value_filter:             # <<<<<<<<<<<<<<
@@ -10433,16 +10387,16 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     goto __pyx_L3;
   }
 
-  /* "hunter/_event.pyx":387
+  /* "hunter/_event.pyx":384
  *         event.arg = value_filter(self.arg)
  *     else:
  *         event._globals = {}             # <<<<<<<<<<<<<<
  *         event._locals = {}
  *         event.arg = None
  */
-  __Pyx_TraceLine(387,0,__PYX_ERR(0, 387, __pyx_L1_error))
+  __Pyx_TraceLine(384,0,__PYX_ERR(0, 384, __pyx_L1_error))
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 387, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 384, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     __Pyx_GOTREF(__pyx_v_event->_globals);
@@ -10450,15 +10404,15 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     __pyx_v_event->_globals = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "hunter/_event.pyx":388
+    /* "hunter/_event.pyx":385
  *     else:
  *         event._globals = {}
  *         event._locals = {}             # <<<<<<<<<<<<<<
  *         event.arg = None
  * 
  */
-    __Pyx_TraceLine(388,0,__PYX_ERR(0, 388, __pyx_L1_error))
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 388, __pyx_L1_error)
+    __Pyx_TraceLine(385,0,__PYX_ERR(0, 385, __pyx_L1_error))
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 385, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     __Pyx_GOTREF(__pyx_v_event->_locals);
@@ -10466,14 +10420,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
     __pyx_v_event->_locals = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "hunter/_event.pyx":389
+    /* "hunter/_event.pyx":386
  *         event._globals = {}
  *         event._locals = {}
  *         event.arg = None             # <<<<<<<<<<<<<<
  * 
  *     event.builtin = self.builtin
  */
-    __Pyx_TraceLine(389,0,__PYX_ERR(0, 389, __pyx_L1_error))
+    __Pyx_TraceLine(386,0,__PYX_ERR(0, 386, __pyx_L1_error))
     __Pyx_INCREF(Py_None);
     __Pyx_GIVEREF(Py_None);
     __Pyx_GOTREF(__pyx_v_event->arg);
@@ -10482,14 +10436,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   }
   __pyx_L3:;
 
-  /* "hunter/_event.pyx":391
+  /* "hunter/_event.pyx":388
  *         event.arg = None
  * 
  *     event.builtin = self.builtin             # <<<<<<<<<<<<<<
  *     event.calls = self.calls
  *     event.depth = self.depth
  */
-  __Pyx_TraceLine(391,0,__PYX_ERR(0, 391, __pyx_L1_error))
+  __Pyx_TraceLine(388,0,__PYX_ERR(0, 388, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->builtin;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10498,46 +10452,46 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->builtin = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":392
+  /* "hunter/_event.pyx":389
  * 
  *     event.builtin = self.builtin
  *     event.calls = self.calls             # <<<<<<<<<<<<<<
  *     event.depth = self.depth
  *     event.detached = True
  */
-  __Pyx_TraceLine(392,0,__PYX_ERR(0, 392, __pyx_L1_error))
+  __Pyx_TraceLine(389,0,__PYX_ERR(0, 389, __pyx_L1_error))
   __pyx_t_6 = __pyx_v_self->calls;
   __pyx_v_event->calls = __pyx_t_6;
 
-  /* "hunter/_event.pyx":393
+  /* "hunter/_event.pyx":390
  *     event.builtin = self.builtin
  *     event.calls = self.calls
  *     event.depth = self.depth             # <<<<<<<<<<<<<<
  *     event.detached = True
  *     event.kind = self.kind
  */
-  __Pyx_TraceLine(393,0,__PYX_ERR(0, 393, __pyx_L1_error))
+  __Pyx_TraceLine(390,0,__PYX_ERR(0, 390, __pyx_L1_error))
   __pyx_t_6 = __pyx_v_self->depth;
   __pyx_v_event->depth = __pyx_t_6;
 
-  /* "hunter/_event.pyx":394
+  /* "hunter/_event.pyx":391
  *     event.calls = self.calls
  *     event.depth = self.depth
  *     event.detached = True             # <<<<<<<<<<<<<<
  *     event.kind = self.kind
  *     event.threading_support = self.threading_support
  */
-  __Pyx_TraceLine(394,0,__PYX_ERR(0, 394, __pyx_L1_error))
+  __Pyx_TraceLine(391,0,__PYX_ERR(0, 391, __pyx_L1_error))
   __pyx_v_event->detached = 1;
 
-  /* "hunter/_event.pyx":395
+  /* "hunter/_event.pyx":392
  *     event.depth = self.depth
  *     event.detached = True
  *     event.kind = self.kind             # <<<<<<<<<<<<<<
  *     event.threading_support = self.threading_support
  * 
  */
-  __Pyx_TraceLine(395,0,__PYX_ERR(0, 395, __pyx_L1_error))
+  __Pyx_TraceLine(392,0,__PYX_ERR(0, 392, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->kind;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10546,31 +10500,31 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->kind = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":396
+  /* "hunter/_event.pyx":393
  *     event.detached = True
  *     event.kind = self.kind
  *     event.threading_support = self.threading_support             # <<<<<<<<<<<<<<
  * 
  *     return event
  */
-  __Pyx_TraceLine(396,0,__PYX_ERR(0, 396, __pyx_L1_error))
+  __Pyx_TraceLine(393,0,__PYX_ERR(0, 393, __pyx_L1_error))
   __pyx_t_3 = __pyx_v_self->threading_support;
   __pyx_v_event->threading_support = __pyx_t_3;
 
-  /* "hunter/_event.pyx":398
+  /* "hunter/_event.pyx":395
  *     event.threading_support = self.threading_support
  * 
  *     return event             # <<<<<<<<<<<<<<
  * 
  * cdef inline Event fast_clone(Event self):
  */
-  __Pyx_TraceLine(398,0,__PYX_ERR(0, 398, __pyx_L1_error))
+  __Pyx_TraceLine(395,0,__PYX_ERR(0, 395, __pyx_L1_error))
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_event));
   __pyx_r = __pyx_v_event;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":366
+  /* "hunter/_event.pyx":363
  * 
  * 
  * cdef inline Event fast_detach(Event self, object value_filter):             # <<<<<<<<<<<<<<
@@ -10599,7 +10553,7 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   return __pyx_r;
 }
 
-/* "hunter/_event.pyx":400
+/* "hunter/_event.pyx":397
  *     return event
  * 
  * cdef inline Event fast_clone(Event self):             # <<<<<<<<<<<<<<
@@ -10620,17 +10574,17 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fast_clone", 0);
-  __Pyx_TraceCall("fast_clone", __pyx_f[0], 400, 0, __PYX_ERR(0, 400, __pyx_L1_error));
+  __Pyx_TraceCall("fast_clone", __pyx_f[0], 397, 0, __PYX_ERR(0, 397, __pyx_L1_error));
 
-  /* "hunter/_event.pyx":401
+  /* "hunter/_event.pyx":398
  * 
  * cdef inline Event fast_clone(Event self):
  *     event = <Event>Event.__new__(Event)             # <<<<<<<<<<<<<<
  *     event.arg = self.arg
  *     event.builtin = self.builtin
  */
-  __Pyx_TraceLine(401,0,__PYX_ERR(0, 401, __pyx_L1_error))
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6hunter_6_event_Event(((PyTypeObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
+  __Pyx_TraceLine(398,0,__PYX_ERR(0, 398, __pyx_L1_error))
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_6hunter_6_event_Event(((PyTypeObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 398, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_t_2 = ((PyObject *)__pyx_t_1);
   __Pyx_INCREF(__pyx_t_2);
@@ -10638,14 +10592,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event = ((struct __pyx_obj_6hunter_6_event_Event *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":402
+  /* "hunter/_event.pyx":399
  * cdef inline Event fast_clone(Event self):
  *     event = <Event>Event.__new__(Event)
  *     event.arg = self.arg             # <<<<<<<<<<<<<<
  *     event.builtin = self.builtin
  *     event.calls = self.calls
  */
-  __Pyx_TraceLine(402,0,__PYX_ERR(0, 402, __pyx_L1_error))
+  __Pyx_TraceLine(399,0,__PYX_ERR(0, 399, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->arg;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10654,14 +10608,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->arg = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":403
+  /* "hunter/_event.pyx":400
  *     event = <Event>Event.__new__(Event)
  *     event.arg = self.arg
  *     event.builtin = self.builtin             # <<<<<<<<<<<<<<
  *     event.calls = self.calls
  *     event.depth = self.depth
  */
-  __Pyx_TraceLine(403,0,__PYX_ERR(0, 403, __pyx_L1_error))
+  __Pyx_TraceLine(400,0,__PYX_ERR(0, 400, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->builtin;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10670,46 +10624,46 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->builtin = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":404
+  /* "hunter/_event.pyx":401
  *     event.arg = self.arg
  *     event.builtin = self.builtin
  *     event.calls = self.calls             # <<<<<<<<<<<<<<
  *     event.depth = self.depth
  *     event.detached = False
  */
-  __Pyx_TraceLine(404,0,__PYX_ERR(0, 404, __pyx_L1_error))
+  __Pyx_TraceLine(401,0,__PYX_ERR(0, 401, __pyx_L1_error))
   __pyx_t_3 = __pyx_v_self->calls;
   __pyx_v_event->calls = __pyx_t_3;
 
-  /* "hunter/_event.pyx":405
+  /* "hunter/_event.pyx":402
  *     event.builtin = self.builtin
  *     event.calls = self.calls
  *     event.depth = self.depth             # <<<<<<<<<<<<<<
  *     event.detached = False
  *     event.frame = self.frame
  */
-  __Pyx_TraceLine(405,0,__PYX_ERR(0, 405, __pyx_L1_error))
+  __Pyx_TraceLine(402,0,__PYX_ERR(0, 402, __pyx_L1_error))
   __pyx_t_3 = __pyx_v_self->depth;
   __pyx_v_event->depth = __pyx_t_3;
 
-  /* "hunter/_event.pyx":406
+  /* "hunter/_event.pyx":403
  *     event.calls = self.calls
  *     event.depth = self.depth
  *     event.detached = False             # <<<<<<<<<<<<<<
  *     event.frame = self.frame
  *     event.kind = self.kind
  */
-  __Pyx_TraceLine(406,0,__PYX_ERR(0, 406, __pyx_L1_error))
+  __Pyx_TraceLine(403,0,__PYX_ERR(0, 403, __pyx_L1_error))
   __pyx_v_event->detached = 0;
 
-  /* "hunter/_event.pyx":407
+  /* "hunter/_event.pyx":404
  *     event.depth = self.depth
  *     event.detached = False
  *     event.frame = self.frame             # <<<<<<<<<<<<<<
  *     event.kind = self.kind
  *     event.threading_support = self.threading_support
  */
-  __Pyx_TraceLine(407,0,__PYX_ERR(0, 407, __pyx_L1_error))
+  __Pyx_TraceLine(404,0,__PYX_ERR(0, 404, __pyx_L1_error))
   __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10718,14 +10672,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->frame = ((PyFrameObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":408
+  /* "hunter/_event.pyx":405
  *     event.detached = False
  *     event.frame = self.frame
  *     event.kind = self.kind             # <<<<<<<<<<<<<<
  *     event.threading_support = self.threading_support
  *     event._code = self._code
  */
-  __Pyx_TraceLine(408,0,__PYX_ERR(0, 408, __pyx_L1_error))
+  __Pyx_TraceLine(405,0,__PYX_ERR(0, 405, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->kind;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10734,25 +10688,25 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->kind = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":409
+  /* "hunter/_event.pyx":406
  *     event.frame = self.frame
  *     event.kind = self.kind
  *     event.threading_support = self.threading_support             # <<<<<<<<<<<<<<
  *     event._code = self._code
  *     event._filename = self._filename
  */
-  __Pyx_TraceLine(409,0,__PYX_ERR(0, 409, __pyx_L1_error))
+  __Pyx_TraceLine(406,0,__PYX_ERR(0, 406, __pyx_L1_error))
   __pyx_t_4 = __pyx_v_self->threading_support;
   __pyx_v_event->threading_support = __pyx_t_4;
 
-  /* "hunter/_event.pyx":410
+  /* "hunter/_event.pyx":407
  *     event.kind = self.kind
  *     event.threading_support = self.threading_support
  *     event._code = self._code             # <<<<<<<<<<<<<<
  *     event._filename = self._filename
  *     event._fullsource = self._fullsource
  */
-  __Pyx_TraceLine(410,0,__PYX_ERR(0, 410, __pyx_L1_error))
+  __Pyx_TraceLine(407,0,__PYX_ERR(0, 407, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_code;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10761,14 +10715,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_code = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":411
+  /* "hunter/_event.pyx":408
  *     event.threading_support = self.threading_support
  *     event._code = self._code
  *     event._filename = self._filename             # <<<<<<<<<<<<<<
  *     event._fullsource = self._fullsource
  *     event._function_object = self._function_object
  */
-  __Pyx_TraceLine(411,0,__PYX_ERR(0, 411, __pyx_L1_error))
+  __Pyx_TraceLine(408,0,__PYX_ERR(0, 408, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_filename;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10777,14 +10731,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_filename = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":412
+  /* "hunter/_event.pyx":409
  *     event._code = self._code
  *     event._filename = self._filename
  *     event._fullsource = self._fullsource             # <<<<<<<<<<<<<<
  *     event._function_object = self._function_object
  *     event._function = self._function
  */
-  __Pyx_TraceLine(412,0,__PYX_ERR(0, 412, __pyx_L1_error))
+  __Pyx_TraceLine(409,0,__PYX_ERR(0, 409, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_fullsource;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10793,14 +10747,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_fullsource = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":413
+  /* "hunter/_event.pyx":410
  *     event._filename = self._filename
  *     event._fullsource = self._fullsource
  *     event._function_object = self._function_object             # <<<<<<<<<<<<<<
  *     event._function = self._function
  *     event._globals = self._globals
  */
-  __Pyx_TraceLine(413,0,__PYX_ERR(0, 413, __pyx_L1_error))
+  __Pyx_TraceLine(410,0,__PYX_ERR(0, 410, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_function_object;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10809,14 +10763,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_function_object = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":414
+  /* "hunter/_event.pyx":411
  *     event._fullsource = self._fullsource
  *     event._function_object = self._function_object
  *     event._function = self._function             # <<<<<<<<<<<<<<
  *     event._globals = self._globals
  *     event._lineno = self._lineno
  */
-  __Pyx_TraceLine(414,0,__PYX_ERR(0, 414, __pyx_L1_error))
+  __Pyx_TraceLine(411,0,__PYX_ERR(0, 411, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_function;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10825,14 +10779,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_function = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":415
+  /* "hunter/_event.pyx":412
  *     event._function_object = self._function_object
  *     event._function = self._function
  *     event._globals = self._globals             # <<<<<<<<<<<<<<
  *     event._lineno = self._lineno
  *     event._locals = self._locals
  */
-  __Pyx_TraceLine(415,0,__PYX_ERR(0, 415, __pyx_L1_error))
+  __Pyx_TraceLine(412,0,__PYX_ERR(0, 412, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_globals;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10841,14 +10795,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_globals = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":416
+  /* "hunter/_event.pyx":413
  *     event._function = self._function
  *     event._globals = self._globals
  *     event._lineno = self._lineno             # <<<<<<<<<<<<<<
  *     event._locals = self._locals
  *     event._module = self._module
  */
-  __Pyx_TraceLine(416,0,__PYX_ERR(0, 416, __pyx_L1_error))
+  __Pyx_TraceLine(413,0,__PYX_ERR(0, 413, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_lineno;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10857,14 +10811,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_lineno = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":417
+  /* "hunter/_event.pyx":414
  *     event._globals = self._globals
  *     event._lineno = self._lineno
  *     event._locals = self._locals             # <<<<<<<<<<<<<<
  *     event._module = self._module
  *     event._source = self._source
  */
-  __Pyx_TraceLine(417,0,__PYX_ERR(0, 417, __pyx_L1_error))
+  __Pyx_TraceLine(414,0,__PYX_ERR(0, 414, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_locals;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10873,14 +10827,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_locals = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":418
+  /* "hunter/_event.pyx":415
  *     event._lineno = self._lineno
  *     event._locals = self._locals
  *     event._module = self._module             # <<<<<<<<<<<<<<
  *     event._source = self._source
  *     event._stdlib = self._stdlib
  */
-  __Pyx_TraceLine(418,0,__PYX_ERR(0, 418, __pyx_L1_error))
+  __Pyx_TraceLine(415,0,__PYX_ERR(0, 415, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_module;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10889,14 +10843,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_module = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":419
+  /* "hunter/_event.pyx":416
  *     event._locals = self._locals
  *     event._module = self._module
  *     event._source = self._source             # <<<<<<<<<<<<<<
  *     event._stdlib = self._stdlib
  *     event._threadidn = self._threadidn
  */
-  __Pyx_TraceLine(419,0,__PYX_ERR(0, 419, __pyx_L1_error))
+  __Pyx_TraceLine(416,0,__PYX_ERR(0, 416, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_source;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10905,14 +10859,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_source = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":420
+  /* "hunter/_event.pyx":417
  *     event._module = self._module
  *     event._source = self._source
  *     event._stdlib = self._stdlib             # <<<<<<<<<<<<<<
  *     event._threadidn = self._threadidn
  *     event._threadname = self._threadname
  */
-  __Pyx_TraceLine(420,0,__PYX_ERR(0, 420, __pyx_L1_error))
+  __Pyx_TraceLine(417,0,__PYX_ERR(0, 417, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_stdlib;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10921,14 +10875,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_stdlib = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":421
+  /* "hunter/_event.pyx":418
  *     event._source = self._source
  *     event._stdlib = self._stdlib
  *     event._threadidn = self._threadidn             # <<<<<<<<<<<<<<
  *     event._threadname = self._threadname
  *     event._thread = self._thread
  */
-  __Pyx_TraceLine(421,0,__PYX_ERR(0, 421, __pyx_L1_error))
+  __Pyx_TraceLine(418,0,__PYX_ERR(0, 418, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_threadidn;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10937,14 +10891,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_threadidn = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":422
+  /* "hunter/_event.pyx":419
  *     event._stdlib = self._stdlib
  *     event._threadidn = self._threadidn
  *     event._threadname = self._threadname             # <<<<<<<<<<<<<<
  *     event._thread = self._thread
  *     event._instruction = self._instruction
  */
-  __Pyx_TraceLine(422,0,__PYX_ERR(0, 422, __pyx_L1_error))
+  __Pyx_TraceLine(419,0,__PYX_ERR(0, 419, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_threadname;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10953,14 +10907,14 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_threadname = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":423
+  /* "hunter/_event.pyx":420
  *     event._threadidn = self._threadidn
  *     event._threadname = self._threadname
  *     event._thread = self._thread             # <<<<<<<<<<<<<<
  *     event._instruction = self._instruction
  *     return event
  */
-  __Pyx_TraceLine(423,0,__PYX_ERR(0, 423, __pyx_L1_error))
+  __Pyx_TraceLine(420,0,__PYX_ERR(0, 420, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_thread;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10969,13 +10923,13 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_thread = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":424
+  /* "hunter/_event.pyx":421
  *     event._threadname = self._threadname
  *     event._thread = self._thread
  *     event._instruction = self._instruction             # <<<<<<<<<<<<<<
  *     return event
  */
-  __Pyx_TraceLine(424,0,__PYX_ERR(0, 424, __pyx_L1_error))
+  __Pyx_TraceLine(421,0,__PYX_ERR(0, 421, __pyx_L1_error))
   __pyx_t_2 = __pyx_v_self->_instruction;
   __Pyx_INCREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
@@ -10984,18 +10938,18 @@ static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_e
   __pyx_v_event->_instruction = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":425
+  /* "hunter/_event.pyx":422
  *     event._thread = self._thread
  *     event._instruction = self._instruction
  *     return event             # <<<<<<<<<<<<<<
  */
-  __Pyx_TraceLine(425,0,__PYX_ERR(0, 425, __pyx_L1_error))
+  __Pyx_TraceLine(422,0,__PYX_ERR(0, 422, __pyx_L1_error))
   __Pyx_XDECREF(((PyObject *)__pyx_r));
   __Pyx_INCREF(((PyObject *)__pyx_v_event));
   __pyx_r = __pyx_v_event;
   goto __pyx_L0;
 
-  /* "hunter/_event.pyx":400
+  /* "hunter/_event.pyx":397
  *     return event
  * 
  * cdef inline Event fast_clone(Event self):             # <<<<<<<<<<<<<<
@@ -11114,7 +11068,7 @@ static PyObject *__pyx_pf_6hunter_6_event_3__pyx_unpickle_Event(CYTHON_UNUSED Py
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_TraceFrameInit(__pyx_codeobj__15)
+  __Pyx_TraceFrameInit(__pyx_codeobj__14)
   __Pyx_RefNannySetupContext("__pyx_unpickle_Event", 0);
   __Pyx_TraceCall("__pyx_unpickle_Event", __pyx_f[2], 1, 0, __PYX_ERR(2, 1, __pyx_L1_error));
 
@@ -12257,20 +12211,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Missing_argument_threading_suppo, __pyx_k_Missing_argument_threading_suppo, sizeof(__pyx_k_Missing_argument_threading_suppo), 0, 0, 1, 0},
   {&__pyx_kp_s_NO_SOURCE_not_reading_file, __pyx_k_NO_SOURCE_not_reading_file, sizeof(__pyx_k_NO_SOURCE_not_reading_file), 0, 0, 1, 0},
   {&__pyx_kp_s_NO_SOURCE_r, __pyx_k_NO_SOURCE_r, sizeof(__pyx_k_NO_SOURCE_r), 0, 0, 1, 0},
-  {&__pyx_n_s_PY2, __pyx_k_PY2, sizeof(__pyx_k_PY2), 0, 0, 1, 1},
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_SITE_PACKAGES_PATHS, __pyx_k_SITE_PACKAGES_PATHS, sizeof(__pyx_k_SITE_PACKAGES_PATHS), 0, 0, 1, 1},
   {&__pyx_n_s_SYS_PREFIX_PATHS, __pyx_k_SYS_PREFIX_PATHS, sizeof(__pyx_k_SYS_PREFIX_PATHS), 0, 0, 1, 1},
   {&__pyx_n_s_TokenError, __pyx_k_TokenError, sizeof(__pyx_k_TokenError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-  {&__pyx_kp_s__13, __pyx_k__13, sizeof(__pyx_k__13), 0, 0, 1, 0},
+  {&__pyx_kp_s__12, __pyx_k__12, sizeof(__pyx_k__12), 0, 0, 1, 0},
   {&__pyx_kp_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 0},
   {&__pyx_kp_s__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 0, 1, 0},
   {&__pyx_n_s_all, __pyx_k_all, sizeof(__pyx_k_all), 0, 0, 1, 1},
   {&__pyx_n_s_amount, __pyx_k_amount, sizeof(__pyx_k_amount), 0, 0, 1, 1},
   {&__pyx_n_s_arg, __pyx_k_arg, sizeof(__pyx_k_arg), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
-  {&__pyx_n_s_ascii, __pyx_k_ascii, sizeof(__pyx_k_ascii), 0, 0, 1, 1},
   {&__pyx_n_s_basename, __pyx_k_basename, sizeof(__pyx_k_basename), 0, 0, 1, 1},
   {&__pyx_n_s_call, __pyx_k_call, sizeof(__pyx_k_call), 0, 0, 1, 1},
   {&__pyx_n_s_calls, __pyx_k_calls, sizeof(__pyx_k_calls), 0, 0, 1, 1},
@@ -12288,7 +12240,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_def, __pyx_k_def, sizeof(__pyx_k_def), 0, 0, 1, 1},
   {&__pyx_n_s_depth, __pyx_k_depth, sizeof(__pyx_k_depth), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
-  {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_endswith, __pyx_k_endswith, sizeof(__pyx_k_endswith), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_exception, __pyx_k_exception, sizeof(__pyx_k_exception), 0, 0, 1, 1},
@@ -12351,7 +12302,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
-  {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
   {&__pyx_n_s_return, __pyx_k_return, sizeof(__pyx_k_return), 0, 0, 1, 1},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
@@ -12380,9 +12330,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 32, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 40, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 64, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -12392,137 +12342,126 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hunter/_event.pyx":65
+  /* "hunter/_event.pyx":64
  *         if tracer is None:
  *             if depth is None:
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_depth_required); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_depth_required); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "hunter/_event.pyx":67
+  /* "hunter/_event.pyx":66
  *                 raise TypeError('Missing argument: depth (required because tracer was not given).')
  *             if calls is None:
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *             if threading_support is MISSING:
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_calls_required); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_calls_required); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "hunter/_event.pyx":69
+  /* "hunter/_event.pyx":68
  *                 raise TypeError('Missing argument: calls (required because tracer was not given).')
  *             if threading_support is MISSING:
  *                 raise TypeError('Missing argument: threading_support (required because tracer was not given).')             # <<<<<<<<<<<<<<
  *         else:
  *             depth = tracer.depth
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_threading_suppo); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Missing_argument_threading_suppo); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "hunter/_event.pyx":226
+  /* "hunter/_event.pyx":225
  *                 module = self.arg.__module__
  *             else:
  *                 module = self.frame.f_globals.get('__name__', '')             # <<<<<<<<<<<<<<
  *             if module is None:
  *                 module = '?'
  */
-  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_n_s_name_2, __pyx_kp_s__5); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_n_s_name_2, __pyx_kp_s__5); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "hunter/_event.pyx":230
- *                 module = '?'
- *             if PY2:
- *                 module = module.encode('ascii', 'replace')             # <<<<<<<<<<<<<<
- *             self._module = module
- *         return self._module
- */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_ascii, __pyx_n_s_replace); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 230, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
-
-  /* "hunter/_event.pyx":245
+  /* "hunter/_event.pyx":242
  *             if not filename:
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):             # <<<<<<<<<<<<<<
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):
  */
-  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_kp_s_pyc, __pyx_kp_s_pyo); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 245, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_kp_s_pyc, __pyx_kp_s_pyo); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "hunter/_event.pyx":246
+  /* "hunter/_event.pyx":243
  *                 filename = '?'
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]             # <<<<<<<<<<<<<<
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  */
-  __pyx_slice__10 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 246, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__10);
-  __Pyx_GIVEREF(__pyx_slice__10);
+  __pyx_slice__9 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__9)) __PYX_ERR(0, 243, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__9);
+  __Pyx_GIVEREF(__pyx_slice__9);
 
-  /* "hunter/_event.pyx":247
+  /* "hunter/_event.pyx":244
  *             elif filename.endswith(('.pyc', '.pyo')):
  *                 filename = filename[:-1]
  *             elif filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):
  */
-  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_kp_s_so, __pyx_kp_s_pyd); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 247, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__10 = PyTuple_Pack(2, __pyx_kp_s_so, __pyx_kp_s_pyd); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 244, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__10);
+  __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "hunter/_event.pyx":249
+  /* "hunter/_event.pyx":246
  *             elif filename.endswith(('.so', '.pyd')):
  *                 basename = CYTHON_SUFFIX_RE.sub('', filename)
  *                 for ext in ('.pyx', '.py'):             # <<<<<<<<<<<<<<
  *                     cyfilename = basename + ext
  *                     if exists(cyfilename):
  */
-  __pyx_tuple__12 = PyTuple_Pack(2, __pyx_kp_s_pyx, __pyx_kp_s_py); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 249, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_kp_s_pyx, __pyx_kp_s_py); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 246, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__11);
+  __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "hunter/_event.pyx":30
+  /* "hunter/_event.pyx":29
  * from .util import if_same_code
  * 
  * __all__ = 'Event',             # <<<<<<<<<<<<<<
  * 
  * cdef object UNSET = object()
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_n_s_Event); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 30, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__16);
-  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_Event); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "hunter/_event.pyx":351
+  /* "hunter/_event.pyx":348
  * 
  * 
  * def yield_lines(filename, module_globals, start, list collector,             # <<<<<<<<<<<<<<
  *                 limit=10):
  *     dedent = None
  */
-  __pyx_tuple__17 = PyTuple_Pack(8, __pyx_n_s_filename, __pyx_n_s_module_globals, __pyx_n_s_start, __pyx_n_s_collector, __pyx_n_s_limit, __pyx_n_s_dedent, __pyx_n_s_amount, __pyx_n_s_line); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 351, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(5, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__event_pyx, __pyx_n_s_yield_lines, 351, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(8, __pyx_n_s_filename, __pyx_n_s_module_globals, __pyx_n_s_start, __pyx_n_s_collector, __pyx_n_s_limit, __pyx_n_s_dedent, __pyx_n_s_amount, __pyx_n_s_line); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(5, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__event_pyx, __pyx_n_s_yield_lines, 348, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 348, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Event(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__18 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(2, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Event, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(2, 1, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(2, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Event, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(2, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -12604,18 +12543,18 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_6hunter_6_event_Event.threadid_getter = (PyObject *(*)(struct __pyx_obj_6hunter_6_event_Event *))__pyx_f_6hunter_6_event_5Event_threadid_getter;
   __pyx_vtable_6hunter_6_event_Event.threadname_getter = (PyObject *(*)(struct __pyx_obj_6hunter_6_event_Event *))__pyx_f_6hunter_6_event_5Event_threadname_getter;
   __pyx_vtable_6hunter_6_event_Event.instruction_getter = (PyObject *(*)(struct __pyx_obj_6hunter_6_event_Event *))__pyx_f_6hunter_6_event_5Event_instruction_getter;
-  if (PyType_Ready(&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6hunter_6_event_Event.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6hunter_6_event_Event.tp_dictoffset && __pyx_type_6hunter_6_event_Event.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6hunter_6_event_Event.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
-  if (__Pyx_SetVtable(__pyx_type_6hunter_6_event_Event.tp_dict, __pyx_vtabptr_6hunter_6_event_Event) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Event, (PyObject *)&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6hunter_6_event_Event.tp_dict, __pyx_vtabptr_6hunter_6_event_Event) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Event, (PyObject *)&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6hunter_6_event_Event) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
   __pyx_ptype_6hunter_6_event_Event = &__pyx_type_6hunter_6_event_Event;
-  if (PyType_Ready(&__pyx_type_6hunter_6_event___pyx_scope_struct__yield_lines) < 0) __PYX_ERR(0, 351, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6hunter_6_event___pyx_scope_struct__yield_lines) < 0) __PYX_ERR(0, 348, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6hunter_6_event___pyx_scope_struct__yield_lines.tp_print = 0;
   #endif
@@ -12662,19 +12601,19 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_6hunter_7_tracer_Tracer) __PYX_ERR(4, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyImport_ImportModule("hunter.vendor._cymem.cymem"); if (unlikely(!__pyx_t_2)) __PYX_ERR(5, 4, __pyx_L1_error)
+  __pyx_t_2 = PyImport_ImportModule("hunter.vendor._cymem.cymem"); if (unlikely(!__pyx_t_2)) __PYX_ERR(5, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyMalloc = __Pyx_ImportType(__pyx_t_2, "hunter.vendor._cymem.cymem", "PyMalloc", sizeof(struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyMalloc), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyMalloc) __PYX_ERR(5, 4, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyMalloc = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyMalloc*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyMalloc->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyMalloc)) __PYX_ERR(5, 4, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyMalloc) __PYX_ERR(5, 5, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyMalloc = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyMalloc*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyMalloc->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyMalloc)) __PYX_ERR(5, 5, __pyx_L1_error)
   __pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyFree = __Pyx_ImportType(__pyx_t_2, "hunter.vendor._cymem.cymem", "PyFree", sizeof(struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_PyFree), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyFree) __PYX_ERR(5, 10, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyFree = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyFree*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyFree->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyFree)) __PYX_ERR(5, 10, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyFree) __PYX_ERR(5, 11, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyFree = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_PyFree*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_PyFree->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_PyFree)) __PYX_ERR(5, 11, __pyx_L1_error)
   __pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool = __Pyx_ImportType(__pyx_t_2, "hunter.vendor._cymem.cymem", "Pool", sizeof(struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool) __PYX_ERR(5, 16, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_Pool = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_Pool)) __PYX_ERR(5, 16, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool) __PYX_ERR(5, 17, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_Pool = (struct __pyx_vtabstruct_6hunter_6vendor_6_cymem_5cymem_Pool*)__Pyx_GetVtable(__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool->tp_dict); if (unlikely(!__pyx_vtabptr_6hunter_6vendor_6_cymem_5cymem_Pool)) __PYX_ERR(5, 17, __pyx_L1_error)
   __pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Address = __Pyx_ImportType(__pyx_t_2, "hunter.vendor._cymem.cymem", "Address", sizeof(struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Address), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Address) __PYX_ERR(5, 28, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Address) __PYX_ERR(5, 29, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -13172,7 +13111,7 @@ if (!__Pyx_RefNanny) {
  * from .util import CYTHON_SUFFIX_RE
  * from .util import LEADING_WHITESPACE_RE             # <<<<<<<<<<<<<<
  * from .util import MISSING
- * from .util import PY2
+ * from .util import get_func_in_mro
  */
   __Pyx_TraceLine(23,0,__PYX_ERR(0, 23, __pyx_L1_error))
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
@@ -13193,8 +13132,8 @@ if (!__Pyx_RefNanny) {
  * from .util import CYTHON_SUFFIX_RE
  * from .util import LEADING_WHITESPACE_RE
  * from .util import MISSING             # <<<<<<<<<<<<<<
- * from .util import PY2
  * from .util import get_func_in_mro
+ * from .util import get_main_thread
  */
   __Pyx_TraceLine(24,0,__PYX_ERR(0, 24, __pyx_L1_error))
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
@@ -13214,350 +13153,328 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":25
  * from .util import LEADING_WHITESPACE_RE
  * from .util import MISSING
- * from .util import PY2             # <<<<<<<<<<<<<<
- * from .util import get_func_in_mro
+ * from .util import get_func_in_mro             # <<<<<<<<<<<<<<
  * from .util import get_main_thread
+ * from .util import if_same_code
  */
   __Pyx_TraceLine(25,0,__PYX_ERR(0, 25, __pyx_L1_error))
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_PY2);
-  __Pyx_GIVEREF(__pyx_n_s_PY2);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_PY2);
+  __Pyx_INCREF(__pyx_n_s_get_func_in_mro);
+  __Pyx_GIVEREF(__pyx_n_s_get_func_in_mro);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_get_func_in_mro);
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_util, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_PY2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PY2, __pyx_t_1) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_func_in_mro, __pyx_t_1) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "hunter/_event.pyx":26
  * from .util import MISSING
- * from .util import PY2
- * from .util import get_func_in_mro             # <<<<<<<<<<<<<<
- * from .util import get_main_thread
- * from .util import if_same_code
- */
-  __Pyx_TraceLine(26,0,__PYX_ERR(0, 26, __pyx_L1_error))
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_n_s_get_func_in_mro);
-  __Pyx_GIVEREF(__pyx_n_s_get_func_in_mro);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_get_func_in_mro);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_util, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_get_func_in_mro); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_func_in_mro, __pyx_t_2) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "hunter/_event.pyx":27
- * from .util import PY2
  * from .util import get_func_in_mro
  * from .util import get_main_thread             # <<<<<<<<<<<<<<
  * from .util import if_same_code
  * 
  */
-  __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_TraceLine(26,0,__PYX_ERR(0, 26, __pyx_L1_error))
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_get_main_thread);
   __Pyx_GIVEREF(__pyx_n_s_get_main_thread);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_get_main_thread);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_util, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_get_main_thread); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_get_main_thread);
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_util, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_main_thread, __pyx_t_1) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_get_main_thread); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_main_thread, __pyx_t_2) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hunter/_event.pyx":28
+  /* "hunter/_event.pyx":27
  * from .util import get_func_in_mro
  * from .util import get_main_thread
  * from .util import if_same_code             # <<<<<<<<<<<<<<
  * 
  * __all__ = 'Event',
  */
-  __Pyx_TraceLine(28,0,__PYX_ERR(0, 28, __pyx_L1_error))
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_if_same_code);
   __Pyx_GIVEREF(__pyx_n_s_if_same_code);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_if_same_code);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_util, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_if_same_code); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_if_same_code);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_util, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_if_same_code, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_if_same_code); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_if_same_code, __pyx_t_1) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":30
+  /* "hunter/_event.pyx":29
  * from .util import if_same_code
  * 
  * __all__ = 'Event',             # <<<<<<<<<<<<<<
  * 
  * cdef object UNSET = object()
  */
-  __Pyx_TraceLine(30,0,__PYX_ERR(0, 30, __pyx_L1_error))
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_tuple__16) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  __Pyx_TraceLine(29,0,__PYX_ERR(0, 29, __pyx_L1_error))
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_tuple__15) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
 
-  /* "hunter/_event.pyx":32
+  /* "hunter/_event.pyx":31
  * __all__ = 'Event',
  * 
  * cdef object UNSET = object()             # <<<<<<<<<<<<<<
  * 
  * cdef Pool mem = Pool()
  */
-  __Pyx_TraceLine(32,0,__PYX_ERR(0, 32, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_object); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_TraceLine(31,0,__PYX_ERR(0, 31, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_builtin_object); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(__pyx_v_6hunter_6_event_UNSET);
-  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_UNSET, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_UNSET, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":34
+  /* "hunter/_event.pyx":33
  * cdef object UNSET = object()
  * 
  * cdef Pool mem = Pool()             # <<<<<<<<<<<<<<
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  */
-  __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6hunter_6vendor_6_cymem_5cymem_Pool)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(((PyObject *)__pyx_v_6hunter_6_event_mem));
-  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_mem, ((struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_t_1));
-  __Pyx_GIVEREF(__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF_SET(__pyx_v_6hunter_6_event_mem, ((struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *)__pyx_t_2));
+  __Pyx_GIVEREF(__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":35
+  /* "hunter/_event.pyx":34
  * 
  * cdef Pool mem = Pool()
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])             # <<<<<<<<<<<<<<
  * 
  * cdef PyObject** make_kind_names(list strings):
  */
-  __Pyx_TraceLine(35,0,__PYX_ERR(0, 35, __pyx_L1_error))
-  __pyx_t_1 = PyList_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
+  __pyx_t_2 = PyList_New(7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_call);
   __Pyx_GIVEREF(__pyx_n_s_call);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_call);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_call);
   __Pyx_INCREF(__pyx_n_s_exception);
   __Pyx_GIVEREF(__pyx_n_s_exception);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_exception);
+  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_exception);
   __Pyx_INCREF(__pyx_n_s_line);
   __Pyx_GIVEREF(__pyx_n_s_line);
-  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_n_s_line);
+  PyList_SET_ITEM(__pyx_t_2, 2, __pyx_n_s_line);
   __Pyx_INCREF(__pyx_n_s_return);
   __Pyx_GIVEREF(__pyx_n_s_return);
-  PyList_SET_ITEM(__pyx_t_1, 3, __pyx_n_s_return);
+  PyList_SET_ITEM(__pyx_t_2, 3, __pyx_n_s_return);
   __Pyx_INCREF(__pyx_n_s_call);
   __Pyx_GIVEREF(__pyx_n_s_call);
-  PyList_SET_ITEM(__pyx_t_1, 4, __pyx_n_s_call);
+  PyList_SET_ITEM(__pyx_t_2, 4, __pyx_n_s_call);
   __Pyx_INCREF(__pyx_n_s_exception);
   __Pyx_GIVEREF(__pyx_n_s_exception);
-  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_n_s_exception);
+  PyList_SET_ITEM(__pyx_t_2, 5, __pyx_n_s_exception);
   __Pyx_INCREF(__pyx_n_s_return);
   __Pyx_GIVEREF(__pyx_n_s_return);
-  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_s_return);
-  __pyx_v_6hunter_6_event_KIND_NAMES = __pyx_f_6hunter_6_event_make_kind_names(((PyObject*)__pyx_t_1));
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  PyList_SET_ITEM(__pyx_t_2, 6, __pyx_n_s_return);
+  __pyx_v_6hunter_6_event_KIND_NAMES = __pyx_f_6hunter_6_event_make_kind_names(((PyObject*)__pyx_t_2));
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":37
+  /* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
  * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  */
-  __Pyx_TraceLine(37,0,__PYX_ERR(0, 37, __pyx_L1_error))
+  __Pyx_TraceLine(36,0,__PYX_ERR(0, 36, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":62
+  /* "hunter/_event.pyx":61
  *     """
  *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):             # <<<<<<<<<<<<<<
  *         if tracer is None:
  *             if depth is None:
  */
-  __Pyx_TraceLine(62,0,__PYX_ERR(0, 62, __pyx_L1_error))
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_MISSING); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_k_ = __pyx_t_1;
-  __Pyx_GIVEREF(__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_TraceLine(61,0,__PYX_ERR(0, 61, __pyx_L1_error))
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MISSING); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_k_ = __pyx_t_2;
+  __Pyx_GIVEREF(__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":111
+  /* "hunter/_event.pyx":110
  *         return fast_clone(self)
  * 
  *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
  *         if self._instruction is UNSET:
  *             if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
  */
-  __Pyx_TraceLine(111,0,__PYX_ERR(0, 111, __pyx_L1_error))
+  __Pyx_TraceLine(110,0,__PYX_ERR(0, 110, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":127
+  /* "hunter/_event.pyx":126
  *         return self.instruction_getter()
  * 
  *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
  *         cdef long current
  * 
  */
-  __Pyx_TraceLine(127,0,__PYX_ERR(0, 127, __pyx_L1_error))
+  __Pyx_TraceLine(126,0,__PYX_ERR(0, 126, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":143
+  /* "hunter/_event.pyx":142
  *         return self.threadid_getter()
  * 
  *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:
  */
-  __Pyx_TraceLine(143,0,__PYX_ERR(0, 143, __pyx_L1_error))
+  __Pyx_TraceLine(142,0,__PYX_ERR(0, 142, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":154
+  /* "hunter/_event.pyx":153
  *         return self.threadname_getter()
  * 
  *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._locals is UNSET:
  *             if self.builtin:
  */
-  __Pyx_TraceLine(154,0,__PYX_ERR(0, 154, __pyx_L1_error))
+  __Pyx_TraceLine(153,0,__PYX_ERR(0, 153, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":167
+  /* "hunter/_event.pyx":166
  *         return self.locals_getter()
  * 
  *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._globals is UNSET:
  *             if self.builtin:
  */
-  __Pyx_TraceLine(167,0,__PYX_ERR(0, 167, __pyx_L1_error))
+  __Pyx_TraceLine(166,0,__PYX_ERR(0, 166, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":179
+  /* "hunter/_event.pyx":178
  *         return self.globals_getter()
  * 
  *     cdef function_getter(self):             # <<<<<<<<<<<<<<
  *         if self._function is UNSET:
  *             if self.builtin:
  */
-  __Pyx_TraceLine(179,0,__PYX_ERR(0, 179, __pyx_L1_error))
+  __Pyx_TraceLine(178,0,__PYX_ERR(0, 178, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":221
+  /* "hunter/_event.pyx":220
  *         return self._function_object
  * 
  *     cdef module_getter(self):             # <<<<<<<<<<<<<<
  *         if self._module is UNSET:
  *             if self.builtin:
  */
-  __Pyx_TraceLine(221,0,__PYX_ERR(0, 221, __pyx_L1_error))
+  __Pyx_TraceLine(220,0,__PYX_ERR(0, 220, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":238
+  /* "hunter/_event.pyx":235
  *         return self.module_getter()
  * 
  *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
  *         if self._filename is UNSET:
  *             filename = self.frame.f_code.co_filename
  */
-  __Pyx_TraceLine(238,0,__PYX_ERR(0, 238, __pyx_L1_error))
+  __Pyx_TraceLine(235,0,__PYX_ERR(0, 235, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":262
+  /* "hunter/_event.pyx":259
  *         return self.filename_getter()
  * 
  *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
  *         if self._lineno is UNSET:
  *             self._lineno = self.frame.f_lineno
  */
-  __Pyx_TraceLine(262,0,__PYX_ERR(0, 262, __pyx_L1_error))
+  __Pyx_TraceLine(259,0,__PYX_ERR(0, 259, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":271
+  /* "hunter/_event.pyx":268
  *         return self.lineno_getter()
  * 
  *     cdef code_getter(self):             # <<<<<<<<<<<<<<
  *         if self._code is UNSET:
  *             return self.frame.f_code
  */
-  __Pyx_TraceLine(271,0,__PYX_ERR(0, 271, __pyx_L1_error))
+  __Pyx_TraceLine(268,0,__PYX_ERR(0, 268, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":281
+  /* "hunter/_event.pyx":278
  *         return self.code_getter()
  * 
  *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  */
-  __Pyx_TraceLine(281,0,__PYX_ERR(0, 281, __pyx_L1_error))
+  __Pyx_TraceLine(278,0,__PYX_ERR(0, 278, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":303
+  /* "hunter/_event.pyx":300
  *         return self.stdlib_getter()
  * 
  *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
  *         cdef list lines
  * 
  */
-  __Pyx_TraceLine(303,0,__PYX_ERR(0, 303, __pyx_L1_error))
+  __Pyx_TraceLine(300,0,__PYX_ERR(0, 300, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":332
+  /* "hunter/_event.pyx":329
  *         return self.fullsource_getter()
  * 
  *     cdef source_getter(self):             # <<<<<<<<<<<<<<
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):
  */
-  __Pyx_TraceLine(332,0,__PYX_ERR(0, 332, __pyx_L1_error))
+  __Pyx_TraceLine(329,0,__PYX_ERR(0, 329, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":351
+  /* "hunter/_event.pyx":348
  * 
  * 
  * def yield_lines(filename, module_globals, start, list collector,             # <<<<<<<<<<<<<<
  *                 limit=10):
  *     dedent = None
  */
-  __Pyx_TraceLine(351,0,__PYX_ERR(0, 351, __pyx_L1_error))
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6hunter_6_event_1yield_lines, NULL, __pyx_n_s_hunter__event); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_yield_lines, __pyx_t_1) < 0) __PYX_ERR(0, 351, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_TraceLine(348,0,__PYX_ERR(0, 348, __pyx_L1_error))
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6hunter_6_event_1yield_lines, NULL, __pyx_n_s_hunter__event); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_yield_lines, __pyx_t_2) < 0) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_event.pyx":366
+  /* "hunter/_event.pyx":363
  * 
  * 
  * cdef inline Event fast_detach(Event self, object value_filter):             # <<<<<<<<<<<<<<
  *     event = <Event>Event.__new__(Event)
  * 
  */
-  __Pyx_TraceLine(366,0,__PYX_ERR(0, 366, __pyx_L1_error))
+  __Pyx_TraceLine(363,0,__PYX_ERR(0, 363, __pyx_L1_error))
 
 
-  /* "hunter/_event.pyx":400
+  /* "hunter/_event.pyx":397
  *     return event
  * 
  * cdef inline Event fast_clone(Event self):             # <<<<<<<<<<<<<<
  *     event = <Event>Event.__new__(Event)
  *     event.arg = self.arg
  */
-  __Pyx_TraceLine(400,0,__PYX_ERR(0, 400, __pyx_L1_error))
+  __Pyx_TraceLine(397,0,__PYX_ERR(0, 397, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -13566,10 +13483,10 @@ if (!__Pyx_RefNanny) {
  *     cdef object __pyx_result
  */
   __Pyx_TraceLine(1,0,__PYX_ERR(2, 1, __pyx_L1_error))
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6hunter_6_event_4__pyx_unpickle_Event, NULL, __pyx_n_s_hunter__event); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Event, __pyx_t_1) < 0) __PYX_ERR(2, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6hunter_6_event_4__pyx_unpickle_Event, NULL, __pyx_n_s_hunter__event); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Event, __pyx_t_2) < 0) __PYX_ERR(2, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "(tree fragment)":11
  *         __pyx_unpickle_Event__set_state(<Event> __pyx_result, __pyx_state)
@@ -13587,10 +13504,10 @@ if (!__Pyx_RefNanny) {
  * from linecache import getline
  */
   __Pyx_TraceLine(1,0,__PYX_ERR(0, 1, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_TraceReturn(Py_None, 0);
 
   /*--- Wrapped vars code ---*/
