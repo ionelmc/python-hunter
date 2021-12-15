@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.4.3 (2021-12-15)
+------------------
+
+* Fix some refactoring regression in ``setup.py``.
+
 3.4.2 (2021-12-15)
 ------------------
 

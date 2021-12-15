@@ -83,7 +83,7 @@ class OptionalBuildExt(build_ext):
         try:
             if os.environ.get('SETUPPY_FORCE_PURE'):
                 raise Exception('C extensions disabled (SETUPPY_FORCE_PURE)!')
-            super().build_ext()
+            super().run()
         except Exception as e:
             self._unavailable(e)
             self.extensions = []  # avoid copying missing files (it would fail).
