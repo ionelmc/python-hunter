@@ -85,8 +85,6 @@ trace = EvilTracer
 
 pytest_plugins = 'pytester',
 
-PY3 = sys.version_info[0] == 3
-
 
 def test_mix_predicates_with_callables():
     hunter._prepare_predicate(Q(module=1) | Q(lambda: 2))
@@ -1071,12 +1069,12 @@ def test_function_object(LineMatcher):
     lm = LineMatcher(output.splitlines())
     lm.fnmatch_lines([
         "gf(1)|gf|call",
-        "dgf(2)|{}|call".format('dgf' if PY3 else 'missing'),
+        "dgf(2)|dgf|call",
         "lf(3)|missing|call",
         "dlf(4)|missing|call",
-        "old_sm(5)|{}|call".format('old_sm' if PY3 else 'missing'),
+        "old_sm(5)|old_sm|call",
         "old_cm(6)|old_cm|call",
-        "old_sm(7)|{}|call".format('old_sm' if PY3 else 'missing'),
+        "old_sm(7)|old_sm|call",
         "old_cm(8)|old_cm|call",
         "old_m(9)|old_m|call",
         "new_sm(10)|new_sm|call",
@@ -1085,7 +1083,7 @@ def test_function_object(LineMatcher):
         "new_cm(13)|new_cm|call",
         "new_m(14)|new_m|call",
         "gf(15)|gf|call",
-        "dgf(16)|{}|call".format('dgf' if PY3 else 'missing'),
+        "dgf(16)|dgf|call",
         "local_sm(17)|missing|call",
         "local_cm(18)|local_cm|call",
         "local_sm(19)|missing|call",
@@ -1094,7 +1092,7 @@ def test_function_object(LineMatcher):
         "lf(22)|missing|call",
         "dlf(23)|missing|call",
         "gf(24)|gf|call",
-        "dgf(25)|{}|call".format('dgf' if PY3 else 'missing'),
+        "dgf(25)|{}|call".format('dgf'),
     ])
 
 
@@ -1436,20 +1434,4 @@ def test_backlog_specific(LineMatcher, size, stack, vars, condition, filter):
         "depth=5 calls=*sample7args.py:*  line                     for i in range(1):  # five*",
         "depth=5 calls=*sample7args.py:*  line                     return i  # five",
         "depth=4 calls=*sample7args.py:*  return                <= five: 0",
-    ])
-
-
-@pytest.mark.skipif("PY3")
-def test_packed_arguments(LineMatcher):
-    lines = StringIO()
-
-    with trace(module='sample9py2', action=CallPrinter(stream=lines)):
-        from sample9py2 import foo
-        foo(1, (2, ), (3, 4), (5, (6, 7), 8))
-
-    lm = LineMatcher(lines.getvalue().splitlines())
-    lm.fnmatch_lines([
-        "* call      => foo(a=1, (b,)=(2,), (c, d)=(3, 4), (e, (f, g), h)=(5, (6, 7), 8))",
-        "* line         def foo(a, (b,), (c, d), (e, (f, g), h)):",
-        "* return    <= foo: None",
     ])

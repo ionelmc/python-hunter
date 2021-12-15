@@ -43,15 +43,15 @@ def read(*names, **kwargs):
 
 class BuildWithPTH(build):
     def run(self):
-        build.run(self)
+        super().run()
         path = join(dirname(__file__), 'src', 'hunter.pth')
         dest = join(self.build_lib, basename(path))
         self.copy_file(path, dest)
 
 
 class EasyInstallWithPTH(easy_install):
-    def run(self):
-        easy_install.run(self)
+    def run(self, *args, **kwargs):
+        super().run(*args, **kwargs)
         path = join(dirname(__file__), 'src', 'hunter.pth')
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
@@ -59,7 +59,7 @@ class EasyInstallWithPTH(easy_install):
 
 class InstallLibWithPTH(install_lib):
     def run(self):
-        install_lib.run(self)
+        super().run()
         path = join(dirname(__file__), 'src', 'hunter.pth')
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
@@ -71,7 +71,7 @@ class InstallLibWithPTH(install_lib):
 
 class DevelopWithPTH(develop):
     def run(self):
-        develop.run(self)
+        super().run()
         path = join(dirname(__file__), 'src', 'hunter.pth')
         dest = join(self.install_dir, basename(path))
         self.copy_file(path, dest)
@@ -157,7 +157,7 @@ setup(
     keywords=[
         'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
     ],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
+    python_requires='>=3.6',
     install_requires=[
     ],
     extras_require={

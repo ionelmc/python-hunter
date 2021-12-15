@@ -14,8 +14,6 @@ from .util import CALL_COLORS
 from .util import CODE_COLORS
 from .util import MISSING
 from .util import OTHER_COLORS
-from .util import PY3
-from .util import StringType
 from .util import builtins
 from .util import frame_iterator
 from .util import get_arguments
@@ -165,7 +163,7 @@ class ColorStreamAction(Action):
 
     @stream.setter
     def stream(self, value):
-        if isinstance(value, StringType):
+        if isinstance(value, str):
             if value in self._stream_cache:
                 value = self._stream_cache[value]
             else:
@@ -718,8 +716,6 @@ class VarsSnooper(ColorStreamAction):
 
 
 RETURN_VALUE = opcode.opmap['RETURN_VALUE']
-if not PY3:
-    RETURN_VALUE = chr(RETURN_VALUE)
 
 
 class ErrorSnooper(CodePrinter):

@@ -22,7 +22,6 @@ from .const import SYS_PREFIX_PATHS
 from .util import CYTHON_SUFFIX_RE
 from .util import LEADING_WHITESPACE_RE
 from .util import MISSING
-from .util import PY2
 from .util import get_func_in_mro
 from .util import get_main_thread
 from .util import if_same_code
@@ -226,8 +225,6 @@ cdef class Event:
                 module = self.frame.f_globals.get('__name__', '')
             if module is None:
                 module = '?'
-            if PY2:
-                module = module.encode('ascii', 'replace')
             self._module = module
         return self._module
 

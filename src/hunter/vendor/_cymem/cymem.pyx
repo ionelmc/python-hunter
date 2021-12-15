@@ -1,4 +1,4 @@
-# cython: embedsignature=True
+# cython: embedsignature=True, language_level=3str
 
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython.ref cimport Py_INCREF, Py_DECREF
@@ -64,7 +64,7 @@ cdef class Pool:
     cdef void* alloc(self, size_t number, size_t elem_size) except NULL:
         """Allocate a 0-initialized number*elem_size-byte block of memory, and
         remember its address. The block will be freed when the Pool is garbage
-        collected. Throw warning when allocating zero-length size and 
+        collected. Throw warning when allocating zero-length size and
         WARN_ZERO_ALLOC was set to True.
         """
         if WARN_ZERO_ALLOC and (number == 0 or elem_size == 0):

@@ -5,7 +5,9 @@ Changelog
 3.4.3 (2021-12-15)
 ------------------
 
-* Fix some refactoring regression in ``setup.py``.
+* Removed most of the Python 2 support code.
+* Fix some refactoring regression in ``setup.py`` and make the 3.4.x series installable only on Python 3.6 and later.
+* Yank 3.4.0, 3.4.1, 3.4.2 releases to avoid install problems on Python 2.7.
 
 3.4.2 (2021-12-15)
 ------------------
