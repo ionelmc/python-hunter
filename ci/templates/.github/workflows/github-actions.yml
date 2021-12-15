@@ -33,13 +33,13 @@ jobs:
 {% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
-    ['ubuntu', 'x64', 'native', '*manylinux*', True],
-    ['ubuntu', 'x64', 'native', '*musllinux*', False],
+    ['ubuntu', 'x64', 'x86_64', '*manylinux*', True],
+    ['ubuntu', 'x64', 'x86_64', '*musllinux*', False],
     ['ubuntu', 'x64', 'aarch64', '*manylinux*', False],
     ['ubuntu', 'x64', 'aarch64', '*musllinux*', False],
-    ['windows', 'x64', 'native', '*', True],
-    ['windows', 'x86', 'native', '*', False],
-    ['macos', 'x64', 'native', '*', True],
+    ['windows', 'x64', 'AMD64', '*', True],
+    ['windows', 'x86', 'x86', '*', False],
+    ['macos', 'x64', 'x86_64', '*', True],
 ] %}
 {% if include_cover or (env.endswith('cython-nocov') and not prefix.startswith('pypy')) %}
 {% set wheel_suffix = env.endswith('cython-nocov') and wheel_arch.strip('*') %}
