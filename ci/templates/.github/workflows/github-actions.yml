@@ -71,7 +71,7 @@ jobs:
         architecture: {{ '${{ matrix.python_arch }}' }}
     - name: install dependencies
       run: |
-        python -mpip install --progress-bar=off twine tox cibuildwheel -r ci/requirements.txt
+        python -mpip install --progress-bar=off cibuildwheel -r ci/requirements.txt
         virtualenv --version
         pip --version
         tox --version
