@@ -75,8 +75,8 @@ Documentation
 
 https://python-hunter.readthedocs.io/
 
-Overview
-========
+Getting started
+===============
 
 Basic use involves passing various filters to the ``trace`` option. An example:
 
