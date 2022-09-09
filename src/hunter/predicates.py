@@ -18,14 +18,21 @@ __all__ = (
     'When',
 )
 
-ALLOWED_KEYS = tuple(sorted(
-    i for i in Event.__dict__.keys()
-    if not i.startswith('_') and i not in ('tracer', 'thread', 'frame')
-))
+ALLOWED_KEYS = tuple(sorted(i for i in Event.__dict__.keys() if not i.startswith('_') and i not in ('tracer', 'thread', 'frame')))
 ALLOWED_OPERATORS = (
-    'startswith', 'endswith', 'in', 'contains', 'regex',
-    'sw', 'ew', 'has', 'rx',
-    'gt', 'gte', 'lt', 'lte',
+    'startswith',
+    'endswith',
+    'in',
+    'contains',
+    'regex',
+    'sw',
+    'ew',
+    'has',
+    'rx',
+    'gt',
+    'gte',
+    'lt',
+    'lte',
 )
 
 
@@ -62,6 +69,7 @@ class Query(object):
             ``threadid``,
             ``threadname``.
     """
+
     def __init__(self, **query):
         query_eq = {}
         query_startswith = {}
@@ -78,23 +86,21 @@ class Query(object):
             parts = [p for p in key.split('_') if p]
             count = len(parts)
             if count > 2:
-                raise TypeError('Unexpected argument %r. Must be one of %s with optional operators like: %s' % (
-                    key, ALLOWED_KEYS, ALLOWED_OPERATORS
-                ))
+                raise TypeError(
+                    'Unexpected argument %r. Must be one of %s with optional operators like: %s' % (key, ALLOWED_KEYS, ALLOWED_OPERATORS)
+                )
             elif count == 2:
                 prefix, operator = parts
                 if operator in ('startswith', 'sw'):
                     if not isinstance(value, str):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError(
-                                'Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator in ('endswith', 'ew'):
                     if not isinstance(value, str):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError(
-                                'Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
                         value = tuple(value)
                     mapping = query_endswith
                 elif operator == 'in':
@@ -149,13 +155,15 @@ class Query(object):
                     ('_lte', self.query_lte),
                     ('_gt', self.query_gt),
                     ('_gte', self.query_gte),
-                ] if mapping
+                ]
+                if mapping
             )
         )
 
     def __repr__(self):
         return '<hunter.predicates.Query: %s>' % ' '.join(
-            fmt % (mapping,) for fmt, mapping in [
+            fmt % (mapping,)
+            for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
                 ('query_in=%r', self.query_in),
                 ('query_contains=%r', self.query_contains),
@@ -166,7 +174,8 @@ class Query(object):
                 ('query_lte=%r', self.query_lte),
                 ('query_gt=%r', self.query_gt),
                 ('query_gte=%r', self.query_gte),
-            ] if mapping
+            ]
+            if mapping
         )
 
     def __eq__(self, other):
@@ -273,25 +282,22 @@ class When(object):
         if not actions:
             raise TypeError('Must give at least one action.')
         self.condition = condition
-        self.actions = tuple(
-            action() if inspect.isclass(action) and issubclass(action, Action) else action
-            for action in actions)
+        self.actions = tuple(action() if inspect.isclass(action) and issubclass(action, Action) else action for action in actions)
 
     def __str__(self):
         return 'When(%s, %s)' % (
             self.condition,
-            ', '.join(repr(p) for p in self.actions)
+            ', '.join(repr(p) for p in self.actions),
         )
 
     def __repr__(self):
-        return '<hunter.predicates.When: condition=%r, actions=%r>' % (self.condition, self.actions)
+        return '<hunter.predicates.When: condition=%r, actions=%r>' % (
+            self.condition,
+            self.actions,
+        )
 
     def __eq__(self, other):
-        return (
-            isinstance(other, When)
-            and self.condition == other.condition
-            and self.actions == other.actions
-        )
+        return isinstance(other, When) and self.condition == other.condition and self.actions == other.actions
 
     def __call__(self, event):
         """
@@ -364,20 +370,16 @@ class From(object):
 
     def __str__(self):
         return 'From(%s, %s, watermark=%s)' % (
-            self.condition, self.predicate, self.watermark
+            self.condition,
+            self.predicate,
+            self.watermark,
         )
 
     def __repr__(self):
-        return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (
-            self.condition, self.predicate, self.watermark
-        )
+        return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (self.condition, self.predicate, self.watermark)
 
     def __eq__(self, other):
-        return (
-            isinstance(other, From)
-            and self.condition == other.condition
-            and self.predicate == other.predicate
-        )
+        return isinstance(other, From) and self.condition == other.condition and self.predicate == other.predicate
 
     def __call__(self, event):
         """
@@ -450,10 +452,7 @@ class And(object):
         return '<hunter.predicates.And: predicates=%r>' % (self.predicates,)
 
     def __eq__(self, other):
-        return (
-            isinstance(other, And)
-            and self.predicates == other.predicates
-        )
+        return isinstance(other, And) and self.predicates == other.predicates
 
     def __call__(self, event):
         """
@@ -475,7 +474,12 @@ class And(object):
         """
         Convenience API so you can do ``And(...) & other``. It converts that to ``And(..., other)``.
         """
-        return And(*chain(self.predicates, other.predicates if isinstance(other, And) else (other,)))
+        return And(
+            *chain(
+                self.predicates,
+                other.predicates if isinstance(other, And) else (other,),
+            )
+        )
 
     def __invert__(self):
         """
@@ -511,10 +515,7 @@ class Or(object):
         return '<hunter.predicates.Or: predicates=%r>' % (self.predicates,)
 
     def __eq__(self, other):
-        return (
-            isinstance(other, Or)
-            and self.predicates == other.predicates
-        )
+        return isinstance(other, Or) and self.predicates == other.predicates
 
     def __call__(self, event):
         """
@@ -530,7 +531,12 @@ class Or(object):
         """
         Convenience API so you can do ``Or(...) | other``. It converts that to ``Or(..., other)``.
         """
-        return Or(*chain(self.predicates, other.predicates if isinstance(other, Or) else (other,)))
+        return Or(
+            *chain(
+                self.predicates,
+                other.predicates if isinstance(other, Or) else (other,),
+            )
+        )
 
     def __and__(self, other):
         """
@@ -572,10 +578,7 @@ class Not(object):
         return '<hunter.predicates.Not: predicate=%r>' % self.predicate
 
     def __eq__(self, other):
-        return (
-            isinstance(other, Not)
-            and self.predicate == other.predicate
-        )
+        return isinstance(other, Not) and self.predicate == other.predicate
 
     def __call__(self, event):
         """
@@ -655,7 +658,17 @@ class Backlog(object):
     See Also:
          :class:`hunter.predicates.From`
     """
-    def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
+
+    def __init__(
+        self,
+        condition,
+        size=100,
+        stack=10,
+        vars=False,
+        strip=True,
+        action=None,
+        filter=None,
+    ):
         self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
             raise TypeError('Action %r must be a ColorStreamAction.' % self.action)
@@ -681,7 +694,10 @@ class Backlog(object):
                 first_depth = first_event.depth
                 backlog_call_depth = event.depth - first_depth
                 first_is_call = first_event.kind == 'call'  # note that True is 1, thus the following math is valid
-                missing_depth = min(first_depth,  max(0, self.stack - backlog_call_depth + first_is_call))
+                missing_depth = min(
+                    first_depth,
+                    max(0, self.stack - backlog_call_depth + first_is_call),
+                )
                 if missing_depth:
                     if first_is_call and first_event.frame is not None:
                         first_frame = first_event.frame.f_back
@@ -693,9 +709,12 @@ class Backlog(object):
                         depth_delta = 0
                         while frame and depth_delta < missing_depth:
                             stack_event = Event(
-                                frame=frame, kind='call', arg=None,
+                                frame=frame,
+                                kind='call',
+                                arg=None,
                                 threading_support=event.threading_support,
-                                depth=first_depth - depth_delta - 1, calls=-1
+                                depth=first_depth - depth_delta - 1,
+                                calls=-1,
                             )
                             if not self.vars:
                                 # noinspection PyPropertyAccess
@@ -728,22 +747,32 @@ class Backlog(object):
 
     def __str__(self):
         return 'Backlog(%s, size=%s, stack=%s, vars=%s, action=%s, filter=%s)' % (
-            self.condition, self.size, self.stack, self.vars, self.action, self._filter
+            self.condition,
+            self.size,
+            self.stack,
+            self.vars,
+            self.action,
+            self._filter,
         )
 
     def __repr__(self):
         return '<hunter.predicates.Backlog: condition=%r, size=%r, stack=%r, vars=%r, action=%r, filter=%r>' % (
-            self.condition, self.size, self.stack, self.vars, self.action, self._filter
+            self.condition,
+            self.size,
+            self.stack,
+            self.vars,
+            self.action,
+            self._filter,
         )
 
     def __eq__(self, other):
         return (
-            isinstance(other, Backlog) and
-            self.condition == other.condition and
-            self.size == other.size and
-            self.stack == other.stack and
-            self.vars == other.vars and
-            self.action == other.action
+            isinstance(other, Backlog)
+            and self.condition == other.condition
+            and self.size == other.size
+            and self.stack == other.stack
+            and self.vars == other.vars
+            and self.action == other.action
         )
 
     def __or__(self, other):
@@ -762,7 +791,14 @@ class Backlog(object):
         """
         Convenience API so you can do ``~Backlog(...)``. It converts that to ``Not(Backlog(...))``.
         """
-        return Backlog(Not(self.condition), size=self.size, stack=self.stack, vars=self.vars, action=self.action, filter=self._filter)
+        return Backlog(
+            Not(self.condition),
+            size=self.size,
+            stack=self.stack,
+            vars=self.vars,
+            action=self.action,
+            filter=self._filter,
+        )
 
     def __ror__(self, other):
         """
@@ -794,6 +830,9 @@ class Backlog(object):
 
         return Backlog(
             self.condition,
-            size=self.size, stack=self.stack, vars=self.vars, action=self.action,
-            filter=_merge(*predicates, **kwargs)
+            size=self.size,
+            stack=self.stack,
+            vars=self.vars,
+            action=self.action,
+            filter=_merge(*predicates, **kwargs),
         )

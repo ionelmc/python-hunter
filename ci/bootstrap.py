@@ -69,7 +69,10 @@ def main():
         # This uses sys.executable the same way that the call in
         # cookiecutter-pylibrary/hooks/post_gen_project.py
         # invokes this bootstrap.py itself.
-        for line in subprocess.check_output([sys.executable, '-m', 'tox', '--listenvs'], universal_newlines=True).splitlines()
+        for line in subprocess.check_output(
+            [sys.executable, '-m', 'tox', '--listenvs'],
+            universal_newlines=True,
+        ).splitlines()
     ]
     tox_environments = [line for line in tox_environments if line.startswith('py')]
 

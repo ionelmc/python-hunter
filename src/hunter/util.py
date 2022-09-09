@@ -40,7 +40,6 @@ OTHER_COLORS = {
     'SOURCE-FAILURE': Style.BRIGHT + Back.YELLOW + Fore.YELLOW,
     'SOURCE-DETAIL': Fore.WHITE,
     'BUILTIN': Style.NORMAL + Fore.MAGENTA,
-
     'RESET': Style.RESET_ALL,
 }
 for name, group in [
@@ -74,7 +73,7 @@ def get_arguments(code):
     co_varnames = code.co_varnames
     co_argcount = code.co_argcount
     co_kwonlyargcount = code.co_kwonlyargcount
-    kwonlyargs = co_varnames[co_argcount:co_argcount + co_kwonlyargcount]
+    kwonlyargs = co_varnames[co_argcount : co_argcount + co_kwonlyargcount]
     for arg in co_varnames[:co_argcount]:
         yield '', arg, arg
     co_argcount += co_kwonlyargcount
@@ -161,27 +160,30 @@ def safe_repr(obj, maxdepth=5):
     # only represent exact builtins
     # (subclasses can have side-effects due to __class__ as a property, __instancecheck__, __subclasscheck__ etc)
     if obj_type is dict:
-        return '{%s}' % ', '.join('%s: %s' % (
-            safe_repr(k, maxdepth),
-            safe_repr(v, newdepth)
-        ) for k, v in obj.items())
+        return '{%s}' % ', '.join('%s: %s' % (safe_repr(k, maxdepth), safe_repr(v, newdepth)) for k, v in obj.items())
     elif obj_type is list:
         return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
     elif obj_type is tuple:
-        return '(%s%s)' % (', '.join(safe_repr(i, newdepth) for i in obj), ',' if len(obj) == 1 else '')
+        return '(%s%s)' % (
+            ', '.join(safe_repr(i, newdepth) for i in obj),
+            ',' if len(obj) == 1 else '',
+        )
     elif obj_type is set:
         return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
     elif obj_type is frozenset:
-        return '%s({%s})' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        return '%s({%s})' % (
+            obj_type.__name__,
+            ', '.join(safe_repr(i, newdepth) for i in obj),
+        )
     elif obj_type is deque:
-        return '%s([%s])' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj))
+        return '%s([%s])' % (
+            obj_type.__name__,
+            ', '.join(safe_repr(i, newdepth) for i in obj),
+        )
     elif obj_type in (Counter, OrderedDict, defaultdict):
         return '%s({%s})' % (
             obj_type.__name__,
-            ', '.join('%s: %s' % (
-                safe_repr(k, maxdepth),
-                safe_repr(v, newdepth)
-            ) for k, v in obj.items())
+            ', '.join('%s: %s' % (safe_repr(k, maxdepth), safe_repr(v, newdepth)) for k, v in obj.items()),
         )
     elif obj_type is Pattern:
         if obj.flags:
@@ -196,15 +198,23 @@ def safe_repr(obj, maxdepth=5):
     elif obj_type is datetime:
         return '%s(%d, %d, %d, %d, %d, %d, %d, tzinfo=%s%s)' % (
             obj_type.__name__,
-            obj.year, obj.month, obj.day,
-            obj.hour, obj.minute, obj.second, obj.microsecond,
+            obj.year,
+            obj.month,
+            obj.day,
+            obj.hour,
+            obj.minute,
+            obj.second,
+            obj.microsecond,
             safe_repr(obj.tzinfo),
             ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
         )
     elif obj_type is time:
         return '%s(%d, %d, %d, %d, tzinfo=%s%s)' % (
             obj_type.__name__,
-            obj.hour, obj.minute, obj.second, obj.microsecond,
+            obj.hour,
+            obj.minute,
+            obj.second,
+            obj.microsecond,
             safe_repr(obj.tzinfo),
             ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
         )
@@ -213,9 +223,16 @@ def safe_repr(obj, maxdepth=5):
         name = getattr(obj, '__qualname__', None)
         if name is None:
             name = obj.__name__
-        return '<%sbound method %s of %s>' % ('un' if self is None else '', name, safe_repr(self, newdepth))
+        return '<%sbound method %s of %s>' % (
+            'un' if self is None else '',
+            name,
+            safe_repr(self, newdepth),
+        )
     elif obj_type_type is type and BaseException in obj_type.__mro__:
-        return '%s(%s)' % (obj_type.__name__, ', '.join(safe_repr(i, newdepth) for i in obj.args))
+        return '%s(%s)' % (
+            obj_type.__name__,
+            ', '.join(safe_repr(i, newdepth) for i in obj.args),
+        )
     elif obj_type_type is type and obj_type is not InstanceType and obj_type.__module__ in (builtins.__name__, 'io', 'socket', '_socket'):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)

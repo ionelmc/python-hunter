@@ -26,12 +26,16 @@ try:
 except ImportError:
     from thread import get_ident
 
-__all__ = ['Action', 'Debugger', 'Manhole', 'CodePrinter', 'CallPrinter', 'VarsPrinter']
+__all__ = [
+    'Action',
+    'Debugger',
+    'Manhole',
+    'CodePrinter',
+    'CallPrinter',
+    'VarsPrinter',
+]
 
-BUILTIN_REPR_FUNCS = {
-    'repr': repr,
-    'safe_repr': safe_repr
-}
+BUILTIN_REPR_FUNCS = {'repr': repr, 'safe_repr': safe_repr}
 
 
 class Action(object):
@@ -47,6 +51,7 @@ class LazyImportPdb(object):
 
     def __call__(self, **kwargs):
         from pdb import Pdb
+
         return Pdb(**kwargs)
 
 
@@ -60,11 +65,7 @@ class Debugger(Action):
         self.kwargs = kwargs
 
     def __eq__(self, other):
-        return (
-            type(self) is type(other) and
-            self.klass == other.klass and
-            self.kwargs == other.kwargs
-        )
+        return type(self) is type(other) and self.klass == other.klass and self.kwargs == other.kwargs
 
     def __str__(self):
         return '{0.__class__.__name__}(klass={0.klass}, kwargs={0.kwargs})'.format(self)
@@ -94,6 +95,7 @@ class Manhole(Action):
 
     def __call__(self, event):
         import manhole
+
         inst = manhole.install(strict=False, thread=False, **self.options)
         inst.handle_oneshot()
 
@@ -102,6 +104,7 @@ class ColorStreamAction(Action):
     """
     Baseclass for your custom action. Just implement your own ``__call__``.
     """
+
     _stream_cache = {}
     _stream = None
     _tty = None
@@ -110,15 +113,17 @@ class ColorStreamAction(Action):
     OTHER_COLORS = OTHER_COLORS
     EVENT_COLORS = CODE_COLORS
 
-    def __init__(self,
-                 stream=config.Default('stream', None),
-                 force_colors=config.Default('force_colors', False),
-                 force_pid=config.Default('force_pid', False),
-                 filename_alignment=config.Default('filename_alignment', 40),
-                 thread_alignment=config.Default('thread_alignment', 12),
-                 pid_alignment=config.Default('pid_alignment', 9),
-                 repr_limit=config.Default('repr_limit', 1024),
-                 repr_func=config.Default('repr_func', 'safe_repr')):
+    def __init__(
+        self,
+        stream=config.Default('stream', None),
+        force_colors=config.Default('force_colors', False),
+        force_pid=config.Default('force_pid', False),
+        filename_alignment=config.Default('filename_alignment', 40),
+        thread_alignment=config.Default('thread_alignment', 12),
+        pid_alignment=config.Default('pid_alignment', 9),
+        repr_limit=config.Default('repr_limit', 1024),
+        repr_func=config.Default('repr_func', 'safe_repr'),
+    ):
         self.force_colors = config.resolve(force_colors)
         self.force_pid = config.resolve(force_pid)
         stream = config.resolve(stream)
@@ -146,16 +151,20 @@ class ColorStreamAction(Action):
         )
 
     def __str__(self):
-        return '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, ' \
-               'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, ' \
-               'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, ' \
-               'repr_func={0.repr_func})'.format(self)
+        return (
+            '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, '
+            'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, '
+            'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, '
+            'repr_func={0.repr_func})'.format(self)
+        )
 
     def __repr__(self):
-        return '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, ' \
-               'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, ' \
-               'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, ' \
-               'repr_func={0.repr_func!r})'.format(self)
+        return (
+            '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, '
+            'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, '
+            'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, '
+            'repr_func={0.repr_func!r})'.format(self)
+        )
 
     @property
     def stream(self):
@@ -248,7 +257,8 @@ class ColorStreamAction(Action):
             return source
         else:
             return '{SOURCE-FAILURE}??? NO SOURCE: {SOURCE-DETAIL}Source code string for {!r} is empty.'.format(
-                event.filename, **self.other_colors)
+                event.filename, **self.other_colors
+            )
 
     def filename_prefix(self, event=None):
         """
@@ -263,9 +273,8 @@ class ColorStreamAction(Action):
             lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
 
             if len(filename) > self.filename_alignment:
-                filename = '[...]{}'.format(filename[5 - self.filename_alignment:])
-            return '{:>{}}{} '.format(
-                filename, self.filename_alignment, lineno, **self.other_colors)
+                filename = '[...]{}'.format(filename[5 - self.filename_alignment :])
+            return '{:>{}}{} '.format(filename, self.filename_alignment, lineno, **self.other_colors)
         else:
             return '{:>{}}       '.format('', self.filename_alignment)
 
@@ -332,10 +341,7 @@ class ColorStreamAction(Action):
 
         Returns: string
         """
-        self.stream.write(format_str.format(
-            *args,
-            **dict(self.other_colors, **kwargs)
-        ))
+        self.stream.write(format_str.format(*args, **dict(self.other_colors, **kwargs)))
 
     def cleanup(self):
         pass
@@ -423,6 +429,7 @@ class CallPrinter(CodePrinter):
 
     .. versionadded:: 1.2.0
     """
+
     EVENT_COLORS = CALL_COLORS
 
     locals = defaultdict(list)
@@ -473,14 +480,17 @@ class CallPrinter(CodePrinter):
                     event.kind,
                     '   ' * (len(stack) - 1),
                     event.function,
-                    ', '.join('{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
-                        prefix,
-                        var_display,
-                        self.try_str(event.locals.get(var_lookup, MISSING))
-                        if event.detached
-                        else self.try_repr(event.locals.get(var_lookup, MISSING)),
-                        **self.other_colors
-                    ) for prefix, var_lookup, var_display in get_arguments(code)),
+                    ', '.join(
+                        '{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
+                            prefix,
+                            var_display,
+                            self.try_str(event.locals.get(var_lookup, MISSING))
+                            if event.detached
+                            else self.try_repr(event.locals.get(var_lookup, MISSING)),
+                            **self.other_colors,
+                        )
+                        for prefix, var_lookup, var_display in get_arguments(code)
+                    ),
                     COLOR=self.event_colors.get(event.kind),
                 )
         elif event.kind == 'exception':
@@ -566,10 +576,7 @@ class VarsPrinter(ColorStreamAction):
     def __init__(self, *names, **options):
         if not names:
             raise TypeError('VarsPrinter requires at least one variable name/expression.')
-        self.names = {
-            name: set(iter_symbols(name))
-            for name in names
-        }
+        self.names = {name: set(iter_symbols(name)) for name in names}
         super(VarsPrinter, self).__init__(**options)
 
     def __call__(self, event):
@@ -654,10 +661,7 @@ class VarsSnooper(ColorStreamAction):
         filename_prefix = self.filename_prefix(event)
         empty_filename_prefix = self.filename_prefix()
 
-        current_reprs = {
-            name: self.try_str(value) if event.detached else self.try_repr(value)
-            for name, value in event.locals.items()
-        }
+        current_reprs = {name: self.try_str(value) if event.detached else self.try_repr(value) for name, value in event.locals.items()}
         scope_key = event.code or event.function
         scope = self.stored_reprs[scope_key]
         for name, current_repr in sorted(current_reprs.items()):
@@ -786,7 +790,10 @@ class ErrorSnooper(CodePrinter):
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
                     if event.instruction == RETURN_VALUE:
                         self.dump_events()
-                        self.output('{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n', '-' * 46)
+                        self.output(
+                            '{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n',
+                            '-' * 46,
+                        )
                     self.origin = None
                     self.events = None
             elif event.depth > self.origin.depth + self.max_depth:  # too many details
@@ -800,8 +807,12 @@ class ErrorSnooper(CodePrinter):
                 self.events.append(detached_event)
 
     def dump_events(self):
-        self.output('{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n',
-                    '>' * 46, self.origin.function, self.origin.arg)
+        self.output(
+            '{BRIGHT}{fore(BLUE)}{} tracing {fore(YELLOW)}{}{fore(BLUE)} on {fore(RED)}{}{RESET}\n',
+            '>' * 46,
+            self.origin.function,
+            self.origin.arg,
+        )
         for event in self.events:
             super(ErrorSnooper, self).__call__(event)
         self.origin = None
@@ -841,13 +852,14 @@ class StackPrinter(ColorStreamAction):
             template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<={RESET} %s' % (
                 event.function,
                 ' {KIND}<={RESET} '.join(
-                    '%s{CONT}:{RESET}%s{CONT}:{BRIGHT}{fore(BLUE)}%s' % (
-                        '/'.join(frame.f_code.co_filename.split(sep)[-self.limit:]),
+                    '%s{CONT}:{RESET}%s{CONT}:{BRIGHT}{fore(BLUE)}%s'
+                    % (
+                        '/'.join(frame.f_code.co_filename.split(sep)[-self.limit :]),
                         frame.f_lineno,
-                        frame.f_code.co_name
+                        frame.f_code.co_name,
                     )
                     for frame in islice(frame_iterator(event.frame.f_back), self.depth)
-                )
+                ),
             )
         else:
             template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<= {BRIGHT}{fore(YELLOW)}no frames available {NORMAL}(detached=%s)' % (

@@ -64,14 +64,19 @@ __all__ = (
     'VarsPrinter',
     'VarsSnooper',
     'When',
-
     'stop',
     'trace',
 )
 THREADING_SUPPORT_ALIASES = (
-    'threading_support', 'threads_support', 'thread_support',
-    'threadingsupport', 'threadssupport', 'threadsupport',
-    'threading', 'threads', 'thread',
+    'threading_support',
+    'threads_support',
+    'thread_support',
+    'threadingsupport',
+    'threadssupport',
+    'threadsupport',
+    'threading',
+    'threads',
+    'thread',
 )
 TRACER_OPTION_NAMES = THREADING_SUPPORT_ALIASES + (
     'clear_env_var',
@@ -86,25 +91,28 @@ _default_stream = sys.stderr
 def _embed_via_environment():
     if 'PYTHONHUNTER' in os.environ:
         try:
-            eval('trace({[PYTHONHUNTER]})'.format(os.environ), {
-                'And': And,
-                'Backlog': Backlog,
-                'CallPrinter': CallPrinter,
-                'CodePrinter': CodePrinter,
-                'Debugger': Debugger,
-                'ErrorSnooper': ErrorSnooper,
-                'From': From,
-                'Manhole': Manhole,
-                'Not': Not,
-                'Or': Or,
-                'Q': Q,
-                'Query': Query,
-                'StackPrinter': StackPrinter,
-                'VarsPrinter': VarsPrinter,
-                'VarsSnooper': VarsSnooper,
-                'When': When,
-                'trace': trace,
-            })
+            eval(
+                'trace({[PYTHONHUNTER]})'.format(os.environ),
+                {
+                    'And': And,
+                    'Backlog': Backlog,
+                    'CallPrinter': CallPrinter,
+                    'CodePrinter': CodePrinter,
+                    'Debugger': Debugger,
+                    'ErrorSnooper': ErrorSnooper,
+                    'From': From,
+                    'Manhole': Manhole,
+                    'Not': Not,
+                    'Or': Or,
+                    'Q': Q,
+                    'Query': Query,
+                    'StackPrinter': StackPrinter,
+                    'VarsPrinter': VarsPrinter,
+                    'VarsSnooper': VarsSnooper,
+                    'When': When,
+                    'trace': trace,
+                },
+            )
         except Exception as exc:
             sys.stderr.write('Failed to load hunter from PYTHONHUNTER environ variable {[PYTHONHUNTER]!r}: {!r}\n'.format(os.environ, exc))
 
@@ -142,14 +150,12 @@ def _prepare_config(*args, **kwargs):
             continue
 
         _default_config.pop(key)
-        sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n'.format(
-            key, value))
+        sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n'.format(key, value))
     for position, predicate in enumerate(args):
         if callable(predicate):
             predicates.append(predicate)
         else:
-            sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n'.format(
-                predicate, position))
+            sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n'.format(predicate, position))
 
     return predicates, options
 
@@ -176,17 +182,14 @@ def Q(*predicates, **query):
             raise TypeError('Action {0!r} is not callable.'.format(a))
 
     if predicates:
-        predicates = tuple(
-            p() if inspect.isclass(p) and issubclass(p, Action) else p
-            for p in predicates
-        )
+        predicates = tuple(p() if inspect.isclass(p) and issubclass(p, Action) else p for p in predicates)
         if any(isinstance(p, (CallPrinter, CodePrinter)) for p in predicates):
             # the user provided an action as a filter, remove the action then to prevent double output
             for action in optional_actions:
                 if action in (CallPrinter, CodePrinter) or isinstance(action, (CallPrinter, CodePrinter)):
                     optional_actions.remove(action)
         if query:
-            predicates += Query(**query),
+            predicates += (Query(**query),)
 
         result = And(*predicates)
     else:
@@ -201,7 +204,7 @@ def Q(*predicates, **query):
 def _merge(*predicates, **query):
     if predicates:
         if query:
-            predicates += Query(**query),
+            predicates += (Query(**query),)
         return And(*predicates)
     else:
         return Query(**query)
@@ -240,7 +243,7 @@ def And(*predicates, **kwargs):
          :class:`hunter.predicates.And`
     """
     if kwargs:
-        predicates += Query(**kwargs),
+        predicates += (Query(**kwargs),)
     return _flatten(_And, *predicates)
 
 
@@ -278,7 +281,7 @@ def Not(*predicates, **kwargs):
          :class:`hunter.predicates.Not`
     """
     if kwargs:
-        predicates += Query(**kwargs),
+        predicates += (Query(**kwargs),)
     if len(predicates) > 1:
         return _Not(_flatten(_And, *predicates))
     else:
@@ -310,8 +313,7 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
         return _From(Q(**condition_kwargs), Q(**predicate_kwargs), watermark)
     else:
         if kwargs:
-            raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(
-                kwargs.keys()))
+            raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(kwargs.keys()))
         return _From(condition, predicate, watermark)
 
 
@@ -343,9 +345,18 @@ def Backlog(*conditions, **kwargs):
     strip = kwargs.pop('strip', True)
     vars = kwargs.pop('vars', False)
     if not conditions and not kwargs:
-        raise TypeError('Backlog needs at least 1 condition '
-                        "(it doesn't have any effect without one besides making everything incredibly slow).")
-    return _Backlog(_merge(*conditions, **kwargs), size=size, stack=stack, vars=vars, strip=strip, action=action, filter=filter)
+        raise TypeError(
+            'Backlog needs at least 1 condition ' "(it doesn't have any effect without one besides making everything incredibly slow)."
+        )
+    return _Backlog(
+        _merge(*conditions, **kwargs),
+        size=size,
+        stack=stack,
+        vars=vars,
+        strip=strip,
+        action=action,
+        filter=filter,
+    )
 
 
 def stop():
@@ -467,11 +478,13 @@ def wrap(function_to_trace=None, **trace_options):
             predicates.append(
                 From(
                     Query(kind='call'),
-                    Not(When(
-                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
-                        Stop
-                    )),
-                    watermark=-1
+                    Not(
+                        When(
+                            Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
+                            Stop,
+                        )
+                    ),
+                    watermark=-1,
                 )
             )
             local_tracer = trace(*predicates, **trace_options)
@@ -496,8 +509,7 @@ def load_config(*args, **kwargs):
         else:
             _default_trace_args = eval('_prepare_config({})'.format(os.environ.get('PYTHONHUNTERCONFIG', '')))
     except Exception as exc:
-        sys.stderr.write('Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n'.format(
-            os.environ, exc))
+        sys.stderr.write('Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n'.format(os.environ, exc))
         _default_trace_args = (), ()
 
 

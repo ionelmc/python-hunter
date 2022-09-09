@@ -5,6 +5,7 @@ class Default(object):
 
     def resolve(self):
         from . import _default_config
+
         return _default_config.get(self.key, self.fallback_value)
 
     def __str__(self):

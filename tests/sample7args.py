@@ -38,14 +38,19 @@ def six():
     pass
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from hunter import *
 
     from utils import DebugCallPrinter
 
     trace(
-        Backlog(stack=15, vars=True, action=DebugCallPrinter(' [' 'backlog' ']'), function='five').filter(~Q(function='six')),
-        action=DebugCallPrinter
+        Backlog(
+            stack=15,
+            vars=True,
+            action=DebugCallPrinter(' [' 'backlog' ']'),
+            function='five',
+        ).filter(~Q(function='six')),
+        action=DebugCallPrinter,
     )
     one()
     one()  # make sure Backlog is reusable (doesn't have storage side-effects)

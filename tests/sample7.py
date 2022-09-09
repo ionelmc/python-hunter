@@ -30,5 +30,5 @@ def five():
         return i
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     one()

@@ -32,7 +32,7 @@ def silenced3():
     try:
         error()
     finally:
-        return "mwhahaha"
+        return 'mwhahaha'
 
 
 def silenced4():

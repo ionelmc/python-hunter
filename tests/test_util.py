@@ -22,7 +22,7 @@ try:
 except ImportError:
     from hunter.backports.inspect import getattr_static
 
-MyTuple = namedtuple("MyTuple", "a b")
+MyTuple = namedtuple('MyTuple', 'a b')
 
 
 class Dict(dict):
@@ -42,12 +42,12 @@ Stuff = namedtuple('Stuff', 'a b')
 
 class Foobar(object):
     __slots__ = ()
-    __repr__ = lambda _: "Foo-bar"
+    __repr__ = lambda _: 'Foo-bar'
 
 
 class Bad1:
     def __repr__(self):
-        raise Exception("Bad!")
+        raise Exception('Bad!')
 
     def method(self):
         pass
@@ -55,28 +55,28 @@ class Bad1:
 
 class String(str):
     def __repr__(self):
-        raise Exception("Bad!")
+        raise Exception('Bad!')
 
     __str__ = __repr__
 
 
 class Int(int):
     def __repr__(self):
-        raise Exception("Bad!")
+        raise Exception('Bad!')
 
     __str__ = __repr__
 
 
 class TzInfo(tzinfo):
     def __repr__(self):
-        raise Exception("Bad!")
+        raise Exception('Bad!')
 
     __str__ = __repr__
 
 
 class Bad2(object):
     def __repr__(self):
-        raise Exception("Bad!")
+        raise Exception('Bad!')
 
     def method(self):
         pass
@@ -89,17 +89,23 @@ def test_safe_repr():
         'e': _socket.socket(),
         1: array('d', [1, 2]),
         frozenset('f'): socket(),
-        'g': Dict({
-            'a': List('123'),
-            'b': Set([Decimal('1.0')]),
-            'c': Stuff(1, 2),
-            'd': Exception(1, 2, {
-                'a': safe_repr,
-                'b': Foobar,
-                'c': Bad2(),
-                'ct': Bad2,
-            })
-        }),
+        'g': Dict(
+            {
+                'a': List('123'),
+                'b': Set([Decimal('1.0')]),
+                'c': Stuff(1, 2),
+                'd': Exception(
+                    1,
+                    2,
+                    {
+                        'a': safe_repr,
+                        'b': Foobar,
+                        'c': Bad2(),
+                        'ct': Bad2,
+                    },
+                ),
+            }
+        ),
         'od': OrderedDict({'a': 'b'}),
         'nt': MyTuple(1, 2),
         'bad1': Bad1().method,
@@ -108,7 +114,16 @@ def test_safe_repr():
         'badregex': re.compile(String('123')),
         'badregex2': re.compile(String('123'), Int(re.IGNORECASE)),
         'date': date(Int(2000), Int(1), Int(2)),
-        'datetime': datetime(Int(2000), Int(1), Int(2), Int(3), Int(4), Int(5), Int(600), tzinfo=TzInfo()),
+        'datetime': datetime(
+            Int(2000),
+            Int(1),
+            Int(2),
+            Int(3),
+            Int(4),
+            Int(5),
+            Int(600),
+            tzinfo=TzInfo(),
+        ),
         'time': time(Int(3), Int(4), Int(5), Int(600), tzinfo=TzInfo()),
         'timedelta': timedelta(Int(1), Int(2), Int(3), Int(4), Int(5), Int(6), Int(7)),
     }
@@ -215,13 +230,28 @@ def test_reliable_primitives():
     assert side_effects == ['Meta.__class__', 'Foobar.__class__']
 
     isinstance(1, Foobar)
-    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__']
+    assert side_effects == [
+        'Meta.__class__',
+        'Foobar.__class__',
+        'Meta.__instancecheck__',
+    ]
 
     issubclass(type, Foobar)
-    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__']
+    assert side_effects == [
+        'Meta.__class__',
+        'Foobar.__class__',
+        'Meta.__instancecheck__',
+        'Meta.__subclasscheck__',
+    ]
 
     assert Foobar.__mro__
-    assert side_effects == ['Meta.__class__', 'Foobar.__class__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__', 'Meta.__mro__']
+    assert side_effects == [
+        'Meta.__class__',
+        'Foobar.__class__',
+        'Meta.__instancecheck__',
+        'Meta.__subclasscheck__',
+        'Meta.__mro__',
+    ]
 
     del side_effects[:]
 
@@ -237,10 +267,19 @@ def test_reliable_primitives():
 
     subfoo = SubFoobar()
     assert isinstance(SubFoobar, Foobar)
-    assert side_effects == ['MetaMeta.__mro__', 'Meta.__subclasscheck__', 'Meta.__instancecheck__']
+    assert side_effects == [
+        'MetaMeta.__mro__',
+        'Meta.__subclasscheck__',
+        'Meta.__instancecheck__',
+    ]
 
     issubclass(type(SubFoobar()), Foobar)
-    assert side_effects == ['MetaMeta.__mro__', 'Meta.__subclasscheck__', 'Meta.__instancecheck__', 'Meta.__subclasscheck__']
+    assert side_effects == [
+        'MetaMeta.__mro__',
+        'Meta.__subclasscheck__',
+        'Meta.__instancecheck__',
+        'Meta.__subclasscheck__',
+    ]
 
     del side_effects[:]
 
@@ -250,7 +289,12 @@ def test_reliable_primitives():
     issubclass(Plain, Foobar)
     issubclass(Plain, type(Foobar))
     issubclass(Plain, type(type(Foobar)))
-    assert side_effects == ['Meta.__class__', 'MetaMeta.__class__', 'Meta.__subclasscheck__', 'MetaMeta.__subclasscheck__']
+    assert side_effects == [
+        'Meta.__class__',
+        'MetaMeta.__class__',
+        'Meta.__subclasscheck__',
+        'MetaMeta.__subclasscheck__',
+    ]
 
     del side_effects[:]
 

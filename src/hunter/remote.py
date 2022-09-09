@@ -23,7 +23,7 @@ else:
     from manhole import get_peercred
     from manhole.cli import parse_signal
 
-__all__ = 'install',
+__all__ = ('install',)
 
 
 def install(**kwargs):
@@ -48,8 +48,10 @@ class RemoteStream(object):
                 data = data.decode('ascii', 'replace')
             self._sock.send(data.encode(self._encoding))
         except Exception as exc:
-            print('Hunter failed to send trace output {!r} (encoding: {!r}): {!r}. Stopping tracer.'.format(
-                data, self._encoding, exc), file=sys.stderr)
+            print(
+                'Hunter failed to send trace output {!r} (encoding: {!r}): {!r}. Stopping tracer.'.format(data, self._encoding, exc),
+                file=sys.stderr,
+            )
             hunter.stop()
 
     def flush(self):
@@ -77,12 +79,20 @@ def manhole_bootstrap(args, activation_payload, deactivation_payload):
 def gdb_bootstrap(args, activation_payload, deactivation_payload):
     print('WARNING: Using GDB may deadlock the process or create unpredictable results!')
     activation_command = [
-        'gdb', '-p', str(args.pid), '-batch',
-        '-ex', 'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(activation_payload)),
+        'gdb',
+        '-p',
+        str(args.pid),
+        '-batch',
+        '-ex',
+        'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(activation_payload)),
     ]
     deactivation_command = [
-        'gdb', '-p', str(args.pid), '-batch',
-        '-ex', 'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(deactivation_payload)),
+        'gdb',
+        '-p',
+        str(args.pid),
+        '-batch',
+        '-ex',
+        'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(deactivation_payload)),
     ]
     check_call(activation_command)
     try:
@@ -103,11 +113,17 @@ def connect_manhole(pid, timeout, signal):
             conn.connect(uds_path)
         except (OSError, socket.error) as exc:
             if exc.errno not in (errno.ENOENT, errno.ECONNREFUSED):
-                print('Failed to connect to {!r}: {!r}'.format(uds_path, exc), file=sys.stderr)
+                print(
+                    'Failed to connect to {!r}: {!r}'.format(uds_path, exc),
+                    file=sys.stderr,
+                )
         else:
             break
     else:
-        print('Failed to connect to {!r}: Timeout'.format(uds_path), file=sys.stderr)
+        print(
+            'Failed to connect to {!r}: Timeout'.format(uds_path),
+            file=sys.stderr,
+        )
         sys.exit(5)
     return conn
 
@@ -118,10 +134,12 @@ def activate(sink_path, isatty, encoding, options):
         stream.write('Output stream active. Starting tracer ...\n\n')
         eval('hunter.trace({})'.format(options))
     except Exception as exc:
-        stream.write('Failed to activate: {!r}. {}\n'.format(
-            exc,
-            'Tracer options where: {}.'.format(options) if options else 'No tracer options.'
-        ))
+        stream.write(
+            'Failed to activate: {!r}. {}\n'.format(
+                exc,
+                'Tracer options where: {}.'.format(options) if options else 'No tracer options.',
+            )
+        )
         hunter._default_stream = sys.stderr
         raise
 
@@ -132,15 +150,38 @@ def deactivate():
 
 
 parser = argparse.ArgumentParser(description='Trace a process.')
-parser.add_argument('-p', '--pid', metavar='PID', type=int, required=True,
-                    help='A numerical process id.')
+parser.add_argument(
+    '-p',
+    '--pid',
+    metavar='PID',
+    type=int,
+    required=True,
+    help='A numerical process id.',
+)
 parser.add_argument('options', metavar='OPTIONS', nargs='*')
-parser.add_argument('-t', '--timeout', dest='timeout', default=1, type=float,
-                    help='Timeout to use. Default: %(default)s seconds.')
-parser.add_argument('--gdb', dest='gdb', action='store_true',
-                    help='Use GDB to activate tracing. WARNING: it may deadlock the process!')
-parser.add_argument('-s', '--signal', dest='signal', type=parse_signal, metavar='SIGNAL', default=signal.SIGURG,
-                    help='Send the given SIGNAL to the process before connecting. Default: %(default)s.')
+parser.add_argument(
+    '-t',
+    '--timeout',
+    dest='timeout',
+    default=1,
+    type=float,
+    help='Timeout to use. Default: %(default)s seconds.',
+)
+parser.add_argument(
+    '--gdb',
+    dest='gdb',
+    action='store_true',
+    help='Use GDB to activate tracing. WARNING: it may deadlock the process!',
+)
+parser.add_argument(
+    '-s',
+    '--signal',
+    dest='signal',
+    type=parse_signal,
+    metavar='SIGNAL',
+    default=signal.SIGURG,
+    help='Send the given SIGNAL to the process before connecting. Default: %(default)s.',
+)
 
 
 def main():
@@ -159,7 +200,7 @@ def main():
         sink_path,
         sys.stdout.isatty(),
         encoding,
-        ','.join(i.strip(',') for i in args.options)
+        ','.join(i.strip(',') for i in args.options),
     )
     with bootstrapper(args, payload, 'from hunter import remote; remote.deactivate()'):
         conn, _ = sink.accept()
@@ -167,10 +208,12 @@ def main():
         pid, _, _ = get_peercred(conn)
         if pid:
             if pid != args.pid:
-                raise Exception('Unexpected pid {!r} connected to output socket. Was expecting {!r}.'.format(
-                    pid, args.pid))
+                raise Exception('Unexpected pid {!r} connected to output socket. Was expecting {!r}.'.format(pid, args.pid))
         else:
-            print('WARNING: Failed to get pid of connected process.', file=sys.stderr)
+            print(
+                'WARNING: Failed to get pid of connected process.',
+                file=sys.stderr,
+            )
         data = conn.recv(1024)
         while data:
             stdout.write(data)

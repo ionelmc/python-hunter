@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-if __name__ == "__main__":  # ăăăă
+if __name__ == '__main__':  # ăăăă
     import functools
 
     def deco(opt):
@@ -7,7 +7,9 @@ if __name__ == "__main__":  # ăăăă
             @functools.wraps(func)
             def wrapper(*args):
                 return func(*args)
+
             return wrapper
+
         return decorator
 
     @deco(1)
@@ -16,14 +18,8 @@ if __name__ == "__main__":  # ăăăă
     def foo(*args):
         return args
 
-    foo(
-        'aăă',
-        'b'
-    )
+    foo('aăă', 'b')
     try:
-        None(
-            'a',
-            'b'
-        )  # dăh!
+        None('a', 'b')  # dăh!
     except:
         pass

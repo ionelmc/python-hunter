@@ -46,7 +46,12 @@ C = FakeCallable
 
 @pytest.fixture
 def mockevent():
-    return hunter.Event(sys._getframe(0), 2 if '_event' in hunter.Event.__module__ else 'line', None, hunter.Tracer())
+    return hunter.Event(
+        sys._getframe(0),
+        2 if '_event' in hunter.Event.__module__ else 'line',
+        None,
+        hunter.Tracer(),
+    )
 
 
 def test_no_inf_recursion(mockevent):
@@ -115,58 +120,64 @@ def test_when_allowed():
     pytest.raises(TypeError, When, 1)
 
 
-@pytest.mark.parametrize('expr,expected', [
-    ({'module': __name__}, True),
-    ({'module': __name__ + '.'}, False),
-    ({'module_startswith': 'test'}, True),
-    ({'module__startswith': 'test'}, True),
-    ({'module_contains': 'test'}, True),
-    ({'module_contains': 'foo'}, False),
-    ({'module_endswith': 'foo'}, False),
-    ({'module__endswith': __name__.split('_')[-1]}, True),
-    ({'module_in': __name__}, True),
-    ({'module': 'abcd'}, False),
-    ({'module': ['abcd']}, False),
-    ({'module_in': ['abcd']}, False),
-    ({'module_in': ['a', __name__, 'd']}, True),
-    ({'module': 'abcd'}, False),
-    ({'module_startswith': ('abc', 'test')}, True),
-    ({'module_startswith': {'abc', 'test'}}, True),
-    ({'module_startswith': ['abc', 'test']}, True),
-    ({'module_startswith': ('abc', 'test')}, True),
-    ({'module_startswith': ('abc', 'test')}, True),
-    ({'module_startswith': ('abc', 'xyz')}, False),
-    ({'module_endswith': ('abc', __name__.split('_')[-1])}, True),
-    ({'module_endswith': {'abc', __name__.split('_')[-1]}}, True),
-    ({'module_endswith': ['abc', __name__.split('_')[-1]]}, True),
-    ({'module_endswith': ('abc', 'xyz')}, False),
-    ({'module': 'abc'}, False),
-    ({'module_regex': r'(_|_.*)\b'}, False),
-    ({'module_regex': r'.+_.+$'}, True),
-    ({'module_regex': r'(test|test.*)\b'}, True),
-    ({'calls_gte': 0}, True),
-    ({'calls_gt': 0}, False),
-    ({'calls_lte': 0}, True),
-    ({'calls_lt': 0}, False),
-    ({'calls_gte': 1}, False),
-    ({'calls_gt': -1}, True),
-    ({'calls_lte': -1}, False),
-    ({'calls_lt': 1}, True),
-])
+@pytest.mark.parametrize(
+    'expr,expected',
+    [
+        ({'module': __name__}, True),
+        ({'module': __name__ + '.'}, False),
+        ({'module_startswith': 'test'}, True),
+        ({'module__startswith': 'test'}, True),
+        ({'module_contains': 'test'}, True),
+        ({'module_contains': 'foo'}, False),
+        ({'module_endswith': 'foo'}, False),
+        ({'module__endswith': __name__.split('_')[-1]}, True),
+        ({'module_in': __name__}, True),
+        ({'module': 'abcd'}, False),
+        ({'module': ['abcd']}, False),
+        ({'module_in': ['abcd']}, False),
+        ({'module_in': ['a', __name__, 'd']}, True),
+        ({'module': 'abcd'}, False),
+        ({'module_startswith': ('abc', 'test')}, True),
+        ({'module_startswith': {'abc', 'test'}}, True),
+        ({'module_startswith': ['abc', 'test']}, True),
+        ({'module_startswith': ('abc', 'test')}, True),
+        ({'module_startswith': ('abc', 'test')}, True),
+        ({'module_startswith': ('abc', 'xyz')}, False),
+        ({'module_endswith': ('abc', __name__.split('_')[-1])}, True),
+        ({'module_endswith': {'abc', __name__.split('_')[-1]}}, True),
+        ({'module_endswith': ['abc', __name__.split('_')[-1]]}, True),
+        ({'module_endswith': ('abc', 'xyz')}, False),
+        ({'module': 'abc'}, False),
+        ({'module_regex': r'(_|_.*)\b'}, False),
+        ({'module_regex': r'.+_.+$'}, True),
+        ({'module_regex': r'(test|test.*)\b'}, True),
+        ({'calls_gte': 0}, True),
+        ({'calls_gt': 0}, False),
+        ({'calls_lte': 0}, True),
+        ({'calls_lt': 0}, False),
+        ({'calls_gte': 1}, False),
+        ({'calls_gt': -1}, True),
+        ({'calls_lte': -1}, False),
+        ({'calls_lt': 1}, True),
+    ],
+)
 def test_matching(expr, mockevent, expected):
     assert Query(**expr)(mockevent) == expected
 
 
-@pytest.mark.parametrize('exc_type,expr', [
-    (TypeError, {'module_1': 1}),
-    (TypeError, {'module1': 1}),
-    (ValueError, {'module_startswith': 1}),
-    (ValueError, {'module_startswith': {1: 2}}),
-    (ValueError, {'module_endswith': 1}),
-    (ValueError, {'module_endswith': {1: 2}}),
-    (TypeError, {'module_foo': 1}),
-    (TypeError, {'module_a_b': 1}),
-])
+@pytest.mark.parametrize(
+    'exc_type,expr',
+    [
+        (TypeError, {'module_1': 1}),
+        (TypeError, {'module1': 1}),
+        (ValueError, {'module_startswith': 1}),
+        (ValueError, {'module_startswith': {1: 2}}),
+        (ValueError, {'module_endswith': 1}),
+        (ValueError, {'module_endswith': {1: 2}}),
+        (TypeError, {'module_foo': 1}),
+        (TypeError, {'module_a_b': 1}),
+    ],
+)
 def test_bad_query(expr, exc_type):
     pytest.raises(exc_type, Query, **expr)
 
@@ -184,10 +195,7 @@ def test_when(mockevent):
     assert called == [mockevent]
 
     called = [[], []]
-    predicate = (
-        Q(module=__name__, action=lambda ev: called[0].append(ev)) |
-        Q(module='foo', action=lambda ev: called[1].append(ev))
-    )
+    predicate = Q(module=__name__, action=lambda ev: called[0].append(ev)) | Q(module='foo', action=lambda ev: called[1].append(ev))
     assert predicate(mockevent) is True
     assert called == [[mockevent], []]
 
@@ -195,10 +203,7 @@ def test_when(mockevent):
     assert called == [[mockevent, mockevent], []]
 
     called = [[], []]
-    predicate = (
-        Q(module=__name__, action=lambda ev: called[0].append(ev)) &
-        Q(function='mockevent', action=lambda ev: called[1].append(ev))
-    )
+    predicate = Q(module=__name__, action=lambda ev: called[0].append(ev)) & Q(function='mockevent', action=lambda ev: called[1].append(ev))
     assert predicate(mockevent) is True
     assert called == [[mockevent], [mockevent]]
 
@@ -211,7 +216,13 @@ def test_from(mockevent):
     assert From(Q(module='foo') | Q(module='bar'), lambda ev: called.append(ev))(mockevent) is False
     assert called == []
 
-    assert From(Not(Q(module='foo') | Q(module='bar')), lambda ev: called.append(ev))(mockevent) is None
+    assert (
+        From(
+            Not(Q(module='foo') | Q(module='bar')),
+            lambda ev: called.append(ev),
+        )(mockevent)
+        is None
+    )
     assert called
 
     called = []
@@ -284,15 +295,22 @@ def test_backlog_filter():
 
     assert Backlog(Q(), action=MyAction).filter(function=1) == _Backlog(condition=Q(), filter=Query(function=1), action=MyAction)
     assert Backlog(Q(), action=MyAction, filter=Q(module=1)).filter(function=2) == _Backlog(
-        condition=Q(), filter=And(Query(module=1), Query(function=2)), action=MyAction)
+        condition=Q(),
+        filter=And(Query(module=1), Query(function=2)),
+        action=MyAction,
+    )
 
     def blabla():
         pass
 
     assert Backlog(Q(), action=MyAction, filter=blabla).filter(function=1) == _Backlog(
-        condition=Q(), filter=And(blabla, Query(function=1)), action=MyAction)
+        condition=Q(), filter=And(blabla, Query(function=1)), action=MyAction
+    )
     assert Backlog(Q(), action=MyAction, filter=Q(module=1)).filter(blabla, function=2) == _Backlog(
-        condition=Q(), filter=And(Query(module=1), blabla, Query(function=2)), action=MyAction)
+        condition=Q(),
+        filter=And(Query(module=1), blabla, Query(function=2)),
+        action=MyAction,
+    )
 
 
 def test_and(mockevent):
@@ -323,20 +341,20 @@ def test_str_repr():
     assert repr(Q(module='a')).endswith("predicates.Query: query_eq=(('module', 'a'),)>")
     assert str(Q(module='a')) == "Query(module='a')"
 
-    assert "predicates.When: condition=<hunter." in repr(Q(module='a', action=C('foo')))
+    assert 'predicates.When: condition=<hunter.' in repr(Q(module='a', action=C('foo')))
     assert "predicates.Query: query_eq=(('module', 'a'),)>, actions=('foo',)>" in repr(Q(module='a', action=C('foo')))
     assert str(Q(module='a', action=C('foo'))) == "When(Query(module='a'), 'foo')"
 
-    assert "predicates.Not: predicate=<hunter." in repr(~Q(module='a'))
+    assert 'predicates.Not: predicate=<hunter.' in repr(~Q(module='a'))
     assert "predicates.Query: query_eq=(('module', 'a'),)>>" in repr(~Q(module='a'))
     assert str(~Q(module='a')) == "Not(Query(module='a'))"
 
-    assert "predicates.Or: predicates=(<hunter." in repr(Q(module='a') | Q(module='b'))
+    assert 'predicates.Or: predicates=(<hunter.' in repr(Q(module='a') | Q(module='b'))
     assert "predicates.Query: query_eq=(('module', 'a'),)>, " in repr(Q(module='a') | Q(module='b'))
     assert repr(Q(module='a') | Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') | Q(module='b')) == "Or(Query(module='a'), Query(module='b'))"
 
-    assert "predicates.And: predicates=(<hunter." in repr(Q(module='a') & Q(module='b'))
+    assert 'predicates.And: predicates=(<hunter.' in repr(Q(module='a') & Q(module='b'))
     assert "predicates.Query: query_eq=(('module', 'a'),)>," in repr(Q(module='a') & Q(module='b'))
     assert repr(Q(module='a') & Q(module='b')).endswith("predicates.Query: query_eq=(('module', 'b'),)>)>")
     assert str(Q(module='a') & Q(module='b')) == "And(Query(module='a'), Query(module='b'))"
@@ -347,9 +365,13 @@ def test_str_repr():
     )
     assert str(From(module='a', depth_gte=2)) == "From(Query(module='a'), Query(depth_gte=2), watermark=0)"
 
-    assert repr(Backlog(module='a', action=CodePrinter, size=2)).replace('<hunter._', '<hunter.').startswith(
-        "<hunter.predicates.Backlog: condition=<hunter.predicates.Query: query_eq=(('module', 'a'),)>, "
-        "size=2, stack=10, vars=False, action=CodePrinter"
+    assert (
+        repr(Backlog(module='a', action=CodePrinter, size=2))
+        .replace('<hunter._', '<hunter.')
+        .startswith(
+            "<hunter.predicates.Backlog: condition=<hunter.predicates.Query: query_eq=(('module', 'a'),)>, "
+            'size=2, stack=10, vars=False, action=CodePrinter'
+        )
     )
 
     assert repr(Debugger()) == "Debugger(klass=<class 'pdb.Pdb'>, kwargs={})"

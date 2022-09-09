@@ -8,7 +8,7 @@ import hunter
 
 from .event import Event
 
-__all__ = 'Tracer',
+__all__ = ('Tracer',)
 
 
 class Tracer(object):
@@ -18,6 +18,7 @@ class Tracer(object):
     Args:
         threading_support (bool): Hooks the tracer into ``threading.settrace`` as well if True.
     """
+
     def __init__(self, threading_support=None, profiling_mode=False):
         self._handler = None
         self._previous = None
@@ -84,8 +85,7 @@ class Tracer(object):
                 self._handler(event)
             except Exception as exc:
                 traceback.print_exc(file=hunter._default_stream)
-                hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
-                    self._handler, exc, event))
+                hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (self._handler, exc, event))
                 self.stop()
                 return
             if kind == 'call':

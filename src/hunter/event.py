@@ -18,7 +18,7 @@ from .util import get_func_in_mro
 from .util import get_main_thread
 from .util import if_same_code
 
-__all__ = 'Event',
+__all__ = ('Event',)
 
 
 class Event(object):
@@ -35,6 +35,7 @@ class Event(object):
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
+
     frame = None
     kind = None
     arg = None
@@ -42,7 +43,16 @@ class Event(object):
     calls = None
     builtin = None
 
-    def __init__(self, frame, kind, arg, tracer=None, depth=None, calls=None, threading_support=MISSING):
+    def __init__(
+        self,
+        frame,
+        kind,
+        arg,
+        tracer=None,
+        depth=None,
+        calls=None,
+        threading_support=MISSING,
+    ):
         if tracer is None:
             if depth is None:
                 raise TypeError('Missing argument: depth (required because tracer was not given).')
@@ -108,17 +118,21 @@ class Event(object):
 
     def __repr__(self):
         return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (
-            self.kind, self.function, self.module, self.filename, self.lineno
+            self.kind,
+            self.function,
+            self.module,
+            self.filename,
+            self.lineno,
         )
 
     def __eq__(self, other):
         return (
-            type(self) == type(other) and
-            self.kind == other.kind and
-            self.depth == other.depth and
-            self.function == other.function and
-            self.module == other.module and
-            self.filename == other.filename
+            type(self) == type(other)
+            and self.kind == other.kind
+            and self.depth == other.depth
+            and self.function == other.function
+            and self.module == other.module
+            and self.filename == other.filename
         )
 
     def detach(self, value_filter=None):
@@ -391,10 +405,17 @@ class Event(object):
             if self.kind == 'call' and self.code.co_name != '<module>':
                 lines = []
                 try:
-                    for _, token, _, _, line in tokenize.generate_tokens(partial(
-                        next,
-                        yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines.append)
-                    )):
+                    for _, token, _, _, line in tokenize.generate_tokens(
+                        partial(
+                            next,
+                            yield_lines(
+                                self.filename,
+                                self.frame.f_globals,
+                                self.lineno - 1,
+                                lines.append,
+                            ),
+                        )
+                    ):
                         if token in ('def', 'class', 'lambda'):
                             return ''.join(lines)
                 except tokenize.TokenError:
@@ -423,12 +444,17 @@ class Event(object):
     __getitem__ = object.__getattribute__
 
 
-def yield_lines(filename, module_globals, start, collector,
-                limit=10,
-                leading_whitespace_re=LEADING_WHITESPACE_RE):
+def yield_lines(
+    filename,
+    module_globals,
+    start,
+    collector,
+    limit=10,
+    leading_whitespace_re=LEADING_WHITESPACE_RE,
+):
     dedent = None
     amount = 0
-    for line in linecache.getlines(filename, module_globals)[start:start + limit]:
+    for line in linecache.getlines(filename, module_globals)[start : start + limit]:
         if dedent is None:
             dedent = leading_whitespace_re.findall(line)
             dedent = dedent[0] if dedent else ''

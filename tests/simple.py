@@ -1,19 +1,17 @@
-""" s@tart
+"""s@tart
 1
 2
 3
 4
 """  # end
-class Foo(object):
 
+
+class Foo(object):
     @staticmethod
     def a(*args):
         return args
 
-    b = staticmethod(
-        lambda *a:
-            a
-    )
+    b = staticmethod(lambda *a: a)
 
 
 def deco(_):

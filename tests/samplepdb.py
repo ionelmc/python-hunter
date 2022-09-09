@@ -7,7 +7,7 @@ import hunter
 def on_postmortem():
     print('Raising stuff ...', os.getpid())
     try:
-        raise Exception("BOOM!")
+        raise Exception('BOOM!')
     except Exception:
         pdb.post_mortem()
 
@@ -41,6 +41,7 @@ if __name__ == '__main__':
         from pdb import Pdb
     elif sys.argv[1] == 'ipdb':
         import ipdb as pdb
+
         Pdb = lambda: pdb
 
     if sys.argv[2] == 'debugger':

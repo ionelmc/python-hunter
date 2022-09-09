@@ -24,7 +24,8 @@ def test_manhole():
 
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
-                tracer.read, TIMEOUT,
+                tracer.read,
+                TIMEOUT,
                 'Output stream active. Starting tracer',
                 'call      => stuff()',
                 'line         time.sleep(1)',
@@ -40,7 +41,8 @@ def test_manhole_clean_exit():
 
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
-                tracer.read, TIMEOUT,
+                tracer.read,
+                TIMEOUT,
                 'Output stream active. Starting tracer',
                 'call      => stuff()',
                 'line         time.sleep(1)',
@@ -48,11 +50,14 @@ def test_manhole_clean_exit():
             )
             target.reset()
             tracer.proc.send_signal(signal.SIGINT)
-        wait_for_strings(target.read, TIMEOUT,
-                         'remote.deactivate()',
-                         'Doing stuff',
-                         'Doing stuff',
-                         'Doing stuff')
+        wait_for_strings(
+            target.read,
+            TIMEOUT,
+            'remote.deactivate()',
+            'Doing stuff',
+            'Doing stuff',
+            'Doing stuff',
+        )
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
@@ -61,10 +66,10 @@ def test_manhole_clean_exit():
 @pytest.mark.skipif('not find_executable("gdb")')
 def test_gdb():
     with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
-        with TestProcess('hunter-trace', '-p', str(target.proc.pid),
-                         '--gdb', 'stdlib=False') as tracer, dump_on_error(tracer.read):
+        with TestProcess('hunter-trace', '-p', str(target.proc.pid), '--gdb', 'stdlib=False') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
-                tracer.read, TIMEOUT,
+                tracer.read,
+                TIMEOUT,
                 'WARNING: Using GDB may deadlock the process or create unpredictable results!',
                 'Output stream active. Starting tracer',
                 'call      => stuff()',
@@ -80,10 +85,10 @@ def test_gdb():
 @pytest.mark.skipif('not find_executable("gdb")')
 def test_gdb_clean_exit():
     with TestProcess(sys.executable, '-msamplemanhole') as target, dump_on_error(target.read):
-        with TestProcess('hunter-trace', '-p', str(target.proc.pid),
-                         'stdlib=False', '--gdb') as tracer, dump_on_error(tracer.read):
+        with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False', '--gdb') as tracer, dump_on_error(tracer.read):
             wait_for_strings(
-                tracer.read, TIMEOUT,
+                tracer.read,
+                TIMEOUT,
                 'WARNING: Using GDB may deadlock the process or create unpredictable results!',
                 'Output stream active. Starting tracer',
                 'call      => stuff()',
@@ -92,7 +97,4 @@ def test_gdb_clean_exit():
             )
             target.reset()
             tracer.proc.send_signal(signal.SIGINT)
-        wait_for_strings(target.read, TIMEOUT,
-                         'Doing stuff',
-                         'Doing stuff',
-                         'Doing stuff')
+        wait_for_strings(target.read, TIMEOUT, 'Doing stuff', 'Doing stuff', 'Doing stuff')

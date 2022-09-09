@@ -36,7 +36,7 @@ except ImportError:
 def read(*names, **kwargs):
     with io.open(
         join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8')
+        encoding=kwargs.get('encoding', 'utf8'),
     ) as fh:
         return fh.read()
 
@@ -79,6 +79,7 @@ class DevelopWithPTH(develop):
 
 class OptionalBuildExt(build_ext):
     """Allow the building of C extensions to fail."""
+
     def run(self):
         try:
             if os.environ.get('SETUPPY_FORCE_PURE'):
@@ -90,12 +91,14 @@ class OptionalBuildExt(build_ext):
 
     def _unavailable(self, e):
         print('*' * 80)
-        print('''WARNING:
+        print(
+            """WARNING:
 
     An optional code optimization (C extension) could not be compiled.
 
     Optimizations for this package will not be available!
-        ''')
+        """
+        )
 
         print('CAUSE:')
         print('')
@@ -105,6 +108,7 @@ class OptionalBuildExt(build_ext):
 
 class BinaryDistribution(Distribution):
     """Distribution which almost always forces a binary package with platform name"""
+
     def has_ext_modules(self):
         return super().has_ext_modules() or not os.environ.get('SETUPPY_ALLOW_PURE')
 
@@ -118,9 +122,10 @@ setup(
     },
     license='BSD-2-Clause',
     description='Hunter is a flexible code tracing toolkit.',
-    long_description='%s\n%s' % (
+    long_description='%s\n%s'
+    % (
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst')),
     ),
     author='Ionel Cristian Mărieș',
     author_email='contact@ionelmc.ro',
@@ -155,18 +160,25 @@ setup(
         'Issue Tracker': 'https://github.com/ionelmc/python-hunter/issues',
     },
     keywords=[
-        'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
+        'trace',
+        'tracer',
+        'settrace',
+        'debugger',
+        'debugging',
+        'code',
+        'source',
     ],
     python_requires='>=3.7',
-    install_requires=[
-    ],
+    install_requires=[],
     extras_require={
         ':platform_system != "Windows"': ['manhole >= 1.5'],
     },
     setup_requires=[
         'setuptools_scm>=3.3.1,!=4.0.0',
         'cython',
-    ] if Cython else [
+    ]
+    if Cython
+    else [
         'setuptools_scm>=3.3.1,!=4.0.0',
     ],
     entry_points={
@@ -181,12 +193,14 @@ setup(
         'develop': DevelopWithPTH,
         'build_ext': OptionalBuildExt,
     },
-    ext_modules=[] if hasattr(sys, 'pypy_version_info') else [
+    ext_modules=[]
+    if hasattr(sys, 'pypy_version_info')
+    else [
         Extension(
             splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
             sources=[path],
             extra_compile_args=os.environ.get('SETUPPY_CFLAGS', '').split(),
-            include_dirs=[dirname(path)]
+            include_dirs=[dirname(path)],
         )
         for root, _, _ in os.walk('src')
         for path in glob(join(root, '*.pyx' if Cython else '*.c'))

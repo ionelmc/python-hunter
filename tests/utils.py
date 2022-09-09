@@ -11,7 +11,7 @@ class DebugCallPrinter(CallPrinter):
         super(DebugCallPrinter, self).__init__(**kwargs)
 
     def __call__(self, event):
-        self.output("depth={} calls={:<4}", event.depth, event.calls)
+        self.output('depth={} calls={:<4}', event.depth, event.calls)
         super(DebugCallPrinter, self).__call__(event)
 
     def output(self, format_str, *args, **kwargs):
