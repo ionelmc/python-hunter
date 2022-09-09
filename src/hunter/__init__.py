@@ -469,29 +469,63 @@ def wrap(function_to_trace=None, **trace_options):
     """
 
     def tracing_decorator(func):
-        @functools.wraps(func)
-        def tracing_wrapper(*args, **kwargs):
-            predicates = []
-            local = trace_options.pop('local', False)
-            if local:
-                predicates.append(Query(depth_lt=2))
-            predicates.append(
-                From(
-                    Query(kind='call'),
-                    Not(
-                        When(
-                            Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
-                            Stop,
-                        )
-                    ),
-                    watermark=-1,
-                )
+        predicates = []
+        local = trace_options.pop('local', False)
+        if local:
+            predicates.append(Query(depth_lt=2))
+        predicates.append(
+            From(
+                Query(kind='call', function=func.__name__),
+                Not(
+                    When(
+                        Query(calls_gt=0, depth=0) & Not(Query(kind='return')),
+                        Stop,
+                    )
+                ),
+                watermark=-1,
             )
-            local_tracer = trace(*predicates, **trace_options)
-            try:
-                return func(*args, **kwargs)
-            finally:
-                local_tracer.stop()
+        )
+
+        if inspect.isasyncgenfunction(func):
+
+            @functools.wraps(func)
+            async def tracing_wrapper(*args, **kwargs):
+                local_tracer = trace(*predicates, **trace_options)
+                try:
+                    async for item in func(*args, **kwargs):
+                        yield item
+                finally:
+                    local_tracer.stop()
+
+        elif inspect.iscoroutinefunction(func):
+
+            @functools.wraps(func)
+            async def tracing_wrapper(*args, **kwargs):
+                local_tracer = trace(*predicates, **trace_options)
+                try:
+                    return await func(*args, **kwargs)
+                finally:
+                    local_tracer.stop()
+
+        elif inspect.isgeneratorfunction(func):
+
+            @functools.wraps(func)
+            def tracing_wrapper(*args, **kwargs):
+                local_tracer = trace(*predicates, **trace_options)
+                try:
+                    yield from func(*args, **kwargs)
+                finally:
+                    local_tracer.stop()
+
+        else:
+
+            @functools.wraps(func)
+            def tracing_wrapper(*args, **kwargs):
+                local_tracer = trace(*predicates, **trace_options)
+                try:
+                    return func(*args, **kwargs)
+                finally:
+                    local_tracer.stop()
 
         return tracing_wrapper
 

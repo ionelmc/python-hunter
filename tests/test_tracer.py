@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import asyncio
 import functools
 import os
 import platform
@@ -34,7 +35,6 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
-
 
 if hunter.Tracer.__module__ == 'hunter.tracer':
 
@@ -84,7 +84,6 @@ if hunter.Tracer.__module__ == 'hunter.tracer':
 
 else:
     from eviltracer import EvilTracer
-
 
 trace = EvilTracer
 
@@ -599,6 +598,89 @@ def test_wraps(LineMatcher):
         assert 'tracer.stop()' not in call
 
 
+def test_wraps_generator(LineMatcher):
+    calls = []
+
+    @hunter.wrap(action=lambda event: calls.append('%6r calls=%r depth=%r %s' % (event.kind, event.calls, event.depth, event.fullsource)))
+    def foo():
+        yield 1
+
+    assert list(foo()) == [1]
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "'call' calls=0 depth=0     @hunter.wrap*",
+            "'line' calls=1 depth=1         yield 1\n",
+            "'return' calls=1 depth=0         yield 1\n",
+        ]
+    )
+    for call in calls:
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_async_generator(LineMatcher):
+    calls = []
+
+    @hunter.wrap(
+        action=lambda event: calls.append(
+            '%s %6r calls=%r depth=%r %s' % (event.module, event.kind, event.calls, event.depth, event.fullsource)
+        )
+    )
+    async def foo():
+        yield 1
+        await asyncio.sleep(0.01)
+
+    async def runner():
+        result = []
+        async for item in foo():
+            result.append(item)
+        return result
+
+    assert asyncio.run(runner()) == [1]
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "test_tracer 'call' calls=* depth=0     @hunter.wrap*",
+            "test_tracer 'line' calls=* depth=1         yield 1\n",
+            "test_tracer 'return' calls=* depth=0         yield 1\n",
+        ]
+    )
+    for call in calls:
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_coroutine(LineMatcher):
+    calls = []
+
+    @hunter.wrap(
+        action=lambda event: calls.append(
+            '%s %6r calls=%r depth=%r %s' % (event.module, event.kind, event.calls, event.depth, event.fullsource)
+        )
+    )
+    async def foo():
+        await asyncio.sleep(0.01)
+        print(1)
+        return 1
+
+    assert asyncio.run(foo()) == 1
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "test_tracer 'call' calls=0 depth=0     @hunter.wrap*",
+            "test_tracer 'line' calls=1 depth=1         await asyncio.sleep(0.01)\n",
+            "test_tracer 'return' calls=* depth=0         await asyncio.sleep(0.01)\n",
+        ]
+    )
+    for call in calls:
+        assert 'tracer.stop()' not in call
+
+
 def test_wraps_local(LineMatcher):
     calls = []
 
@@ -623,6 +705,111 @@ def test_wraps_local(LineMatcher):
             '  call calls=0 depth=0     @hunter.wrap*',
             '  line calls=? depth=1         return 1\n',
             'return calls=? depth=0         return 1\n',
+        ]
+    )
+    for call in calls:
+        assert 'for i in range(2)' not in call
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_generator_local(LineMatcher):
+    calls = []
+
+    def bar():
+        for i in range(2):
+            return 'A'
+
+    @hunter.wrap(
+        local=True, action=lambda event: calls.append('%6r calls=%r depth=%r %s' % (event.kind, event.calls, event.depth, event.fullsource))
+    )
+    def foo():
+        bar()
+        yield 1
+
+    assert list(foo()) == [1]
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "'call' calls=0 depth=0     @hunter.wrap*",
+            "'line' calls=* depth=1         yield 1\n",
+            "'return' calls=* depth=0         yield 1\n",
+        ]
+    )
+    for call in calls:
+        assert 'for i in range(2)' not in call
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_async_generator_local(LineMatcher):
+    calls = []
+
+    def bar():
+        for i in range(2):
+            return 'A'
+
+    @hunter.wrap(
+        local=True,
+        action=lambda event: calls.append(
+            '%s %6r calls=%r depth=%r %s' % (event.module, event.kind, event.calls, event.depth, event.fullsource)
+        ),
+    )
+    async def foo():
+        bar()
+        yield 1
+        await asyncio.sleep(0.01)
+
+    async def runner():
+        result = []
+        async for item in foo():
+            result.append(item)
+        return result
+
+    assert asyncio.run(runner()) == [1]
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "test_tracer 'call' calls=* depth=0     @hunter.wrap*",
+            "test_tracer 'line' calls=* depth=1         yield 1\n",
+            "test_tracer 'return' calls=* depth=0         yield 1\n",
+        ]
+    )
+    for call in calls:
+        assert 'for i in range(2)' not in call
+        assert 'tracer.stop()' not in call
+
+
+def test_wraps_coroutine_local(LineMatcher):
+    calls = []
+
+    def bar():
+        for i in range(2):
+            return 'A'
+
+    @hunter.wrap(
+        local=True,
+        action=lambda event: calls.append(
+            '%s %6r calls=%r depth=%r %s' % (event.module, event.kind, event.calls, event.depth, event.fullsource)
+        ),
+    )
+    async def foo():
+        bar()
+        await asyncio.sleep(0.01)
+        print(1)
+        return 1
+
+    assert asyncio.run(foo()) == 1
+    lm = LineMatcher(calls)
+    for line in calls:
+        print(repr(line))
+    lm.fnmatch_lines(
+        [
+            "test_tracer 'call' calls=0 depth=0     @hunter.wrap*",
+            "test_tracer 'line' calls=* depth=1         await asyncio.sleep(0.01)\n",
+            "test_tracer 'return' calls=* depth=0         await asyncio.sleep(0.01)\n",
         ]
     )
     for call in calls:
