@@ -65,7 +65,7 @@ directory (assuming the filename is going to be a relative path):
 .. sourcecode:: shell
 
     PYTHONHUNTER='~Q(filename_startswith="/")' python setup.py build
-    
+
 Debugging a test
 ================
 
