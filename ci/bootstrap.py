@@ -59,7 +59,7 @@ def main():
         loader=jinja2.FileSystemLoader(templates_path),
         trim_blocks=True,
         lstrip_blocks=True,
-        keep_trailing_newline=True
+        keep_trailing_newline=True,
     )
 
     tox_environments = [

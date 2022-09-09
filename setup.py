@@ -139,7 +139,7 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -157,7 +157,7 @@ setup(
     keywords=[
         'trace', 'tracer', 'settrace', 'debugger', 'debugging', 'code', 'source'
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     install_requires=[
     ],
     extras_require={
