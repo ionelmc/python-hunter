@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.5.0 (2022-09-11)
+------------------
+
+* Add support for generators and coroutines in the :obj:`hunter.wrap` decorator.
+* Dropped support for Python 3.6.
+
 3.4.3 (2021-12-15)
 ------------------
 
