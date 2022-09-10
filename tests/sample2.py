@@ -18,8 +18,14 @@ if __name__ == '__main__':  # ăăăă
     def foo(*args):
         return args
 
-    foo('aăă', 'b')
+    foo(
+        'aăă',
+        'b',
+    )
     try:
-        None('a', 'b')  # dăh!
+        None(
+            'a',
+            'b',
+        )  # dăh!
     except:
         pass

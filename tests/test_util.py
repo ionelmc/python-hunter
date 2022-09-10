@@ -83,12 +83,14 @@ class Bad2(object):
 
 
 def test_safe_repr():
+    s1 = _socket.socket()
+    s2 = socket()
     data = {
         'a': [set('b')],
         ('c',): deque(['d']),
-        'e': _socket.socket(),
+        'e': s1,
         1: array('d', [1, 2]),
-        frozenset('f'): socket(),
+        frozenset('f'): s2,
         'g': Dict(
             {
                 'a': List('123'),
@@ -135,6 +137,8 @@ def test_safe_repr():
     print(safe_repr([[[[data]]]]))
     print(safe_repr([[[[[data]]]]]))
 
+    s1.close()
+    s2.close()
     assert safe_repr(py.io).startswith('<py._vendored_packages.apipkg.ApiModule object at 0x')
 
 

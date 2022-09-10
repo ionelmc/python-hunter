@@ -66,13 +66,14 @@ def no_probe(*args, **kwargs):
 
 @pytest.mark.parametrize('impl', [fast_probe, brief_probe, no_probe])
 def test_probe(impl, benchmark):
-    with impl(
-        '%s.baz' % __name__,
-        hunter.VarsPrinter('foo', stream=open(os.devnull, 'w')),
-        kind='return',
-        depth=0,
-    ):
-        benchmark(bar)
+    with open(os.devnull, 'w') as stream:
+        with impl(
+            '%s.baz' % __name__,
+            hunter.VarsPrinter('foo', stream=stream),
+            kind='return',
+            depth=0,
+        ):
+            benchmark(bar)
 
 
 class ProfileAction(ColorStreamAction):
