@@ -35,6 +35,35 @@ def test_manhole():
 
 
 @pytest.mark.skipif('platform.system() == "Windows"')
+def test_manhole_reattach():
+    with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
+        wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')
+
+        with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
+            wait_for_strings(
+                tracer.read,
+                TIMEOUT,
+                'Output stream active. Starting tracer',
+                'call      => stuff()',
+                'line         time.sleep(1)',
+                'return    <= stuff: None',
+            )
+            tracer.proc.send_signal(signal.SIGINT)
+
+        with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False') as tracer, dump_on_error(tracer.read):
+            wait_for_strings(
+                tracer.read,
+                TIMEOUT,
+                'Output stream active. Starting tracer',
+                ' => stuff()',
+                '    time.sleep(1)',
+                ' <= stuff: None',
+            )
+
+        wait_for_strings(target.read, TIMEOUT, 'Broken pipe', 'Stopping tracer.')
+
+
+@pytest.mark.skipif('platform.system() == "Windows"')
 def test_manhole_clean_exit():
     with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
         wait_for_strings(target.read, TIMEOUT, 'Oneshot activation is done by signal')

@@ -145,7 +145,7 @@ def activate(sink_path, isatty, encoding, options):
 
 
 def deactivate():
-    hunter._default_config = sys.stderr
+    hunter._default_stream = sys.stderr
     hunter.stop()
 
 
