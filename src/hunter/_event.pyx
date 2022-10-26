@@ -38,8 +38,8 @@ cdef PyObject** make_kind_names(list strings):
     cdef object name
     for i, string in enumerate(strings):
         name = intern(string)
-        Py_XINCREF(<PyObject*>name)
-        array[i] = <PyObject*>name
+        Py_XINCREF(<PyObject*> name)
+        array[i] = <PyObject*> name
     return <PyObject**>array
 
 
@@ -57,7 +57,7 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+    def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
                  object threading_support=MISSING):
         if tracer is None:
             if depth is None:
@@ -73,7 +73,7 @@ cdef class Event:
 
         self.arg = arg
         self.frame = frame
-        self.kind = <str>KIND_NAMES[kind]
+        self.kind = <str> KIND_NAMES[kind]
         self.depth = depth
         self.calls = calls
         self.threading_support = threading_support
@@ -108,13 +108,15 @@ cdef class Event:
         return fast_clone(self)
 
     cdef instruction_getter(self):
+        cdef int f_lasti
         if self._instruction is UNSET:
-            if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
+            f_lasti = PyFrame_GetLasti(<FrameType?> self.frame)
+            if f_lasti >= 0 and self.code.co_code:
                 if PY_VERSION_HEX >= 0x030A00A7:
-                    position = self.frame.f_lasti * sizeof(unsigned short)
+                    position = f_lasti * sizeof(unsigned short)
                 else:
-                    position = self.frame.f_lasti
-                self._instruction = self.frame.f_code.co_code[position]
+                    position = f_lasti
+                self._instruction = self.code.co_code[position]
             else:
                 self._instruction = None
         return self._instruction
@@ -155,8 +157,8 @@ cdef class Event:
             if self.builtin:
                 self._locals = {}
             else:
-                PyFrame_FastToLocals(self.frame)
-                self._locals = self.frame.f_locals
+                PyFrame_FastToLocals(<FrameType?> self.frame)
+                self._locals = PyFrame_GetLocals(<FrameType?> self.frame)
         return self._locals
 
     @property
@@ -168,7 +170,7 @@ cdef class Event:
             if self.builtin:
                 self._locals = {}
             else:
-                self._globals = self.frame.f_globals
+                self._globals = PyFrame_GetGlobals(<FrameType?> self.frame)
         return self._globals
 
     @property
@@ -180,7 +182,7 @@ cdef class Event:
             if self.builtin:
                 self._function = self.arg.__name__
             else:
-                self._function = self.frame.f_code.co_name
+                self._function = self.code.co_name
         return self._function
 
     @property
@@ -222,7 +224,7 @@ cdef class Event:
             if self.builtin:
                 module = self.arg.__module__
             else:
-                module = self.frame.f_globals.get('__name__', '')
+                module = self.globals.get('__name__', '')
             if module is None:
                 module = '?'
             self._module = module
@@ -234,9 +236,9 @@ cdef class Event:
 
     cdef filename_getter(self):
         if self._filename is UNSET:
-            filename = self.frame.f_code.co_filename
+            filename = self.code.co_filename
             if not filename:
-                filename = self.frame.f_globals.get('__file__')
+                filename = self.globals.get('__file__')
             if not filename:
                 filename = '?'
             elif filename.endswith(('.pyc', '.pyo')):
@@ -258,7 +260,7 @@ cdef class Event:
 
     cdef lineno_getter(self):
         if self._lineno is UNSET:
-            self._lineno = self.frame.f_lineno
+            self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
         return self._lineno
 
     @property
@@ -267,7 +269,7 @@ cdef class Event:
 
     cdef code_getter(self):
         if self._code is UNSET:
-            return self.frame.f_code
+            return PyFrame_GetCode(<FrameType?> self.frame)
         else:
             return self._code
 
@@ -304,12 +306,12 @@ cdef class Event:
             try:
                 self._fullsource = None
 
-                if self.kind == 'call' and self.frame.f_code.co_name != "<module>":
+                if self.kind == 'call' and self.code.co_name != "<module>":
                     lines = []
                     try:
                         for _, token, _, _, line in generate_tokens(partial(
                                 next,
-                                yield_lines(self.filename, self.frame.f_globals, self.lineno - 1, lines)
+                                yield_lines(self.filename, self.globals, self.lineno - 1, lines)
                         )):
                             if token in ("def", "class", "lambda"):
                                 self._fullsource = ''.join(lines)
@@ -317,7 +319,7 @@ cdef class Event:
                     except TokenError:
                         pass
                 if self._fullsource is None:
-                    self._fullsource = getline(self.filename, self.lineno, self.frame.f_globals)
+                    self._fullsource = getline(self.filename, self.lineno, self.globals)
             except Exception as exc:
                 self._fullsource = "??? NO SOURCE: {!r}".format(exc)
         return self._fullsource
@@ -331,7 +333,7 @@ cdef class Event:
             if self.filename.endswith(('.so', '.pyd')):
                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
             try:
-                self._source = getline(self.filename, self.lineno, self.frame.f_globals)
+                self._source = getline(self.filename, self.lineno, self.globals)
             except Exception as exc:
                 self._source = "??? NO SOURCE: {!r}".format(exc)
 
@@ -361,7 +363,7 @@ def yield_lines(filename, module_globals, start, list collector,
 
 
 cdef inline Event fast_detach(Event self, object value_filter):
-    event = <Event>Event.__new__(Event)
+    event = <Event> Event.__new__(Event)
 
     event._code = self.code_getter()
     event._filename = self.filename_getter()
@@ -395,7 +397,7 @@ cdef inline Event fast_detach(Event self, object value_filter):
     return event
 
 cdef inline Event fast_clone(Event self):
-    event = <Event>Event.__new__(Event)
+    event = <Event> Event.__new__(Event)
     event.arg = self.arg
     event.builtin = self.builtin
     event.calls = self.calls

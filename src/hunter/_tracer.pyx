@@ -24,7 +24,7 @@ cdef dict KIND_INTS = {
     'c_return': 6,
 }
 
-cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) except -1:
+cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
     if frame.f_trace is not <PyObject*> self:
         Py_CLEAR(frame.f_trace)
         Py_INCREF(self)
@@ -43,7 +43,7 @@ cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject *arg) excep
     if kind == 3 and self.depth > 0:
         self.depth -= 1
 
-    cdef Event event = Event(frame, kind, None if arg is NULL else <object>arg, self)
+    cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)
 
     try:
         fast_call(handler, event)

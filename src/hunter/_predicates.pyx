@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3str
+# cython: linetrace=True, language_level=3str, c_api_binop_methods=True
 from __future__ import absolute_import
 
 from collections import deque
@@ -241,10 +241,10 @@ cdef class Query:
             and self.query_in == (<Query> other).query_in
             and self.query_contains == (<Query> other).query_contains
             and self.query_regex == (<Query> other).query_regex
-            and self.query_lt == (<Query>other).query_lt
-            and self.query_lte == (<Query>other).query_lte
-            and self.query_gt == (<Query>other).query_gt
-            and self.query_gte == (<Query>other).query_gte
+            and self.query_lt == (<Query> other).query_lt
+            and self.query_lte == (<Query> other).query_lte
+            and self.query_gt == (<Query> other).query_gt
+            and self.query_gte == (<Query> other).query_gte
         )
 
     def __call__(self, Event event):
@@ -261,44 +261,44 @@ cdef class Query:
 
 cdef fast_Query_call(Query self, Event event):
     for key, entry in self.query_eq:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if value_from_event != (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if value_from_event != (<QueryEntry> entry).value:
             return False
     for key, entry in self.query_in:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if (<str?>value_from_event) not in (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if (<str?>value_from_event) not in (<QueryEntry> entry).value:
             return False
     for key, entry in self.query_contains:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if (<QueryEntry>entry).value not in (<str?>value_from_event):
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if (<QueryEntry> entry).value not in (<str?>value_from_event):
             return False
     for key, entry in self.query_startswith:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not (<str?>value_from_event).startswith((<QueryEntry>entry).value):
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not (<str?>value_from_event).startswith((<QueryEntry> entry).value):
             return False
     for key, entry in self.query_endswith:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not (<str?>value_from_event).endswith((<QueryEntry>entry).value):
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not (<str?>value_from_event).endswith((<QueryEntry> entry).value):
             return False
     for key, entry in self.query_regex:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not (<QueryEntry>entry).value.match(value_from_event):
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not (<QueryEntry> entry).value.match(value_from_event):
             return False
     for key, entry in self.query_gt:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not value_from_event > (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not value_from_event > (<QueryEntry> entry).value:
             return False
     for key, entry in self.query_gte:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not value_from_event >= (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not value_from_event >= (<QueryEntry> entry).value:
             return False
     for key, entry in self.query_lt:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not value_from_event < (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not value_from_event < (<QueryEntry> entry).value:
             return False
     for key, entry in self.query_lte:
-        value_from_event = (<QueryEntry>entry).getter(event)
-        if not value_from_event <= (<QueryEntry>entry).value:
+        value_from_event = (<QueryEntry> entry).getter(event)
+        if not value_from_event <= (<QueryEntry> entry).value:
             return False
 
     return True
@@ -461,7 +461,7 @@ cdef class And:
     def __and__(self, other):
         cdef list predicates
         if type(self) is And:
-            predicates = list((<And>self).predicates)
+            predicates = list((<And> self).predicates)
         else:
             predicates = [self]
         if isinstance(other, And):
@@ -669,7 +669,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
         if self.queue:
             self.action.cleanup()
 
-            first_event = <Event>self.queue[0]
+            first_event = <Event> self.queue[0]
             first_depth = first_event.depth
             backlog_call_depth = event.depth - first_depth
             first_is_call = first_event.kind == 'call'  # note that True is 1, thus the following math is valid
@@ -703,7 +703,7 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
             for backlog_event in self.queue:
                 if self._filter is None:
                     self.action(backlog_event)
-                elif fast_call(self._filter, <Event>backlog_event):
+                elif fast_call(self._filter, <Event> backlog_event):
                     self.action(backlog_event)
             self.queue.clear()
     else:

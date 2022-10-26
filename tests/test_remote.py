@@ -1,6 +1,7 @@
 import platform
 import signal
 import sys
+from shutil import which
 
 import pytest
 from process_tests import TestProcess
@@ -8,11 +9,6 @@ from process_tests import dump_on_error
 from process_tests import wait_for_strings
 
 from utils import TIMEOUT
-
-try:
-    from setuptools._disutils.spawn import find_executable
-except ImportError:
-    from distutils.spawn import find_executable
 
 platform.system()
 
@@ -92,7 +88,7 @@ def test_manhole_clean_exit():
 @pytest.mark.skipif('platform.system() == "Windows"')
 @pytest.mark.skipif('platform.machine() == "aarch64"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
-@pytest.mark.skipif('not find_executable("gdb")')
+@pytest.mark.skipif('not which("gdb")')
 def test_gdb():
     with TestProcess('python', '-msamplemanhole') as target, dump_on_error(target.read):
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), '--gdb', 'stdlib=False') as tracer, dump_on_error(tracer.read):
@@ -111,7 +107,7 @@ def test_gdb():
 @pytest.mark.skipif('platform.system() == "Windows"')
 @pytest.mark.skipif('platform.machine() == "aarch64"')
 @pytest.mark.skipif('platform.python_implementation() == "PyPy"')
-@pytest.mark.skipif('not find_executable("gdb")')
+@pytest.mark.skipif('not which("gdb")')
 def test_gdb_clean_exit():
     with TestProcess(sys.executable, '-msamplemanhole') as target, dump_on_error(target.read):
         with TestProcess('hunter-trace', '-p', str(target.proc.pid), 'stdlib=False', '--gdb') as tracer, dump_on_error(tracer.read):

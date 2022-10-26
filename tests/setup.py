@@ -36,7 +36,7 @@ if __name__ == '__main__':
             Extension(
                 splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
                 sources=[path],
-                include_dirs=[dirname(path), 'src'],
+                include_dirs=[dirname(path), 'src', 'src/hunter'],
                 define_macros=[('CYTHON_TRACE', '1')],
             )
             for root, _, _ in os.walk('tests')

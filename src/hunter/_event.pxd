@@ -4,8 +4,9 @@ cimport cython
 from ._tracer cimport *
 
 
-cdef extern from "frameobject.h":
+cdef extern from *:
     void PyFrame_FastToLocals(FrameType)
+    int PyFrame_GetLineNumber(FrameType)
 
 @cython.final
 cdef class Event:
