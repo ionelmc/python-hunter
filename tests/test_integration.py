@@ -36,22 +36,11 @@ except ImportError:
 pytest_plugins = ('pytester',)
 
 
-def _get_func_spec(func):
-    if hasattr(inspect, 'signature'):
-        return str(inspect.signature(func))
-    if hasattr(inspect, 'getfullargspec'):
-        spec = inspect.getfullargspec(func)
-    else:
-        spec = inspect.getargspec(func)
-    return inspect.formatargspec(spec.args, spec.varargs)
-
-
 def test_pth_activation():
     module_name = os.path.__name__
     expected_module = '{0}'.format(module_name)
-    hunter_env = 'action=CodePrinter,module={!r},function="join"'.format(module_name)
-    func_spec = _get_func_spec(os.path.join)
-    expected_call = 'call      def join{0}:'.format(func_spec)
+    hunter_env = 'action=CallPrinter,module={!r},function="join"'.format(module_name)
+    expected_call = 'call      => join('
     env = dict(os.environ, PYTHONHUNTER=hunter_env)
     env.pop('COVERAGE_PROCESS_START', None)
     env.pop('COV_CORE_SOURCE', None)
