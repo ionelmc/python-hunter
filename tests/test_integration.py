@@ -48,7 +48,7 @@ def _get_func_spec(func):
 
 def test_pth_activation():
     module_name = os.path.__name__
-    expected_module = '{0}.py'.format(module_name)
+    expected_module = '{0}'.format(module_name)
     hunter_env = 'action=CodePrinter,module={!r},function="join"'.format(module_name)
     func_spec = _get_func_spec(os.path.join)
     expected_call = 'call      def join{0}:'.format(func_spec)
