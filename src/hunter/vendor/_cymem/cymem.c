@@ -4,9 +4,6 @@
 {
     "distutils": {
         "depends": [],
-        "extra_compile_args": [
-            "-DCYTHON_TRACE=1"
-        ],
         "include_dirs": [
             "src/hunter/vendor/_cymem"
         ],
@@ -1272,7 +1269,7 @@ static const char *__pyx_f[] = {
   "<stringsource>",
   "src/hunter/vendor/_cymem/cymem.pyx",
   "src/hunter/vendor/_cymem/cymem.pxd",
-  ".tox/py310-cython-cover/lib64/python3.10/site-packages/Cython/Includes/cpython/type.pxd",
+  ".tox/cythonize/lib64/python3.11/site-packages/Cython/Includes/cpython/type.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* #### Code section: numeric_typedefs ### */

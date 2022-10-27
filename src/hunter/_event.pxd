@@ -36,7 +36,7 @@ cdef class Event:
         object _threadname
         object _instruction
 
-        object code_getter(self)
+        CodeType code_getter(self)
         object filename_getter(self)
         object fullsource_getter(self)
         object function_getter(self)

@@ -3,19 +3,27 @@ cimport cython
 from cpython.pystate cimport Py_tracefunc
 from cpython.ref cimport PyObject
 
-ctypedef object CodeType
 
 cdef extern from "vendor/_compat.h":
     CodeType PyFrame_GetCode(FrameType)
-    object PyFrame_GetLocals(FrameType)
-    object PyFrame_GetGlobals(FrameType)
     int PyFrame_GetLasti(FrameType)
+    object PyCode_GetCode(CodeType)
+    object PyCode_GetVarnames(CodeType)
+    object PyFrame_GetGlobals(FrameType)
+    object PyFrame_GetLocals(FrameType)
 
 cdef extern from *:
     void PyEval_SetTrace(Py_tracefunc, PyObject*)
     void PyEval_SetProfile(Py_tracefunc, PyObject*)
+
     ctypedef class types.FrameType[object PyFrameObject]:
         cdef PyObject* f_trace
+
+    ctypedef class types.CodeType[object PyCodeObject]:
+        cdef object co_filename
+        cdef object co_name
+        cdef int co_argcount
+
 
 cdef extern from "pystate.h":
     ctypedef struct PyThreadState:

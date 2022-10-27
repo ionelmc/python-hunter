@@ -12,7 +12,6 @@ from tokenize import generate_tokens
 from cpython.pythread cimport PyThread_get_thread_ident
 from cpython.ref cimport Py_XINCREF
 from cpython.ref cimport PyObject
-from cpython.version cimport PY_VERSION_HEX
 
 from ._tracer cimport Tracer
 from .vendor._cymem.cymem cimport Pool
@@ -108,15 +107,13 @@ cdef class Event:
         return fast_clone(self)
 
     cdef instruction_getter(self):
-        cdef int f_lasti
+        cdef int position
+
         if self._instruction is UNSET:
-            f_lasti = PyFrame_GetLasti(<FrameType?> self.frame)
-            if f_lasti >= 0 and self.code.co_code:
-                if PY_VERSION_HEX >= 0x030A00A7:
-                    position = f_lasti * sizeof(unsigned short)
-                else:
-                    position = f_lasti
-                self._instruction = self.code.co_code[position]
+            position = PyFrame_GetLasti(<FrameType?> self.frame)
+            co_code = PyCode_GetCode(self.code_getter())
+            if co_code and position >= 0:
+                self._instruction = co_code[position]
             else:
                 self._instruction = None
         return self._instruction
@@ -182,7 +179,7 @@ cdef class Event:
             if self.builtin:
                 self._function = self.arg.__name__
             else:
-                self._function = self.code.co_name
+                self._function = self.code_getter().co_name
         return self._function
 
     @property
@@ -191,10 +188,11 @@ cdef class Event:
 
     @property
     def function_object(self):
+        cdef CodeType codeco_argcount
         if self.builtin:
             return self.builtin
         elif self._function_object is UNSET:
-            code = self.code
+            code = self.code_getter()
             if code.co_name is None:
                 return None
             # First, try to find the function in globals
@@ -205,7 +203,7 @@ cdef class Event:
             # methods, this should be the class (or an instance of the class) on which our
             # method is defined.
             if func is None and code.co_argcount >= 1:
-                first_arg = self.locals.get(code.co_varnames[0])
+                first_arg = self.locals.get(PyCode_GetVarnames(code)[0])
                 func = get_func_in_mro(first_arg, code)
             # If we still can't find the function, as will be the case with static methods,
             # try looking at classes in global scope.
@@ -235,8 +233,10 @@ cdef class Event:
         return self.module_getter()
 
     cdef filename_getter(self):
+        cdef CodeType code
         if self._filename is UNSET:
-            filename = self.code.co_filename
+            code = self.code_getter()
+            filename = code.co_filename
             if not filename:
                 filename = self.globals.get('__file__')
             if not filename:
@@ -267,7 +267,7 @@ cdef class Event:
     def lineno(self):
         return self.lineno_getter()
 
-    cdef code_getter(self):
+    cdef CodeType code_getter(self):
         if self._code is UNSET:
             return PyFrame_GetCode(<FrameType?> self.frame)
         else:
@@ -301,12 +301,13 @@ cdef class Event:
 
     cdef fullsource_getter(self):
         cdef list lines
+        cdef CodeType code
 
         if self._fullsource is UNSET:
             try:
                 self._fullsource = None
-
-                if self.kind == 'call' and self.code.co_name != "<module>":
+                code = self.code_getter()
+                if self.kind == 'call' and code.co_name != "<module>":
                     lines = []
                     try:
                         for _, token, _, _, line in generate_tokens(partial(
