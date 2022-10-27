@@ -1,32 +1,11 @@
-# language_level=3
-import cython
-
-from cpython.pystate cimport PyThreadState
-from cpython.pystate cimport PyThreadState_Get
+# cython: language_level=3str, c_string_encoding=ascii
+cimport cython
 
 import hunter
 
 from hunter._event cimport Event
 from hunter._event cimport fast_detach
 
-
-cdef extern from "frameobject.h":
-    ctypedef struct PyObject
-
-    ctypedef class types.CodeType[object PyCodeObject]:
-        cdef object co_filename
-        cdef int co_firstlineno
-
-    ctypedef class types.FrameType[object PyFrameObject]:
-        cdef CodeType f_code
-        cdef FrameType f_back
-        cdef int f_lasti
-        cdef int f_lineno
-        cdef object f_globals
-        cdef object f_locals
-        cdef PyObject *f_trace
-
-    cdef FrameType PyFrame_New(PyThreadState*, CodeType, object, object)
 
 @cython.final
 cdef class EvilTracer:
@@ -50,12 +29,6 @@ cdef class EvilTracer:
             return
         detached_event = fast_detach(event, lambda obj: obj)
         detached_event.detached = False
-        frame = PyFrame_New(PyThreadState_Get(), <CodeType>event.code, event.frame.f_globals, event.frame.f_locals)
-        frame.f_back = event.frame.f_back
-        frame.f_lasti = event.frame.f_lasti
-        frame.f_lineno = 0
-        detached_event.frame = frame
-
         self._calls.append(detached_event)
 
     def __enter__(self):
