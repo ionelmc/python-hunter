@@ -1383,7 +1383,7 @@ struct __pyx_obj_6hunter_6_event_Event {
 };
 
 
-/* "_predicates.pxd":9
+/* "_predicates.pxd":8
  * 
  * @cython.final
  * cdef class Query:             # <<<<<<<<<<<<<<
@@ -1405,7 +1405,7 @@ struct __pyx_obj_6hunter_11_predicates_Query {
 };
 
 
-/* "_predicates.pxd":23
+/* "_predicates.pxd":22
  * 
  * @cython.final
  * cdef class And:             # <<<<<<<<<<<<<<
@@ -1418,7 +1418,7 @@ struct __pyx_obj_6hunter_11_predicates_And {
 };
 
 
-/* "_predicates.pxd":28
+/* "_predicates.pxd":27
  * 
  * @cython.final
  * cdef class Or:             # <<<<<<<<<<<<<<
@@ -1431,7 +1431,7 @@ struct __pyx_obj_6hunter_11_predicates_Or {
 };
 
 
-/* "_predicates.pxd":33
+/* "_predicates.pxd":32
  * 
  * @cython.final
  * cdef class Not:             # <<<<<<<<<<<<<<
@@ -1444,7 +1444,7 @@ struct __pyx_obj_6hunter_11_predicates_Not {
 };
 
 
-/* "_predicates.pxd":38
+/* "_predicates.pxd":37
  * 
  * @cython.final
  * cdef class When:             # <<<<<<<<<<<<<<
@@ -1458,7 +1458,7 @@ struct __pyx_obj_6hunter_11_predicates_When {
 };
 
 
-/* "_predicates.pxd":44
+/* "_predicates.pxd":43
  * 
  * @cython.final
  * cdef class From:             # <<<<<<<<<<<<<<
@@ -1475,7 +1475,7 @@ struct __pyx_obj_6hunter_11_predicates_From {
 };
 
 
-/* "_predicates.pxd":53
+/* "_predicates.pxd":52
  * 
  * @cython.final
  * cdef class Backlog:             # <<<<<<<<<<<<<<
@@ -7370,14 +7370,14 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 18, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType(__pyx_t_1, "types", "FrameType", sizeof(PyFrameObject), __PYX_GET_STRUCT_ALIGNMENT(PyFrameObject),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(2, 18, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(2, 19, __pyx_L1_error)
   __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType(__pyx_t_1, "types", "CodeType", sizeof(PyCodeObject), __PYX_GET_STRUCT_ALIGNMENT(PyCodeObject),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(2, 21, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(2, 22, __pyx_L1_error)
   #if CYTHON_USE_TYPE_SPECS
   __pyx_ptype_6hunter_7_tracer_Tracer = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6hunter_7_tracer_Tracer_spec, NULL); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) __PYX_ERR(0, 62, __pyx_L1_error)
   if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6hunter_7_tracer_Tracer_spec, __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
@@ -7451,29 +7451,29 @@ static int __Pyx_modinit_type_import_code(void) {
    if (!__pyx_ptype_6hunter_6_event_Event) __PYX_ERR(7, 12, __pyx_L1_error)
   __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) __PYX_ERR(7, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("hunter._predicates"); if (unlikely(!__pyx_t_1)) __PYX_ERR(8, 9, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("hunter._predicates"); if (unlikely(!__pyx_t_1)) __PYX_ERR(8, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_11_predicates_Query = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "Query", sizeof(struct __pyx_obj_6hunter_11_predicates_Query), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_Query),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_Query) __PYX_ERR(8, 9, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_Query) __PYX_ERR(8, 8, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_And = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "And", sizeof(struct __pyx_obj_6hunter_11_predicates_And), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_And),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_And) __PYX_ERR(8, 23, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_And) __PYX_ERR(8, 22, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_Or = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "Or", sizeof(struct __pyx_obj_6hunter_11_predicates_Or), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_Or),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_Or) __PYX_ERR(8, 28, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_Or) __PYX_ERR(8, 27, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_Not = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "Not", sizeof(struct __pyx_obj_6hunter_11_predicates_Not), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_Not),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_Not) __PYX_ERR(8, 33, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_Not) __PYX_ERR(8, 32, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_When = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "When", sizeof(struct __pyx_obj_6hunter_11_predicates_When), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_When),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_When) __PYX_ERR(8, 38, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_When) __PYX_ERR(8, 37, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_From = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "From", sizeof(struct __pyx_obj_6hunter_11_predicates_From), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_From),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_From) __PYX_ERR(8, 44, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_From) __PYX_ERR(8, 43, __pyx_L1_error)
   __pyx_ptype_6hunter_11_predicates_Backlog = __Pyx_ImportType(__pyx_t_1, "hunter._predicates", "Backlog", sizeof(struct __pyx_obj_6hunter_11_predicates_Backlog), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_11_predicates_Backlog),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_11_predicates_Backlog) __PYX_ERR(8, 53, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_11_predicates_Backlog) __PYX_ERR(8, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -7961,7 +7961,7 @@ if (!__Pyx_RefNanny) {
   /* "_predicates.pxd":1
  * # cython: language_level=3str             # <<<<<<<<<<<<<<
  * cimport cython
- * from cpython cimport bool
+ * 
  */
   __Pyx_TraceReturn(Py_None, 0);
 

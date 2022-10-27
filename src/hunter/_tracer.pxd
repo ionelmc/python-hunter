@@ -24,7 +24,6 @@ cdef extern from *:
         cdef object co_name
         cdef int co_argcount
 
-
 cdef extern from "pystate.h":
     ctypedef struct PyThreadState:
         PyObject* c_traceobj

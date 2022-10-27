@@ -1,6 +1,5 @@
 # cython: language_level=3str
 cimport cython
-from cpython cimport bool
 
 from ._event cimport Event
 

@@ -188,7 +188,7 @@ cdef class Event:
 
     @property
     def function_object(self):
-        cdef CodeType codeco_argcount
+        cdef CodeType code
         if self.builtin:
             return self.builtin
         elif self._function_object is UNSET:

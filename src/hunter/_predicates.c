@@ -32,23 +32,6 @@ END: Cython Metadata */
 #endif
 
 #include "Python.h"
-
-    #if PY_MAJOR_VERSION >= 3
-      #define __Pyx_PyFloat_FromString(obj)  PyFloat_FromString(obj)
-    #else
-      #define __Pyx_PyFloat_FromString(obj)  PyFloat_FromString(obj, NULL)
-    #endif
-    
-
-    #if PY_MAJOR_VERSION <= 2
-    #define PyDict_GetItemWithError _PyDict_GetItemWithError
-    #endif
-    
-
-    #if (PY_VERSION_HEX < 0x030700b1 || (CYTHON_COMPILING_IN_PYPY && PYPY_VERSION_NUM < 0x07030600)) && !defined(PyContextVar_Get)
-    #define PyContextVar_Get(var, d, v)         ((d) ?             ((void)(var), Py_INCREF(d), (v)[0] = (d), 0) :             ((v)[0] = NULL, 0)         )
-    #endif
-    
 #ifndef Py_PYTHON_H
     #error Python headers needed to compile C extensions, please install development version of Python.
 #elif PY_VERSION_HEX < 0x02070000 || (0x03000000 <= PY_VERSION_HEX && PY_VERSION_HEX < 0x03030000)
@@ -1064,7 +1047,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
-#include "pythread.h"
 #include "vendor/_compat.h"
 #include "pystate.h"
 #ifdef _OPENMP
@@ -1291,10 +1273,7 @@ static const char *__pyx_f[] = {
   "<stringsource>",
   "src/hunter/_predicates.pyx",
   "src/hunter/_predicates.pxd",
-  ".tox/cythonize/lib64/python3.11/site-packages/Cython/Includes/cpython/contextvars.pxd",
   ".tox/cythonize/lib64/python3.11/site-packages/Cython/Includes/cpython/type.pxd",
-  ".tox/cythonize/lib64/python3.11/site-packages/Cython/Includes/cpython/bool.pxd",
-  ".tox/cythonize/lib64/python3.11/site-packages/Cython/Includes/cpython/complex.pxd",
   "src/hunter/_tracer.pxd",
   "src/hunter/_event.pxd",
 };
@@ -1335,32 +1314,6 @@ struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_10_genexpr;
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_11___str__;
 struct __pyx_obj_6hunter_11_predicates___pyx_scope_struct_12_genexpr;
 struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object__lParenEvent__rParen_to_py_5event;
-struct __pyx_opt_args_7cpython_11contextvars_get_value;
-struct __pyx_opt_args_7cpython_11contextvars_get_value_no_default;
-
-/* "cpython/contextvars.pxd":112
- * 
- * 
- * cdef inline object get_value(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the default value of the context variable,
- */
-struct __pyx_opt_args_7cpython_11contextvars_get_value {
-  int __pyx_n;
-  PyObject *default_value;
-};
-
-/* "cpython/contextvars.pxd":129
- * 
- * 
- * cdef inline object get_value_no_default(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the provided default value if no such value was found.
- */
-struct __pyx_opt_args_7cpython_11contextvars_get_value_no_default {
-  int __pyx_n;
-  PyObject *default_value;
-};
 
 /* "hunter/_predicates.pyx":37
  * )
@@ -1428,7 +1381,7 @@ struct __pyx_obj_6hunter_6_event_Event {
 };
 
 
-/* "hunter/_predicates.pxd":9
+/* "hunter/_predicates.pxd":8
  * 
  * @cython.final
  * cdef class Query:             # <<<<<<<<<<<<<<
@@ -1450,7 +1403,7 @@ struct __pyx_obj_6hunter_11_predicates_Query {
 };
 
 
-/* "hunter/_predicates.pxd":23
+/* "hunter/_predicates.pxd":22
  * 
  * @cython.final
  * cdef class And:             # <<<<<<<<<<<<<<
@@ -1463,7 +1416,7 @@ struct __pyx_obj_6hunter_11_predicates_And {
 };
 
 
-/* "hunter/_predicates.pxd":28
+/* "hunter/_predicates.pxd":27
  * 
  * @cython.final
  * cdef class Or:             # <<<<<<<<<<<<<<
@@ -1476,7 +1429,7 @@ struct __pyx_obj_6hunter_11_predicates_Or {
 };
 
 
-/* "hunter/_predicates.pxd":33
+/* "hunter/_predicates.pxd":32
  * 
  * @cython.final
  * cdef class Not:             # <<<<<<<<<<<<<<
@@ -1489,7 +1442,7 @@ struct __pyx_obj_6hunter_11_predicates_Not {
 };
 
 
-/* "hunter/_predicates.pxd":38
+/* "hunter/_predicates.pxd":37
  * 
  * @cython.final
  * cdef class When:             # <<<<<<<<<<<<<<
@@ -1503,7 +1456,7 @@ struct __pyx_obj_6hunter_11_predicates_When {
 };
 
 
-/* "hunter/_predicates.pxd":44
+/* "hunter/_predicates.pxd":43
  * 
  * @cython.final
  * cdef class From:             # <<<<<<<<<<<<<<
@@ -1520,7 +1473,7 @@ struct __pyx_obj_6hunter_11_predicates_From {
 };
 
 
-/* "hunter/_predicates.pxd":53
+/* "hunter/_predicates.pxd":52
  * 
  * @cython.final
  * cdef class Backlog:             # <<<<<<<<<<<<<<
@@ -2934,14 +2887,16 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 #endif
 
 /* #### Code section: module_declarations ### */
-static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4real_real(PyComplexObject *__pyx_v_self); /* proto*/
-static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4imag_imag(PyComplexObject *__pyx_v_self); /* proto*/
 
 /* Module declarations from "cython" */
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
-/* Module declarations from "cpython.version" */
+/* Module declarations from "libc.string" */
+#if !CYTHON_USE_MODULE_STATE
+#endif
+
+/* Module declarations from "libc.stdio" */
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
@@ -2954,11 +2909,7 @@ static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4imag_imag(PyComp
 static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 #endif
 
-/* Module declarations from "libc.string" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "libc.stdio" */
+/* Module declarations from "cpython" */
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
@@ -2966,149 +2917,11 @@ static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
-/* Module declarations from "cpython.ref" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.exc" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.module" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.mem" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.tuple" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.list" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.sequence" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.mapping" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.iterator" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.number" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.int" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "__builtin__" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.bool" */
-#if !CYTHON_USE_MODULE_STATE
-static PyTypeObject *__pyx_ptype_7cpython_4bool_bool = 0;
-#endif
-
-/* Module declarations from "cpython.long" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.float" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "__builtin__" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.complex" */
-#if !CYTHON_USE_MODULE_STATE
-static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
-#endif
-
-/* Module declarations from "cpython.string" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.unicode" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.pyport" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.dict" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.instance" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.function" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.method" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.weakref" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.getargs" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.pythread" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
 /* Module declarations from "cpython.pystate" */
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
-/* Module declarations from "cpython.cobject" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.oldbuffer" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.set" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.buffer" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.bytes" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.pycapsule" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython.contextvars" */
-#if !CYTHON_USE_MODULE_STATE
-#endif
-
-/* Module declarations from "cpython" */
+/* Module declarations from "cpython.ref" */
 #if !CYTHON_USE_MODULE_STATE
 #endif
 
@@ -3845,8 +3658,6 @@ typedef struct {
   PyTypeObject *__pyx_FusedFunctionType;
   #endif
   PyTypeObject *__pyx_ptype_7cpython_4type_type;
-  PyTypeObject *__pyx_ptype_7cpython_4bool_bool;
-  PyTypeObject *__pyx_ptype_7cpython_7complex_complex;
   PyTypeObject *__pyx_ptype_6hunter_7_tracer_FrameType;
   PyTypeObject *__pyx_ptype_6hunter_7_tracer_CodeType;
   PyTypeObject *__pyx_ptype_6hunter_7_tracer_Tracer;
@@ -4198,8 +4009,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_FusedFunctionType);
   #endif
   Py_CLEAR(clear_module_state->__pyx_ptype_7cpython_4type_type);
-  Py_CLEAR(clear_module_state->__pyx_ptype_7cpython_4bool_bool);
-  Py_CLEAR(clear_module_state->__pyx_ptype_7cpython_7complex_complex);
   Py_CLEAR(clear_module_state->__pyx_ptype_6hunter_7_tracer_FrameType);
   Py_CLEAR(clear_module_state->__pyx_ptype_6hunter_7_tracer_CodeType);
   Py_CLEAR(clear_module_state->__pyx_ptype_6hunter_7_tracer_Tracer);
@@ -4538,8 +4347,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_FusedFunctionType);
   #endif
   Py_VISIT(traverse_module_state->__pyx_ptype_7cpython_4type_type);
-  Py_VISIT(traverse_module_state->__pyx_ptype_7cpython_4bool_bool);
-  Py_VISIT(traverse_module_state->__pyx_ptype_7cpython_7complex_complex);
   Py_VISIT(traverse_module_state->__pyx_ptype_6hunter_7_tracer_FrameType);
   Py_VISIT(traverse_module_state->__pyx_ptype_6hunter_7_tracer_CodeType);
   Py_VISIT(traverse_module_state->__pyx_ptype_6hunter_7_tracer_Tracer);
@@ -4875,8 +4682,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_FusedFunctionType __pyx_mstate_global->__pyx_FusedFunctionType
 #endif
 #define __pyx_ptype_7cpython_4type_type __pyx_mstate_global->__pyx_ptype_7cpython_4type_type
-#define __pyx_ptype_7cpython_4bool_bool __pyx_mstate_global->__pyx_ptype_7cpython_4bool_bool
-#define __pyx_ptype_7cpython_7complex_complex __pyx_mstate_global->__pyx_ptype_7cpython_7complex_complex
 #define __pyx_ptype_6hunter_7_tracer_FrameType __pyx_mstate_global->__pyx_ptype_6hunter_7_tracer_FrameType
 #define __pyx_ptype_6hunter_7_tracer_CodeType __pyx_mstate_global->__pyx_ptype_6hunter_7_tracer_CodeType
 #define __pyx_ptype_6hunter_7_tracer_Tracer __pyx_mstate_global->__pyx_ptype_6hunter_7_tracer_Tracer
@@ -9751,7 +9556,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14__invert__(struct __pyx
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":11
+/* "hunter/_predicates.pxd":10
  * cdef class Query:
  *     cdef:
  *         readonly tuple query_contains             # <<<<<<<<<<<<<<
@@ -9781,7 +9586,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14query_contains___get__(
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 11, 0, __PYX_ERR(2, 11, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 10, 0, __PYX_ERR(2, 10, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_contains);
   __pyx_r = __pyx_v_self->query_contains;
@@ -9798,7 +9603,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14query_contains___get__(
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":12
+/* "hunter/_predicates.pxd":11
  *     cdef:
  *         readonly tuple query_contains
  *         readonly tuple query_endswith             # <<<<<<<<<<<<<<
@@ -9828,7 +9633,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14query_endswith___get__(
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 12, 0, __PYX_ERR(2, 12, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 11, 0, __PYX_ERR(2, 11, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_endswith);
   __pyx_r = __pyx_v_self->query_endswith;
@@ -9845,7 +9650,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14query_endswith___get__(
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":13
+/* "hunter/_predicates.pxd":12
  *         readonly tuple query_contains
  *         readonly tuple query_endswith
  *         readonly tuple query_eq             # <<<<<<<<<<<<<<
@@ -9875,7 +9680,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_eq___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 13, 0, __PYX_ERR(2, 13, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 12, 0, __PYX_ERR(2, 12, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_eq);
   __pyx_r = __pyx_v_self->query_eq;
@@ -9892,7 +9697,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_eq___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":14
+/* "hunter/_predicates.pxd":13
  *         readonly tuple query_endswith
  *         readonly tuple query_eq
  *         readonly tuple query_gt             # <<<<<<<<<<<<<<
@@ -9922,7 +9727,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_gt___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 14, 0, __PYX_ERR(2, 14, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 13, 0, __PYX_ERR(2, 13, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_gt);
   __pyx_r = __pyx_v_self->query_gt;
@@ -9939,7 +9744,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_gt___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":15
+/* "hunter/_predicates.pxd":14
  *         readonly tuple query_eq
  *         readonly tuple query_gt
  *         readonly tuple query_gte             # <<<<<<<<<<<<<<
@@ -9969,7 +9774,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_9query_gte___get__(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 15, 0, __PYX_ERR(2, 15, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 14, 0, __PYX_ERR(2, 14, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_gte);
   __pyx_r = __pyx_v_self->query_gte;
@@ -9986,7 +9791,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_9query_gte___get__(struct
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":16
+/* "hunter/_predicates.pxd":15
  *         readonly tuple query_gt
  *         readonly tuple query_gte
  *         readonly tuple query_in             # <<<<<<<<<<<<<<
@@ -10016,7 +9821,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_in___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 16, 0, __PYX_ERR(2, 16, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 15, 0, __PYX_ERR(2, 15, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_in);
   __pyx_r = __pyx_v_self->query_in;
@@ -10033,7 +9838,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_in___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":17
+/* "hunter/_predicates.pxd":16
  *         readonly tuple query_gte
  *         readonly tuple query_in
  *         readonly tuple query_lt             # <<<<<<<<<<<<<<
@@ -10063,7 +9868,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_lt___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 17, 0, __PYX_ERR(2, 17, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 16, 0, __PYX_ERR(2, 16, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_lt);
   __pyx_r = __pyx_v_self->query_lt;
@@ -10080,7 +9885,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_8query_lt___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":18
+/* "hunter/_predicates.pxd":17
  *         readonly tuple query_in
  *         readonly tuple query_lt
  *         readonly tuple query_lte             # <<<<<<<<<<<<<<
@@ -10110,7 +9915,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_9query_lte___get__(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 18, 0, __PYX_ERR(2, 18, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 17, 0, __PYX_ERR(2, 17, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_lte);
   __pyx_r = __pyx_v_self->query_lte;
@@ -10127,7 +9932,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_9query_lte___get__(struct
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":19
+/* "hunter/_predicates.pxd":18
  *         readonly tuple query_lt
  *         readonly tuple query_lte
  *         readonly tuple query_regex             # <<<<<<<<<<<<<<
@@ -10157,7 +9962,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_11query_regex___get__(str
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 19, 0, __PYX_ERR(2, 19, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 18, 0, __PYX_ERR(2, 18, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_regex);
   __pyx_r = __pyx_v_self->query_regex;
@@ -10174,7 +9979,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_11query_regex___get__(str
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":20
+/* "hunter/_predicates.pxd":19
  *         readonly tuple query_lte
  *         readonly tuple query_regex
  *         readonly tuple query_startswith             # <<<<<<<<<<<<<<
@@ -10204,7 +10009,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_16query_startswith___get_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 20, 0, __PYX_ERR(2, 20, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 19, 0, __PYX_ERR(2, 19, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->query_startswith);
   __pyx_r = __pyx_v_self->query_startswith;
@@ -13377,7 +13182,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_14__invert__(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":40
+/* "hunter/_predicates.pxd":39
  * cdef class When:
  *     cdef:
  *         readonly object condition             # <<<<<<<<<<<<<<
@@ -13407,7 +13212,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_9condition___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 40, 0, __PYX_ERR(2, 40, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 39, 0, __PYX_ERR(2, 39, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->condition);
   __pyx_r = __pyx_v_self->condition;
@@ -13424,7 +13229,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_9condition___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":41
+/* "hunter/_predicates.pxd":40
  *     cdef:
  *         readonly object condition
  *         readonly tuple actions             # <<<<<<<<<<<<<<
@@ -13454,7 +13259,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4When_7actions___get__(struct __
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 41, 0, __PYX_ERR(2, 41, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 40, 0, __PYX_ERR(2, 40, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->actions);
   __pyx_r = __pyx_v_self->actions;
@@ -14897,7 +14702,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_14__invert__(struct __pyx_
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":46
+/* "hunter/_predicates.pxd":45
  * cdef class From:
  *     cdef:
  *         readonly object condition             # <<<<<<<<<<<<<<
@@ -14927,7 +14732,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9condition___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 46, 0, __PYX_ERR(2, 46, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 45, 0, __PYX_ERR(2, 45, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->condition);
   __pyx_r = __pyx_v_self->condition;
@@ -14944,7 +14749,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9condition___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":47
+/* "hunter/_predicates.pxd":46
  *     cdef:
  *         readonly object condition
  *         readonly object predicate             # <<<<<<<<<<<<<<
@@ -14974,7 +14779,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9predicate___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 47, 0, __PYX_ERR(2, 47, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 46, 0, __PYX_ERR(2, 46, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->predicate);
   __pyx_r = __pyx_v_self->predicate;
@@ -14991,7 +14796,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9predicate___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":48
+/* "hunter/_predicates.pxd":47
  *         readonly object condition
  *         readonly object predicate
  *         readonly int watermark             # <<<<<<<<<<<<<<
@@ -15022,9 +14827,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9watermark___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 48, 0, __PYX_ERR(2, 48, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 47, 0, __PYX_ERR(2, 47, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->watermark); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 48, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->watermark); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15042,7 +14847,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_9watermark___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":49
+/* "hunter/_predicates.pxd":48
  *         readonly object predicate
  *         readonly int watermark
  *         readonly int origin_depth             # <<<<<<<<<<<<<<
@@ -15073,9 +14878,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_12origin_depth___get__(str
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 49, 0, __PYX_ERR(2, 49, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 48, 0, __PYX_ERR(2, 48, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->origin_depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 49, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->origin_depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15093,7 +14898,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_12origin_depth___get__(str
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":50
+/* "hunter/_predicates.pxd":49
  *         readonly int watermark
  *         readonly int origin_depth
  *         readonly int origin_calls             # <<<<<<<<<<<<<<
@@ -15124,9 +14929,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_4From_12origin_calls___get__(str
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 50, 0, __PYX_ERR(2, 50, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 49, 0, __PYX_ERR(2, 49, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->origin_calls); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 50, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->origin_calls); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16793,7 +16598,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_14__invert__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":25
+/* "hunter/_predicates.pxd":24
  * cdef class And:
  *     cdef:
  *         readonly tuple predicates             # <<<<<<<<<<<<<<
@@ -16823,7 +16628,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3And_10predicates___get__(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 25, 0, __PYX_ERR(2, 25, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 24, 0, __PYX_ERR(2, 24, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->predicates);
   __pyx_r = __pyx_v_self->predicates;
@@ -18296,7 +18101,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_14__invert__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":30
+/* "hunter/_predicates.pxd":29
  * cdef class Or:
  *     cdef:
  *         readonly tuple predicates             # <<<<<<<<<<<<<<
@@ -18326,7 +18131,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_2Or_10predicates___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 30, 0, __PYX_ERR(2, 30, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 29, 0, __PYX_ERR(2, 29, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->predicates);
   __pyx_r = __pyx_v_self->predicates;
@@ -19683,7 +19488,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_14__invert__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":35
+/* "hunter/_predicates.pxd":34
  * cdef class Not:
  *     cdef:
  *         readonly object predicate             # <<<<<<<<<<<<<<
@@ -19713,7 +19518,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_3Not_9predicate___get__(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 35, 0, __PYX_ERR(2, 35, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 34, 0, __PYX_ERR(2, 34, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->predicate);
   __pyx_r = __pyx_v_self->predicate;
@@ -20512,7 +20317,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_call(PyObject 
 
 /* "hunter/_predicates.pyx":596
  * @cython.final
- * cdef class Backlog(object):
+ * cdef class Backlog:
  *     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):             # <<<<<<<<<<<<<<
  *         self.action = action() if isclass(action) and issubclass(action, Action) else action
  *         if not isinstance(self.action, ColorStreamAction):
@@ -20682,7 +20487,7 @@ static int __pyx_pf_6hunter_11_predicates_7Backlog___init__(struct __pyx_obj_6hu
   __Pyx_TraceCall("__init__", __pyx_f[1], 596, 0, __PYX_ERR(1, 596, __pyx_L1_error));
 
   /* "hunter/_predicates.pyx":597
- * cdef class Backlog(object):
+ * cdef class Backlog:
  *     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
  *         self.action = action() if isclass(action) and issubclass(action, Action) else action             # <<<<<<<<<<<<<<
  *         if not isinstance(self.action, ColorStreamAction):
@@ -20922,7 +20727,7 @@ static int __pyx_pf_6hunter_11_predicates_7Backlog___init__(struct __pyx_obj_6hu
 
   /* "hunter/_predicates.pyx":596
  * @cython.final
- * cdef class Backlog(object):
+ * cdef class Backlog:
  *     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):             # <<<<<<<<<<<<<<
  *         self.action = action() if isclass(action) and issubclass(action, Action) else action
  *         if not isinstance(self.action, ColorStreamAction):
@@ -21951,7 +21756,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_16filter(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":55
+/* "hunter/_predicates.pxd":54
  * cdef class Backlog:
  *     cdef:
  *         readonly object condition             # <<<<<<<<<<<<<<
@@ -21981,7 +21786,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_9condition___get__(stru
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 55, 0, __PYX_ERR(2, 55, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 54, 0, __PYX_ERR(2, 54, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->condition);
   __pyx_r = __pyx_v_self->condition;
@@ -21998,7 +21803,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_9condition___get__(stru
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":56
+/* "hunter/_predicates.pxd":55
  *     cdef:
  *         readonly object condition
  *         readonly int size             # <<<<<<<<<<<<<<
@@ -22029,9 +21834,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_4size___get__(struct __
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 56, 0, __PYX_ERR(2, 56, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 55, 0, __PYX_ERR(2, 55, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 56, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22049,7 +21854,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_4size___get__(struct __
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":57
+/* "hunter/_predicates.pxd":56
  *         readonly object condition
  *         readonly int size
  *         readonly int stack             # <<<<<<<<<<<<<<
@@ -22080,9 +21885,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_5stack___get__(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 57, 0, __PYX_ERR(2, 57, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 56, 0, __PYX_ERR(2, 56, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->stack); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 57, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->stack); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22100,7 +21905,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_5stack___get__(struct _
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":58
+/* "hunter/_predicates.pxd":57
  *         readonly int size
  *         readonly int stack
  *         readonly bint vars             # <<<<<<<<<<<<<<
@@ -22131,9 +21936,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_4vars___get__(struct __
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 58, 0, __PYX_ERR(2, 58, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 57, 0, __PYX_ERR(2, 57, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->vars); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 58, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->vars); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22151,7 +21956,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_4vars___get__(struct __
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":59
+/* "hunter/_predicates.pxd":58
  *         readonly int stack
  *         readonly bint vars
  *         readonly bint strip             # <<<<<<<<<<<<<<
@@ -22182,9 +21987,9 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_5strip___get__(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 59, 0, __PYX_ERR(2, 59, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 58, 0, __PYX_ERR(2, 58, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->strip); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->strip); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22202,7 +22007,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_5strip___get__(struct _
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":60
+/* "hunter/_predicates.pxd":59
  *         readonly bint vars
  *         readonly bint strip
  *         readonly object action             # <<<<<<<<<<<<<<
@@ -22232,7 +22037,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_6action___get__(struct 
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 60, 0, __PYX_ERR(2, 60, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 59, 0, __PYX_ERR(2, 59, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->action);
   __pyx_r = __pyx_v_self->action;
@@ -22249,7 +22054,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_6action___get__(struct 
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":61
+/* "hunter/_predicates.pxd":60
  *         readonly bint strip
  *         readonly object action
  *         readonly object _try_repr             # <<<<<<<<<<<<<<
@@ -22279,7 +22084,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_9_try_repr___get__(stru
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 61, 0, __PYX_ERR(2, 61, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 60, 0, __PYX_ERR(2, 60, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_try_repr);
   __pyx_r = __pyx_v_self->_try_repr;
@@ -22296,7 +22101,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_9_try_repr___get__(stru
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":62
+/* "hunter/_predicates.pxd":61
  *         readonly object action
  *         readonly object _try_repr
  *         readonly object _filter             # <<<<<<<<<<<<<<
@@ -22326,7 +22131,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_7_filter___get__(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 62, 0, __PYX_ERR(2, 62, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 61, 0, __PYX_ERR(2, 61, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_filter);
   __pyx_r = __pyx_v_self->_filter;
@@ -22343,7 +22148,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_7_filter___get__(struct
   return __pyx_r;
 }
 
-/* "hunter/_predicates.pxd":63
+/* "hunter/_predicates.pxd":62
  *         readonly object _try_repr
  *         readonly object _filter
  *         readonly object queue             # <<<<<<<<<<<<<<
@@ -22373,7 +22178,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_7Backlog_5queue___get__(struct _
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 63, 0, __PYX_ERR(2, 63, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 62, 0, __PYX_ERR(2, 62, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->queue);
   __pyx_r = __pyx_v_self->queue;
@@ -27175,305 +26980,6 @@ static PyObject *__pyx_f_6hunter_11_predicates___pyx_unpickle_Backlog__set_state
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_TraceReturn(__pyx_r, 0);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cpython/complex.pxd":19
- * 
- *         @property
- *         cdef inline double real(self):             # <<<<<<<<<<<<<<
- *             return self.cval.real
- * 
- */
-
-static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4real_real(PyComplexObject *__pyx_v_self) {
-  double __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("real", 0);
-
-  /* "cpython/complex.pxd":20
- *         @property
- *         cdef inline double real(self):
- *             return self.cval.real             # <<<<<<<<<<<<<<
- * 
- *         @property
- */
-  __pyx_r = __pyx_v_self->cval.real;
-  goto __pyx_L0;
-
-  /* "cpython/complex.pxd":19
- * 
- *         @property
- *         cdef inline double real(self):             # <<<<<<<<<<<<<<
- *             return self.cval.real
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cpython/complex.pxd":23
- * 
- *         @property
- *         cdef inline double imag(self):             # <<<<<<<<<<<<<<
- *             return self.cval.imag
- * 
- */
-
-static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4imag_imag(PyComplexObject *__pyx_v_self) {
-  double __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("imag", 0);
-
-  /* "cpython/complex.pxd":24
- *         @property
- *         cdef inline double imag(self):
- *             return self.cval.imag             # <<<<<<<<<<<<<<
- * 
- *     # PyTypeObject PyComplex_Type
- */
-  __pyx_r = __pyx_v_self->cval.imag;
-  goto __pyx_L0;
-
-  /* "cpython/complex.pxd":23
- * 
- *         @property
- *         cdef inline double imag(self):             # <<<<<<<<<<<<<<
- *             return self.cval.imag
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cpython/contextvars.pxd":112
- * 
- * 
- * cdef inline object get_value(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the default value of the context variable,
- */
-
-static CYTHON_INLINE PyObject *__pyx_f_7cpython_11contextvars_get_value(PyObject *__pyx_v_var, struct __pyx_opt_args_7cpython_11contextvars_get_value *__pyx_optional_args) {
-  PyObject *__pyx_v_default_value = ((PyObject *)Py_None);
-  PyObject *__pyx_v_value;
-  PyObject *__pyx_v_pyvalue = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("get_value", 0);
-  if (__pyx_optional_args) {
-    if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_default_value = __pyx_optional_args->default_value;
-    }
-  }
-
-  /* "cpython/contextvars.pxd":117
- *     or None if no such value or default was found.
- *     """
- *     cdef PyObject *value = NULL             # <<<<<<<<<<<<<<
- *     PyContextVar_Get(var, NULL, &value)
- *     if value is NULL:
- */
-  __pyx_v_value = NULL;
-
-  /* "cpython/contextvars.pxd":118
- *     """
- *     cdef PyObject *value = NULL
- *     PyContextVar_Get(var, NULL, &value)             # <<<<<<<<<<<<<<
- *     if value is NULL:
- *         # context variable does not have a default
- */
-  __pyx_t_1 = PyContextVar_Get(__pyx_v_var, NULL, (&__pyx_v_value)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(3, 118, __pyx_L1_error)
-
-  /* "cpython/contextvars.pxd":119
- *     cdef PyObject *value = NULL
- *     PyContextVar_Get(var, NULL, &value)
- *     if value is NULL:             # <<<<<<<<<<<<<<
- *         # context variable does not have a default
- *         pyvalue = default_value
- */
-  __pyx_t_2 = (__pyx_v_value == NULL);
-  if (__pyx_t_2) {
-
-    /* "cpython/contextvars.pxd":121
- *     if value is NULL:
- *         # context variable does not have a default
- *         pyvalue = default_value             # <<<<<<<<<<<<<<
- *     else:
- *         # value or default value of context variable
- */
-    __Pyx_INCREF(__pyx_v_default_value);
-    __pyx_v_pyvalue = __pyx_v_default_value;
-
-    /* "cpython/contextvars.pxd":119
- *     cdef PyObject *value = NULL
- *     PyContextVar_Get(var, NULL, &value)
- *     if value is NULL:             # <<<<<<<<<<<<<<
- *         # context variable does not have a default
- *         pyvalue = default_value
- */
-    goto __pyx_L3;
-  }
-
-  /* "cpython/contextvars.pxd":124
- *     else:
- *         # value or default value of context variable
- *         pyvalue = <object>value             # <<<<<<<<<<<<<<
- *         Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'
- *     return pyvalue
- */
-  /*else*/ {
-    __pyx_t_3 = ((PyObject *)__pyx_v_value);
-    __Pyx_INCREF(__pyx_t_3);
-    __pyx_v_pyvalue = __pyx_t_3;
-    __pyx_t_3 = 0;
-
-    /* "cpython/contextvars.pxd":125
- *         # value or default value of context variable
- *         pyvalue = <object>value
- *         Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'             # <<<<<<<<<<<<<<
- *     return pyvalue
- * 
- */
-    Py_XDECREF(__pyx_v_value);
-  }
-  __pyx_L3:;
-
-  /* "cpython/contextvars.pxd":126
- *         pyvalue = <object>value
- *         Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'
- *     return pyvalue             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_pyvalue);
-  __pyx_r = __pyx_v_pyvalue;
-  goto __pyx_L0;
-
-  /* "cpython/contextvars.pxd":112
- * 
- * 
- * cdef inline object get_value(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the default value of the context variable,
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("cpython.contextvars.get_value", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_pyvalue);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cpython/contextvars.pxd":129
- * 
- * 
- * cdef inline object get_value_no_default(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the provided default value if no such value was found.
- */
-
-static CYTHON_INLINE PyObject *__pyx_f_7cpython_11contextvars_get_value_no_default(PyObject *__pyx_v_var, struct __pyx_opt_args_7cpython_11contextvars_get_value_no_default *__pyx_optional_args) {
-  PyObject *__pyx_v_default_value = ((PyObject *)Py_None);
-  PyObject *__pyx_v_value;
-  PyObject *__pyx_v_pyvalue = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("get_value_no_default", 0);
-  if (__pyx_optional_args) {
-    if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_default_value = __pyx_optional_args->default_value;
-    }
-  }
-
-  /* "cpython/contextvars.pxd":135
- *     Ignores the default value of the context variable, if any.
- *     """
- *     cdef PyObject *value = NULL             # <<<<<<<<<<<<<<
- *     PyContextVar_Get(var, <PyObject*>default_value, &value)
- *     # value of context variable or 'default_value'
- */
-  __pyx_v_value = NULL;
-
-  /* "cpython/contextvars.pxd":136
- *     """
- *     cdef PyObject *value = NULL
- *     PyContextVar_Get(var, <PyObject*>default_value, &value)             # <<<<<<<<<<<<<<
- *     # value of context variable or 'default_value'
- *     pyvalue = <object>value
- */
-  __pyx_t_1 = PyContextVar_Get(__pyx_v_var, ((PyObject *)__pyx_v_default_value), (&__pyx_v_value)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(3, 136, __pyx_L1_error)
-
-  /* "cpython/contextvars.pxd":138
- *     PyContextVar_Get(var, <PyObject*>default_value, &value)
- *     # value of context variable or 'default_value'
- *     pyvalue = <object>value             # <<<<<<<<<<<<<<
- *     Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'
- *     return pyvalue
- */
-  __pyx_t_2 = ((PyObject *)__pyx_v_value);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_v_pyvalue = __pyx_t_2;
-  __pyx_t_2 = 0;
-
-  /* "cpython/contextvars.pxd":139
- *     # value of context variable or 'default_value'
- *     pyvalue = <object>value
- *     Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'             # <<<<<<<<<<<<<<
- *     return pyvalue
- */
-  Py_XDECREF(__pyx_v_value);
-
-  /* "cpython/contextvars.pxd":140
- *     pyvalue = <object>value
- *     Py_XDECREF(value)  # PyContextVar_Get() returned an owned reference as 'PyObject*'
- *     return pyvalue             # <<<<<<<<<<<<<<
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_pyvalue);
-  __pyx_r = __pyx_v_pyvalue;
-  goto __pyx_L0;
-
-  /* "cpython/contextvars.pxd":129
- * 
- * 
- * cdef inline object get_value_no_default(var, default_value=None):             # <<<<<<<<<<<<<<
- *     """Return a new reference to the value of the context variable,
- *     or the provided default value if no such value was found.
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("cpython.contextvars.get_value_no_default", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_pyvalue);
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -33362,7 +32868,7 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "type", 
   #if defined(PYPY_VERSION_NUM) && PYPY_VERSION_NUM < 0x050B0000
@@ -33373,41 +32879,29 @@ static int __Pyx_modinit_type_import_code(void) {
   sizeof(PyHeapTypeObject), __PYX_GET_STRUCT_ALIGNMENT(PyHeapTypeObject),
   #endif
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_7cpython_4type_type) __PYX_ERR(4, 9, __pyx_L1_error)
+   if (!__pyx_ptype_7cpython_4type_type) __PYX_ERR(3, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(5, 8, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), __PYX_GET_STRUCT_ALIGNMENT(PyBoolObject),
-  __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_7cpython_4bool_bool) __PYX_ERR(5, 8, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), __PYX_GET_STRUCT_ALIGNMENT(PyComplexObject),
-  __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_7cpython_7complex_complex) __PYX_ERR(6, 15, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 18, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType(__pyx_t_1, "types", "FrameType", sizeof(PyFrameObject), __PYX_GET_STRUCT_ALIGNMENT(PyFrameObject),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(7, 18, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(4, 19, __pyx_L1_error)
   __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType(__pyx_t_1, "types", "CodeType", sizeof(PyCodeObject), __PYX_GET_STRUCT_ALIGNMENT(PyCodeObject),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(7, 21, __pyx_L1_error)
-  __pyx_t_2 = PyImport_ImportModule("hunter._tracer"); if (unlikely(!__pyx_t_2)) __PYX_ERR(7, 35, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(4, 22, __pyx_L1_error)
+  __pyx_t_2 = PyImport_ImportModule("hunter._tracer"); if (unlikely(!__pyx_t_2)) __PYX_ERR(4, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_6hunter_7_tracer_Tracer = __Pyx_ImportType(__pyx_t_2, "hunter._tracer", "Tracer", sizeof(struct __pyx_obj_6hunter_7_tracer_Tracer), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_7_tracer_Tracer),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_Tracer) __PYX_ERR(7, 35, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_Tracer) __PYX_ERR(4, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyImport_ImportModule("hunter._event"); if (unlikely(!__pyx_t_2)) __PYX_ERR(8, 12, __pyx_L1_error)
+  __pyx_t_2 = PyImport_ImportModule("hunter._event"); if (unlikely(!__pyx_t_2)) __PYX_ERR(5, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_6hunter_6_event_Event = __Pyx_ImportType(__pyx_t_2, "hunter._event", "Event", sizeof(struct __pyx_obj_6hunter_6_event_Event), __PYX_GET_STRUCT_ALIGNMENT(struct __pyx_obj_6hunter_6_event_Event),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_6_event_Event) __PYX_ERR(8, 12, __pyx_L1_error)
-  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) __PYX_ERR(8, 12, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_6_event_Event) __PYX_ERR(5, 12, __pyx_L1_error)
+  __pyx_vtabptr_6hunter_6_event_Event = (struct __pyx_vtabstruct_6hunter_6_event_Event*)__Pyx_GetVtable(__pyx_ptype_6hunter_6_event_Event); if (unlikely(!__pyx_vtabptr_6hunter_6_event_Event)) __PYX_ERR(5, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
