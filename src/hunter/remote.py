@@ -32,7 +32,7 @@ def install(**kwargs):
     manhole.install(**kwargs)
 
 
-class RemoteStream(object):
+class RemoteStream:
     def __init__(self, path, isatty, encoding):
         self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self._sock.connect(path)

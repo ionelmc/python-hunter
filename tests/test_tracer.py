@@ -37,9 +37,10 @@ try:
 except ImportError:
     from io import StringIO
 
+
 if hunter.Tracer.__module__ == 'hunter.tracer':
 
-    class EvilFrame(object):
+    class EvilFrame:
         f_back = None
         f_globals = {}
         f_locals = {}
@@ -48,7 +49,7 @@ if hunter.Tracer.__module__ == 'hunter.tracer':
         def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
 
-    class EvilTracer(object):
+    class EvilTracer:
         is_pure = True
 
         def __init__(self, *args, **kwargs):
@@ -104,7 +105,7 @@ def test_mix_predicates_with_callables():
 
 
 def test_predicate_reverse_and_or():
-    class Foobar(object):
+    class Foobar:
         def __str__(self):
             return 'Foobar'
 
@@ -259,7 +260,7 @@ def test_tracing_printing_failures(LineMatcher):
         ]
     ):
 
-        class Bad(object):
+        class Bad:
             __slots__ = []
 
             def __repr__(self):
@@ -282,8 +283,8 @@ def test_tracing_printing_failures(LineMatcher):
     print(lines.getvalue())
     lm.fnmatch_lines(
         [
-            """*tests*test_*.py:* call              class Bad(object):""",
-            """*tests*test_*.py:* line              class Bad(object):""",
+            """*tests*test_*.py:* call              class Bad:""",
+            """*tests*test_*.py:* line              class Bad:""",
             """*tests*test_*.py:* line                  def __repr__(self):""",
             """*tests*test_*.py:* return                def __repr__(self):""",
             """* ...       return value: *""",
@@ -352,7 +353,7 @@ def test_tracing_vars_expressions(LineMatcher):
     ):
 
         def main():
-            class Foo(object):
+            class Foo:
                 bar = 1
 
         main()
@@ -973,7 +974,7 @@ def _bulky_func_that_use_stdlib():
 def test_perf_filter(tracer_impl, benchmark):
     impl = tracer_impl()
 
-    class Counter(object):
+    class Counter:
         calls = 0
 
     def inc(_):
@@ -1302,7 +1303,7 @@ class Old:
         pass
 
 
-class Desc(object):
+class Desc:
     def __init__(self, func):
         self.func = func
 
@@ -1310,7 +1311,7 @@ class Desc(object):
         return self.func
 
 
-class New(object):
+class New:
     @staticmethod
     def new_sm(_):
         pass
@@ -1334,7 +1335,7 @@ def test_function_object(LineMatcher):
     def dlf(_):
         pass
 
-    class Local(object):
+    class Local:
         @staticmethod
         def local_sm(_):
             pass

@@ -38,12 +38,12 @@ __all__ = [
 BUILTIN_REPR_FUNCS = {'repr': repr, 'safe_repr': safe_repr}
 
 
-class Action(object):
+class Action:
     def __call__(self, event):
         raise NotImplementedError()
 
 
-class LazyImportPdb(object):
+class LazyImportPdb:
     def __repr__(self):
         return "<class 'pdb.Pdb'>"
 

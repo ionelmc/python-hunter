@@ -21,7 +21,7 @@ from .util import if_same_code
 __all__ = ('Event',)
 
 
-class Event(object):
+class Event:
     """
     A wrapper object for Frame objects. Instances of this are passed to your custom functions or predicates.
 

@@ -592,7 +592,7 @@ cdef inline fast_call(callable, Event event):
 
 
 @cython.final
-cdef class Backlog(object):
+cdef class Backlog:
     def __init__(self, condition, size=100, stack=10, vars=False, strip=True, action=None, filter=None):
         self.action = action() if isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):

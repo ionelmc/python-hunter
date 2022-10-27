@@ -40,7 +40,7 @@ class Set(set):
 Stuff = namedtuple('Stuff', 'a b')
 
 
-class Foobar(object):
+class Foobar:
     __slots__ = ()
     __repr__ = lambda _: 'Foo-bar'
 
@@ -74,7 +74,7 @@ class TzInfo(tzinfo):
     __str__ = __repr__
 
 
-class Bad2(object):
+class Bad2:
     def __repr__(self):
         raise Exception('Bad!')
 
@@ -216,7 +216,7 @@ def test_reliable_primitives():
     class SubFoobar(Foobar):
         pass
 
-    class Plain(object):
+    class Plain:
         pass
 
     del side_effects[:]

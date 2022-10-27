@@ -11,7 +11,7 @@ from .event import Event
 __all__ = ('Tracer',)
 
 
-class Tracer(object):
+class Tracer:
     """
     Tracer object.
 

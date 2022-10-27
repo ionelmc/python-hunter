@@ -1,4 +1,4 @@
-class Default(object):
+class Default:
     def __init__(self, key, fallback_value):
         self.key = key
         self.fallback_value = fallback_value

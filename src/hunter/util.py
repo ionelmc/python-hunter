@@ -97,7 +97,7 @@ def flatten(something):
         yield something
 
 
-class cached_property(object):
+class cached_property:
     def __init__(self, func):
         self.func = func
         self.__doc__ = func.__doc__

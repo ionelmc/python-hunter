@@ -6,7 +6,7 @@
 """  # end
 
 
-class Foo(object):
+class Foo:
     @staticmethod
     def a(*args):
         return args

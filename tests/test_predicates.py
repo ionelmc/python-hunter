@@ -21,7 +21,7 @@ from hunter import _Backlog
 from hunter.actions import ColorStreamAction
 
 
-class FakeCallable(object):
+class FakeCallable:
     def __init__(self, value):
         self.value = value
 

@@ -36,11 +36,11 @@ ALLOWED_OPERATORS = (
 )
 
 
-class BasePredicate(object):
+class BasePredicate:
     pass
 
 
-class Query(object):
+class Query:
     """
     Event-filtering predicate.
 
@@ -271,7 +271,7 @@ class Query(object):
         return And(other, self)
 
 
-class When(object):
+class When:
     """
     Conditional predicate. Runs ``actions`` when ``condition(event)`` is ``True``.
 
@@ -341,7 +341,7 @@ class When(object):
         return And(other, self)
 
 
-class From(object):
+class From:
     """
     From-point filtering mechanism. Switches on to running the predicate after condition matches, and switches off when
     the depth goes lower than the initial level.
@@ -437,7 +437,7 @@ class From(object):
         return And(other, self)
 
 
-class And(object):
+class And:
     """
     Logical conjunction. Returns ``False`` at the first sub-predicate that returns ``False``, otherwise returns ``True``.
     """
@@ -500,7 +500,7 @@ class And(object):
         return And(other, *self.predicates)
 
 
-class Or(object):
+class Or:
     """
     Logical disjunction. Returns ``True`` after the first sub-predicate that returns ``True``.
     """
@@ -563,7 +563,7 @@ class Or(object):
         return And(other, self)
 
 
-class Not(object):
+class Not:
     """
     Logical complement (negation). Simply returns ``not predicate(event)``.
     """
@@ -627,7 +627,7 @@ class Not(object):
         return And(other, self)
 
 
-class Backlog(object):
+class Backlog:
     """
     Until-point buffering mechanism. It will buffer detached events up to the given ``size`` and display them
     using the given ``action`` when ``condition`` returns True.
