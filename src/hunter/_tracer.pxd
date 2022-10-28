@@ -1,4 +1,3 @@
-# cython: language_level=3str
 cimport cython
 from cpython.pystate cimport Py_tracefunc
 from cpython.ref cimport PyObject
@@ -16,10 +15,10 @@ cdef extern from *:
     void PyEval_SetTrace(Py_tracefunc, PyObject*)
     void PyEval_SetProfile(Py_tracefunc, PyObject*)
 
-    ctypedef class types.FrameType[object PyFrameObject]:
-        cdef PyObject* f_trace
+    ctypedef extern class types.FrameType[object PyFrameObject, check_size ignore]:
+        pass
 
-    ctypedef class types.CodeType[object PyCodeObject]:
+    ctypedef extern class types.CodeType[object PyCodeObject]:
         cdef object co_filename
         cdef object co_name
         cdef int co_argcount

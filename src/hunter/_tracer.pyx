@@ -4,8 +4,6 @@ import traceback
 
 from cpython cimport pystate
 from cpython.pystate cimport PyThreadState_Get
-from cpython.ref cimport Py_CLEAR
-from cpython.ref cimport Py_INCREF
 
 from ._event cimport Event
 from ._predicates cimport fast_call
@@ -25,10 +23,8 @@ cdef dict KIND_INTS = {
 }
 
 cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
-    if frame.f_trace is not <PyObject*> self:
-        Py_CLEAR(frame.f_trace)
-        Py_INCREF(self)
-        frame.f_trace = <PyObject*> self
+    if frame.f_trace is not self:
+        frame.f_trace = self
 
     handler = self.handler
 
@@ -72,7 +68,7 @@ cdef class Tracer:
 
     def __dealloc__(self):
         cdef PyThreadState *state = PyThreadState_Get()
-        if state.c_traceobj is <PyObject *>self:
+        if state.c_traceobj is <PyObject*> self:
             self.stop()
 
     def __repr__(self):
@@ -85,10 +81,10 @@ cdef class Tracer:
             '' if self.previous is None else repr(self.previous),
         )
 
-    def __call__(self, FrameType frame, str kind, arg):
-        trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+    def __call__(self, frame, str kind, arg):
+        trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
         if kind == 0:
-            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
         return self
 
     def trace(self, predicate):
@@ -105,7 +101,7 @@ cdef class Tracer:
             else:
                 self.previous = <object>(state.c_profileobj)
                 self._previousfunc = state.c_profilefunc
-            PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+            PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
         else:
             if self.threading_support is None or self.threading_support:
                 self._threading_previous = getattr(threading, '_trace_hook', None)
@@ -116,7 +112,7 @@ cdef class Tracer:
             else:
                 self.previous = <object>(state.c_traceobj)
                 self._previousfunc = state.c_tracefunc
-            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+            PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
         return self
 
     def stop(self):
@@ -125,7 +121,7 @@ cdef class Tracer:
                 if self.previous is None:
                     PyEval_SetProfile(NULL, NULL)
                 else:
-                    PyEval_SetProfile(self._previousfunc, <PyObject *> self.previous)
+                    PyEval_SetProfile(self._previousfunc, <PyObject*> self.previous)
                 self.handler = self.previous = None
                 self._previousfunc = NULL
                 if self.threading_support is None or self.threading_support:
@@ -135,7 +131,7 @@ cdef class Tracer:
                 if self.previous is None:
                     PyEval_SetTrace(NULL, NULL)
                 else:
-                    PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
+                    PyEval_SetTrace(self._previousfunc, <PyObject*> self.previous)
                 self.handler = self.previous = None
                 self._previousfunc = NULL
                 if self.threading_support is None or self.threading_support:

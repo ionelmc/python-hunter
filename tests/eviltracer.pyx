@@ -1,20 +1,12 @@
 # cython: language_level=3str, c_string_encoding=ascii
-cimport cython
-
 import hunter
 
 from hunter._event cimport Event
 from hunter._event cimport fast_detach
 
 
-@cython.final
 cdef class EvilTracer:
     is_pure = False
-
-    cdef readonly object _calls
-    cdef readonly object handler
-    cdef readonly object _tracer
-    cdef readonly int _stopped
 
     def __init__(self, *args, **kwargs):
         self._calls = []

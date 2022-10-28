@@ -1496,7 +1496,7 @@ struct __pyx_obj_6hunter_11_predicates_Backlog {
 };
 
 
-/* "hunter/_tracer.pxd":35
+/* "hunter/_tracer.pxd":34
  * 
  * @cython.final
  * cdef class Tracer:             # <<<<<<<<<<<<<<
@@ -1913,6 +1913,15 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name);
   #define __Pyx_TraceLine(lineno, nogil, goto_error)   if ((1)); else goto_error;
 #endif
 
+/* PyObjectSetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
+#else
+#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
+#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
+#endif
+
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
@@ -2111,6 +2120,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     ((likely(__Pyx_IS_TYPE(obj, type) | (none_allowed && (obj == Py_None)))) ? 1 :\
         __Pyx__ArgTypeTest(obj, type, name, exact))
 static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 /* DictGetItem.proto */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
@@ -2665,6 +2677,7 @@ static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_return[] = "return";
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_exc_val[] = "exc_val";
+static const char __pyx_k_f_trace[] = "f_trace";
 static const char __pyx_k_handler[] = "handler=";
 static const char __pyx_k_stopped[] = "<stopped>";
 static const char __pyx_k_c_return[] = "c_return";
@@ -2738,6 +2751,7 @@ static PyObject *__pyx_n_s_exc_type;
 static PyObject *__pyx_n_s_exc_val;
 static PyObject *__pyx_n_s_exception;
 static PyObject *__pyx_n_s_exit;
+static PyObject *__pyx_n_s_f_trace;
 static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_frame;
 static PyObject *__pyx_kp_u_gc;
@@ -2790,7 +2804,7 @@ static PyObject *__pyx_n_s_write;
 static int __pyx_pf_6hunter_7_tracer_6Tracer___cinit__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyObject *__pyx_v_threading_support, PyObject *__pyx_v_profiling_mode); /* proto */
 static void __pyx_pf_6hunter_7_tracer_6Tracer_2__dealloc__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyFrameObject *__pyx_v_frame, PyObject *__pyx_v_kind, PyObject *__pyx_v_arg); /* proto */
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyObject *__pyx_v_frame, PyObject *__pyx_v_kind, PyObject *__pyx_v_arg); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyObject *__pyx_v_predicate); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_12__enter__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self); /* proto */
@@ -2887,6 +2901,7 @@ typedef struct {
   PyObject *__pyx_n_s_exc_val;
   PyObject *__pyx_n_s_exception;
   PyObject *__pyx_n_s_exit;
+  PyObject *__pyx_n_s_f_trace;
   PyObject *__pyx_n_s_file;
   PyObject *__pyx_n_s_frame;
   PyObject *__pyx_kp_u_gc;
@@ -3029,6 +3044,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_exc_val);
   Py_CLEAR(clear_module_state->__pyx_n_s_exception);
   Py_CLEAR(clear_module_state->__pyx_n_s_exit);
+  Py_CLEAR(clear_module_state->__pyx_n_s_f_trace);
   Py_CLEAR(clear_module_state->__pyx_n_s_file);
   Py_CLEAR(clear_module_state->__pyx_n_s_frame);
   Py_CLEAR(clear_module_state->__pyx_kp_u_gc);
@@ -3158,6 +3174,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_exc_val);
   Py_VISIT(traverse_module_state->__pyx_n_s_exception);
   Py_VISIT(traverse_module_state->__pyx_n_s_exit);
+  Py_VISIT(traverse_module_state->__pyx_n_s_f_trace);
   Py_VISIT(traverse_module_state->__pyx_n_s_file);
   Py_VISIT(traverse_module_state->__pyx_n_s_frame);
   Py_VISIT(traverse_module_state->__pyx_kp_u_gc);
@@ -3284,6 +3301,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_exc_val __pyx_mstate_global->__pyx_n_s_exc_val
 #define __pyx_n_s_exception __pyx_mstate_global->__pyx_n_s_exception
 #define __pyx_n_s_exit __pyx_mstate_global->__pyx_n_s_exit
+#define __pyx_n_s_f_trace __pyx_mstate_global->__pyx_n_s_f_trace
 #define __pyx_n_s_file __pyx_mstate_global->__pyx_n_s_file
 #define __pyx_n_s_frame __pyx_mstate_global->__pyx_n_s_frame
 #define __pyx_kp_u_gc __pyx_mstate_global->__pyx_kp_u_gc
@@ -3352,12 +3370,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 /* #### Code section: module_code ### */
 
-/* "hunter/_tracer.pyx":27
+/* "hunter/_tracer.pyx":25
  * }
  * 
  * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
- *     if frame.f_trace is not <PyObject*> self:
- *         Py_CLEAR(frame.f_trace)
+ *     if frame.f_trace is not self:
+ *         frame.f_trace = self
  */
 
 static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyFrameObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg) {
@@ -3367,8 +3385,8 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
@@ -3392,103 +3410,86 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("trace_func", 0);
-  __Pyx_TraceCall("trace_func", __pyx_f[0], 27, 0, __PYX_ERR(0, 27, __pyx_L1_error));
+  __Pyx_TraceCall("trace_func", __pyx_f[0], 25, 0, __PYX_ERR(0, 25, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":28
+  /* "hunter/_tracer.pyx":26
  * 
  * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
- *     if frame.f_trace is not <PyObject*> self:             # <<<<<<<<<<<<<<
- *         Py_CLEAR(frame.f_trace)
- *         Py_INCREF(self)
- */
-  __Pyx_TraceLine(28,0,__PYX_ERR(0, 28, __pyx_L1_error))
-  __pyx_t_1 = (__pyx_v_frame->f_trace != ((PyObject *)__pyx_v_self));
-  if (__pyx_t_1) {
-
-    /* "hunter/_tracer.pyx":29
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
- *     if frame.f_trace is not <PyObject*> self:
- *         Py_CLEAR(frame.f_trace)             # <<<<<<<<<<<<<<
- *         Py_INCREF(self)
- *         frame.f_trace = <PyObject*> self
- */
-    __Pyx_TraceLine(29,0,__PYX_ERR(0, 29, __pyx_L1_error))
-    Py_CLEAR(__pyx_v_frame->f_trace);
-
-    /* "hunter/_tracer.pyx":30
- *     if frame.f_trace is not <PyObject*> self:
- *         Py_CLEAR(frame.f_trace)
- *         Py_INCREF(self)             # <<<<<<<<<<<<<<
- *         frame.f_trace = <PyObject*> self
+ *     if frame.f_trace is not self:             # <<<<<<<<<<<<<<
+ *         frame.f_trace = self
  * 
  */
-    __Pyx_TraceLine(30,0,__PYX_ERR(0, 30, __pyx_L1_error))
-    Py_INCREF(((PyObject *)__pyx_v_self));
+  __Pyx_TraceLine(26,0,__PYX_ERR(0, 26, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_frame), __pyx_n_s_f_trace); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = (__pyx_t_1 != ((PyObject *)__pyx_v_self));
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_2) {
 
-    /* "hunter/_tracer.pyx":31
- *         Py_CLEAR(frame.f_trace)
- *         Py_INCREF(self)
- *         frame.f_trace = <PyObject*> self             # <<<<<<<<<<<<<<
+    /* "hunter/_tracer.pyx":27
+ * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
+ *     if frame.f_trace is not self:
+ *         frame.f_trace = self             # <<<<<<<<<<<<<<
  * 
  *     handler = self.handler
  */
-    __Pyx_TraceLine(31,0,__PYX_ERR(0, 31, __pyx_L1_error))
-    __pyx_v_frame->f_trace = ((PyObject *)__pyx_v_self);
+    __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
+    if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_frame), __pyx_n_s_f_trace, ((PyObject *)__pyx_v_self)) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
 
-    /* "hunter/_tracer.pyx":28
+    /* "hunter/_tracer.pyx":26
  * 
  * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
- *     if frame.f_trace is not <PyObject*> self:             # <<<<<<<<<<<<<<
- *         Py_CLEAR(frame.f_trace)
- *         Py_INCREF(self)
+ *     if frame.f_trace is not self:             # <<<<<<<<<<<<<<
+ *         frame.f_trace = self
+ * 
  */
   }
 
-  /* "hunter/_tracer.pyx":33
- *         frame.f_trace = <PyObject*> self
+  /* "hunter/_tracer.pyx":29
+ *         frame.f_trace = self
  * 
  *     handler = self.handler             # <<<<<<<<<<<<<<
  * 
  *     if handler is None:  # the tracer was stopped
  */
-  __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
-  __pyx_t_2 = __pyx_v_self->handler;
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_v_handler = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_TraceLine(29,0,__PYX_ERR(0, 29, __pyx_L1_error))
+  __pyx_t_1 = __pyx_v_self->handler;
+  __Pyx_INCREF(__pyx_t_1);
+  __pyx_v_handler = __pyx_t_1;
+  __pyx_t_1 = 0;
 
-  /* "hunter/_tracer.pyx":35
+  /* "hunter/_tracer.pyx":31
  *     handler = self.handler
  * 
  *     if handler is None:  # the tracer was stopped             # <<<<<<<<<<<<<<
  *         # make sure it's uninstalled even for running threads
  *         if self.profiling_mode:
  */
-  __Pyx_TraceLine(35,0,__PYX_ERR(0, 35, __pyx_L1_error))
-  __pyx_t_1 = (__pyx_v_handler == Py_None);
-  if (__pyx_t_1) {
+  __Pyx_TraceLine(31,0,__PYX_ERR(0, 31, __pyx_L1_error))
+  __pyx_t_2 = (__pyx_v_handler == Py_None);
+  if (__pyx_t_2) {
 
-    /* "hunter/_tracer.pyx":37
+    /* "hunter/_tracer.pyx":33
  *     if handler is None:  # the tracer was stopped
  *         # make sure it's uninstalled even for running threads
  *         if self.profiling_mode:             # <<<<<<<<<<<<<<
  *             PyEval_SetProfile(NULL, NULL)
  *         else:
  */
-    __Pyx_TraceLine(37,0,__PYX_ERR(0, 37, __pyx_L1_error))
+    __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
     if (__pyx_v_self->profiling_mode) {
 
-      /* "hunter/_tracer.pyx":38
+      /* "hunter/_tracer.pyx":34
  *         # make sure it's uninstalled even for running threads
  *         if self.profiling_mode:
  *             PyEval_SetProfile(NULL, NULL)             # <<<<<<<<<<<<<<
  *         else:
  *             PyEval_SetTrace(NULL, NULL)
  */
-      __Pyx_TraceLine(38,0,__PYX_ERR(0, 38, __pyx_L1_error))
+      __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
       PyEval_SetProfile(NULL, NULL);
 
-      /* "hunter/_tracer.pyx":37
+      /* "hunter/_tracer.pyx":33
  *     if handler is None:  # the tracer was stopped
  *         # make sure it's uninstalled even for running threads
  *         if self.profiling_mode:             # <<<<<<<<<<<<<<
@@ -3498,31 +3499,31 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
       goto __pyx_L5;
     }
 
-    /* "hunter/_tracer.pyx":40
+    /* "hunter/_tracer.pyx":36
  *             PyEval_SetProfile(NULL, NULL)
  *         else:
  *             PyEval_SetTrace(NULL, NULL)             # <<<<<<<<<<<<<<
  *         return 0
  * 
  */
-    __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L1_error))
+    __Pyx_TraceLine(36,0,__PYX_ERR(0, 36, __pyx_L1_error))
     /*else*/ {
       PyEval_SetTrace(NULL, NULL);
     }
     __pyx_L5:;
 
-    /* "hunter/_tracer.pyx":41
+    /* "hunter/_tracer.pyx":37
  *         else:
  *             PyEval_SetTrace(NULL, NULL)
  *         return 0             # <<<<<<<<<<<<<<
  * 
  *     if kind == 3 and self.depth > 0:
  */
-    __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L1_error))
+    __Pyx_TraceLine(37,0,__PYX_ERR(0, 37, __pyx_L1_error))
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "hunter/_tracer.pyx":35
+    /* "hunter/_tracer.pyx":31
  *     handler = self.handler
  * 
  *     if handler is None:  # the tracer was stopped             # <<<<<<<<<<<<<<
@@ -3531,36 +3532,36 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  */
   }
 
-  /* "hunter/_tracer.pyx":43
+  /* "hunter/_tracer.pyx":39
  *         return 0
  * 
  *     if kind == 3 and self.depth > 0:             # <<<<<<<<<<<<<<
  *         self.depth -= 1
  * 
  */
-  __Pyx_TraceLine(43,0,__PYX_ERR(0, 43, __pyx_L1_error))
+  __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L1_error))
   __pyx_t_3 = (__pyx_v_kind == 3);
   if (__pyx_t_3) {
   } else {
-    __pyx_t_1 = __pyx_t_3;
+    __pyx_t_2 = __pyx_t_3;
     goto __pyx_L7_bool_binop_done;
   }
   __pyx_t_3 = (__pyx_v_self->depth > 0);
-  __pyx_t_1 = __pyx_t_3;
+  __pyx_t_2 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
-  if (__pyx_t_1) {
+  if (__pyx_t_2) {
 
-    /* "hunter/_tracer.pyx":44
+    /* "hunter/_tracer.pyx":40
  * 
  *     if kind == 3 and self.depth > 0:
  *         self.depth -= 1             # <<<<<<<<<<<<<<
  * 
  *     cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)
  */
-    __Pyx_TraceLine(44,0,__PYX_ERR(0, 44, __pyx_L1_error))
+    __Pyx_TraceLine(40,0,__PYX_ERR(0, 40, __pyx_L1_error))
     __pyx_v_self->depth = (__pyx_v_self->depth - 1);
 
-    /* "hunter/_tracer.pyx":43
+    /* "hunter/_tracer.pyx":39
  *         return 0
  * 
  *     if kind == 3 and self.depth > 0:             # <<<<<<<<<<<<<<
@@ -3569,16 +3570,16 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  */
   }
 
-  /* "hunter/_tracer.pyx":46
+  /* "hunter/_tracer.pyx":42
  *         self.depth -= 1
  * 
  *     cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)             # <<<<<<<<<<<<<<
  * 
  *     try:
  */
-  __Pyx_TraceLine(46,0,__PYX_ERR(0, 46, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_kind); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_TraceLine(42,0,__PYX_ERR(0, 42, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_kind); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   if ((__pyx_v_arg == NULL)) {
     __Pyx_INCREF(Py_None);
     __pyx_t_4 = Py_None;
@@ -3586,34 +3587,34 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __Pyx_INCREF(((PyObject *)__pyx_v_arg));
     __pyx_t_4 = ((PyObject *)__pyx_v_arg);
   }
-  __pyx_t_5 = PyTuple_New(4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF((PyObject *)__pyx_v_frame);
   __Pyx_GIVEREF((PyObject *)__pyx_v_frame);
   PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)__pyx_v_frame));
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_t_4);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self);
   PyTuple_SET_ITEM(__pyx_t_5, 3, ((PyObject *)__pyx_v_self));
-  __pyx_t_2 = 0;
+  __pyx_t_1 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6hunter_6_event_Event), __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_event = ((struct __pyx_obj_6hunter_6_event_Event *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hunter/_tracer.pyx":48
+  /* "hunter/_tracer.pyx":44
  *     cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)
  * 
  *     try:             # <<<<<<<<<<<<<<
  *         fast_call(handler, event)
  *     except Exception as exc:
  */
-  __Pyx_TraceLine(48,0,__PYX_ERR(0, 48, __pyx_L1_error))
+  __Pyx_TraceLine(44,0,__PYX_ERR(0, 44, __pyx_L1_error))
   {
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -3623,19 +3624,19 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __Pyx_XGOTREF(__pyx_t_8);
     /*try:*/ {
 
-      /* "hunter/_tracer.pyx":49
+      /* "hunter/_tracer.pyx":45
  * 
  *     try:
  *         fast_call(handler, event)             # <<<<<<<<<<<<<<
  *     except Exception as exc:
  *         traceback.print_exc(file=hunter._default_stream)
  */
-      __Pyx_TraceLine(49,0,__PYX_ERR(0, 49, __pyx_L9_error))
-      __pyx_t_4 = __pyx_f_6hunter_11_predicates_fast_call(__pyx_v_handler, __pyx_v_event); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L9_error)
+      __Pyx_TraceLine(45,0,__PYX_ERR(0, 45, __pyx_L9_error))
+      __pyx_t_4 = __pyx_f_6hunter_11_predicates_fast_call(__pyx_v_handler, __pyx_v_event); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L9_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "hunter/_tracer.pyx":48
+      /* "hunter/_tracer.pyx":44
  *     cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -3648,83 +3649,83 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     goto __pyx_L14_try_end;
     __pyx_L9_error:;
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hunter/_tracer.pyx":50
+    /* "hunter/_tracer.pyx":46
  *     try:
  *         fast_call(handler, event)
  *     except Exception as exc:             # <<<<<<<<<<<<<<
  *         traceback.print_exc(file=hunter._default_stream)
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
  */
-    __Pyx_TraceLine(50,0,__PYX_ERR(0, 50, __pyx_L11_except_error))
+    __Pyx_TraceLine(46,0,__PYX_ERR(0, 46, __pyx_L11_except_error))
     __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
     if (__pyx_t_9) {
       __Pyx_AddTraceback("hunter._tracer.trace_func", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_2) < 0) __PYX_ERR(0, 50, __pyx_L11_except_error)
+      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_5, &__pyx_t_1) < 0) __PYX_ERR(0, 46, __pyx_L11_except_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_5);
       __pyx_v_exc = __pyx_t_5;
       /*try:*/ {
 
-        /* "hunter/_tracer.pyx":51
+        /* "hunter/_tracer.pyx":47
  *         fast_call(handler, event)
  *     except Exception as exc:
  *         traceback.print_exc(file=hunter._default_stream)             # <<<<<<<<<<<<<<
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
  *             handler, exc, event))
  */
-        __Pyx_TraceLine(51,0,__PYX_ERR(0, 51, __pyx_L20_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_traceback); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __Pyx_TraceLine(47,0,__PYX_ERR(0, 47, __pyx_L20_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_traceback); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_print_exc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_print_exc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_hunter); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_hunter); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_file, __pyx_t_13) < 0) __PYX_ERR(0, 51, __pyx_L20_error)
+        if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_file, __pyx_t_13) < 0) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_empty_tuple, __pyx_t_10); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 51, __pyx_L20_error)
+        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_empty_tuple, __pyx_t_10); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 47, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-        /* "hunter/_tracer.pyx":52
+        /* "hunter/_tracer.pyx":48
  *     except Exception as exc:
  *         traceback.print_exc(file=hunter._default_stream)
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (             # <<<<<<<<<<<<<<
  *             handler, exc, event))
  *         self.stop()
  */
-        __Pyx_TraceLine(52,0,__PYX_ERR(0, 52, __pyx_L20_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_hunter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L20_error)
+        __Pyx_TraceLine(48,0,__PYX_ERR(0, 48, __pyx_L20_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_hunter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 48, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 52, __pyx_L20_error)
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_default_stream); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 48, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_write); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L20_error)
+        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_write); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 48, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-        /* "hunter/_tracer.pyx":53
+        /* "hunter/_tracer.pyx":49
  *         traceback.print_exc(file=hunter._default_stream)
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
  *             handler, exc, event))             # <<<<<<<<<<<<<<
  *         self.stop()
  *         return 0
  */
-        __Pyx_TraceLine(53,0,__PYX_ERR(0, 53, __pyx_L20_error))
-        __pyx_t_11 = PyTuple_New(3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 53, __pyx_L20_error)
+        __Pyx_TraceLine(49,0,__PYX_ERR(0, 49, __pyx_L20_error))
+        __pyx_t_11 = PyTuple_New(3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 49, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_INCREF(__pyx_v_handler);
         __Pyx_GIVEREF(__pyx_v_handler);
@@ -3736,15 +3737,15 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
         __Pyx_GIVEREF((PyObject *)__pyx_v_event);
         PyTuple_SET_ITEM(__pyx_t_11, 2, ((PyObject *)__pyx_v_event));
 
-        /* "hunter/_tracer.pyx":52
+        /* "hunter/_tracer.pyx":48
  *     except Exception as exc:
  *         traceback.print_exc(file=hunter._default_stream)
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (             # <<<<<<<<<<<<<<
  *             handler, exc, event))
  *         self.stop()
  */
-        __Pyx_TraceLine(52,0,__PYX_ERR(0, 52, __pyx_L20_error))
-        __pyx_t_12 = __Pyx_PyString_Format(__pyx_kp_s_Disabling_tracer_because_handler, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 52, __pyx_L20_error)
+        __Pyx_TraceLine(48,0,__PYX_ERR(0, 48, __pyx_L20_error))
+        __pyx_t_12 = __Pyx_PyString_Format(__pyx_kp_s_Disabling_tracer_because_handler, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 48, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
         __pyx_t_11 = NULL;
@@ -3764,21 +3765,21 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
           __pyx_t_13 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_9, 1+__pyx_t_9);
           __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 52, __pyx_L20_error)
+          if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 48, __pyx_L20_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         }
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-        /* "hunter/_tracer.pyx":54
+        /* "hunter/_tracer.pyx":50
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
  *             handler, exc, event))
  *         self.stop()             # <<<<<<<<<<<<<<
  *         return 0
  * 
  */
-        __Pyx_TraceLine(54,0,__PYX_ERR(0, 54, __pyx_L20_error))
-        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 54, __pyx_L20_error)
+        __Pyx_TraceLine(50,0,__PYX_ERR(0, 50, __pyx_L20_error))
+        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 50, __pyx_L20_error)
         __Pyx_GOTREF(__pyx_t_10);
         __pyx_t_12 = NULL;
         __pyx_t_9 = 0;
@@ -3796,35 +3797,35 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
           PyObject *__pyx_callargs[1] = {__pyx_t_12, };
           __pyx_t_13 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
           __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-          if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 54, __pyx_L20_error)
+          if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 50, __pyx_L20_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         }
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-        /* "hunter/_tracer.pyx":55
+        /* "hunter/_tracer.pyx":51
  *             handler, exc, event))
  *         self.stop()
  *         return 0             # <<<<<<<<<<<<<<
  * 
  *     if kind == 0:
  */
-        __Pyx_TraceLine(55,0,__PYX_ERR(0, 55, __pyx_L20_error))
+        __Pyx_TraceLine(51,0,__PYX_ERR(0, 51, __pyx_L20_error))
         __pyx_r = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         goto __pyx_L19_return;
       }
 
-      /* "hunter/_tracer.pyx":50
+      /* "hunter/_tracer.pyx":46
  *     try:
  *         fast_call(handler, event)
  *     except Exception as exc:             # <<<<<<<<<<<<<<
  *         traceback.print_exc(file=hunter._default_stream)
  *         hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (
  */
-      __Pyx_TraceLine(50,0,__PYX_ERR(0, 50, __pyx_L20_error))
+      __Pyx_TraceLine(46,0,__PYX_ERR(0, 46, __pyx_L20_error))
       /*finally:*/ {
         __pyx_L20_error:;
         /*exception exit:*/{
@@ -3872,7 +3873,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     goto __pyx_L11_except_error;
     __pyx_L11_except_error:;
 
-    /* "hunter/_tracer.pyx":48
+    /* "hunter/_tracer.pyx":44
  *     cdef Event event = Event(frame, kind, None if arg is NULL else <object> arg, self)
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -3893,38 +3894,38 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
     __pyx_L14_try_end:;
   }
 
-  /* "hunter/_tracer.pyx":57
+  /* "hunter/_tracer.pyx":53
  *         return 0
  * 
  *     if kind == 0:             # <<<<<<<<<<<<<<
  *         self.depth += 1
  *         self.calls += 1
  */
-  __Pyx_TraceLine(57,0,__PYX_ERR(0, 57, __pyx_L1_error))
-  __pyx_t_1 = (__pyx_v_kind == 0);
-  if (__pyx_t_1) {
+  __Pyx_TraceLine(53,0,__PYX_ERR(0, 53, __pyx_L1_error))
+  __pyx_t_2 = (__pyx_v_kind == 0);
+  if (__pyx_t_2) {
 
-    /* "hunter/_tracer.pyx":58
+    /* "hunter/_tracer.pyx":54
  * 
  *     if kind == 0:
  *         self.depth += 1             # <<<<<<<<<<<<<<
  *         self.calls += 1
  * 
  */
-    __Pyx_TraceLine(58,0,__PYX_ERR(0, 58, __pyx_L1_error))
+    __Pyx_TraceLine(54,0,__PYX_ERR(0, 54, __pyx_L1_error))
     __pyx_v_self->depth = (__pyx_v_self->depth + 1);
 
-    /* "hunter/_tracer.pyx":59
+    /* "hunter/_tracer.pyx":55
  *     if kind == 0:
  *         self.depth += 1
  *         self.calls += 1             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __Pyx_TraceLine(59,0,__PYX_ERR(0, 59, __pyx_L1_error))
+    __Pyx_TraceLine(55,0,__PYX_ERR(0, 55, __pyx_L1_error))
     __pyx_v_self->calls = (__pyx_v_self->calls + 1);
 
-    /* "hunter/_tracer.pyx":57
+    /* "hunter/_tracer.pyx":53
  *         return 0
  * 
  *     if kind == 0:             # <<<<<<<<<<<<<<
@@ -3933,19 +3934,19 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
  */
   }
 
-  /* "hunter/_tracer.pyx":27
+  /* "hunter/_tracer.pyx":25
  * }
  * 
  * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
- *     if frame.f_trace is not <PyObject*> self:
- *         Py_CLEAR(frame.f_trace)
+ *     if frame.f_trace is not self:
+ *         frame.f_trace = self
  */
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_10);
@@ -3963,7 +3964,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":63
+/* "hunter/_tracer.pyx":59
  * 
  * cdef class Tracer:
  *     def __cinit__(self, threading_support=None, profiling_mode=False):             # <<<<<<<<<<<<<<
@@ -4009,19 +4010,19 @@ static int __pyx_pw_6hunter_7_tracer_6Tracer_1__cinit__(PyObject *__pyx_v_self, 
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_threading_support);
           if (value) { values[0] = value; kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_profiling_mode);
           if (value) { values[1] = value; kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 63, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 59, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -4038,7 +4039,7 @@ static int __pyx_pw_6hunter_7_tracer_6Tracer_1__cinit__(PyObject *__pyx_v_self, 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, __pyx_nargs); __PYX_ERR(0, 63, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, __pyx_nargs); __PYX_ERR(0, 59, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._tracer.Tracer.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4060,106 +4061,106 @@ static int __pyx_pf_6hunter_7_tracer_6Tracer___cinit__(struct __pyx_obj_6hunter_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
-  __Pyx_TraceCall("__cinit__", __pyx_f[0], 63, 0, __PYX_ERR(0, 63, __pyx_L1_error));
+  __Pyx_TraceCall("__cinit__", __pyx_f[0], 59, 0, __PYX_ERR(0, 59, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":64
+  /* "hunter/_tracer.pyx":60
  * cdef class Tracer:
  *     def __cinit__(self, threading_support=None, profiling_mode=False):
  *         self.handler = None             # <<<<<<<<<<<<<<
  *         self.previous = None
  *         self._previousfunc = NULL
  */
-  __Pyx_TraceLine(64,0,__PYX_ERR(0, 64, __pyx_L1_error))
+  __Pyx_TraceLine(60,0,__PYX_ERR(0, 60, __pyx_L1_error))
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->handler);
   __Pyx_DECREF(__pyx_v_self->handler);
   __pyx_v_self->handler = Py_None;
 
-  /* "hunter/_tracer.pyx":65
+  /* "hunter/_tracer.pyx":61
  *     def __cinit__(self, threading_support=None, profiling_mode=False):
  *         self.handler = None
  *         self.previous = None             # <<<<<<<<<<<<<<
  *         self._previousfunc = NULL
  *         self._threading_previous = None
  */
-  __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
+  __Pyx_TraceLine(61,0,__PYX_ERR(0, 61, __pyx_L1_error))
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->previous);
   __Pyx_DECREF(__pyx_v_self->previous);
   __pyx_v_self->previous = Py_None;
 
-  /* "hunter/_tracer.pyx":66
+  /* "hunter/_tracer.pyx":62
  *         self.handler = None
  *         self.previous = None
  *         self._previousfunc = NULL             # <<<<<<<<<<<<<<
  *         self._threading_previous = None
  *         self.threading_support = threading_support
  */
-  __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
+  __Pyx_TraceLine(62,0,__PYX_ERR(0, 62, __pyx_L1_error))
   __pyx_v_self->_previousfunc = NULL;
 
-  /* "hunter/_tracer.pyx":67
+  /* "hunter/_tracer.pyx":63
  *         self.previous = None
  *         self._previousfunc = NULL
  *         self._threading_previous = None             # <<<<<<<<<<<<<<
  *         self.threading_support = threading_support
  *         self.profiling_mode = profiling_mode
  */
-  __Pyx_TraceLine(67,0,__PYX_ERR(0, 67, __pyx_L1_error))
+  __Pyx_TraceLine(63,0,__PYX_ERR(0, 63, __pyx_L1_error))
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
   __Pyx_GOTREF(__pyx_v_self->_threading_previous);
   __Pyx_DECREF(__pyx_v_self->_threading_previous);
   __pyx_v_self->_threading_previous = Py_None;
 
-  /* "hunter/_tracer.pyx":68
+  /* "hunter/_tracer.pyx":64
  *         self._previousfunc = NULL
  *         self._threading_previous = None
  *         self.threading_support = threading_support             # <<<<<<<<<<<<<<
  *         self.profiling_mode = profiling_mode
  *         self.depth = 0
  */
-  __Pyx_TraceLine(68,0,__PYX_ERR(0, 68, __pyx_L1_error))
+  __Pyx_TraceLine(64,0,__PYX_ERR(0, 64, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_threading_support);
   __Pyx_GIVEREF(__pyx_v_threading_support);
   __Pyx_GOTREF(__pyx_v_self->threading_support);
   __Pyx_DECREF(__pyx_v_self->threading_support);
   __pyx_v_self->threading_support = __pyx_v_threading_support;
 
-  /* "hunter/_tracer.pyx":69
+  /* "hunter/_tracer.pyx":65
  *         self._threading_previous = None
  *         self.threading_support = threading_support
  *         self.profiling_mode = profiling_mode             # <<<<<<<<<<<<<<
  *         self.depth = 0
  *         self.calls = 0
  */
-  __Pyx_TraceLine(69,0,__PYX_ERR(0, 69, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_profiling_mode); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_profiling_mode); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
   __pyx_v_self->profiling_mode = __pyx_t_1;
 
-  /* "hunter/_tracer.pyx":70
+  /* "hunter/_tracer.pyx":66
  *         self.threading_support = threading_support
  *         self.profiling_mode = profiling_mode
  *         self.depth = 0             # <<<<<<<<<<<<<<
  *         self.calls = 0
  * 
  */
-  __Pyx_TraceLine(70,0,__PYX_ERR(0, 70, __pyx_L1_error))
+  __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
   __pyx_v_self->depth = 0;
 
-  /* "hunter/_tracer.pyx":71
+  /* "hunter/_tracer.pyx":67
  *         self.profiling_mode = profiling_mode
  *         self.depth = 0
  *         self.calls = 0             # <<<<<<<<<<<<<<
  * 
  *     def __dealloc__(self):
  */
-  __Pyx_TraceLine(71,0,__PYX_ERR(0, 71, __pyx_L1_error))
+  __Pyx_TraceLine(67,0,__PYX_ERR(0, 67, __pyx_L1_error))
   __pyx_v_self->calls = 0;
 
-  /* "hunter/_tracer.pyx":63
+  /* "hunter/_tracer.pyx":59
  * 
  * cdef class Tracer:
  *     def __cinit__(self, threading_support=None, profiling_mode=False):             # <<<<<<<<<<<<<<
@@ -4179,12 +4180,12 @@ static int __pyx_pf_6hunter_7_tracer_6Tracer___cinit__(struct __pyx_obj_6hunter_
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":73
+/* "hunter/_tracer.pyx":69
  *         self.calls = 0
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         cdef PyThreadState *state = PyThreadState_Get()
- *         if state.c_traceobj is <PyObject *>self:
+ *         if state.c_traceobj is <PyObject*> self:
  */
 
 /* Python wrapper */
@@ -4212,38 +4213,38 @@ static void __pyx_pf_6hunter_7_tracer_6Tracer_2__dealloc__(struct __pyx_obj_6hun
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
-  __Pyx_TraceCall("__dealloc__", __pyx_f[0], 73, 0, __PYX_ERR(0, 73, __pyx_L1_error));
+  __Pyx_TraceCall("__dealloc__", __pyx_f[0], 69, 0, __PYX_ERR(0, 69, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":74
+  /* "hunter/_tracer.pyx":70
  * 
  *     def __dealloc__(self):
  *         cdef PyThreadState *state = PyThreadState_Get()             # <<<<<<<<<<<<<<
- *         if state.c_traceobj is <PyObject *>self:
+ *         if state.c_traceobj is <PyObject*> self:
  *             self.stop()
  */
-  __Pyx_TraceLine(74,0,__PYX_ERR(0, 74, __pyx_L1_error))
+  __Pyx_TraceLine(70,0,__PYX_ERR(0, 70, __pyx_L1_error))
   __pyx_v_state = PyThreadState_Get();
 
-  /* "hunter/_tracer.pyx":75
+  /* "hunter/_tracer.pyx":71
  *     def __dealloc__(self):
  *         cdef PyThreadState *state = PyThreadState_Get()
- *         if state.c_traceobj is <PyObject *>self:             # <<<<<<<<<<<<<<
+ *         if state.c_traceobj is <PyObject*> self:             # <<<<<<<<<<<<<<
  *             self.stop()
  * 
  */
-  __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
+  __Pyx_TraceLine(71,0,__PYX_ERR(0, 71, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_state->c_traceobj == ((PyObject *)__pyx_v_self));
   if (__pyx_t_1) {
 
-    /* "hunter/_tracer.pyx":76
+    /* "hunter/_tracer.pyx":72
  *         cdef PyThreadState *state = PyThreadState_Get()
- *         if state.c_traceobj is <PyObject *>self:
+ *         if state.c_traceobj is <PyObject*> self:
  *             self.stop()             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-    __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __Pyx_TraceLine(72,0,__PYX_ERR(0, 72, __pyx_L1_error))
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     __pyx_t_5 = 0;
@@ -4261,27 +4262,27 @@ static void __pyx_pf_6hunter_7_tracer_6Tracer_2__dealloc__(struct __pyx_obj_6hun
       PyObject *__pyx_callargs[1] = {__pyx_t_4, };
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hunter/_tracer.pyx":75
+    /* "hunter/_tracer.pyx":71
  *     def __dealloc__(self):
  *         cdef PyThreadState *state = PyThreadState_Get()
- *         if state.c_traceobj is <PyObject *>self:             # <<<<<<<<<<<<<<
+ *         if state.c_traceobj is <PyObject*> self:             # <<<<<<<<<<<<<<
  *             self.stop()
  * 
  */
   }
 
-  /* "hunter/_tracer.pyx":73
+  /* "hunter/_tracer.pyx":69
  *         self.calls = 0
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         cdef PyThreadState *state = PyThreadState_Get()
- *         if state.c_traceobj is <PyObject *>self:
+ *         if state.c_traceobj is <PyObject*> self:
  */
 
   /* function exit code */
@@ -4296,7 +4297,7 @@ static void __pyx_pf_6hunter_7_tracer_6Tracer_2__dealloc__(struct __pyx_obj_6hun
   __Pyx_RefNannyFinishContext();
 }
 
-/* "hunter/_tracer.pyx":78
+/* "hunter/_tracer.pyx":74
  *             self.stop()
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -4334,37 +4335,37 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 0);
-  __Pyx_TraceCall("__repr__", __pyx_f[0], 78, 0, __PYX_ERR(0, 78, __pyx_L1_error));
+  __Pyx_TraceCall("__repr__", __pyx_f[0], 74, 0, __PYX_ERR(0, 74, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":79
+  /* "hunter/_tracer.pyx":75
  * 
  *     def __repr__(self):
  *         return '<hunter._tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (             # <<<<<<<<<<<<<<
  *             id(self),
  *             self.threading_support,
  */
-  __Pyx_TraceLine(79,0,__PYX_ERR(0, 79, __pyx_L1_error))
+  __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
 
-  /* "hunter/_tracer.pyx":80
+  /* "hunter/_tracer.pyx":76
  *     def __repr__(self):
  *         return '<hunter._tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
  *             id(self),             # <<<<<<<<<<<<<<
  *             self.threading_support,
  *             '<stopped>' if self.handler is None else 'handler=',
  */
-  __Pyx_TraceLine(80,0,__PYX_ERR(0, 80, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_id, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "hunter/_tracer.pyx":82
+  /* "hunter/_tracer.pyx":78
  *             id(self),
  *             self.threading_support,
  *             '<stopped>' if self.handler is None else 'handler=',             # <<<<<<<<<<<<<<
  *             '' if self.handler is None else repr(self.handler),
  *             '' if self.previous is None else ', previous=',
  */
-  __Pyx_TraceLine(82,0,__PYX_ERR(0, 82, __pyx_L1_error))
+  __Pyx_TraceLine(78,0,__PYX_ERR(0, 78, __pyx_L1_error))
   __pyx_t_3 = (__pyx_v_self->handler == Py_None);
   if (__pyx_t_3) {
     __Pyx_INCREF(__pyx_kp_s_stopped);
@@ -4374,14 +4375,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
     __pyx_t_2 = __pyx_kp_s_handler;
   }
 
-  /* "hunter/_tracer.pyx":83
+  /* "hunter/_tracer.pyx":79
  *             self.threading_support,
  *             '<stopped>' if self.handler is None else 'handler=',
  *             '' if self.handler is None else repr(self.handler),             # <<<<<<<<<<<<<<
  *             '' if self.previous is None else ', previous=',
  *             '' if self.previous is None else repr(self.previous),
  */
-  __Pyx_TraceLine(83,0,__PYX_ERR(0, 83, __pyx_L1_error))
+  __Pyx_TraceLine(79,0,__PYX_ERR(0, 79, __pyx_L1_error))
   __pyx_t_3 = (__pyx_v_self->handler == Py_None);
   if (__pyx_t_3) {
     __Pyx_INCREF(__pyx_kp_s_);
@@ -4389,21 +4390,21 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
   } else {
     __pyx_t_5 = __pyx_v_self->handler;
     __Pyx_INCREF(__pyx_t_5);
-    __pyx_t_6 = PyObject_Repr(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_6 = PyObject_Repr(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_4 = __pyx_t_6;
     __pyx_t_6 = 0;
   }
 
-  /* "hunter/_tracer.pyx":84
+  /* "hunter/_tracer.pyx":80
  *             '<stopped>' if self.handler is None else 'handler=',
  *             '' if self.handler is None else repr(self.handler),
  *             '' if self.previous is None else ', previous=',             # <<<<<<<<<<<<<<
  *             '' if self.previous is None else repr(self.previous),
  *         )
  */
-  __Pyx_TraceLine(84,0,__PYX_ERR(0, 84, __pyx_L1_error))
+  __Pyx_TraceLine(80,0,__PYX_ERR(0, 80, __pyx_L1_error))
   __pyx_t_3 = (__pyx_v_self->previous == Py_None);
   if (__pyx_t_3) {
     __Pyx_INCREF(__pyx_kp_s_);
@@ -4413,14 +4414,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
     __pyx_t_6 = __pyx_kp_s_previous;
   }
 
-  /* "hunter/_tracer.pyx":85
+  /* "hunter/_tracer.pyx":81
  *             '' if self.handler is None else repr(self.handler),
  *             '' if self.previous is None else ', previous=',
  *             '' if self.previous is None else repr(self.previous),             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __Pyx_TraceLine(85,0,__PYX_ERR(0, 85, __pyx_L1_error))
+  __Pyx_TraceLine(81,0,__PYX_ERR(0, 81, __pyx_L1_error))
   __pyx_t_3 = (__pyx_v_self->previous == Py_None);
   if (__pyx_t_3) {
     __Pyx_INCREF(__pyx_kp_s_);
@@ -4428,22 +4429,22 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
   } else {
     __pyx_t_7 = __pyx_v_self->previous;
     __Pyx_INCREF(__pyx_t_7);
-    __pyx_t_8 = PyObject_Repr(__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_8 = PyObject_Repr(__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_5 = __pyx_t_8;
     __pyx_t_8 = 0;
   }
 
-  /* "hunter/_tracer.pyx":80
+  /* "hunter/_tracer.pyx":76
  *     def __repr__(self):
  *         return '<hunter._tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
  *             id(self),             # <<<<<<<<<<<<<<
  *             self.threading_support,
  *             '<stopped>' if self.handler is None else 'handler=',
  */
-  __Pyx_TraceLine(80,0,__PYX_ERR(0, 80, __pyx_L1_error))
-  __pyx_t_8 = PyTuple_New(6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
+  __pyx_t_8 = PyTuple_New(6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
@@ -4464,22 +4465,22 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
 
-  /* "hunter/_tracer.pyx":79
+  /* "hunter/_tracer.pyx":75
  * 
  *     def __repr__(self):
  *         return '<hunter._tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (             # <<<<<<<<<<<<<<
  *             id(self),
  *             self.threading_support,
  */
-  __Pyx_TraceLine(79,0,__PYX_ERR(0, 79, __pyx_L1_error))
-  __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
+  __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "hunter/_tracer.pyx":78
+  /* "hunter/_tracer.pyx":74
  *             self.stop()
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -4505,18 +4506,18 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_4__repr__(struct __pyx_obj_6h
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":88
+/* "hunter/_tracer.pyx":84
  *         )
  * 
- *     def __call__(self, FrameType frame, str kind, arg):             # <<<<<<<<<<<<<<
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+ *     def __call__(self, frame, str kind, arg):             # <<<<<<<<<<<<<<
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
  *         if kind == 0:
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_7__call__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_7__call__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyFrameObject *__pyx_v_frame = 0;
+  PyObject *__pyx_v_frame = 0;
   PyObject *__pyx_v_kind = 0;
   PyObject *__pyx_v_arg = 0;
   CYTHON_UNUSED const Py_ssize_t __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -4550,26 +4551,26 @@ static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_7__call__(PyObject *__pyx_v_s
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_frame)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
         if (likely((values[1] = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_kind)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, 1); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, 1); __PYX_ERR(0, 84, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_arg)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, 2); __PYX_ERR(0, 88, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, 2); __PYX_ERR(0, 84, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__call__") < 0)) __PYX_ERR(0, 88, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__call__") < 0)) __PYX_ERR(0, 84, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -4578,20 +4579,19 @@ static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_7__call__(PyObject *__pyx_v_s
       values[1] = __Pyx_Arg_VARARGS(__pyx_args, 1);
       values[2] = __Pyx_Arg_VARARGS(__pyx_args, 2);
     }
-    __pyx_v_frame = ((PyFrameObject *)values[0]);
+    __pyx_v_frame = values[0];
     __pyx_v_kind = ((PyObject*)values[1]);
     __pyx_v_arg = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 88, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__call__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 84, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._tracer.Tracer.__call__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_frame), __pyx_ptype_6hunter_7_tracer_FrameType, 1, "frame", 0))) __PYX_ERR(0, 88, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kind), (&PyString_Type), 1, "kind", 1))) __PYX_ERR(0, 88, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kind), (&PyString_Type), 1, "kind", 1))) __PYX_ERR(0, 84, __pyx_L1_error)
   __pyx_r = __pyx_pf_6hunter_7_tracer_6Tracer_6__call__(((struct __pyx_obj_6hunter_7_tracer_Tracer *)__pyx_v_self), __pyx_v_frame, __pyx_v_kind, __pyx_v_arg);
 
   /* function exit code */
@@ -4603,7 +4603,7 @@ static PyObject *__pyx_pw_6hunter_7_tracer_6Tracer_7__call__(PyObject *__pyx_v_s
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyFrameObject *__pyx_v_frame, PyObject *__pyx_v_kind, PyObject *__pyx_v_arg) {
+static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyObject *__pyx_v_frame, PyObject *__pyx_v_kind, PyObject *__pyx_v_arg) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4615,74 +4615,75 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__call__", 0);
-  __Pyx_TraceCall("__call__", __pyx_f[0], 88, 0, __PYX_ERR(0, 88, __pyx_L1_error));
+  __Pyx_TraceCall("__call__", __pyx_f[0], 84, 0, __PYX_ERR(0, 84, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":89
+  /* "hunter/_tracer.pyx":85
  * 
- *     def __call__(self, FrameType frame, str kind, arg):
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)             # <<<<<<<<<<<<<<
+ *     def __call__(self, frame, str kind, arg):
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)             # <<<<<<<<<<<<<<
  *         if kind == 0:
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  */
-  __Pyx_TraceLine(89,0,__PYX_ERR(0, 89, __pyx_L1_error))
+  __Pyx_TraceLine(85,0,__PYX_ERR(0, 85, __pyx_L1_error))
+  if (!(likely(((__pyx_v_frame) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_frame, __pyx_ptype_6hunter_7_tracer_FrameType))))) __PYX_ERR(0, 85, __pyx_L1_error)
   if (unlikely(__pyx_v_6hunter_7_tracer_KIND_INTS == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 89, __pyx_L1_error)
+    __PYX_ERR(0, 85, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_6hunter_7_tracer_KIND_INTS, __pyx_v_kind); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_6hunter_7_tracer_KIND_INTS, __pyx_v_kind); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __pyx_f_6hunter_7_tracer_trace_func(__pyx_v_self, __pyx_v_frame, __pyx_t_2, ((PyObject *)__pyx_v_arg)); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6hunter_7_tracer_trace_func(__pyx_v_self, ((PyFrameObject *)__pyx_v_frame), __pyx_t_2, ((PyObject *)__pyx_v_arg)); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 85, __pyx_L1_error)
 
-  /* "hunter/_tracer.pyx":90
- *     def __call__(self, FrameType frame, str kind, arg):
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+  /* "hunter/_tracer.pyx":86
+ *     def __call__(self, frame, str kind, arg):
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
  *         if kind == 0:             # <<<<<<<<<<<<<<
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         return self
  */
-  __Pyx_TraceLine(90,0,__PYX_ERR(0, 90, __pyx_L1_error))
-  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_v_kind, __pyx_int_0, Py_EQ)); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 90, __pyx_L1_error)
+  __Pyx_TraceLine(86,0,__PYX_ERR(0, 86, __pyx_L1_error))
+  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_v_kind, __pyx_int_0, Py_EQ)); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 86, __pyx_L1_error)
   if (__pyx_t_4) {
 
-    /* "hunter/_tracer.pyx":91
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+    /* "hunter/_tracer.pyx":87
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
  *         if kind == 0:
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)             # <<<<<<<<<<<<<<
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-    __Pyx_TraceLine(91,0,__PYX_ERR(0, 91, __pyx_L1_error))
+    __Pyx_TraceLine(87,0,__PYX_ERR(0, 87, __pyx_L1_error))
     PyEval_SetTrace(((Py_tracefunc)__pyx_f_6hunter_7_tracer_trace_func), ((PyObject *)__pyx_v_self));
 
-    /* "hunter/_tracer.pyx":90
- *     def __call__(self, FrameType frame, str kind, arg):
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+    /* "hunter/_tracer.pyx":86
+ *     def __call__(self, frame, str kind, arg):
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
  *         if kind == 0:             # <<<<<<<<<<<<<<
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         return self
  */
   }
 
-  /* "hunter/_tracer.pyx":92
+  /* "hunter/_tracer.pyx":88
  *         if kind == 0:
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         return self             # <<<<<<<<<<<<<<
  * 
  *     def trace(self, predicate):
  */
-  __Pyx_TraceLine(92,0,__PYX_ERR(0, 92, __pyx_L1_error))
+  __Pyx_TraceLine(88,0,__PYX_ERR(0, 88, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "hunter/_tracer.pyx":88
+  /* "hunter/_tracer.pyx":84
  *         )
  * 
- *     def __call__(self, FrameType frame, str kind, arg):             # <<<<<<<<<<<<<<
- *         trace_func(self, frame, KIND_INTS[kind], <PyObject *> arg)
+ *     def __call__(self, frame, str kind, arg):             # <<<<<<<<<<<<<<
+ *         trace_func(self, frame, KIND_INTS[kind], <PyObject*> arg)
  *         if kind == 0:
  */
 
@@ -4698,7 +4699,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_6__call__(struct __pyx_obj_6h
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":94
+/* "hunter/_tracer.pyx":90
  *         return self
  * 
  *     def trace(self, predicate):             # <<<<<<<<<<<<<<
@@ -4752,12 +4753,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_predicate)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "trace") < 0)) __PYX_ERR(0, 94, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "trace") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -4768,7 +4769,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("trace", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 94, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("trace", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._tracer.Tracer.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4798,72 +4799,72 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
   int __pyx_clineno = 0;
   __Pyx_TraceFrameInit(__pyx_codeobj__2)
   __Pyx_RefNannySetupContext("trace", 0);
-  __Pyx_TraceCall("trace", __pyx_f[0], 94, 0, __PYX_ERR(0, 94, __pyx_L1_error));
+  __Pyx_TraceCall("trace", __pyx_f[0], 90, 0, __PYX_ERR(0, 90, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":95
+  /* "hunter/_tracer.pyx":91
  * 
  *     def trace(self, predicate):
  *         self.handler = predicate             # <<<<<<<<<<<<<<
  *         cdef PyThreadState *state = PyThreadState_Get()
  * 
  */
-  __Pyx_TraceLine(95,0,__PYX_ERR(0, 95, __pyx_L1_error))
+  __Pyx_TraceLine(91,0,__PYX_ERR(0, 91, __pyx_L1_error))
   __Pyx_INCREF(__pyx_v_predicate);
   __Pyx_GIVEREF(__pyx_v_predicate);
   __Pyx_GOTREF(__pyx_v_self->handler);
   __Pyx_DECREF(__pyx_v_self->handler);
   __pyx_v_self->handler = __pyx_v_predicate;
 
-  /* "hunter/_tracer.pyx":96
+  /* "hunter/_tracer.pyx":92
  *     def trace(self, predicate):
  *         self.handler = predicate
  *         cdef PyThreadState *state = PyThreadState_Get()             # <<<<<<<<<<<<<<
  * 
  *         if self.profiling_mode:
  */
-  __Pyx_TraceLine(96,0,__PYX_ERR(0, 96, __pyx_L1_error))
+  __Pyx_TraceLine(92,0,__PYX_ERR(0, 92, __pyx_L1_error))
   __pyx_v_state = PyThreadState_Get();
 
-  /* "hunter/_tracer.pyx":98
+  /* "hunter/_tracer.pyx":94
  *         cdef PyThreadState *state = PyThreadState_Get()
  * 
  *         if self.profiling_mode:             # <<<<<<<<<<<<<<
  *             if self.threading_support is None or self.threading_support:
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)
  */
-  __Pyx_TraceLine(98,0,__PYX_ERR(0, 98, __pyx_L1_error))
+  __Pyx_TraceLine(94,0,__PYX_ERR(0, 94, __pyx_L1_error))
   if (__pyx_v_self->profiling_mode) {
 
-    /* "hunter/_tracer.pyx":99
+    /* "hunter/_tracer.pyx":95
  * 
  *         if self.profiling_mode:
  *             if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)
  *                 threading.setprofile(self)
  */
-    __Pyx_TraceLine(99,0,__PYX_ERR(0, 99, __pyx_L1_error))
+    __Pyx_TraceLine(95,0,__PYX_ERR(0, 95, __pyx_L1_error))
     __pyx_t_2 = (__pyx_v_self->threading_support == Py_None);
     if (!__pyx_t_2) {
     } else {
       __pyx_t_1 = __pyx_t_2;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 99, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 95, __pyx_L1_error)
     __pyx_t_1 = __pyx_t_2;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "hunter/_tracer.pyx":100
+      /* "hunter/_tracer.pyx":96
  *         if self.profiling_mode:
  *             if self.threading_support is None or self.threading_support:
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)             # <<<<<<<<<<<<<<
  *                 threading.setprofile(self)
  *             if state.c_profileobj is NULL:
  */
-      __Pyx_TraceLine(100,0,__PYX_ERR(0, 100, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_TraceLine(96,0,__PYX_ERR(0, 96, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_GetAttr3(__pyx_t_3, __pyx_n_s_profile_hook, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetAttr3(__pyx_t_3, __pyx_n_s_profile_hook, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GIVEREF(__pyx_t_4);
@@ -4872,17 +4873,17 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       __pyx_v_self->_threading_previous = __pyx_t_4;
       __pyx_t_4 = 0;
 
-      /* "hunter/_tracer.pyx":101
+      /* "hunter/_tracer.pyx":97
  *             if self.threading_support is None or self.threading_support:
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)
  *                 threading.setprofile(self)             # <<<<<<<<<<<<<<
  *             if state.c_profileobj is NULL:
  *                 self.previous = None
  */
-      __Pyx_TraceLine(101,0,__PYX_ERR(0, 101, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+      __Pyx_TraceLine(97,0,__PYX_ERR(0, 97, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_threading); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_setprofile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_setprofile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 97, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_3 = NULL;
@@ -4901,13 +4902,13 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
         PyObject *__pyx_callargs[2] = {__pyx_t_3, ((PyObject *)__pyx_v_self)};
         __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "hunter/_tracer.pyx":99
+      /* "hunter/_tracer.pyx":95
  * 
  *         if self.profiling_mode:
  *             if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
@@ -4916,42 +4917,42 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
  */
     }
 
-    /* "hunter/_tracer.pyx":102
+    /* "hunter/_tracer.pyx":98
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)
  *                 threading.setprofile(self)
  *             if state.c_profileobj is NULL:             # <<<<<<<<<<<<<<
  *                 self.previous = None
  *                 self._previousfunc = NULL
  */
-    __Pyx_TraceLine(102,0,__PYX_ERR(0, 102, __pyx_L1_error))
+    __Pyx_TraceLine(98,0,__PYX_ERR(0, 98, __pyx_L1_error))
     __pyx_t_1 = (__pyx_v_state->c_profileobj == NULL);
     if (__pyx_t_1) {
 
-      /* "hunter/_tracer.pyx":103
+      /* "hunter/_tracer.pyx":99
  *                 threading.setprofile(self)
  *             if state.c_profileobj is NULL:
  *                 self.previous = None             # <<<<<<<<<<<<<<
  *                 self._previousfunc = NULL
  *             else:
  */
-      __Pyx_TraceLine(103,0,__PYX_ERR(0, 103, __pyx_L1_error))
+      __Pyx_TraceLine(99,0,__PYX_ERR(0, 99, __pyx_L1_error))
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
       __Pyx_GOTREF(__pyx_v_self->previous);
       __Pyx_DECREF(__pyx_v_self->previous);
       __pyx_v_self->previous = Py_None;
 
-      /* "hunter/_tracer.pyx":104
+      /* "hunter/_tracer.pyx":100
  *             if state.c_profileobj is NULL:
  *                 self.previous = None
  *                 self._previousfunc = NULL             # <<<<<<<<<<<<<<
  *             else:
  *                 self.previous = <object>(state.c_profileobj)
  */
-      __Pyx_TraceLine(104,0,__PYX_ERR(0, 104, __pyx_L1_error))
+      __Pyx_TraceLine(100,0,__PYX_ERR(0, 100, __pyx_L1_error))
       __pyx_v_self->_previousfunc = NULL;
 
-      /* "hunter/_tracer.pyx":102
+      /* "hunter/_tracer.pyx":98
  *                 self._threading_previous = getattr(threading, '_profile_hook', None)
  *                 threading.setprofile(self)
  *             if state.c_profileobj is NULL:             # <<<<<<<<<<<<<<
@@ -4961,14 +4962,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       goto __pyx_L7;
     }
 
-    /* "hunter/_tracer.pyx":106
+    /* "hunter/_tracer.pyx":102
  *                 self._previousfunc = NULL
  *             else:
  *                 self.previous = <object>(state.c_profileobj)             # <<<<<<<<<<<<<<
  *                 self._previousfunc = state.c_profilefunc
- *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  */
-    __Pyx_TraceLine(106,0,__PYX_ERR(0, 106, __pyx_L1_error))
+    __Pyx_TraceLine(102,0,__PYX_ERR(0, 102, __pyx_L1_error))
     /*else*/ {
       __pyx_t_4 = ((PyObject *)__pyx_v_state->c_profileobj);
       __Pyx_INCREF(__pyx_t_4);
@@ -4978,30 +4979,30 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       __pyx_v_self->previous = __pyx_t_4;
       __pyx_t_4 = 0;
 
-      /* "hunter/_tracer.pyx":107
+      /* "hunter/_tracer.pyx":103
  *             else:
  *                 self.previous = <object>(state.c_profileobj)
  *                 self._previousfunc = state.c_profilefunc             # <<<<<<<<<<<<<<
- *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         else:
  */
-      __Pyx_TraceLine(107,0,__PYX_ERR(0, 107, __pyx_L1_error))
+      __Pyx_TraceLine(103,0,__PYX_ERR(0, 103, __pyx_L1_error))
       __pyx_t_7 = __pyx_v_state->c_profilefunc;
       __pyx_v_self->_previousfunc = __pyx_t_7;
     }
     __pyx_L7:;
 
-    /* "hunter/_tracer.pyx":108
+    /* "hunter/_tracer.pyx":104
  *                 self.previous = <object>(state.c_profileobj)
  *                 self._previousfunc = state.c_profilefunc
- *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)             # <<<<<<<<<<<<<<
+ *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)             # <<<<<<<<<<<<<<
  *         else:
  *             if self.threading_support is None or self.threading_support:
  */
-    __Pyx_TraceLine(108,0,__PYX_ERR(0, 108, __pyx_L1_error))
+    __Pyx_TraceLine(104,0,__PYX_ERR(0, 104, __pyx_L1_error))
     PyEval_SetProfile(((Py_tracefunc)__pyx_f_6hunter_7_tracer_trace_func), ((PyObject *)__pyx_v_self));
 
-    /* "hunter/_tracer.pyx":98
+    /* "hunter/_tracer.pyx":94
  *         cdef PyThreadState *state = PyThreadState_Get()
  * 
  *         if self.profiling_mode:             # <<<<<<<<<<<<<<
@@ -5011,14 +5012,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
     goto __pyx_L3;
   }
 
-  /* "hunter/_tracer.pyx":110
- *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+  /* "hunter/_tracer.pyx":106
+ *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         else:
  *             if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)
  *                 threading.settrace(self)
  */
-  __Pyx_TraceLine(110,0,__PYX_ERR(0, 110, __pyx_L1_error))
+  __Pyx_TraceLine(106,0,__PYX_ERR(0, 106, __pyx_L1_error))
   /*else*/ {
     __pyx_t_2 = (__pyx_v_self->threading_support == Py_None);
     if (!__pyx_t_2) {
@@ -5026,22 +5027,22 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       __pyx_t_1 = __pyx_t_2;
       goto __pyx_L9_bool_binop_done;
     }
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 106, __pyx_L1_error)
     __pyx_t_1 = __pyx_t_2;
     __pyx_L9_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "hunter/_tracer.pyx":111
+      /* "hunter/_tracer.pyx":107
  *         else:
  *             if self.threading_support is None or self.threading_support:
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)             # <<<<<<<<<<<<<<
  *                 threading.settrace(self)
  *             if state.c_traceobj is NULL:
  */
-      __Pyx_TraceLine(111,0,__PYX_ERR(0, 111, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __Pyx_TraceLine(107,0,__PYX_ERR(0, 107, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_GetAttr3(__pyx_t_4, __pyx_n_s_trace_hook, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetAttr3(__pyx_t_4, __pyx_n_s_trace_hook, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 107, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GIVEREF(__pyx_t_5);
@@ -5050,17 +5051,17 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       __pyx_v_self->_threading_previous = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "hunter/_tracer.pyx":112
+      /* "hunter/_tracer.pyx":108
  *             if self.threading_support is None or self.threading_support:
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)
  *                 threading.settrace(self)             # <<<<<<<<<<<<<<
  *             if state.c_traceobj is NULL:
  *                 self.previous = None
  */
-      __Pyx_TraceLine(112,0,__PYX_ERR(0, 112, __pyx_L1_error))
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __Pyx_TraceLine(108,0,__PYX_ERR(0, 108, __pyx_L1_error))
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_settrace); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_settrace); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -5079,14 +5080,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
         PyObject *__pyx_callargs[2] = {__pyx_t_4, ((PyObject *)__pyx_v_self)};
         __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 112, __pyx_L1_error)
+        if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 108, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "hunter/_tracer.pyx":110
- *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+      /* "hunter/_tracer.pyx":106
+ *             PyEval_SetProfile(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         else:
  *             if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)
@@ -5094,42 +5095,42 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
  */
     }
 
-    /* "hunter/_tracer.pyx":113
+    /* "hunter/_tracer.pyx":109
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)
  *                 threading.settrace(self)
  *             if state.c_traceobj is NULL:             # <<<<<<<<<<<<<<
  *                 self.previous = None
  *                 self._previousfunc = NULL
  */
-    __Pyx_TraceLine(113,0,__PYX_ERR(0, 113, __pyx_L1_error))
+    __Pyx_TraceLine(109,0,__PYX_ERR(0, 109, __pyx_L1_error))
     __pyx_t_1 = (__pyx_v_state->c_traceobj == NULL);
     if (__pyx_t_1) {
 
-      /* "hunter/_tracer.pyx":114
+      /* "hunter/_tracer.pyx":110
  *                 threading.settrace(self)
  *             if state.c_traceobj is NULL:
  *                 self.previous = None             # <<<<<<<<<<<<<<
  *                 self._previousfunc = NULL
  *             else:
  */
-      __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
+      __Pyx_TraceLine(110,0,__PYX_ERR(0, 110, __pyx_L1_error))
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
       __Pyx_GOTREF(__pyx_v_self->previous);
       __Pyx_DECREF(__pyx_v_self->previous);
       __pyx_v_self->previous = Py_None;
 
-      /* "hunter/_tracer.pyx":115
+      /* "hunter/_tracer.pyx":111
  *             if state.c_traceobj is NULL:
  *                 self.previous = None
  *                 self._previousfunc = NULL             # <<<<<<<<<<<<<<
  *             else:
  *                 self.previous = <object>(state.c_traceobj)
  */
-      __Pyx_TraceLine(115,0,__PYX_ERR(0, 115, __pyx_L1_error))
+      __Pyx_TraceLine(111,0,__PYX_ERR(0, 111, __pyx_L1_error))
       __pyx_v_self->_previousfunc = NULL;
 
-      /* "hunter/_tracer.pyx":113
+      /* "hunter/_tracer.pyx":109
  *                 self._threading_previous = getattr(threading, '_trace_hook', None)
  *                 threading.settrace(self)
  *             if state.c_traceobj is NULL:             # <<<<<<<<<<<<<<
@@ -5139,14 +5140,14 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       goto __pyx_L11;
     }
 
-    /* "hunter/_tracer.pyx":117
+    /* "hunter/_tracer.pyx":113
  *                 self._previousfunc = NULL
  *             else:
  *                 self.previous = <object>(state.c_traceobj)             # <<<<<<<<<<<<<<
  *                 self._previousfunc = state.c_tracefunc
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  */
-    __Pyx_TraceLine(117,0,__PYX_ERR(0, 117, __pyx_L1_error))
+    __Pyx_TraceLine(113,0,__PYX_ERR(0, 113, __pyx_L1_error))
     /*else*/ {
       __pyx_t_5 = ((PyObject *)__pyx_v_state->c_traceobj);
       __Pyx_INCREF(__pyx_t_5);
@@ -5156,45 +5157,45 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
       __pyx_v_self->previous = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "hunter/_tracer.pyx":118
+      /* "hunter/_tracer.pyx":114
  *             else:
  *                 self.previous = <object>(state.c_traceobj)
  *                 self._previousfunc = state.c_tracefunc             # <<<<<<<<<<<<<<
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         return self
  */
-      __Pyx_TraceLine(118,0,__PYX_ERR(0, 118, __pyx_L1_error))
+      __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
       __pyx_t_7 = __pyx_v_state->c_tracefunc;
       __pyx_v_self->_previousfunc = __pyx_t_7;
     }
     __pyx_L11:;
 
-    /* "hunter/_tracer.pyx":119
+    /* "hunter/_tracer.pyx":115
  *                 self.previous = <object>(state.c_traceobj)
  *                 self._previousfunc = state.c_tracefunc
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)             # <<<<<<<<<<<<<<
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-    __Pyx_TraceLine(119,0,__PYX_ERR(0, 119, __pyx_L1_error))
+    __Pyx_TraceLine(115,0,__PYX_ERR(0, 115, __pyx_L1_error))
     PyEval_SetTrace(((Py_tracefunc)__pyx_f_6hunter_7_tracer_trace_func), ((PyObject *)__pyx_v_self));
   }
   __pyx_L3:;
 
-  /* "hunter/_tracer.pyx":120
+  /* "hunter/_tracer.pyx":116
  *                 self._previousfunc = state.c_tracefunc
- *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject *> self)
+ *             PyEval_SetTrace(<pystate.Py_tracefunc> trace_func, <PyObject*> self)
  *         return self             # <<<<<<<<<<<<<<
  * 
  *     def stop(self):
  */
-  __Pyx_TraceLine(120,0,__PYX_ERR(0, 120, __pyx_L1_error))
+  __Pyx_TraceLine(116,0,__PYX_ERR(0, 116, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "hunter/_tracer.pyx":94
+  /* "hunter/_tracer.pyx":90
  *         return self
  * 
  *     def trace(self, predicate):             # <<<<<<<<<<<<<<
@@ -5216,7 +5217,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8trace(struct __pyx_obj_6hunt
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":122
+/* "hunter/_tracer.pyx":118
  *         return self
  * 
  *     def stop(self):             # <<<<<<<<<<<<<<
@@ -5272,51 +5273,51 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
   int __pyx_clineno = 0;
   __Pyx_TraceFrameInit(__pyx_codeobj__3)
   __Pyx_RefNannySetupContext("stop", 0);
-  __Pyx_TraceCall("stop", __pyx_f[0], 122, 0, __PYX_ERR(0, 122, __pyx_L1_error));
+  __Pyx_TraceCall("stop", __pyx_f[0], 118, 0, __PYX_ERR(0, 118, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":123
+  /* "hunter/_tracer.pyx":119
  * 
  *     def stop(self):
  *         if self.handler is not None:             # <<<<<<<<<<<<<<
  *             if self.profiling_mode:
  *                 if self.previous is None:
  */
-  __Pyx_TraceLine(123,0,__PYX_ERR(0, 123, __pyx_L1_error))
+  __Pyx_TraceLine(119,0,__PYX_ERR(0, 119, __pyx_L1_error))
   __pyx_t_1 = (__pyx_v_self->handler != Py_None);
   if (__pyx_t_1) {
 
-    /* "hunter/_tracer.pyx":124
+    /* "hunter/_tracer.pyx":120
  *     def stop(self):
  *         if self.handler is not None:
  *             if self.profiling_mode:             # <<<<<<<<<<<<<<
  *                 if self.previous is None:
  *                     PyEval_SetProfile(NULL, NULL)
  */
-    __Pyx_TraceLine(124,0,__PYX_ERR(0, 124, __pyx_L1_error))
+    __Pyx_TraceLine(120,0,__PYX_ERR(0, 120, __pyx_L1_error))
     if (__pyx_v_self->profiling_mode) {
 
-      /* "hunter/_tracer.pyx":125
+      /* "hunter/_tracer.pyx":121
  *         if self.handler is not None:
  *             if self.profiling_mode:
  *                 if self.previous is None:             # <<<<<<<<<<<<<<
  *                     PyEval_SetProfile(NULL, NULL)
  *                 else:
  */
-      __Pyx_TraceLine(125,0,__PYX_ERR(0, 125, __pyx_L1_error))
+      __Pyx_TraceLine(121,0,__PYX_ERR(0, 121, __pyx_L1_error))
       __pyx_t_1 = (__pyx_v_self->previous == Py_None);
       if (__pyx_t_1) {
 
-        /* "hunter/_tracer.pyx":126
+        /* "hunter/_tracer.pyx":122
  *             if self.profiling_mode:
  *                 if self.previous is None:
  *                     PyEval_SetProfile(NULL, NULL)             # <<<<<<<<<<<<<<
  *                 else:
- *                     PyEval_SetProfile(self._previousfunc, <PyObject *> self.previous)
+ *                     PyEval_SetProfile(self._previousfunc, <PyObject*> self.previous)
  */
-        __Pyx_TraceLine(126,0,__PYX_ERR(0, 126, __pyx_L1_error))
+        __Pyx_TraceLine(122,0,__PYX_ERR(0, 122, __pyx_L1_error))
         PyEval_SetProfile(NULL, NULL);
 
-        /* "hunter/_tracer.pyx":125
+        /* "hunter/_tracer.pyx":121
  *         if self.handler is not None:
  *             if self.profiling_mode:
  *                 if self.previous is None:             # <<<<<<<<<<<<<<
@@ -5326,27 +5327,27 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
         goto __pyx_L5;
       }
 
-      /* "hunter/_tracer.pyx":128
+      /* "hunter/_tracer.pyx":124
  *                     PyEval_SetProfile(NULL, NULL)
  *                 else:
- *                     PyEval_SetProfile(self._previousfunc, <PyObject *> self.previous)             # <<<<<<<<<<<<<<
+ *                     PyEval_SetProfile(self._previousfunc, <PyObject*> self.previous)             # <<<<<<<<<<<<<<
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  */
-      __Pyx_TraceLine(128,0,__PYX_ERR(0, 128, __pyx_L1_error))
+      __Pyx_TraceLine(124,0,__PYX_ERR(0, 124, __pyx_L1_error))
       /*else*/ {
         PyEval_SetProfile(__pyx_v_self->_previousfunc, ((PyObject *)__pyx_v_self->previous));
       }
       __pyx_L5:;
 
-      /* "hunter/_tracer.pyx":129
+      /* "hunter/_tracer.pyx":125
  *                 else:
- *                     PyEval_SetProfile(self._previousfunc, <PyObject *> self.previous)
+ *                     PyEval_SetProfile(self._previousfunc, <PyObject*> self.previous)
  *                 self.handler = self.previous = None             # <<<<<<<<<<<<<<
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:
  */
-      __Pyx_TraceLine(129,0,__PYX_ERR(0, 129, __pyx_L1_error))
+      __Pyx_TraceLine(125,0,__PYX_ERR(0, 125, __pyx_L1_error))
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
       __Pyx_GOTREF(__pyx_v_self->handler);
@@ -5358,46 +5359,46 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
       __Pyx_DECREF(__pyx_v_self->previous);
       __pyx_v_self->previous = Py_None;
 
-      /* "hunter/_tracer.pyx":130
- *                     PyEval_SetProfile(self._previousfunc, <PyObject *> self.previous)
+      /* "hunter/_tracer.pyx":126
+ *                     PyEval_SetProfile(self._previousfunc, <PyObject*> self.previous)
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL             # <<<<<<<<<<<<<<
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.setprofile(self._threading_previous)
  */
-      __Pyx_TraceLine(130,0,__PYX_ERR(0, 130, __pyx_L1_error))
+      __Pyx_TraceLine(126,0,__PYX_ERR(0, 126, __pyx_L1_error))
       __pyx_v_self->_previousfunc = NULL;
 
-      /* "hunter/_tracer.pyx":131
+      /* "hunter/_tracer.pyx":127
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
  *                     threading.setprofile(self._threading_previous)
  *                     self._threading_previous = None
  */
-      __Pyx_TraceLine(131,0,__PYX_ERR(0, 131, __pyx_L1_error))
+      __Pyx_TraceLine(127,0,__PYX_ERR(0, 127, __pyx_L1_error))
       __pyx_t_2 = (__pyx_v_self->threading_support == Py_None);
       if (!__pyx_t_2) {
       } else {
         __pyx_t_1 = __pyx_t_2;
         goto __pyx_L7_bool_binop_done;
       }
-      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 131, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 127, __pyx_L1_error)
       __pyx_t_1 = __pyx_t_2;
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "hunter/_tracer.pyx":132
+        /* "hunter/_tracer.pyx":128
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.setprofile(self._threading_previous)             # <<<<<<<<<<<<<<
  *                     self._threading_previous = None
  *             else:
  */
-        __Pyx_TraceLine(132,0,__PYX_ERR(0, 132, __pyx_L1_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
+        __Pyx_TraceLine(128,0,__PYX_ERR(0, 128, __pyx_L1_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_threading); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_setprofile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_setprofile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_t_4 = NULL;
@@ -5416,27 +5417,27 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
           PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_v_self->_threading_previous};
           __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
+          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "hunter/_tracer.pyx":133
+        /* "hunter/_tracer.pyx":129
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.setprofile(self._threading_previous)
  *                     self._threading_previous = None             # <<<<<<<<<<<<<<
  *             else:
  *                 if self.previous is None:
  */
-        __Pyx_TraceLine(133,0,__PYX_ERR(0, 133, __pyx_L1_error))
+        __Pyx_TraceLine(129,0,__PYX_ERR(0, 129, __pyx_L1_error))
         __Pyx_INCREF(Py_None);
         __Pyx_GIVEREF(Py_None);
         __Pyx_GOTREF(__pyx_v_self->_threading_previous);
         __Pyx_DECREF(__pyx_v_self->_threading_previous);
         __pyx_v_self->_threading_previous = Py_None;
 
-        /* "hunter/_tracer.pyx":131
+        /* "hunter/_tracer.pyx":127
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
@@ -5445,7 +5446,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
  */
       }
 
-      /* "hunter/_tracer.pyx":124
+      /* "hunter/_tracer.pyx":120
  *     def stop(self):
  *         if self.handler is not None:
  *             if self.profiling_mode:             # <<<<<<<<<<<<<<
@@ -5455,29 +5456,29 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
       goto __pyx_L4;
     }
 
-    /* "hunter/_tracer.pyx":135
+    /* "hunter/_tracer.pyx":131
  *                     self._threading_previous = None
  *             else:
  *                 if self.previous is None:             # <<<<<<<<<<<<<<
  *                     PyEval_SetTrace(NULL, NULL)
  *                 else:
  */
-    __Pyx_TraceLine(135,0,__PYX_ERR(0, 135, __pyx_L1_error))
+    __Pyx_TraceLine(131,0,__PYX_ERR(0, 131, __pyx_L1_error))
     /*else*/ {
       __pyx_t_1 = (__pyx_v_self->previous == Py_None);
       if (__pyx_t_1) {
 
-        /* "hunter/_tracer.pyx":136
+        /* "hunter/_tracer.pyx":132
  *             else:
  *                 if self.previous is None:
  *                     PyEval_SetTrace(NULL, NULL)             # <<<<<<<<<<<<<<
  *                 else:
- *                     PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
+ *                     PyEval_SetTrace(self._previousfunc, <PyObject*> self.previous)
  */
-        __Pyx_TraceLine(136,0,__PYX_ERR(0, 136, __pyx_L1_error))
+        __Pyx_TraceLine(132,0,__PYX_ERR(0, 132, __pyx_L1_error))
         PyEval_SetTrace(NULL, NULL);
 
-        /* "hunter/_tracer.pyx":135
+        /* "hunter/_tracer.pyx":131
  *                     self._threading_previous = None
  *             else:
  *                 if self.previous is None:             # <<<<<<<<<<<<<<
@@ -5487,27 +5488,27 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
         goto __pyx_L9;
       }
 
-      /* "hunter/_tracer.pyx":138
+      /* "hunter/_tracer.pyx":134
  *                     PyEval_SetTrace(NULL, NULL)
  *                 else:
- *                     PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)             # <<<<<<<<<<<<<<
+ *                     PyEval_SetTrace(self._previousfunc, <PyObject*> self.previous)             # <<<<<<<<<<<<<<
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  */
-      __Pyx_TraceLine(138,0,__PYX_ERR(0, 138, __pyx_L1_error))
+      __Pyx_TraceLine(134,0,__PYX_ERR(0, 134, __pyx_L1_error))
       /*else*/ {
         PyEval_SetTrace(__pyx_v_self->_previousfunc, ((PyObject *)__pyx_v_self->previous));
       }
       __pyx_L9:;
 
-      /* "hunter/_tracer.pyx":139
+      /* "hunter/_tracer.pyx":135
  *                 else:
- *                     PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
+ *                     PyEval_SetTrace(self._previousfunc, <PyObject*> self.previous)
  *                 self.handler = self.previous = None             # <<<<<<<<<<<<<<
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:
  */
-      __Pyx_TraceLine(139,0,__PYX_ERR(0, 139, __pyx_L1_error))
+      __Pyx_TraceLine(135,0,__PYX_ERR(0, 135, __pyx_L1_error))
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
       __Pyx_GOTREF(__pyx_v_self->handler);
@@ -5519,46 +5520,46 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
       __Pyx_DECREF(__pyx_v_self->previous);
       __pyx_v_self->previous = Py_None;
 
-      /* "hunter/_tracer.pyx":140
- *                     PyEval_SetTrace(self._previousfunc, <PyObject *> self.previous)
+      /* "hunter/_tracer.pyx":136
+ *                     PyEval_SetTrace(self._previousfunc, <PyObject*> self.previous)
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL             # <<<<<<<<<<<<<<
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.settrace(self._threading_previous)
  */
-      __Pyx_TraceLine(140,0,__PYX_ERR(0, 140, __pyx_L1_error))
+      __Pyx_TraceLine(136,0,__PYX_ERR(0, 136, __pyx_L1_error))
       __pyx_v_self->_previousfunc = NULL;
 
-      /* "hunter/_tracer.pyx":141
+      /* "hunter/_tracer.pyx":137
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
  *                     threading.settrace(self._threading_previous)
  *                     self._threading_previous = None
  */
-      __Pyx_TraceLine(141,0,__PYX_ERR(0, 141, __pyx_L1_error))
+      __Pyx_TraceLine(137,0,__PYX_ERR(0, 137, __pyx_L1_error))
       __pyx_t_2 = (__pyx_v_self->threading_support == Py_None);
       if (!__pyx_t_2) {
       } else {
         __pyx_t_1 = __pyx_t_2;
         goto __pyx_L11_bool_binop_done;
       }
-      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 141, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_self->threading_support); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 137, __pyx_L1_error)
       __pyx_t_1 = __pyx_t_2;
       __pyx_L11_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "hunter/_tracer.pyx":142
+        /* "hunter/_tracer.pyx":138
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.settrace(self._threading_previous)             # <<<<<<<<<<<<<<
  *                     self._threading_previous = None
  * 
  */
-        __Pyx_TraceLine(142,0,__PYX_ERR(0, 142, __pyx_L1_error))
-        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_threading); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 142, __pyx_L1_error)
+        __Pyx_TraceLine(138,0,__PYX_ERR(0, 138, __pyx_L1_error))
+        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_threading); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 138, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_settrace); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 142, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_settrace); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_t_5 = NULL;
@@ -5577,27 +5578,27 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
           PyObject *__pyx_callargs[2] = {__pyx_t_5, __pyx_v_self->_threading_previous};
           __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
           __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
+          if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         }
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "hunter/_tracer.pyx":143
+        /* "hunter/_tracer.pyx":139
  *                 if self.threading_support is None or self.threading_support:
  *                     threading.settrace(self._threading_previous)
  *                     self._threading_previous = None             # <<<<<<<<<<<<<<
  * 
  *     def __enter__(self):
  */
-        __Pyx_TraceLine(143,0,__PYX_ERR(0, 143, __pyx_L1_error))
+        __Pyx_TraceLine(139,0,__PYX_ERR(0, 139, __pyx_L1_error))
         __Pyx_INCREF(Py_None);
         __Pyx_GIVEREF(Py_None);
         __Pyx_GOTREF(__pyx_v_self->_threading_previous);
         __Pyx_DECREF(__pyx_v_self->_threading_previous);
         __pyx_v_self->_threading_previous = Py_None;
 
-        /* "hunter/_tracer.pyx":141
+        /* "hunter/_tracer.pyx":137
  *                 self.handler = self.previous = None
  *                 self._previousfunc = NULL
  *                 if self.threading_support is None or self.threading_support:             # <<<<<<<<<<<<<<
@@ -5608,7 +5609,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
     }
     __pyx_L4:;
 
-    /* "hunter/_tracer.pyx":123
+    /* "hunter/_tracer.pyx":119
  * 
  *     def stop(self):
  *         if self.handler is not None:             # <<<<<<<<<<<<<<
@@ -5617,7 +5618,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
  */
   }
 
-  /* "hunter/_tracer.pyx":122
+  /* "hunter/_tracer.pyx":118
  *         return self
  * 
  *     def stop(self):             # <<<<<<<<<<<<<<
@@ -5641,7 +5642,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_10stop(struct __pyx_obj_6hunt
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":145
+/* "hunter/_tracer.pyx":141
  *                     self._threading_previous = None
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -5691,22 +5692,22 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_12__enter__(struct __pyx_obj_
   int __pyx_clineno = 0;
   __Pyx_TraceFrameInit(__pyx_codeobj__4)
   __Pyx_RefNannySetupContext("__enter__", 0);
-  __Pyx_TraceCall("__enter__", __pyx_f[0], 145, 0, __PYX_ERR(0, 145, __pyx_L1_error));
+  __Pyx_TraceCall("__enter__", __pyx_f[0], 141, 0, __PYX_ERR(0, 141, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":146
+  /* "hunter/_tracer.pyx":142
  * 
  *     def __enter__(self):
  *         return self             # <<<<<<<<<<<<<<
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):
  */
-  __Pyx_TraceLine(146,0,__PYX_ERR(0, 146, __pyx_L1_error))
+  __Pyx_TraceLine(142,0,__PYX_ERR(0, 142, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "hunter/_tracer.pyx":145
+  /* "hunter/_tracer.pyx":141
  *                     self._threading_previous = None
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -5725,7 +5726,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_12__enter__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pyx":148
+/* "hunter/_tracer.pyx":144
  *         return self
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):             # <<<<<<<<<<<<<<
@@ -5784,26 +5785,26 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       switch (__pyx_nargs) {
         case  0:
         if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_exc_type)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
         if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_exc_val)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 1); __PYX_ERR(0, 148, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 1); __PYX_ERR(0, 144, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_exc_tb)) != 0)) kw_args--;
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 2); __PYX_ERR(0, 148, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 2); __PYX_ERR(0, 144, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__exit__") < 0)) __PYX_ERR(0, 148, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__exit__") < 0)) __PYX_ERR(0, 144, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -5818,7 +5819,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 148, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 144, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hunter._tracer.Tracer.__exit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5844,15 +5845,15 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_14__exit__(struct __pyx_obj_6
   int __pyx_clineno = 0;
   __Pyx_TraceFrameInit(__pyx_codeobj__5)
   __Pyx_RefNannySetupContext("__exit__", 0);
-  __Pyx_TraceCall("__exit__", __pyx_f[0], 148, 0, __PYX_ERR(0, 148, __pyx_L1_error));
+  __Pyx_TraceCall("__exit__", __pyx_f[0], 144, 0, __PYX_ERR(0, 144, __pyx_L1_error));
 
-  /* "hunter/_tracer.pyx":149
+  /* "hunter/_tracer.pyx":145
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):
  *         self.stop()             # <<<<<<<<<<<<<<
  */
-  __Pyx_TraceLine(149,0,__PYX_ERR(0, 149, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_TraceLine(145,0,__PYX_ERR(0, 145, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_stop); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -5870,13 +5871,13 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_14__exit__(struct __pyx_obj_6
     PyObject *__pyx_callargs[1] = {__pyx_t_3, };
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hunter/_tracer.pyx":148
+  /* "hunter/_tracer.pyx":144
  *         return self
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):             # <<<<<<<<<<<<<<
@@ -5899,7 +5900,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_14__exit__(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":37
+/* "hunter/_tracer.pxd":36
  * cdef class Tracer:
  *     cdef:
  *         readonly object handler             # <<<<<<<<<<<<<<
@@ -5929,7 +5930,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_7handler___get__(struct __pyx
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 37, 0, __PYX_ERR(2, 37, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 36, 0, __PYX_ERR(2, 36, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->handler);
   __pyx_r = __pyx_v_self->handler;
@@ -5946,7 +5947,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_7handler___get__(struct __pyx
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":38
+/* "hunter/_tracer.pxd":37
  *     cdef:
  *         readonly object handler
  *         readonly object previous             # <<<<<<<<<<<<<<
@@ -5976,7 +5977,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8previous___get__(struct __py
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 38, 0, __PYX_ERR(2, 38, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 37, 0, __PYX_ERR(2, 37, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->previous);
   __pyx_r = __pyx_v_self->previous;
@@ -5993,7 +5994,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_8previous___get__(struct __py
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":39
+/* "hunter/_tracer.pxd":38
  *         readonly object handler
  *         readonly object previous
  *         readonly object threading_support             # <<<<<<<<<<<<<<
@@ -6023,7 +6024,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_17threading_support___get__(s
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 39, 0, __PYX_ERR(2, 39, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 38, 0, __PYX_ERR(2, 38, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->threading_support);
   __pyx_r = __pyx_v_self->threading_support;
@@ -6040,7 +6041,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_17threading_support___get__(s
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":40
+/* "hunter/_tracer.pxd":39
  *         readonly object previous
  *         readonly object threading_support
  *         readonly bint profiling_mode             # <<<<<<<<<<<<<<
@@ -6071,9 +6072,9 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_14profiling_mode___get__(stru
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 40, 0, __PYX_ERR(2, 40, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 39, 0, __PYX_ERR(2, 39, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->profiling_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 40, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->profiling_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6091,7 +6092,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_14profiling_mode___get__(stru
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":41
+/* "hunter/_tracer.pxd":40
  *         readonly object threading_support
  *         readonly bint profiling_mode
  *         readonly int depth             # <<<<<<<<<<<<<<
@@ -6122,9 +6123,9 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_5depth___get__(struct __pyx_o
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 41, 0, __PYX_ERR(2, 41, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 40, 0, __PYX_ERR(2, 40, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 41, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->depth); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6142,7 +6143,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_5depth___get__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":42
+/* "hunter/_tracer.pxd":41
  *         readonly bint profiling_mode
  *         readonly int depth
  *         readonly int calls             # <<<<<<<<<<<<<<
@@ -6173,9 +6174,9 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_5calls___get__(struct __pyx_o
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 42, 0, __PYX_ERR(2, 42, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 41, 0, __PYX_ERR(2, 41, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->calls); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 42, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->calls); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6193,7 +6194,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_5calls___get__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hunter/_tracer.pxd":46
+/* "hunter/_tracer.pxd":45
  *         object __weakref__
  * 
  *         readonly object _threading_previous             # <<<<<<<<<<<<<<
@@ -6222,7 +6223,7 @@ static PyObject *__pyx_pf_6hunter_7_tracer_6Tracer_19_threading_previous___get__
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
-  __Pyx_TraceCall("__get__", __pyx_f[2], 46, 0, __PYX_ERR(2, 46, __pyx_L1_error));
+  __Pyx_TraceCall("__get__", __pyx_f[2], 45, 0, __PYX_ERR(2, 45, __pyx_L1_error));
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_threading_previous);
   __pyx_r = __pyx_v_self->_threading_previous;
@@ -7008,6 +7009,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, __pyx_k_exc_val, sizeof(__pyx_k_exc_val), 0, 0, 1, 1},
   {0, __pyx_k_exception, sizeof(__pyx_k_exception), 0, 0, 1, 1},
   {0, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
+  {0, __pyx_k_f_trace, sizeof(__pyx_k_f_trace), 0, 0, 1, 1},
   {0, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {0, __pyx_k_frame, sizeof(__pyx_k_frame), 0, 0, 1, 1},
   {0, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
@@ -7085,6 +7087,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_exc_val, __pyx_k_exc_val, sizeof(__pyx_k_exc_val), 0, 0, 1, 1},
   {&__pyx_n_s_exception, __pyx_k_exception, sizeof(__pyx_k_exception), 0, 0, 1, 1},
   {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
+  {&__pyx_n_s_f_trace, __pyx_k_f_trace, sizeof(__pyx_k_f_trace), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_frame, __pyx_k_frame, sizeof(__pyx_k_frame), 0, 0, 1, 1},
   {&__pyx_kp_u_gc, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
@@ -7137,7 +7140,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(0, 76, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -7149,60 +7152,60 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hunter/_tracer.pyx":15
+  /* "hunter/_tracer.pyx":13
  * import hunter
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
  * cdef dict KIND_INTS = {
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_Tracer); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_Tracer); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "hunter/_tracer.pyx":94
+  /* "hunter/_tracer.pyx":90
  *         return self
  * 
  *     def trace(self, predicate):             # <<<<<<<<<<<<<<
  *         self.handler = predicate
  *         cdef PyThreadState *state = PyThreadState_Get()
  */
-  __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_predicate, __pyx_n_s_state); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_predicate, __pyx_n_s_state); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_trace, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_trace, 90, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 90, __pyx_L1_error)
 
-  /* "hunter/_tracer.pyx":122
+  /* "hunter/_tracer.pyx":118
  *         return self
  * 
  *     def stop(self):             # <<<<<<<<<<<<<<
  *         if self.handler is not None:
  *             if self.profiling_mode:
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_stop, 122, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_stop, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 118, __pyx_L1_error)
 
-  /* "hunter/_tracer.pyx":145
+  /* "hunter/_tracer.pyx":141
  *                     self._threading_previous = None
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_enter, 145, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_enter, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 141, __pyx_L1_error)
 
-  /* "hunter/_tracer.pyx":148
+  /* "hunter/_tracer.pyx":144
  *         return self
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):             # <<<<<<<<<<<<<<
  *         self.stop()
  */
-  __pyx_tuple__12 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_exc_type, __pyx_n_s_exc_val, __pyx_n_s_exc_tb); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_exc_type, __pyx_n_s_exc_val, __pyx_n_s_exc_tb); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_exit, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_hunter__tracer_pyx, __pyx_n_s_exit, 144, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 144, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -7260,53 +7263,54 @@ static CYTHON_SMALL_CODE int __Pyx_InitConstants(void) {
   if (__Pyx_InitString(__pyx_string_tab[26], &__pyx_n_s_exc_val) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[27], &__pyx_n_s_exception) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   if (__Pyx_InitString(__pyx_string_tab[28], &__pyx_n_s_exit) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_file) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_frame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_kp_u_gc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_n_s_getstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_kp_s_handler) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_n_s_hunter) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_n_s_hunter__tracer) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_n_s_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_n_s_import) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_n_s_initializing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_n_s_kind) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_n_s_line) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_n_s_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_kp_s_no_default___reduce___due_to_non) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_n_s_predicate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_kp_s_previous) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_n_s_print_exc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_profile_hook) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_n_s_profiling_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_s_reduce) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_n_s_return) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_n_s_self) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_n_s_setprofile) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_s_setstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_s_settrace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_n_s_spec) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_kp_s_src_hunter__tracer_pyx) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_n_s_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_n_s_stop) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_kp_s_stopped) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_n_s_test) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_n_s_threading) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_n_s_threading_support) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_n_s_trace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_n_s_trace_hook) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_n_s_traceback) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
-  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_n_s_write) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[29], &__pyx_n_s_f_trace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[30], &__pyx_n_s_file) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[31], &__pyx_n_s_frame) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[32], &__pyx_kp_u_gc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[33], &__pyx_n_s_getstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[34], &__pyx_kp_s_handler) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[35], &__pyx_n_s_hunter) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[36], &__pyx_n_s_hunter__tracer) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[37], &__pyx_kp_s_hunter__tracer_Tracer_at_0x_x_t) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[38], &__pyx_n_s_id) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[39], &__pyx_n_s_import) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[40], &__pyx_n_s_initializing) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[41], &__pyx_n_s_is_coroutine) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[42], &__pyx_kp_u_isenabled) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[43], &__pyx_n_s_kind) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[44], &__pyx_n_s_line) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[45], &__pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[46], &__pyx_n_s_name) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[47], &__pyx_kp_s_no_default___reduce___due_to_non) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[48], &__pyx_n_s_predicate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[49], &__pyx_kp_s_previous) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[50], &__pyx_n_s_print_exc) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[51], &__pyx_n_s_profile_hook) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[52], &__pyx_n_s_profiling_mode) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[53], &__pyx_n_s_pyx_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[54], &__pyx_n_s_pyx_vtable) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[55], &__pyx_n_s_reduce) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[56], &__pyx_n_s_reduce_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[57], &__pyx_n_s_reduce_ex) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[58], &__pyx_n_s_return) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[59], &__pyx_n_s_self) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[60], &__pyx_n_s_setprofile) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[61], &__pyx_n_s_setstate) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[62], &__pyx_n_s_setstate_cython) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[63], &__pyx_n_s_settrace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[64], &__pyx_n_s_spec) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[65], &__pyx_kp_s_src_hunter__tracer_pyx) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[66], &__pyx_n_s_state) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[67], &__pyx_n_s_stop) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[68], &__pyx_kp_s_stopped) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[69], &__pyx_kp_s_stringsource) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[70], &__pyx_n_s_test) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[71], &__pyx_n_s_threading) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[72], &__pyx_n_s_threading_support) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[73], &__pyx_n_s_trace) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[74], &__pyx_n_s_trace_hook) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[75], &__pyx_n_s_traceback) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  if (__Pyx_InitString(__pyx_string_tab[76], &__pyx_n_s_write) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   #endif
   #if !CYTHON_USE_MODULE_STATE
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
@@ -7370,24 +7374,24 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 19, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_6hunter_7_tracer_FrameType = __Pyx_ImportType(__pyx_t_1, "types", "FrameType", sizeof(PyFrameObject), __PYX_GET_STRUCT_ALIGNMENT(PyFrameObject),
-  __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(2, 19, __pyx_L1_error)
+  __Pyx_ImportType_CheckSize_Ignore);
+   if (!__pyx_ptype_6hunter_7_tracer_FrameType) __PYX_ERR(2, 18, __pyx_L1_error)
   __pyx_ptype_6hunter_7_tracer_CodeType = __Pyx_ImportType(__pyx_t_1, "types", "CodeType", sizeof(PyCodeObject), __PYX_GET_STRUCT_ALIGNMENT(PyCodeObject),
   __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(2, 22, __pyx_L1_error)
+   if (!__pyx_ptype_6hunter_7_tracer_CodeType) __PYX_ERR(2, 21, __pyx_L1_error)
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_6hunter_7_tracer_Tracer = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6hunter_7_tracer_Tracer_spec, NULL); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) __PYX_ERR(0, 62, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6hunter_7_tracer_Tracer_spec, __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_ptype_6hunter_7_tracer_Tracer = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6hunter_7_tracer_Tracer_spec, NULL); if (unlikely(!__pyx_ptype_6hunter_7_tracer_Tracer)) __PYX_ERR(0, 58, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6hunter_7_tracer_Tracer_spec, __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   #else
   __pyx_ptype_6hunter_7_tracer_Tracer = &__pyx_type_6hunter_7_tracer_Tracer;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_6hunter_7_tracer_Tracer->tp_print = 0;
@@ -7397,10 +7401,10 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_6hunter_7_tracer_Tracer->tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Tracer, (PyObject *) __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Tracer, (PyObject *) __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   if (__pyx_ptype_6hunter_7_tracer_Tracer->tp_weaklistoffset == 0) __pyx_ptype_6hunter_7_tracer_Tracer->tp_weaklistoffset = offsetof(struct __pyx_obj_6hunter_7_tracer_Tracer, __weakref__);
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6hunter_7_tracer_Tracer) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
   #endif
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
@@ -7814,113 +7818,113 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_traceback, __pyx_t_2) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_tracer.pyx":13
+  /* "hunter/_tracer.pyx":11
  * from ._predicates cimport fast_call
  * 
  * import hunter             # <<<<<<<<<<<<<<
  * 
  * __all__ = 'Tracer',
  */
-  __Pyx_TraceLine(13,0,__PYX_ERR(0, 13, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_ImportDottedModule(__pyx_n_s_hunter, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_TraceLine(11,0,__PYX_ERR(0, 11, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_ImportDottedModule(__pyx_n_s_hunter, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hunter, __pyx_t_2) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hunter, __pyx_t_2) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hunter/_tracer.pyx":15
+  /* "hunter/_tracer.pyx":13
  * import hunter
  * 
  * __all__ = 'Tracer',             # <<<<<<<<<<<<<<
  * 
  * cdef dict KIND_INTS = {
  */
-  __Pyx_TraceLine(15,0,__PYX_ERR(0, 15, __pyx_L1_error))
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_tuple__9) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_TraceLine(13,0,__PYX_ERR(0, 13, __pyx_L1_error))
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_all, __pyx_tuple__9) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
 
-  /* "hunter/_tracer.pyx":18
+  /* "hunter/_tracer.pyx":16
  * 
  * cdef dict KIND_INTS = {
  *     'call': 0,             # <<<<<<<<<<<<<<
  *     'exception': 1,
  *     'line': 2,
  */
-  __Pyx_TraceLine(18,0,__PYX_ERR(0, 18, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_TraceLine(16,0,__PYX_ERR(0, 16, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_call, __pyx_int_0) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_exception, __pyx_int_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_line, __pyx_int_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_int_3) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_call, __pyx_int_4) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_exception, __pyx_int_5) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_return, __pyx_int_6) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_call, __pyx_int_0) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_exception, __pyx_int_1) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_line, __pyx_int_2) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, __pyx_int_3) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_call, __pyx_int_4) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_exception, __pyx_int_5) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_c_return, __pyx_int_6) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_XGOTREF(__pyx_v_6hunter_7_tracer_KIND_INTS);
   __Pyx_DECREF_SET(__pyx_v_6hunter_7_tracer_KIND_INTS, ((PyObject*)__pyx_t_2));
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hunter/_tracer.pyx":27
+  /* "hunter/_tracer.pyx":25
  * }
  * 
  * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
- *     if frame.f_trace is not <PyObject*> self:
- *         Py_CLEAR(frame.f_trace)
+ *     if frame.f_trace is not self:
+ *         frame.f_trace = self
  */
-  __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
+  __Pyx_TraceLine(25,0,__PYX_ERR(0, 25, __pyx_L1_error))
 
 
-  /* "hunter/_tracer.pyx":94
+  /* "hunter/_tracer.pyx":90
  *         return self
  * 
  *     def trace(self, predicate):             # <<<<<<<<<<<<<<
  *         self.handler = predicate
  *         cdef PyThreadState *state = PyThreadState_Get()
  */
-  __Pyx_TraceLine(94,0,__PYX_ERR(0, 94, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_9trace, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer_trace, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_TraceLine(90,0,__PYX_ERR(0, 90, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_9trace, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer_trace, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_trace, __pyx_t_2) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_trace, __pyx_t_2) < 0) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6hunter_7_tracer_Tracer);
 
-  /* "hunter/_tracer.pyx":122
+  /* "hunter/_tracer.pyx":118
  *         return self
  * 
  *     def stop(self):             # <<<<<<<<<<<<<<
  *         if self.handler is not None:
  *             if self.profiling_mode:
  */
-  __Pyx_TraceLine(122,0,__PYX_ERR(0, 122, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_11stop, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer_stop, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __Pyx_TraceLine(118,0,__PYX_ERR(0, 118, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_11stop, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer_stop, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_stop, __pyx_t_2) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_stop, __pyx_t_2) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6hunter_7_tracer_Tracer);
 
-  /* "hunter/_tracer.pyx":145
+  /* "hunter/_tracer.pyx":141
  *                     self._threading_previous = None
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-  __Pyx_TraceLine(145,0,__PYX_ERR(0, 145, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_13__enter__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer___enter, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __Pyx_TraceLine(141,0,__PYX_ERR(0, 141, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_13__enter__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer___enter, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_enter, __pyx_t_2) < 0) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_enter, __pyx_t_2) < 0) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6hunter_7_tracer_Tracer);
 
-  /* "hunter/_tracer.pyx":148
+  /* "hunter/_tracer.pyx":144
  *         return self
  * 
  *     def __exit__(self, exc_type, exc_val, exc_tb):             # <<<<<<<<<<<<<<
  *         self.stop()
  */
-  __Pyx_TraceLine(148,0,__PYX_ERR(0, 148, __pyx_L1_error))
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_15__exit__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer___exit, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_TraceLine(144,0,__PYX_ERR(0, 144, __pyx_L1_error))
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_7_tracer_6Tracer_15__exit__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Tracer___exit, NULL, __pyx_n_s_hunter__tracer, __pyx_d, ((PyObject *)__pyx_codeobj__5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_exit, __pyx_t_2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6hunter_7_tracer_Tracer->tp_dict, __pyx_n_s_exit, __pyx_t_2) < 0) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6hunter_7_tracer_Tracer);
 
@@ -8211,6 +8215,20 @@ bad:
     Py_XDECREF(py_funcname);
 #endif
     return py_code;
+}
+#endif
+
+/* PyObjectSetAttrStr */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_setattro))
+        return tp->tp_setattro(obj, attr_name, value);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_setattr))
+        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
+#endif
+    return PyObject_SetAttr(obj, attr_name, value);
 }
 #endif
 
@@ -9168,6 +9186,26 @@ static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *nam
         ", got " __Pyx_FMT_TYPENAME ")", name, type_name, obj_type_name);
     __Pyx_DECREF_TypeName(type_name);
     __Pyx_DECREF_TypeName(obj_type_name);
+    return 0;
+}
+
+/* ExtTypeTest */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    __Pyx_TypeName obj_type_name;
+    __Pyx_TypeName type_name;
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(__Pyx_TypeCheck(obj, type)))
+        return 1;
+    obj_type_name = __Pyx_PyType_GetName(Py_TYPE(obj));
+    type_name = __Pyx_PyType_GetName(type);
+    PyErr_Format(PyExc_TypeError,
+                 "Cannot convert " __Pyx_FMT_TYPENAME " to " __Pyx_FMT_TYPENAME,
+                 obj_type_name, type_name);
+    __Pyx_DECREF_TypeName(obj_type_name);
+    __Pyx_DECREF_TypeName(type_name);
     return 0;
 }
 
