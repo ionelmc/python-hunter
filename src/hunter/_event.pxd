@@ -5,13 +5,13 @@ from ._tracer cimport *
 
 
 cdef extern from *:
-    void PyFrame_FastToLocals(FrameType)
-    int PyFrame_GetLineNumber(FrameType)
+    void PyFrame_FastToLocals(PyFrameObject*)
+    int PyFrame_GetLineNumber(PyFrameObject*)
 
 @cython.final
 cdef class Event:
     cdef:
-        readonly FrameType frame
+        readonly object frame
         readonly str kind
         readonly object arg
         readonly int depth

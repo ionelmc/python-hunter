@@ -655,8 +655,8 @@ cdef inline fast_Backlog_call(Backlog self, Event event):
     cdef Event detached_event
     cdef Event first_event
     cdef Event stack_event
-    cdef FrameType first_frame
-    cdef FrameType frame
+    cdef PyFrameObject* first_frame
+    cdef PyFrameObject* frame
     cdef int backlog_call_depth
     cdef int depth_delta
     cdef int first_depth

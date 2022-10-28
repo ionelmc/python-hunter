@@ -5,19 +5,19 @@ from cpython.ref cimport PyObject
 
 
 cdef extern from "vendor/_compat.h":
-    CodeType PyFrame_GetCode(FrameType)
-    int PyFrame_GetLasti(FrameType)
+    CodeType PyFrame_GetCode(PyFrameObject*)
+    int PyFrame_GetLasti(PyFrameObject*)
     object PyCode_GetCode(CodeType)
     object PyCode_GetVarnames(CodeType)
-    object PyFrame_GetGlobals(FrameType)
-    object PyFrame_GetLocals(FrameType)
+    object PyFrame_GetGlobals(PyFrameObject*)
+    object PyFrame_GetLocals(PyFrameObject*)
 
 cdef extern from *:
     void PyEval_SetTrace(Py_tracefunc, PyObject*)
     void PyEval_SetProfile(Py_tracefunc, PyObject*)
 
-    ctypedef class types.FrameType[object PyFrameObject]:
-        cdef PyObject* f_trace
+    ctypedef struct PyFrameObject:
+        pass
 
     ctypedef class types.CodeType[object PyCodeObject]:
         cdef object co_filename
