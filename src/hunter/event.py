@@ -135,6 +135,9 @@ class Event:
             and self.filename == other.filename
         )
 
+    def __reduce__(self):
+        raise TypeError("cannot pickle 'hunter.event.Event' object")
+
     def detach(self, value_filter=None):
         """
         Return a copy of the event with references to live objects (like the frame) removed. You should use this if you

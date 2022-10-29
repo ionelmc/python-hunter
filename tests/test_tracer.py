@@ -1450,6 +1450,27 @@ def test_tracing_bare(LineMatcher):
     )
 
 
+def test_pickle(LineMatcher):
+    out = []
+
+    def pickler(event):
+        out.append(event)
+
+    with trace(
+        pickler,
+        module=__name__,
+        function='foo',
+    ):
+
+        def foo():
+            pass
+
+        foo()
+
+    with pytest.raises(TypeError, match="cannot pickle 'hunter._?event.Event' object") as exc:
+        pickle.dumps(out)
+
+
 def test_debugger(LineMatcher):
     out = StringIO()
     calls = []

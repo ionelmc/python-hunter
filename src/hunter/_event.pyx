@@ -12,6 +12,7 @@ from tokenize import generate_tokens
 from cpython.pythread cimport PyThread_get_thread_ident
 from cpython.ref cimport Py_XINCREF
 from cpython.ref cimport PyObject
+from cython cimport auto_pickle
 
 from ._tracer cimport Tracer
 from .vendor._cymem.cymem cimport Pool
@@ -42,6 +43,7 @@ cdef PyObject** make_kind_names(list strings):
     return <PyObject**>array
 
 
+@auto_pickle(False)
 cdef class Event:
     """
     A wrapper object for Frame objects. Instances of this are passed to your custom functions or predicates.
