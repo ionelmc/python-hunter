@@ -21,6 +21,7 @@ cdef class EvilTracer:
             return
         detached_event = fast_detach(event, lambda obj: obj)
         detached_event.detached = False
+        detached_event.frame = event.frame
         self._calls.append(detached_event)
 
     def __enter__(self):

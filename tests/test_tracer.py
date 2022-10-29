@@ -1,13 +1,16 @@
 from __future__ import print_function
 
 import asyncio
+import faulthandler
 import functools
 import os
 import pickle
 import platform
 import sys
 import threading
+from io import StringIO
 from pprint import pprint
+from urllib.parse import urlencode
 
 import pytest
 
@@ -27,16 +30,7 @@ from hunter.actions import StackPrinter
 
 from utils import DebugCallPrinter
 
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
-
+faulthandler.enable()
 
 if hunter.Tracer.__module__ == 'hunter.tracer':
 
@@ -467,19 +461,6 @@ def test_locals():
 
         foo()
     assert out.getvalue().endswith("node += 'x'\n")
-
-
-def test_pickle():
-    out = []
-    with hunter.trace(
-        lambda event: out.append(pickle.dumps(event)),
-    ):
-
-        def foo():
-            pass
-
-        foo()
-    assert out == []
 
 
 def test_fullsource_decorator_issue(LineMatcher):
@@ -1450,7 +1431,7 @@ def test_tracing_bare(LineMatcher):
     )
 
 
-def test_pickle(LineMatcher):
+def test_pickle():
     out = []
 
     def pickler(event):
@@ -1467,7 +1448,7 @@ def test_pickle(LineMatcher):
 
         foo()
 
-    with pytest.raises(TypeError, match="cannot pickle 'hunter._?event.Event' object") as exc:
+    with pytest.raises(TypeError, match="can.+t pickle '?hunter._?event.Event'? objects?") as exc:
         pickle.dumps(out)
 
 

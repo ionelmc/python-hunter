@@ -19,7 +19,7 @@ cdef extern from *:
     ctypedef extern class types.FrameType[object PyFrameObject, check_size ignore]:
         pass
 
-    ctypedef extern class types.CodeType[object PyCodeObject]:
+    ctypedef extern class types.CodeType[object PyCodeObject, check_size ignore]:
         cdef object co_filename
         cdef object co_name
         cdef int co_argcount
