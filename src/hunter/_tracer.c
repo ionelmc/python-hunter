@@ -2543,7 +2543,7 @@ static PyObject *(*__pyx_f_6hunter_11_predicates_fast_call)(PyObject *, struct _
 
 /* Module declarations from "hunter._tracer" */
 static PyObject *__pyx_v_6hunter_7_tracer_KIND_INTS = 0;
-static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer_Tracer *, PyFrameObject *, int, PyObject *); /*proto*/
+static CYTHON_INLINE int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer_Tracer *, PyFrameObject *, int, PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "hunter._tracer"
@@ -3700,12 +3700,12 @@ static CYTHON_INLINE PyObject *__pyx_f_7cpython_11contextvars_get_value_no_defau
 /* "hunter/_tracer.pyx":25
  * }
  * 
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
  *     if frame.f_trace is not self:
  *         frame.f_trace = self
  */
 
-static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyFrameObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg) {
+static CYTHON_INLINE int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_self, PyFrameObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg) {
   PyObject *__pyx_v_handler = NULL;
   struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event = 0;
   PyObject *__pyx_v_exc = NULL;
@@ -3741,7 +3741,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
 
   /* "hunter/_tracer.pyx":26
  * 
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
  *     if frame.f_trace is not self:             # <<<<<<<<<<<<<<
  *         frame.f_trace = self
  * 
@@ -3754,7 +3754,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   if (__pyx_t_2) {
 
     /* "hunter/_tracer.pyx":27
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
  *     if frame.f_trace is not self:
  *         frame.f_trace = self             # <<<<<<<<<<<<<<
  * 
@@ -3765,7 +3765,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
 
     /* "hunter/_tracer.pyx":26
  * 
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
  *     if frame.f_trace is not self:             # <<<<<<<<<<<<<<
  *         frame.f_trace = self
  * 
@@ -4264,7 +4264,7 @@ static int __pyx_f_6hunter_7_tracer_trace_func(struct __pyx_obj_6hunter_7_tracer
   /* "hunter/_tracer.pyx":25
  * }
  * 
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
  *     if frame.f_trace is not self:
  *         frame.f_trace = self
  */
@@ -7723,7 +7723,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_tracer.pyx":25
  * }
  * 
- * cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
+ * cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:             # <<<<<<<<<<<<<<
  *     if frame.f_trace is not self:
  *         frame.f_trace = self
  */

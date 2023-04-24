@@ -33,7 +33,7 @@ cdef object UNSET = object()
 cdef Pool mem = Pool()
 cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
 
-cdef PyObject** make_kind_names(list strings):
+cdef inline PyObject** make_kind_names(list strings):
     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
     cdef object name
     for i, string in enumerate(strings):
@@ -58,7 +58,7 @@ cdef class Event:
         tracer (:class:`hunter.tracer.Tracer`): The :class:`~hunter.tracer.Tracer` instance that created the event.
             Needed for the ``calls`` and ``depth`` fields.
     """
-    def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+    def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
                  object threading_support=MISSING):
         if tracer is None:
             if depth is None:
@@ -108,11 +108,11 @@ cdef class Event:
     def clone(self):
         return fast_clone(self)
 
-    cdef instruction_getter(self):
+    cdef inline instruction_getter(self):
         cdef int position
 
         if self._instruction is UNSET:
-            position = PyFrame_GetLasti(<FrameType?> self.frame)
+            position = PyFrame_GetLasti(self.frame)
             co_code = PyCode_GetCode(self.code_getter())
             if co_code and position >= 0:
                 self._instruction = co_code[position]
@@ -124,7 +124,7 @@ cdef class Event:
     def instruction(self):
         return self.instruction_getter()
 
-    cdef threadid_getter(self):
+    cdef inline threadid_getter(self):
         cdef long current
 
         if self._threadidn is UNSET:
@@ -140,7 +140,7 @@ cdef class Event:
     def threadid(self):
         return self.threadid_getter()
 
-    cdef threadname_getter(self):
+    cdef inline threadname_getter(self):
         if self._threadname is UNSET:
             if self._thread is UNSET:
                 self._thread = current_thread()
@@ -151,32 +151,32 @@ cdef class Event:
     def threadname(self):
         return self.threadname_getter()
 
-    cdef locals_getter(self):
+    cdef inline locals_getter(self):
         if self._locals is UNSET:
             if self.builtin:
                 self._locals = {}
             else:
-                PyFrame_FastToLocals(<FrameType?> self.frame)
-                self._locals = PyFrame_GetLocals(<FrameType?> self.frame)
+                PyFrame_FastToLocals(self.frame)
+                self._locals = PyFrame_GetLocals(self.frame)
         return self._locals
 
     @property
     def locals(self):
         return self.locals_getter()
 
-    cdef globals_getter(self):
+    cdef inline globals_getter(self):
         if self._globals is UNSET:
             if self.builtin:
                 self._locals = {}
             else:
-                self._globals = PyFrame_GetGlobals(<FrameType?> self.frame)
+                self._globals = PyFrame_GetGlobals(self.frame)
         return self._globals
 
     @property
     def globals(self):
         return self.globals_getter()
 
-    cdef function_getter(self):
+    cdef inline function_getter(self):
         if self._function is UNSET:
             if self.builtin:
                 self._function = self.arg.__name__
@@ -219,7 +219,7 @@ cdef class Event:
             self._function_object = func
         return self._function_object
 
-    cdef module_getter(self):
+    cdef inline module_getter(self):
         if self._module is UNSET:
             if self.builtin:
                 module = self.arg.__module__
@@ -234,7 +234,7 @@ cdef class Event:
     def module(self):
         return self.module_getter()
 
-    cdef filename_getter(self):
+    cdef inline filename_getter(self):
         cdef CodeType code
         if self._filename is UNSET:
             code = self.code_getter()
@@ -260,18 +260,18 @@ cdef class Event:
     def filename(self):
         return self.filename_getter()
 
-    cdef lineno_getter(self):
+    cdef inline lineno_getter(self):
         if self._lineno is UNSET:
-            self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+            self._lineno = PyFrame_GetLineNumber(self.frame)
         return self._lineno
 
     @property
     def lineno(self):
         return self.lineno_getter()
 
-    cdef CodeType code_getter(self):
+    cdef inline CodeType code_getter(self):
         if self._code is UNSET:
-            return PyFrame_GetCode(<FrameType?> self.frame)
+            return PyFrame_GetCode(self.frame)
         else:
             return self._code
 
@@ -279,7 +279,7 @@ cdef class Event:
     def code(self):
         return self.code_getter()
 
-    cdef stdlib_getter(self):
+    cdef inline stdlib_getter(self):
         if self._stdlib is UNSET:
             module_parts = self.module.split('.')
             if 'pkg_resources' in module_parts:
@@ -289,7 +289,7 @@ cdef class Event:
                 # skip namedtuple exec garbage
                 self._stdlib = True
             elif self.filename.startswith(SITE_PACKAGES_PATHS):
-                # if it's in site-packages then its definitely not stdlib
+                # if in site-packages then definitely not stdlib
                 self._stdlib = False
             elif self.filename.startswith(SYS_PREFIX_PATHS):
                 self._stdlib = True
@@ -301,7 +301,7 @@ cdef class Event:
     def stdlib(self):
         return self.stdlib_getter()
 
-    cdef fullsource_getter(self):
+    cdef inline fullsource_getter(self):
         cdef list lines
         cdef CodeType code
 
@@ -331,7 +331,7 @@ cdef class Event:
     def fullsource(self):
         return self.fullsource_getter()
 
-    cdef source_getter(self):
+    cdef inline source_getter(self):
         if self._source is UNSET:
             if self.filename.endswith(('.so', '.pyd')):
                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])

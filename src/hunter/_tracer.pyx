@@ -22,7 +22,7 @@ cdef dict KIND_INTS = {
     'c_return': 6,
 }
 
-cdef int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
+cdef inline int trace_func(Tracer self, FrameType frame, int kind, PyObject* arg) except -1:
     if frame.f_trace is not self:
         frame.f_trace = self
 

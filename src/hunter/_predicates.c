@@ -1341,8 +1341,8 @@ struct __pyx_obj_6hunter_7_tracer_Tracer;
  * )
  * 
  * ctypedef object (*Event_getter_typedef)(Event)             # <<<<<<<<<<<<<<
- * cdef Event_get_function(Event event): return event.function_getter()
- * cdef Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()
+ * cdef inline Event_get_module(Event event): return event.module_getter()
  */
 typedef PyObject *(*__pyx_t_6hunter_11_predicates_Event_getter_typedef)(struct __pyx_obj_6hunter_6_event_Event *);
 
@@ -2843,26 +2843,26 @@ static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_And_call(struc
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_From_call(struct __pyx_obj_6hunter_11_predicates_From *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Not_call(struct __pyx_obj_6hunter_11_predicates_Not *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Or_call(struct __pyx_obj_6hunter_11_predicates_Or *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_When_call(struct __pyx_obj_6hunter_11_predicates_When *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_call(PyObject *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_function(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_module(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_lineno(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_globals(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_stdlib(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_arg(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_locals(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_kind(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_filename(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_source(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_fullsource(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadname(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadid(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_instruction(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_depth(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_calls(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_builtin(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_function(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_module(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_lineno(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_globals(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_stdlib(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_arg(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_locals(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_kind(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_filename(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_source(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_fullsource(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadname(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadid(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_instruction(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_depth(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_calls(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_builtin(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Backlog_call(struct __pyx_obj_6hunter_11_predicates_Backlog *, struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static PyObject *__pyx_f_6hunter_11_predicates___pyx_unpickle_Query__set_state(struct __pyx_obj_6hunter_11_predicates_Query *, PyObject *); /*proto*/
 static PyObject *__pyx_f_6hunter_11_predicates___pyx_unpickle_When__set_state(struct __pyx_obj_6hunter_11_predicates_When *, PyObject *); /*proto*/
@@ -4799,12 +4799,12 @@ static PyObject *__Pyx_CFunc_object__lParenEvent__rParen_to_py_5event(PyObject *
 /* "hunter/_predicates.pyx":38
  * 
  * ctypedef object (*Event_getter_typedef)(Event)
- * cdef Event_get_function(Event event): return event.function_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_function(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_function(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4835,13 +4835,13 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_function(struct __pyx_o
 
 /* "hunter/_predicates.pyx":39
  * ctypedef object (*Event_getter_typedef)(Event)
- * cdef Event_get_function(Event event): return event.function_getter()
- * cdef Event_get_module(Event event): return event.module_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()
+ * cdef inline Event_get_module(Event event): return event.module_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_module(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_module(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4871,14 +4871,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_module(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":40
- * cdef Event_get_function(Event event): return event.function_getter()
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_lineno(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_lineno(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4908,14 +4908,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_lineno(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":41
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_globals(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_globals(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4945,14 +4945,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_globals(struct __pyx_ob
 }
 
 /* "hunter/_predicates.pyx":42
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_stdlib(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_stdlib(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -4982,14 +4982,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_stdlib(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":43
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg             # <<<<<<<<<<<<<<
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_arg(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_arg(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5015,14 +5015,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_arg(struct __pyx_obj_6h
 }
 
 /* "hunter/_predicates.pyx":44
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_locals(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_locals(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5052,14 +5052,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_locals(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":45
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind             # <<<<<<<<<<<<<<
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_kind(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_kind(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5085,14 +5085,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_kind(struct __pyx_obj_6
 }
 
 /* "hunter/_predicates.pyx":46
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_filename(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_filename(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5122,14 +5122,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_filename(struct __pyx_o
 }
 
 /* "hunter/_predicates.pyx":47
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_source(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_source(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5159,14 +5159,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_source(struct __pyx_obj
 }
 
 /* "hunter/_predicates.pyx":48
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_fullsource(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_fullsource(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5196,14 +5196,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_fullsource(struct __pyx
 }
 
 /* "hunter/_predicates.pyx":49
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadname(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadname(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5233,14 +5233,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadname(struct __pyx
 }
 
 /* "hunter/_predicates.pyx":50
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadid(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadid(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5270,14 +5270,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_threadid(struct __pyx_o
 }
 
 /* "hunter/_predicates.pyx":51
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_instruction(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_instruction(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5307,14 +5307,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_instruction(struct __py
 }
 
 /* "hunter/_predicates.pyx":52
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth             # <<<<<<<<<<<<<<
- * cdef Event_get_calls(Event event): return event.calls
- * cdef Event_get_builtin(Event event): return event.builtin
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_builtin(Event event): return event.builtin
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_depth(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_depth(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5344,14 +5344,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_depth(struct __pyx_obj_
 }
 
 /* "hunter/_predicates.pyx":53
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls             # <<<<<<<<<<<<<<
- * cdef Event_get_builtin(Event event): return event.builtin
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_builtin(Event event): return event.builtin
  * 
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_calls(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_calls(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -5381,14 +5381,14 @@ static PyObject *__pyx_f_6hunter_11_predicates_Event_get_calls(struct __pyx_obj_
 }
 
 /* "hunter/_predicates.pyx":54
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls
- * cdef Event_get_builtin(Event event): return event.builtin             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_builtin(Event event): return event.builtin             # <<<<<<<<<<<<<<
  * 
  * cdef Event_getter_typedef[17] Event_getters = [
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_Event_get_builtin(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_Event_get_builtin(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -8957,7 +8957,7 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_14__invert__(struct __pyx
  *     def __invert__(self):
  *         return Not(self)             # <<<<<<<<<<<<<<
  * 
- * cdef fast_Query_call(Query self, Event event):
+ * cdef inline fast_Query_call(Query self, Event event):
  */
   __Pyx_TraceLine(263,0,__PYX_ERR(1, 263, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -9930,12 +9930,12 @@ static PyObject *__pyx_pf_6hunter_11_predicates_5Query_18__setstate_cython__(str
 /* "hunter/_predicates.pyx":265
  *         return Not(self)
  * 
- * cdef fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
+ * cdef inline fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
  *     for key, entry in self.query_eq:
  *         value_from_event = (<QueryEntry> entry).getter(event)
  */
 
-static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *__pyx_v_self, struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
+static CYTHON_INLINE PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_6hunter_11_predicates_Query *__pyx_v_self, struct __pyx_obj_6hunter_6_event_Event *__pyx_v_event) {
   CYTHON_UNUSED PyObject *__pyx_v_key = NULL;
   PyObject *__pyx_v_entry = NULL;
   PyObject *__pyx_v_value_from_event = NULL;
@@ -9960,7 +9960,7 @@ static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_
 
   /* "hunter/_predicates.pyx":266
  * 
- * cdef fast_Query_call(Query self, Event event):
+ * cdef inline fast_Query_call(Query self, Event event):
  *     for key, entry in self.query_eq:             # <<<<<<<<<<<<<<
  *         value_from_event = (<QueryEntry> entry).getter(event)
  *         if value_from_event != (<QueryEntry> entry).value:
@@ -10031,7 +10031,7 @@ static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_
     __pyx_t_5 = 0;
 
     /* "hunter/_predicates.pyx":267
- * cdef fast_Query_call(Query self, Event event):
+ * cdef inline fast_Query_call(Query self, Event event):
  *     for key, entry in self.query_eq:
  *         value_from_event = (<QueryEntry> entry).getter(event)             # <<<<<<<<<<<<<<
  *         if value_from_event != (<QueryEntry> entry).value:
@@ -10081,7 +10081,7 @@ static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_
 
     /* "hunter/_predicates.pyx":266
  * 
- * cdef fast_Query_call(Query self, Event event):
+ * cdef inline fast_Query_call(Query self, Event event):
  *     for key, entry in self.query_eq:             # <<<<<<<<<<<<<<
  *         value_from_event = (<QueryEntry> entry).getter(event)
  *         if value_from_event != (<QueryEntry> entry).value:
@@ -11326,7 +11326,7 @@ static PyObject *__pyx_f_6hunter_11_predicates_fast_Query_call(struct __pyx_obj_
   /* "hunter/_predicates.pyx":265
  *         return Not(self)
  * 
- * cdef fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
+ * cdef inline fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
  *     for key, entry in self.query_eq:
  *         value_from_event = (<QueryEntry> entry).getter(event)
  */
@@ -30607,167 +30607,167 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_predicates.pyx":38
  * 
  * ctypedef object (*Event_getter_typedef)(Event)
- * cdef Event_get_function(Event event): return event.function_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
  */
   __Pyx_TraceLine(38,0,__PYX_ERR(1, 38, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":39
  * ctypedef object (*Event_getter_typedef)(Event)
- * cdef Event_get_function(Event event): return event.function_getter()
- * cdef Event_get_module(Event event): return event.module_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()
+ * cdef inline Event_get_module(Event event): return event.module_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
  */
   __Pyx_TraceLine(39,0,__PYX_ERR(1, 39, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":40
- * cdef Event_get_function(Event event): return event.function_getter()
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_function(Event event): return event.function_getter()
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
  */
   __Pyx_TraceLine(40,0,__PYX_ERR(1, 40, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":41
- * cdef Event_get_module(Event event): return event.module_getter()
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_module(Event event): return event.module_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
  */
   __Pyx_TraceLine(41,0,__PYX_ERR(1, 41, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":42
- * cdef Event_get_lineno(Event event): return event.lineno_getter()
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
  */
   __Pyx_TraceLine(42,0,__PYX_ERR(1, 42, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":43
- * cdef Event_get_globals(Event event): return event.globals_getter()
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg             # <<<<<<<<<<<<<<
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_globals(Event event): return event.globals_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
  */
   __Pyx_TraceLine(43,0,__PYX_ERR(1, 43, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":44
- * cdef Event_get_stdlib(Event event): return event.stdlib_getter()
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
  */
   __Pyx_TraceLine(44,0,__PYX_ERR(1, 44, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":45
- * cdef Event_get_arg(Event event): return event.arg
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind             # <<<<<<<<<<<<<<
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_arg(Event event): return event.arg
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
  */
   __Pyx_TraceLine(45,0,__PYX_ERR(1, 45, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":46
- * cdef Event_get_locals(Event event): return event.locals_getter()
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_locals(Event event): return event.locals_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
  */
   __Pyx_TraceLine(46,0,__PYX_ERR(1, 46, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":47
- * cdef Event_get_kind(Event event): return event.kind
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_kind(Event event): return event.kind
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
  */
   __Pyx_TraceLine(47,0,__PYX_ERR(1, 47, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":48
- * cdef Event_get_filename(Event event): return event.filename_getter()
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_filename(Event event): return event.filename_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
  */
   __Pyx_TraceLine(48,0,__PYX_ERR(1, 48, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":49
- * cdef Event_get_source(Event event): return event.source_getter()
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_source(Event event): return event.source_getter()
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
  */
   __Pyx_TraceLine(49,0,__PYX_ERR(1, 49, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":50
- * cdef Event_get_fullsource(Event event): return event.fullsource_getter()
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth
  */
   __Pyx_TraceLine(50,0,__PYX_ERR(1, 50, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":51
- * cdef Event_get_threadname(Event event): return event.threadname_getter()
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()             # <<<<<<<<<<<<<<
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls
  */
   __Pyx_TraceLine(51,0,__PYX_ERR(1, 51, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":52
- * cdef Event_get_threadid(Event event): return event.threadid_getter()
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth             # <<<<<<<<<<<<<<
- * cdef Event_get_calls(Event event): return event.calls
- * cdef Event_get_builtin(Event event): return event.builtin
+ * cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_builtin(Event event): return event.builtin
  */
   __Pyx_TraceLine(52,0,__PYX_ERR(1, 52, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":53
- * cdef Event_get_instruction(Event event): return event.instruction_getter()
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls             # <<<<<<<<<<<<<<
- * cdef Event_get_builtin(Event event): return event.builtin
+ * cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_builtin(Event event): return event.builtin
  * 
  */
   __Pyx_TraceLine(53,0,__PYX_ERR(1, 53, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":54
- * cdef Event_get_depth(Event event): return event.depth
- * cdef Event_get_calls(Event event): return event.calls
- * cdef Event_get_builtin(Event event): return event.builtin             # <<<<<<<<<<<<<<
+ * cdef inline Event_get_depth(Event event): return event.depth
+ * cdef inline Event_get_calls(Event event): return event.calls
+ * cdef inline Event_get_builtin(Event event): return event.builtin             # <<<<<<<<<<<<<<
  * 
  * cdef Event_getter_typedef[17] Event_getters = [
  */
@@ -30775,7 +30775,7 @@ if (!__Pyx_RefNanny) {
 
 
   /* "hunter/_predicates.pyx":56
- * cdef Event_get_builtin(Event event): return event.builtin
+ * cdef inline Event_get_builtin(Event event): return event.builtin
  * 
  * cdef Event_getter_typedef[17] Event_getters = [             # <<<<<<<<<<<<<<
  *     Event_get_function,
@@ -30852,7 +30852,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_predicates.pyx":265
  *         return Not(self)
  * 
- * cdef fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
+ * cdef inline fast_Query_call(Query self, Event event):             # <<<<<<<<<<<<<<
  *     for key, entry in self.query_eq:
  *         value_from_event = (<QueryEntry> entry).getter(event)
  */

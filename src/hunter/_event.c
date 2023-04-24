@@ -2064,9 +2064,6 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
-
 /* KeywordStringCheck.proto */
 static int __Pyx_CheckKeywordStrings(PyObject *kw, const char* function_name, int kw_allowed);
 
@@ -2189,6 +2186,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(
         PyObject* obj, Py_ssize_t cstart, Py_ssize_t cstop,
         PyObject** py_start, PyObject** py_stop, PyObject** py_slice,
         int has_cstart, int has_cstop, int wraparound);
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 /* PySequenceContains.proto */
 static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
@@ -2678,7 +2678,7 @@ static struct __pyx_obj_6hunter_6vendor_6_cymem_5cymem_Pool *__pyx_v_6hunter_6_e
 static PyObject **__pyx_v_6hunter_6_event_KIND_NAMES;
 static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_fast_clone(struct __pyx_obj_6hunter_6_event_Event *); /*proto*/
 static CYTHON_INLINE struct __pyx_obj_6hunter_6_event_Event *__pyx_f_6hunter_6_event_fast_detach(struct __pyx_obj_6hunter_6_event_Event *, PyObject *); /*proto*/
-static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *); /*proto*/
+static CYTHON_INLINE PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "hunter._event"
@@ -2807,7 +2807,7 @@ static const char __pyx_k_Missing_argument_calls_required[] = "Missing argument:
 static const char __pyx_k_Missing_argument_depth_required[] = "Missing argument: depth (required because tracer was not given).";
 static const char __pyx_k_Missing_argument_threading_suppo[] = "Missing argument: threading_support (required because tracer was not given).";
 /* #### Code section: decls ### */
-static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg, struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer, PyObject *__pyx_v_depth, PyObject *__pyx_v_calls, PyObject *__pyx_v_threading_support); /* proto */
+static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyFrameObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg, struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer, PyObject *__pyx_v_depth, PyObject *__pyx_v_calls, PyObject *__pyx_v_threading_support); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_2__repr__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_4detach(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_value_filter); /* proto */
 static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self); /* proto */
@@ -3611,12 +3611,12 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 /* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
- * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
+ * cdef inline PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  */
 
-static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_strings) {
+static CYTHON_INLINE PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_strings) {
   PyObject **__pyx_v_array;
   PyObject *__pyx_v_name = 0;
   Py_ssize_t __pyx_v_i;
@@ -3637,7 +3637,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
 
   /* "hunter/_event.pyx":37
  * 
- * cdef PyObject** make_kind_names(list strings):
+ * cdef inline PyObject** make_kind_names(list strings):
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))             # <<<<<<<<<<<<<<
  *     cdef object name
  *     for i, string in enumerate(strings):
@@ -3732,7 +3732,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
   /* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
- * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
+ * cdef inline PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  */
@@ -3754,7 +3754,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
 /* "hunter/_event.pyx":61
  *             Needed for the ``calls`` and ``depth`` fields.
  *     """
- *     def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
+ *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
  *                  object threading_support=MISSING):
  *         if tracer is None:
  */
@@ -3762,7 +3762,7 @@ static PyObject **__pyx_f_6hunter_6_event_make_kind_names(PyObject *__pyx_v_stri
 /* Python wrapper */
 static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_frame = 0;
+  PyFrameObject *__pyx_v_frame = 0;
   int __pyx_v_kind;
   PyObject *__pyx_v_arg = 0;
   struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer = 0;
@@ -3874,7 +3874,7 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_frame = values[0];
+    __pyx_v_frame = ((PyFrameObject *)values[0]);
     __pyx_v_kind = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_kind == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
     __pyx_v_arg = values[2];
     __pyx_v_tracer = ((struct __pyx_obj_6hunter_7_tracer_Tracer *)values[3]);
@@ -3890,6 +3890,7 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_frame), __pyx_ptype_6hunter_7_tracer_FrameType, 1, "frame", 0))) __PYX_ERR(0, 61, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tracer), __pyx_ptype_6hunter_7_tracer_Tracer, 1, "tracer", 0))) __PYX_ERR(0, 61, __pyx_L1_error)
   __pyx_r = __pyx_pf_6hunter_6_event_5Event___init__(((struct __pyx_obj_6hunter_6_event_Event *)__pyx_v_self), __pyx_v_frame, __pyx_v_kind, __pyx_v_arg, __pyx_v_tracer, __pyx_v_depth, __pyx_v_calls, __pyx_v_threading_support);
 
@@ -3902,7 +3903,7 @@ static int __pyx_pw_6hunter_6_event_5Event_1__init__(PyObject *__pyx_v_self, PyO
   return __pyx_r;
 }
 
-static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg, struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer, PyObject *__pyx_v_depth, PyObject *__pyx_v_calls, PyObject *__pyx_v_threading_support) {
+static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self, PyFrameObject *__pyx_v_frame, int __pyx_v_kind, PyObject *__pyx_v_arg, struct __pyx_obj_6hunter_7_tracer_Tracer *__pyx_v_tracer, PyObject *__pyx_v_depth, PyObject *__pyx_v_calls, PyObject *__pyx_v_threading_support) {
   int __pyx_r;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -3919,7 +3920,7 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   __Pyx_INCREF(__pyx_v_threading_support);
 
   /* "hunter/_event.pyx":63
- *     def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+ *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):
  *         if tracer is None:             # <<<<<<<<<<<<<<
  *             if depth is None:
@@ -4035,7 +4036,7 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
     }
 
     /* "hunter/_event.pyx":63
- *     def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+ *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):
  *         if tracer is None:             # <<<<<<<<<<<<<<
  *             if depth is None:
@@ -4108,14 +4109,11 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
  *         self.depth = depth
  */
   __Pyx_TraceLine(76,0,__PYX_ERR(0, 76, __pyx_L1_error))
-  if (!(likely(((__pyx_v_frame) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_frame, __pyx_ptype_6hunter_7_tracer_FrameType))))) __PYX_ERR(0, 76, __pyx_L1_error)
-  __pyx_t_2 = __pyx_v_frame;
-  __Pyx_INCREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
+  __Pyx_INCREF((PyObject *)__pyx_v_frame);
+  __Pyx_GIVEREF((PyObject *)__pyx_v_frame);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->frame);
   __Pyx_DECREF((PyObject *)__pyx_v_self->frame);
-  __pyx_v_self->frame = ((PyFrameObject *)__pyx_t_2);
-  __pyx_t_2 = 0;
+  __pyx_v_self->frame = __pyx_v_frame;
 
   /* "hunter/_event.pyx":77
  *         self.arg = arg
@@ -4405,7 +4403,7 @@ static int __pyx_pf_6hunter_6_event_5Event___init__(struct __pyx_obj_6hunter_6_e
   /* "hunter/_event.pyx":61
  *             Needed for the ``calls`` and ``depth`` fields.
  *     """
- *     def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
+ *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,             # <<<<<<<<<<<<<<
  *                  object threading_support=MISSING):
  *         if tracer is None:
  */
@@ -4736,7 +4734,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter
  *     def clone(self):
  *         return fast_clone(self)             # <<<<<<<<<<<<<<
  * 
- *     cdef instruction_getter(self):
+ *     cdef inline instruction_getter(self):
  */
   __Pyx_TraceLine(109,0,__PYX_ERR(0, 109, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -4769,7 +4767,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6clone(struct __pyx_obj_6hunter
 /* "hunter/_event.pyx":111
  *         return fast_clone(self)
  * 
- *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline instruction_getter(self):             # <<<<<<<<<<<<<<
  *         cdef int position
  * 
  */
@@ -4794,7 +4792,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         cdef int position
  * 
  *         if self._instruction is UNSET:             # <<<<<<<<<<<<<<
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)
+ *             position = PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
  */
   __Pyx_TraceLine(114,0,__PYX_ERR(0, 114, __pyx_L1_error))
@@ -4804,12 +4802,11 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
     /* "hunter/_event.pyx":115
  * 
  *         if self._instruction is UNSET:
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
+ *             position = PyFrame_GetLasti(self.frame)             # <<<<<<<<<<<<<<
  *             co_code = PyCode_GetCode(self.code_getter())
  *             if co_code and position >= 0:
  */
     __Pyx_TraceLine(115,0,__PYX_ERR(0, 115, __pyx_L1_error))
-    if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 115, __pyx_L1_error)
     __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
     __Pyx_INCREF(__pyx_t_2);
     __pyx_v_position = PyFrame_GetLasti(((PyFrameObject *)__pyx_t_2));
@@ -4817,7 +4814,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
 
     /* "hunter/_event.pyx":116
  *         if self._instruction is UNSET:
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)
+ *             position = PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())             # <<<<<<<<<<<<<<
  *             if co_code and position >= 0:
  *                 self._instruction = co_code[position]
@@ -4832,7 +4829,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
     __pyx_t_3 = 0;
 
     /* "hunter/_event.pyx":117
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)
+ *             position = PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
  *             if co_code and position >= 0:             # <<<<<<<<<<<<<<
  *                 self._instruction = co_code[position]
@@ -4867,7 +4864,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
       __pyx_t_3 = 0;
 
       /* "hunter/_event.pyx":117
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)
+ *             position = PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
  *             if co_code and position >= 0:             # <<<<<<<<<<<<<<
  *                 self._instruction = co_code[position]
@@ -4897,7 +4894,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         cdef int position
  * 
  *         if self._instruction is UNSET:             # <<<<<<<<<<<<<<
- *             position = PyFrame_GetLasti(<FrameType?> self.frame)
+ *             position = PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
  */
   }
@@ -4918,7 +4915,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
   /* "hunter/_event.pyx":111
  *         return fast_clone(self)
  * 
- *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline instruction_getter(self):             # <<<<<<<<<<<<<<
  *         cdef int position
  * 
  */
@@ -4975,7 +4972,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_11instruction___get__(struct __
  *     def instruction(self):
  *         return self.instruction_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef threadid_getter(self):
+ *     cdef inline threadid_getter(self):
  */
   __Pyx_TraceLine(125,0,__PYX_ERR(0, 125, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -5008,7 +5005,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_11instruction___get__(struct __
 /* "hunter/_event.pyx":127
  *         return self.instruction_getter()
  * 
- *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadid_getter(self):             # <<<<<<<<<<<<<<
  *         cdef long current
  * 
  */
@@ -5180,7 +5177,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadid_getter(struct __pyx_obj
   /* "hunter/_event.pyx":127
  *         return self.instruction_getter()
  * 
- *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadid_getter(self):             # <<<<<<<<<<<<<<
  *         cdef long current
  * 
  */
@@ -5238,7 +5235,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
  *     def threadid(self):
  *         return self.threadid_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef threadname_getter(self):
+ *     cdef inline threadname_getter(self):
  */
   __Pyx_TraceLine(141,0,__PYX_ERR(0, 141, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -5271,7 +5268,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8threadid___get__(struct __pyx_
 /* "hunter/_event.pyx":143
  *         return self.threadid_getter()
  * 
- *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadname_getter(self):             # <<<<<<<<<<<<<<
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:
  */
@@ -5293,7 +5290,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
 
   /* "hunter/_event.pyx":144
  * 
- *     cdef threadname_getter(self):
+ *     cdef inline threadname_getter(self):
  *         if self._threadname is UNSET:             # <<<<<<<<<<<<<<
  *             if self._thread is UNSET:
  *                 self._thread = current_thread()
@@ -5303,7 +5300,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":145
- *     cdef threadname_getter(self):
+ *     cdef inline threadname_getter(self):
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:             # <<<<<<<<<<<<<<
  *                 self._thread = current_thread()
@@ -5350,7 +5347,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":145
- *     cdef threadname_getter(self):
+ *     cdef inline threadname_getter(self):
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:             # <<<<<<<<<<<<<<
  *                 self._thread = current_thread()
@@ -5376,7 +5373,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
 
     /* "hunter/_event.pyx":144
  * 
- *     cdef threadname_getter(self):
+ *     cdef inline threadname_getter(self):
  *         if self._threadname is UNSET:             # <<<<<<<<<<<<<<
  *             if self._thread is UNSET:
  *                 self._thread = current_thread()
@@ -5399,7 +5396,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_threadname_getter(struct __pyx_o
   /* "hunter/_event.pyx":143
  *         return self.threadid_getter()
  * 
- *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadname_getter(self):             # <<<<<<<<<<<<<<
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:
  */
@@ -5456,7 +5453,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10threadname___get__(struct __p
  *     def threadname(self):
  *         return self.threadname_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef locals_getter(self):
+ *     cdef inline locals_getter(self):
  */
   __Pyx_TraceLine(152,0,__PYX_ERR(0, 152, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -5489,7 +5486,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10threadname___get__(struct __p
 /* "hunter/_event.pyx":154
  *         return self.threadname_getter()
  * 
- *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline locals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._locals is UNSET:
  *             if self.builtin:
  */
@@ -5509,7 +5506,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
 
   /* "hunter/_event.pyx":155
  * 
- *     cdef locals_getter(self):
+ *     cdef inline locals_getter(self):
  *         if self._locals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
@@ -5519,7 +5516,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":156
- *     cdef locals_getter(self):
+ *     cdef inline locals_getter(self):
  *         if self._locals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
@@ -5534,7 +5531,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
  *             if self.builtin:
  *                 self._locals = {}             # <<<<<<<<<<<<<<
  *             else:
- *                 PyFrame_FastToLocals(<FrameType?> self.frame)
+ *                 PyFrame_FastToLocals(self.frame)
  */
       __Pyx_TraceLine(157,0,__PYX_ERR(0, 157, __pyx_L1_error))
       __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
@@ -5546,7 +5543,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":156
- *     cdef locals_getter(self):
+ *     cdef inline locals_getter(self):
  *         if self._locals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
@@ -5558,13 +5555,12 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
     /* "hunter/_event.pyx":159
  *                 self._locals = {}
  *             else:
- *                 PyFrame_FastToLocals(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
- *                 self._locals = PyFrame_GetLocals(<FrameType?> self.frame)
+ *                 PyFrame_FastToLocals(self.frame)             # <<<<<<<<<<<<<<
+ *                 self._locals = PyFrame_GetLocals(self.frame)
  *         return self._locals
  */
     __Pyx_TraceLine(159,0,__PYX_ERR(0, 159, __pyx_L1_error))
     /*else*/ {
-      if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 159, __pyx_L1_error)
       __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
       __Pyx_INCREF(__pyx_t_2);
       PyFrame_FastToLocals(((PyFrameObject *)__pyx_t_2));
@@ -5572,13 +5568,12 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
 
       /* "hunter/_event.pyx":160
  *             else:
- *                 PyFrame_FastToLocals(<FrameType?> self.frame)
- *                 self._locals = PyFrame_GetLocals(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
+ *                 PyFrame_FastToLocals(self.frame)
+ *                 self._locals = PyFrame_GetLocals(self.frame)             # <<<<<<<<<<<<<<
  *         return self._locals
  * 
  */
       __Pyx_TraceLine(160,0,__PYX_ERR(0, 160, __pyx_L1_error))
-      if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 160, __pyx_L1_error)
       __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
       __Pyx_INCREF(__pyx_t_2);
       __pyx_t_3 = PyFrame_GetLocals(((PyFrameObject *)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
@@ -5594,7 +5589,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
 
     /* "hunter/_event.pyx":155
  * 
- *     cdef locals_getter(self):
+ *     cdef inline locals_getter(self):
  *         if self._locals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
@@ -5602,8 +5597,8 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
   }
 
   /* "hunter/_event.pyx":161
- *                 PyFrame_FastToLocals(<FrameType?> self.frame)
- *                 self._locals = PyFrame_GetLocals(<FrameType?> self.frame)
+ *                 PyFrame_FastToLocals(self.frame)
+ *                 self._locals = PyFrame_GetLocals(self.frame)
  *         return self._locals             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -5617,7 +5612,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_locals_getter(struct __pyx_obj_6
   /* "hunter/_event.pyx":154
  *         return self.threadname_getter()
  * 
- *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline locals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._locals is UNSET:
  *             if self.builtin:
  */
@@ -5673,7 +5668,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6locals___get__(struct __pyx_ob
  *     def locals(self):
  *         return self.locals_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef globals_getter(self):
+ *     cdef inline globals_getter(self):
  */
   __Pyx_TraceLine(165,0,__PYX_ERR(0, 165, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -5706,7 +5701,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6locals___get__(struct __pyx_ob
 /* "hunter/_event.pyx":167
  *         return self.locals_getter()
  * 
- *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline globals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._globals is UNSET:
  *             if self.builtin:
  */
@@ -5726,7 +5721,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
 
   /* "hunter/_event.pyx":168
  * 
- *     cdef globals_getter(self):
+ *     cdef inline globals_getter(self):
  *         if self._globals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
@@ -5736,7 +5731,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":169
- *     cdef globals_getter(self):
+ *     cdef inline globals_getter(self):
  *         if self._globals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
@@ -5751,7 +5746,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
  *             if self.builtin:
  *                 self._locals = {}             # <<<<<<<<<<<<<<
  *             else:
- *                 self._globals = PyFrame_GetGlobals(<FrameType?> self.frame)
+ *                 self._globals = PyFrame_GetGlobals(self.frame)
  */
       __Pyx_TraceLine(170,0,__PYX_ERR(0, 170, __pyx_L1_error))
       __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
@@ -5763,7 +5758,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":169
- *     cdef globals_getter(self):
+ *     cdef inline globals_getter(self):
  *         if self._globals is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._locals = {}
@@ -5775,13 +5770,12 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
     /* "hunter/_event.pyx":172
  *                 self._locals = {}
  *             else:
- *                 self._globals = PyFrame_GetGlobals(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
+ *                 self._globals = PyFrame_GetGlobals(self.frame)             # <<<<<<<<<<<<<<
  *         return self._globals
  * 
  */
     __Pyx_TraceLine(172,0,__PYX_ERR(0, 172, __pyx_L1_error))
     /*else*/ {
-      if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 172, __pyx_L1_error)
       __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
       __Pyx_INCREF(__pyx_t_2);
       __pyx_t_3 = PyFrame_GetGlobals(((PyFrameObject *)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 172, __pyx_L1_error)
@@ -5797,7 +5791,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
 
     /* "hunter/_event.pyx":168
  * 
- *     cdef globals_getter(self):
+ *     cdef inline globals_getter(self):
  *         if self._globals is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._locals = {}
@@ -5806,7 +5800,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
 
   /* "hunter/_event.pyx":173
  *             else:
- *                 self._globals = PyFrame_GetGlobals(<FrameType?> self.frame)
+ *                 self._globals = PyFrame_GetGlobals(self.frame)
  *         return self._globals             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -5820,7 +5814,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_globals_getter(struct __pyx_obj_
   /* "hunter/_event.pyx":167
  *         return self.locals_getter()
  * 
- *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline globals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._globals is UNSET:
  *             if self.builtin:
  */
@@ -5876,7 +5870,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_7globals___get__(struct __pyx_o
  *     def globals(self):
  *         return self.globals_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef function_getter(self):
+ *     cdef inline function_getter(self):
  */
   __Pyx_TraceLine(177,0,__PYX_ERR(0, 177, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -5909,7 +5903,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_7globals___get__(struct __pyx_o
 /* "hunter/_event.pyx":179
  *         return self.globals_getter()
  * 
- *     cdef function_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline function_getter(self):             # <<<<<<<<<<<<<<
  *         if self._function is UNSET:
  *             if self.builtin:
  */
@@ -5929,7 +5923,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
 
   /* "hunter/_event.pyx":180
  * 
- *     cdef function_getter(self):
+ *     cdef inline function_getter(self):
  *         if self._function is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._function = self.arg.__name__
@@ -5939,7 +5933,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":181
- *     cdef function_getter(self):
+ *     cdef inline function_getter(self):
  *         if self._function is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._function = self.arg.__name__
@@ -5966,7 +5960,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":181
- *     cdef function_getter(self):
+ *     cdef inline function_getter(self):
  *         if self._function is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 self._function = self.arg.__name__
@@ -5999,7 +5993,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
 
     /* "hunter/_event.pyx":180
  * 
- *     cdef function_getter(self):
+ *     cdef inline function_getter(self):
  *         if self._function is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 self._function = self.arg.__name__
@@ -6022,7 +6016,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_function_getter(struct __pyx_obj
   /* "hunter/_event.pyx":179
  *         return self.globals_getter()
  * 
- *     cdef function_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline function_getter(self):             # <<<<<<<<<<<<<<
  *         if self._function is UNSET:
  *             if self.builtin:
  */
@@ -6591,7 +6585,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
  *             self._function_object = func
  *         return self._function_object             # <<<<<<<<<<<<<<
  * 
- *     cdef module_getter(self):
+ *     cdef inline module_getter(self):
  */
   __Pyx_TraceLine(220,0,__PYX_ERR(0, 220, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -6630,7 +6624,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_15function_object___get__(struc
 /* "hunter/_event.pyx":222
  *         return self._function_object
  * 
- *     cdef module_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline module_getter(self):             # <<<<<<<<<<<<<<
  *         if self._module is UNSET:
  *             if self.builtin:
  */
@@ -6651,7 +6645,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
 
   /* "hunter/_event.pyx":223
  * 
- *     cdef module_getter(self):
+ *     cdef inline module_getter(self):
  *         if self._module is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 module = self.arg.__module__
@@ -6661,7 +6655,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":224
- *     cdef module_getter(self):
+ *     cdef inline module_getter(self):
  *         if self._module is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 module = self.arg.__module__
@@ -6685,7 +6679,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":224
- *     cdef module_getter(self):
+ *     cdef inline module_getter(self):
  *         if self._module is UNSET:
  *             if self.builtin:             # <<<<<<<<<<<<<<
  *                 module = self.arg.__module__
@@ -6763,7 +6757,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
 
     /* "hunter/_event.pyx":223
  * 
- *     cdef module_getter(self):
+ *     cdef inline module_getter(self):
  *         if self._module is UNSET:             # <<<<<<<<<<<<<<
  *             if self.builtin:
  *                 module = self.arg.__module__
@@ -6786,7 +6780,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_module_getter(struct __pyx_obj_6
   /* "hunter/_event.pyx":222
  *         return self._function_object
  * 
- *     cdef module_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline module_getter(self):             # <<<<<<<<<<<<<<
  *         if self._module is UNSET:
  *             if self.builtin:
  */
@@ -6843,7 +6837,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6module___get__(struct __pyx_ob
  *     def module(self):
  *         return self.module_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef filename_getter(self):
+ *     cdef inline filename_getter(self):
  */
   __Pyx_TraceLine(235,0,__PYX_ERR(0, 235, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -6876,7 +6870,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6module___get__(struct __pyx_ob
 /* "hunter/_event.pyx":237
  *         return self.module_getter()
  * 
- *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline filename_getter(self):             # <<<<<<<<<<<<<<
  *         cdef CodeType code
  *         if self._filename is UNSET:
  */
@@ -6905,7 +6899,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
   __Pyx_TraceCall("filename_getter", __pyx_f[0], 237, 0, __PYX_ERR(0, 237, __pyx_L1_error));
 
   /* "hunter/_event.pyx":239
- *     cdef filename_getter(self):
+ *     cdef inline filename_getter(self):
  *         cdef CodeType code
  *         if self._filename is UNSET:             # <<<<<<<<<<<<<<
  *             code = self.code_getter()
@@ -7292,7 +7286,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
     __pyx_v_self->_filename = __pyx_v_filename;
 
     /* "hunter/_event.pyx":239
- *     cdef filename_getter(self):
+ *     cdef inline filename_getter(self):
  *         cdef CodeType code
  *         if self._filename is UNSET:             # <<<<<<<<<<<<<<
  *             code = self.code_getter()
@@ -7316,7 +7310,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_filename_getter(struct __pyx_obj
   /* "hunter/_event.pyx":237
  *         return self.module_getter()
  * 
- *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline filename_getter(self):             # <<<<<<<<<<<<<<
  *         cdef CodeType code
  *         if self._filename is UNSET:
  */
@@ -7379,7 +7373,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8filename___get__(struct __pyx_
  *     def filename(self):
  *         return self.filename_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef lineno_getter(self):
+ *     cdef inline lineno_getter(self):
  */
   __Pyx_TraceLine(261,0,__PYX_ERR(0, 261, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -7412,9 +7406,9 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_8filename___get__(struct __pyx_
 /* "hunter/_event.pyx":263
  *         return self.filename_getter()
  * 
- *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline lineno_getter(self):             # <<<<<<<<<<<<<<
  *         if self._lineno is UNSET:
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  */
 
 static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
@@ -7432,9 +7426,9 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
 
   /* "hunter/_event.pyx":264
  * 
- *     cdef lineno_getter(self):
+ *     cdef inline lineno_getter(self):
  *         if self._lineno is UNSET:             # <<<<<<<<<<<<<<
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  *         return self._lineno
  */
   __Pyx_TraceLine(264,0,__PYX_ERR(0, 264, __pyx_L1_error))
@@ -7442,14 +7436,13 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":265
- *     cdef lineno_getter(self):
+ *     cdef inline lineno_getter(self):
  *         if self._lineno is UNSET:
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)             # <<<<<<<<<<<<<<
  *         return self._lineno
  * 
  */
     __Pyx_TraceLine(265,0,__PYX_ERR(0, 265, __pyx_L1_error))
-    if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 265, __pyx_L1_error)
     __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = __Pyx_PyInt_From_int(PyFrame_GetLineNumber(((PyFrameObject *)__pyx_t_2))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 265, __pyx_L1_error)
@@ -7463,16 +7456,16 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
 
     /* "hunter/_event.pyx":264
  * 
- *     cdef lineno_getter(self):
+ *     cdef inline lineno_getter(self):
  *         if self._lineno is UNSET:             # <<<<<<<<<<<<<<
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  *         return self._lineno
  */
   }
 
   /* "hunter/_event.pyx":266
  *         if self._lineno is UNSET:
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  *         return self._lineno             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -7486,9 +7479,9 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_lineno_getter(struct __pyx_obj_6
   /* "hunter/_event.pyx":263
  *         return self.filename_getter()
  * 
- *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline lineno_getter(self):             # <<<<<<<<<<<<<<
  *         if self._lineno is UNSET:
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  */
 
   /* function exit code */
@@ -7542,7 +7535,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6lineno___get__(struct __pyx_ob
  *     def lineno(self):
  *         return self.lineno_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef CodeType code_getter(self):
+ *     cdef inline CodeType code_getter(self):
  */
   __Pyx_TraceLine(270,0,__PYX_ERR(0, 270, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -7575,9 +7568,9 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6lineno___get__(struct __pyx_ob
 /* "hunter/_event.pyx":272
  *         return self.lineno_getter()
  * 
- *     cdef CodeType code_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline CodeType code_getter(self):             # <<<<<<<<<<<<<<
  *         if self._code is UNSET:
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  */
 
 static PyCodeObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj_6hunter_6_event_Event *__pyx_v_self) {
@@ -7595,9 +7588,9 @@ static PyCodeObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj
 
   /* "hunter/_event.pyx":273
  * 
- *     cdef CodeType code_getter(self):
+ *     cdef inline CodeType code_getter(self):
  *         if self._code is UNSET:             # <<<<<<<<<<<<<<
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  *         else:
  */
   __Pyx_TraceLine(273,0,__PYX_ERR(0, 273, __pyx_L1_error))
@@ -7605,15 +7598,14 @@ static PyCodeObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":274
- *     cdef CodeType code_getter(self):
+ *     cdef inline CodeType code_getter(self):
  *         if self._code is UNSET:
- *             return PyFrame_GetCode(<FrameType?> self.frame)             # <<<<<<<<<<<<<<
+ *             return PyFrame_GetCode(self.frame)             # <<<<<<<<<<<<<<
  *         else:
  *             return self._code
  */
     __Pyx_TraceLine(274,0,__PYX_ERR(0, 274, __pyx_L1_error))
     __Pyx_XDECREF((PyObject *)__pyx_r);
-    if (!(likely(__Pyx_TypeTest(((PyObject *)__pyx_v_self->frame), __pyx_ptype_6hunter_7_tracer_FrameType)))) __PYX_ERR(0, 274, __pyx_L1_error)
     __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = ((PyObject *)PyFrame_GetCode(((PyFrameObject *)__pyx_t_2))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 274, __pyx_L1_error)
@@ -7625,15 +7617,15 @@ static PyCodeObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj
 
     /* "hunter/_event.pyx":273
  * 
- *     cdef CodeType code_getter(self):
+ *     cdef inline CodeType code_getter(self):
  *         if self._code is UNSET:             # <<<<<<<<<<<<<<
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  *         else:
  */
   }
 
   /* "hunter/_event.pyx":276
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  *         else:
  *             return self._code             # <<<<<<<<<<<<<<
  * 
@@ -7651,9 +7643,9 @@ static PyCodeObject *__pyx_f_6hunter_6_event_5Event_code_getter(struct __pyx_obj
   /* "hunter/_event.pyx":272
  *         return self.lineno_getter()
  * 
- *     cdef CodeType code_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline CodeType code_getter(self):             # <<<<<<<<<<<<<<
  *         if self._code is UNSET:
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  */
 
   /* function exit code */
@@ -7707,7 +7699,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4code___get__(struct __pyx_obj_
  *     def code(self):
  *         return self.code_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef stdlib_getter(self):
+ *     cdef inline stdlib_getter(self):
  */
   __Pyx_TraceLine(280,0,__PYX_ERR(0, 280, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -7740,7 +7732,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_4code___get__(struct __pyx_obj_
 /* "hunter/_event.pyx":282
  *         return self.code_getter()
  * 
- *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline stdlib_getter(self):             # <<<<<<<<<<<<<<
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  */
@@ -7765,7 +7757,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
 
   /* "hunter/_event.pyx":283
  * 
- *     cdef stdlib_getter(self):
+ *     cdef inline stdlib_getter(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
  *             module_parts = self.module.split('.')
  *             if 'pkg_resources' in module_parts:
@@ -7775,7 +7767,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":284
- *     cdef stdlib_getter(self):
+ *     cdef inline stdlib_getter(self):
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')             # <<<<<<<<<<<<<<
  *             if 'pkg_resources' in module_parts:
@@ -7907,7 +7899,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True             # <<<<<<<<<<<<<<
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  */
       __Pyx_TraceLine(290,0,__PYX_ERR(0, 290, __pyx_L1_error))
       __Pyx_INCREF(Py_True);
@@ -7930,7 +7922,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  *                 self._stdlib = False
  */
     __Pyx_TraceLine(291,0,__PYX_ERR(0, 291, __pyx_L1_error))
@@ -7968,7 +7960,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
 
       /* "hunter/_event.pyx":293
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  *                 self._stdlib = False             # <<<<<<<<<<<<<<
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):
  *                 self._stdlib = True
@@ -7984,14 +7976,14 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
  *                 # skip namedtuple exec garbage
  *                 self._stdlib = True
  *             elif self.filename.startswith(SITE_PACKAGES_PATHS):             # <<<<<<<<<<<<<<
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  *                 self._stdlib = False
  */
       goto __pyx_L4;
     }
 
     /* "hunter/_event.pyx":294
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  *                 self._stdlib = False
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):             # <<<<<<<<<<<<<<
  *                 self._stdlib = True
@@ -8045,7 +8037,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
       __pyx_v_self->_stdlib = Py_True;
 
       /* "hunter/_event.pyx":294
- *                 # if it's in site-packages then its definitely not stdlib
+ *                 # if in site-packages then definitely not stdlib
  *                 self._stdlib = False
  *             elif self.filename.startswith(SYS_PREFIX_PATHS):             # <<<<<<<<<<<<<<
  *                 self._stdlib = True
@@ -8073,7 +8065,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
 
     /* "hunter/_event.pyx":283
  * 
- *     cdef stdlib_getter(self):
+ *     cdef inline stdlib_getter(self):
  *         if self._stdlib is UNSET:             # <<<<<<<<<<<<<<
  *             module_parts = self.module.split('.')
  *             if 'pkg_resources' in module_parts:
@@ -8096,7 +8088,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_stdlib_getter(struct __pyx_obj_6
   /* "hunter/_event.pyx":282
  *         return self.code_getter()
  * 
- *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline stdlib_getter(self):             # <<<<<<<<<<<<<<
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  */
@@ -8155,7 +8147,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
  *     def stdlib(self):
  *         return self.stdlib_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef fullsource_getter(self):
+ *     cdef inline fullsource_getter(self):
  */
   __Pyx_TraceLine(302,0,__PYX_ERR(0, 302, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -8188,7 +8180,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_6stdlib___get__(struct __pyx_ob
 /* "hunter/_event.pyx":304
  *         return self.stdlib_getter()
  * 
- *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline fullsource_getter(self):             # <<<<<<<<<<<<<<
  *         cdef list lines
  *         cdef CodeType code
  */
@@ -8977,7 +8969,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_fullsource_getter(struct __pyx_o
   /* "hunter/_event.pyx":304
  *         return self.stdlib_getter()
  * 
- *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline fullsource_getter(self):             # <<<<<<<<<<<<<<
  *         cdef list lines
  *         cdef CodeType code
  */
@@ -9048,7 +9040,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __p
  *     def fullsource(self):
  *         return self.fullsource_getter()             # <<<<<<<<<<<<<<
  * 
- *     cdef source_getter(self):
+ *     cdef inline source_getter(self):
  */
   __Pyx_TraceLine(332,0,__PYX_ERR(0, 332, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -9081,7 +9073,7 @@ static PyObject *__pyx_pf_6hunter_6_event_5Event_10fullsource___get__(struct __p
 /* "hunter/_event.pyx":334
  *         return self.fullsource_getter()
  * 
- *     cdef source_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline source_getter(self):             # <<<<<<<<<<<<<<
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):
  */
@@ -9120,7 +9112,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
 
   /* "hunter/_event.pyx":335
  * 
- *     cdef source_getter(self):
+ *     cdef inline source_getter(self):
  *         if self._source is UNSET:             # <<<<<<<<<<<<<<
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
@@ -9130,7 +9122,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
   if (__pyx_t_1) {
 
     /* "hunter/_event.pyx":336
- *     cdef source_getter(self):
+ *     cdef inline source_getter(self):
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
@@ -9255,7 +9247,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
       __pyx_t_2 = 0;
 
       /* "hunter/_event.pyx":336
- *     cdef source_getter(self):
+ *     cdef inline source_getter(self):
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):             # <<<<<<<<<<<<<<
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
@@ -9484,7 +9476,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
 
     /* "hunter/_event.pyx":335
  * 
- *     cdef source_getter(self):
+ *     cdef inline source_getter(self):
  *         if self._source is UNSET:             # <<<<<<<<<<<<<<
  *             if self.filename.endswith(('.so', '.pyd')):
  *                 self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
@@ -9507,7 +9499,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_source_getter(struct __pyx_obj_6
   /* "hunter/_event.pyx":334
  *         return self.fullsource_getter()
  * 
- *     cdef source_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline source_getter(self):             # <<<<<<<<<<<<<<
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):
  */
@@ -13467,7 +13459,7 @@ if (!__Pyx_RefNanny) {
  * cdef Pool mem = Pool()
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])             # <<<<<<<<<<<<<<
  * 
- * cdef PyObject** make_kind_names(list strings):
+ * cdef inline PyObject** make_kind_names(list strings):
  */
   __Pyx_TraceLine(34,0,__PYX_ERR(0, 34, __pyx_L1_error))
   __pyx_t_3 = PyList_New(7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
@@ -13500,7 +13492,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":36
  * cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
  * 
- * cdef PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
+ * cdef inline PyObject** make_kind_names(list strings):             # <<<<<<<<<<<<<<
  *     cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
  *     cdef object name
  */
@@ -13509,7 +13501,7 @@ if (!__Pyx_RefNanny) {
 
   /* "hunter/_event.pyx":62
  *     """
- *     def __init__(self, object frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
+ *     def __init__(self, FrameType frame, int kind, object arg, Tracer tracer=None, object depth=None, object calls=None,
  *                  object threading_support=MISSING):             # <<<<<<<<<<<<<<
  *         if tracer is None:
  *             if depth is None:
@@ -13553,7 +13545,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":111
  *         return fast_clone(self)
  * 
- *     cdef instruction_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline instruction_getter(self):             # <<<<<<<<<<<<<<
  *         cdef int position
  * 
  */
@@ -13563,7 +13555,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":127
  *         return self.instruction_getter()
  * 
- *     cdef threadid_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadid_getter(self):             # <<<<<<<<<<<<<<
  *         cdef long current
  * 
  */
@@ -13573,7 +13565,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":143
  *         return self.threadid_getter()
  * 
- *     cdef threadname_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline threadname_getter(self):             # <<<<<<<<<<<<<<
  *         if self._threadname is UNSET:
  *             if self._thread is UNSET:
  */
@@ -13583,7 +13575,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":154
  *         return self.threadname_getter()
  * 
- *     cdef locals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline locals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._locals is UNSET:
  *             if self.builtin:
  */
@@ -13593,7 +13585,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":167
  *         return self.locals_getter()
  * 
- *     cdef globals_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline globals_getter(self):             # <<<<<<<<<<<<<<
  *         if self._globals is UNSET:
  *             if self.builtin:
  */
@@ -13603,7 +13595,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":179
  *         return self.globals_getter()
  * 
- *     cdef function_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline function_getter(self):             # <<<<<<<<<<<<<<
  *         if self._function is UNSET:
  *             if self.builtin:
  */
@@ -13613,7 +13605,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":222
  *         return self._function_object
  * 
- *     cdef module_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline module_getter(self):             # <<<<<<<<<<<<<<
  *         if self._module is UNSET:
  *             if self.builtin:
  */
@@ -13623,7 +13615,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":237
  *         return self.module_getter()
  * 
- *     cdef filename_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline filename_getter(self):             # <<<<<<<<<<<<<<
  *         cdef CodeType code
  *         if self._filename is UNSET:
  */
@@ -13633,9 +13625,9 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":263
  *         return self.filename_getter()
  * 
- *     cdef lineno_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline lineno_getter(self):             # <<<<<<<<<<<<<<
  *         if self._lineno is UNSET:
- *             self._lineno = PyFrame_GetLineNumber(<FrameType?> self.frame)
+ *             self._lineno = PyFrame_GetLineNumber(self.frame)
  */
   __Pyx_TraceLine(263,0,__PYX_ERR(0, 263, __pyx_L1_error))
 
@@ -13643,9 +13635,9 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":272
  *         return self.lineno_getter()
  * 
- *     cdef CodeType code_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline CodeType code_getter(self):             # <<<<<<<<<<<<<<
  *         if self._code is UNSET:
- *             return PyFrame_GetCode(<FrameType?> self.frame)
+ *             return PyFrame_GetCode(self.frame)
  */
   __Pyx_TraceLine(272,0,__PYX_ERR(0, 272, __pyx_L1_error))
 
@@ -13653,7 +13645,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":282
  *         return self.code_getter()
  * 
- *     cdef stdlib_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline stdlib_getter(self):             # <<<<<<<<<<<<<<
  *         if self._stdlib is UNSET:
  *             module_parts = self.module.split('.')
  */
@@ -13663,7 +13655,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":304
  *         return self.stdlib_getter()
  * 
- *     cdef fullsource_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline fullsource_getter(self):             # <<<<<<<<<<<<<<
  *         cdef list lines
  *         cdef CodeType code
  */
@@ -13673,7 +13665,7 @@ if (!__Pyx_RefNanny) {
   /* "hunter/_event.pyx":334
  *         return self.fullsource_getter()
  * 
- *     cdef source_getter(self):             # <<<<<<<<<<<<<<
+ *     cdef inline source_getter(self):             # <<<<<<<<<<<<<<
  *         if self._source is UNSET:
  *             if self.filename.endswith(('.so', '.pyd')):
  */
@@ -14648,26 +14640,6 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     return __Pyx_GetBuiltinName(name);
 }
 
-/* ExtTypeTest */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    __Pyx_TypeName obj_type_name;
-    __Pyx_TypeName type_name;
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (likely(__Pyx_TypeCheck(obj, type)))
-        return 1;
-    obj_type_name = __Pyx_PyType_GetName(Py_TYPE(obj));
-    type_name = __Pyx_PyType_GetName(type);
-    PyErr_Format(PyExc_TypeError,
-                 "Cannot convert " __Pyx_FMT_TYPENAME " to " __Pyx_FMT_TYPENAME,
-                 obj_type_name, type_name);
-    __Pyx_DECREF_TypeName(obj_type_name);
-    __Pyx_DECREF_TypeName(type_name);
-    return 0;
-}
-
 /* KeywordStringCheck */
 static int __Pyx_CheckKeywordStrings(
     PyObject *kw,
@@ -15504,6 +15476,26 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(PyObject* obj,
     __Pyx_DECREF_TypeName(obj_type_name);
 bad:
     return NULL;
+}
+
+/* ExtTypeTest */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    __Pyx_TypeName obj_type_name;
+    __Pyx_TypeName type_name;
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(__Pyx_TypeCheck(obj, type)))
+        return 1;
+    obj_type_name = __Pyx_PyType_GetName(Py_TYPE(obj));
+    type_name = __Pyx_PyType_GetName(type);
+    PyErr_Format(PyExc_TypeError,
+                 "Cannot convert " __Pyx_FMT_TYPENAME " to " __Pyx_FMT_TYPENAME,
+                 obj_type_name, type_name);
+    __Pyx_DECREF_TypeName(obj_type_name);
+    __Pyx_DECREF_TypeName(type_name);
+    return 0;
 }
 
 /* IterNext */

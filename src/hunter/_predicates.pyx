@@ -35,23 +35,23 @@ cdef tuple ALLOWED_OPERATORS = (
 )
 
 ctypedef object (*Event_getter_typedef)(Event)
-cdef Event_get_function(Event event): return event.function_getter()
-cdef Event_get_module(Event event): return event.module_getter()
-cdef Event_get_lineno(Event event): return event.lineno_getter()
-cdef Event_get_globals(Event event): return event.globals_getter()
-cdef Event_get_stdlib(Event event): return event.stdlib_getter()
-cdef Event_get_arg(Event event): return event.arg
-cdef Event_get_locals(Event event): return event.locals_getter()
-cdef Event_get_kind(Event event): return event.kind
-cdef Event_get_filename(Event event): return event.filename_getter()
-cdef Event_get_source(Event event): return event.source_getter()
-cdef Event_get_fullsource(Event event): return event.fullsource_getter()
-cdef Event_get_threadname(Event event): return event.threadname_getter()
-cdef Event_get_threadid(Event event): return event.threadid_getter()
-cdef Event_get_instruction(Event event): return event.instruction_getter()
-cdef Event_get_depth(Event event): return event.depth
-cdef Event_get_calls(Event event): return event.calls
-cdef Event_get_builtin(Event event): return event.builtin
+cdef inline Event_get_function(Event event): return event.function_getter()
+cdef inline Event_get_module(Event event): return event.module_getter()
+cdef inline Event_get_lineno(Event event): return event.lineno_getter()
+cdef inline Event_get_globals(Event event): return event.globals_getter()
+cdef inline Event_get_stdlib(Event event): return event.stdlib_getter()
+cdef inline Event_get_arg(Event event): return event.arg
+cdef inline Event_get_locals(Event event): return event.locals_getter()
+cdef inline Event_get_kind(Event event): return event.kind
+cdef inline Event_get_filename(Event event): return event.filename_getter()
+cdef inline Event_get_source(Event event): return event.source_getter()
+cdef inline Event_get_fullsource(Event event): return event.fullsource_getter()
+cdef inline Event_get_threadname(Event event): return event.threadname_getter()
+cdef inline Event_get_threadid(Event event): return event.threadid_getter()
+cdef inline Event_get_instruction(Event event): return event.instruction_getter()
+cdef inline Event_get_depth(Event event): return event.depth
+cdef inline Event_get_calls(Event event): return event.calls
+cdef inline Event_get_builtin(Event event): return event.builtin
 
 cdef Event_getter_typedef[17] Event_getters = [
     Event_get_function,
@@ -262,7 +262,7 @@ cdef class Query:
     def __invert__(self):
         return Not(self)
 
-cdef fast_Query_call(Query self, Event event):
+cdef inline fast_Query_call(Query self, Event event):
     for key, entry in self.query_eq:
         value_from_event = (<QueryEntry> entry).getter(event)
         if value_from_event != (<QueryEntry> entry).value:
