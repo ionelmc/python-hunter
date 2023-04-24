@@ -102,6 +102,9 @@ cdef class Event:
             self.kind, self.function, self.module, self.filename, self.lineno
         )
 
+    def __eq__(self, other):
+        return self is other
+
     def detach(self, value_filter=None):
         return fast_detach(self, value_filter)
 
@@ -309,14 +312,21 @@ cdef class Event:
             try:
                 self._fullsource = None
                 code = self.code_getter()
-                if self.kind == 'call' and code.co_name != "<module>":
+                if self.kind == 'call' and code.co_name != '<module>':
                     lines = []
                     try:
-                        for _, token, _, _, line in generate_tokens(partial(
+                        for _, token, _, _, _ in generate_tokens(
+                            partial(
                                 next,
-                                yield_lines(self.filename, self.globals, self.lineno - 1, lines)
-                        )):
-                            if token in ("def", "class", "lambda"):
+                                yield_lines(
+                                    self.filename,
+                                    self.frame.f_globals,
+                                    self.lineno - 1,
+                                    lines,
+                                ),
+                            )
+                        ):
+                            if token in ('def', 'class', 'lambda'):
                                 self._fullsource = ''.join(lines)
                                 break
                     except TokenError:
@@ -324,7 +334,7 @@ cdef class Event:
                 if self._fullsource is None:
                     self._fullsource = getline(self.filename, self.lineno, self.globals)
             except Exception as exc:
-                self._fullsource = "??? NO SOURCE: {!r}".format(exc)
+                self._fullsource = f'??? NO SOURCE: {exc!r}'
         return self._fullsource
 
     @property
@@ -334,11 +344,11 @@ cdef class Event:
     cdef inline source_getter(self):
         if self._source is UNSET:
             if self.filename.endswith(('.so', '.pyd')):
-                self._source = "??? NO SOURCE: not reading {} file".format(splitext(basename(self.filename))[1])
+                self._source = f'??? NO SOURCE: not reading binary {splitext(basename(self.filename))[1]} file'
             try:
                 self._source = getline(self.filename, self.lineno, self.globals)
             except Exception as exc:
-                self._source = "??? NO SOURCE: {!r}".format(exc)
+                self._source = f'??? NO SOURCE: {exc!r}'
 
         return self._source
 
@@ -357,7 +367,7 @@ def yield_lines(filename, module_globals, start, list collector,
     for line in getlines(filename, module_globals)[start:start + limit]:
         if dedent is None:
             dedent = LEADING_WHITESPACE_RE.findall(line)
-            dedent = dedent[0] if dedent else ""
+            dedent = dedent[0] if dedent else ''
             amount = len(dedent)
         elif not line.startswith(dedent):
             break

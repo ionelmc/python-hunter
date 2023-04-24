@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import sys
 import threading
 import traceback
@@ -59,7 +57,7 @@ class Tracer:
         return self._previous
 
     def __repr__(self):
-        return '<hunter.tracer.Tracer at 0x%x: threading_support=%s, %s%s%s%s>' % (
+        return '<hunter.tracer.Tracer at 0x{:x}: threading_support={}, {}{}{}{}>'.format(
             id(self),
             self.threading_support,
             '<stopped>' if self._handler is None else 'handler=',
@@ -85,7 +83,7 @@ class Tracer:
                 self._handler(event)
             except Exception as exc:
                 traceback.print_exc(file=hunter._default_stream)
-                hunter._default_stream.write('Disabling tracer because handler %r failed (%r) at %r.\n\n' % (self._handler, exc, event))
+                hunter._default_stream.write(f'Disabling tracer because handler {self._handler!r} failed ({exc!r}) at {event!r}.\n\n')
                 self.stop()
                 return
             if kind == 'call':

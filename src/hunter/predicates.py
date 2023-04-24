@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import collections
 import inspect
 import re
@@ -87,20 +85,20 @@ class Query:
             count = len(parts)
             if count > 2:
                 raise TypeError(
-                    'Unexpected argument %r. Must be one of %s with optional operators like: %s' % (key, ALLOWED_KEYS, ALLOWED_OPERATORS)
+                    f'Unexpected argument {key!r}. Must be one of {ALLOWED_KEYS} with optional operators like: {ALLOWED_OPERATORS}'
                 )
             elif count == 2:
                 prefix, operator = parts
                 if operator in ('startswith', 'sw'):
                     if not isinstance(value, str):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(f'Value {value!r} for {key!r} is invalid. Must be a string, list, tuple or set.')
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator in ('endswith', 'ew'):
                     if not isinstance(value, str):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(f'Value {value!r} for {key!r} is invalid. Must be a string, list, tuple or set.')
                         value = tuple(value)
                     mapping = query_endswith
                 elif operator == 'in':
@@ -119,13 +117,13 @@ class Query:
                 elif operator == 'gte':
                     mapping = query_gte
                 else:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.' % (operator, ALLOWED_OPERATORS))
+                    raise TypeError(f'Unexpected operator {operator!r}. Must be one of {ALLOWED_OPERATORS}.')
             else:
                 mapping = query_eq
                 prefix = key
 
             if prefix not in ALLOWED_KEYS:
-                raise TypeError('Unexpected argument %r. Must be one of %s.' % (key, ALLOWED_KEYS))
+                raise TypeError(f'Unexpected argument {key!r}. Must be one of {ALLOWED_KEYS}.')
 
             mapping[prefix] = value
 
@@ -143,7 +141,7 @@ class Query:
     def __str__(self):
         return 'Query(%s)' % (
             ', '.join(
-                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping)
+                ', '.join(f'{key}{kind}={value!r}' for key, value in mapping)
                 for kind, mapping in [
                     ('', self.query_eq),
                     ('_in', self.query_in),
@@ -285,13 +283,13 @@ class When:
         self.actions = tuple(action() if inspect.isclass(action) and issubclass(action, Action) else action for action in actions)
 
     def __str__(self):
-        return 'When(%s, %s)' % (
+        return 'When({}, {})'.format(
             self.condition,
             ', '.join(repr(p) for p in self.actions),
         )
 
     def __repr__(self):
-        return '<hunter.predicates.When: condition=%r, actions=%r>' % (
+        return '<hunter.predicates.When: condition={!r}, actions={!r}>'.format(
             self.condition,
             self.actions,
         )
@@ -369,14 +367,14 @@ class From:
         self._origin_calls = None
 
     def __str__(self):
-        return 'From(%s, %s, watermark=%s)' % (
+        return 'From({}, {}, watermark={})'.format(
             self.condition,
             self.predicate,
             self.watermark,
         )
 
     def __repr__(self):
-        return '<hunter.predicates.From: condition=%r, predicate=%r, watermark=%r>' % (self.condition, self.predicate, self.watermark)
+        return f'<hunter.predicates.From: condition={self.condition!r}, predicate={self.predicate!r}, watermark={self.watermark!r}>'
 
     def __eq__(self, other):
         return isinstance(other, From) and self.condition == other.condition and self.predicate == other.predicate
@@ -449,7 +447,7 @@ class And:
         return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter.predicates.And: predicates=%r>' % (self.predicates,)
+        return f'<hunter.predicates.And: predicates={self.predicates!r}>'
 
     def __eq__(self, other):
         return isinstance(other, And) and self.predicates == other.predicates
@@ -512,7 +510,7 @@ class Or:
         return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
 
     def __repr__(self):
-        return '<hunter.predicates.Or: predicates=%r>' % (self.predicates,)
+        return f'<hunter.predicates.Or: predicates={self.predicates!r}>'
 
     def __eq__(self, other):
         return isinstance(other, Or) and self.predicates == other.predicates
@@ -746,7 +744,7 @@ class Backlog:
         return result
 
     def __str__(self):
-        return 'Backlog(%s, size=%s, stack=%s, vars=%s, action=%s, filter=%s)' % (
+        return 'Backlog({}, size={}, stack={}, vars={}, action={}, filter={})'.format(
             self.condition,
             self.size,
             self.stack,
@@ -756,7 +754,7 @@ class Backlog:
         )
 
     def __repr__(self):
-        return '<hunter.predicates.Backlog: condition=%r, size=%r, stack=%r, vars=%r, action=%r, filter=%r>' % (
+        return '<hunter.predicates.Backlog: condition={!r}, size={!r}, stack={!r}, vars={!r}, action={!r}, filter={!r}>'.format(
             self.condition,
             self.size,
             self.stack,
@@ -826,7 +824,7 @@ class Backlog:
         from hunter import _merge
 
         if self._filter is not None:
-            predicates = (self._filter,) + predicates
+            predicates = (self._filter, *predicates)
 
         return Backlog(
             self.condition,

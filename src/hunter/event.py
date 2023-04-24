@@ -1,12 +1,11 @@
-from __future__ import absolute_import
-
 import linecache
-import tokenize
 from functools import partial
 from os.path import basename
 from os.path import exists
 from os.path import splitext
 from threading import current_thread
+from tokenize import TokenError
+from tokenize import generate_tokens
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
@@ -117,7 +116,7 @@ class Event:
         self.detached = False
 
     def __repr__(self):
-        return '<Event kind=%r function=%r module=%r filename=%r lineno=%s>' % (
+        return '<Event kind={!r} function={!r} module={!r} filename={!r} lineno={}>'.format(
             self.kind,
             self.function,
             self.module,
@@ -126,14 +125,7 @@ class Event:
         )
 
     def __eq__(self, other):
-        return (
-            type(self) == type(other)
-            and self.kind == other.kind
-            and self.depth == other.depth
-            and self.function == other.function
-            and self.module == other.module
-            and self.filename == other.filename
-        )
+        return self is other
 
     def __reduce__(self):
         raise TypeError("cannot pickle 'hunter.event.Event' object")
@@ -408,7 +400,7 @@ class Event:
             if self.kind == 'call' and self.code.co_name != '<module>':
                 lines = []
                 try:
-                    for _, token, _, _, line in tokenize.generate_tokens(
+                    for _, token, _, _, _ in generate_tokens(
                         partial(
                             next,
                             yield_lines(
@@ -421,12 +413,12 @@ class Event:
                     ):
                         if token in ('def', 'class', 'lambda'):
                             return ''.join(lines)
-                except tokenize.TokenError:
+                except TokenError:
                     pass
 
             return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
-            return '??? NO SOURCE: {!r}'.format(exc)
+            return f'??? NO SOURCE: {exc!r}'
 
     @cached_property
     def source(self):
@@ -438,11 +430,11 @@ class Event:
         :type: str
         """
         if self.filename.endswith(('.so', '.pyd')):
-            return '??? NO SOURCE: not reading binary {} file'.format(splitext(basename(self.filename))[1])
+            return f'??? NO SOURCE: not reading binary {splitext(basename(self.filename))[1]} file'
         try:
             return linecache.getline(self.filename, self.lineno, self.frame.f_globals)
         except Exception as exc:
-            return '??? NO SOURCE: {!r}'.format(exc)
+            return f'??? NO SOURCE: {exc!r}'
 
     __getitem__ = object.__getattribute__
 

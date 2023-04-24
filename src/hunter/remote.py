@@ -1,5 +1,4 @@
-from __future__ import print_function
-
+# ruff: noqa: S103 S108 S603
 import argparse
 import errno
 import json
@@ -49,7 +48,7 @@ class RemoteStream:
             self._sock.send(data.encode(self._encoding))
         except Exception as exc:
             print(
-                'Hunter failed to send trace output {!r} (encoding: {!r}): {!r}. Stopping tracer.'.format(data, self._encoding, exc),
+                f'Hunter failed to send trace output {data!r} (encoding: {self._encoding!r}): {exc!r}. Stopping tracer.',
                 file=sys.stderr,
             )
             hunter.stop()
@@ -84,7 +83,7 @@ def gdb_bootstrap(args, activation_payload, deactivation_payload):
         str(args.pid),
         '-batch',
         '-ex',
-        'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(activation_payload)),
+        f'call (void)Py_AddPendingCall(PyRun_SimpleString, {json.dumps(activation_payload)})',
     ]
     deactivation_command = [
         'gdb',
@@ -92,7 +91,7 @@ def gdb_bootstrap(args, activation_payload, deactivation_payload):
         str(args.pid),
         '-batch',
         '-ex',
-        'call (void)Py_AddPendingCall(PyRun_SimpleString, {})'.format(json.dumps(deactivation_payload)),
+        f'call (void)Py_AddPendingCall(PyRun_SimpleString, {json.dumps(deactivation_payload)})',
     ]
     check_call(activation_command)
     try:
@@ -105,23 +104,23 @@ def connect_manhole(pid, timeout, signal):
     os.kill(pid, signal)
 
     start = time.time()
-    uds_path = '/tmp/manhole-{}'.format(pid)
+    uds_path = f'/tmp/manhole-{pid}'
     conn = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     conn.settimeout(timeout)
     while time.time() - start < timeout:
         try:
             conn.connect(uds_path)
-        except (OSError, socket.error) as exc:
+        except OSError as exc:
             if exc.errno not in (errno.ENOENT, errno.ECONNREFUSED):
                 print(
-                    'Failed to connect to {!r}: {!r}'.format(uds_path, exc),
+                    f'Failed to connect to {uds_path!r}: {exc!r}',
                     file=sys.stderr,
                 )
         else:
             break
     else:
         print(
-            'Failed to connect to {!r}: Timeout'.format(uds_path),
+            f'Failed to connect to {uds_path!r}: Timeout',
             file=sys.stderr,
         )
         sys.exit(5)
@@ -132,12 +131,12 @@ def activate(sink_path, isatty, encoding, options):
     stream = hunter._default_stream = RemoteStream(sink_path, isatty, encoding)
     try:
         stream.write('Output stream active. Starting tracer ...\n\n')
-        eval('hunter.trace({})'.format(options))
+        eval(f'hunter.trace({options})')
     except Exception as exc:
         stream.write(
             'Failed to activate: {!r}. {}\n'.format(
                 exc,
-                'Tracer options where: {}.'.format(options) if options else 'No tracer options.',
+                f'Tracer options where: {options}.' if options else 'No tracer options.',
             )
         )
         hunter._default_stream = sys.stderr
@@ -188,7 +187,7 @@ def main():
     args = parser.parse_args()
 
     sink = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    sink_path = '/tmp/hunter-{}'.format(os.getpid())
+    sink_path = f'/tmp/hunter-{os.getpid()}'
     sink.bind(sink_path)
     sink.listen(1)
     os.chmod(sink_path, 0o777)
@@ -208,7 +207,7 @@ def main():
         pid, _, _ = get_peercred(conn)
         if pid:
             if pid != args.pid:
-                raise Exception('Unexpected pid {!r} connected to output socket. Was expecting {!r}.'.format(pid, args.pid))
+                raise Exception(f'Unexpected pid {pid!r} connected to output socket. Was expecting {args.pid!r}.')
         else:
             print(
                 'WARNING: Failed to get pid of connected process.',

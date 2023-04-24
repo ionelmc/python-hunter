@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import atexit
 import functools
 import inspect
@@ -78,10 +76,7 @@ THREADING_SUPPORT_ALIASES = (
     'threads',
     'thread',
 )
-TRACER_OPTION_NAMES = THREADING_SUPPORT_ALIASES + (
-    'clear_env_var',
-    'profile',
-)
+TRACER_OPTION_NAMES = (*THREADING_SUPPORT_ALIASES, 'clear_env_var', 'profile')
 _last_tracer = None
 _default_trace_args = None
 _default_config = {}
@@ -92,7 +87,7 @@ def _embed_via_environment():
     if 'PYTHONHUNTER' in os.environ:
         try:
             eval(
-                'trace({[PYTHONHUNTER]})'.format(os.environ),
+                f'trace({os.environ["PYTHONHUNTER"]})',
                 {
                     'And': And,
                     'Backlog': Backlog,
@@ -114,7 +109,7 @@ def _embed_via_environment():
                 },
             )
         except Exception as exc:
-            sys.stderr.write('Failed to load hunter from PYTHONHUNTER environ variable {[PYTHONHUNTER]!r}: {!r}\n'.format(os.environ, exc))
+            sys.stderr.write(f'Failed to load hunter from PYTHONHUNTER environ variable {os.environ["PYTHONHUNTER"]!r}: {exc!r}\n')
 
 
 def _prepare_config(*args, **kwargs):
@@ -150,12 +145,12 @@ def _prepare_config(*args, **kwargs):
             continue
 
         _default_config.pop(key)
-        sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {}={!r}: Unknown option\n'.format(key, value))
+        sys.stderr.write(f'Discarded config from PYTHONHUNTERCONFIG {key}={value!r}: Unknown option\n')
     for position, predicate in enumerate(args):
         if callable(predicate):
             predicates.append(predicate)
         else:
-            sys.stderr.write('Discarded config from PYTHONHUNTERCONFIG {} (position {}): Not a callable\n'.format(predicate, position))
+            sys.stderr.write(f'Discarded config from PYTHONHUNTERCONFIG {predicate} (position {position}): Not a callable\n')
 
     return predicates, options
 
@@ -175,11 +170,11 @@ def Q(*predicates, **query):
 
     for p in predicates:
         if not callable(p):
-            raise TypeError('Predicate {0!r} is not callable.'.format(p))
+            raise TypeError(f'Predicate {p!r} is not callable.')
 
     for a in optional_actions:
         if not callable(a):
-            raise TypeError('Action {0!r} is not callable.'.format(a))
+            raise TypeError(f'Action {a!r} is not callable.')
 
     if predicates:
         predicates = tuple(p() if inspect.isclass(p) and issubclass(p, Action) else p for p in predicates)
@@ -309,11 +304,11 @@ def From(condition=None, predicate=None, watermark=0, **kwargs):
     """
     if predicate is None and condition is None:
         condition_kwargs = {key: value for key, value in kwargs.items() if not key.startswith('depth') and not key.startswith('calls')}
-        predicate_kwargs = {key: value for key, value in kwargs.items() if key.startswith('depth') or key.startswith('calls')}
+        predicate_kwargs = {key: value for key, value in kwargs.items() if key.startswith(('depth', 'calls'))}
         return _From(Q(**condition_kwargs), Q(**predicate_kwargs), watermark)
     else:
         if kwargs:
-            raise TypeError("Unexpected arguments {}. Don't combine positional with keyword arguments.".format(kwargs.keys()))
+            raise TypeError(f"Unexpected arguments {kwargs.keys()}. Don't combine positional with keyword arguments.")
         return _From(condition, predicate, watermark)
 
 
@@ -366,7 +361,7 @@ def stop():
     global _last_tracer
 
     if _last_tracer is None:
-        warnings.warn('There is no tracer to stop.')
+        warnings.warn('There is no tracer to stop.', stacklevel=2)
     else:
         _last_tracer.stop()
         _last_tracer = None
@@ -437,7 +432,7 @@ def trace(*predicates, **options):
     _last_tracer = Tracer(threading_support, profiling_mode)
 
     @atexit.register
-    def atexit_cleanup(ref=weakref.ref(_last_tracer)):
+    def atexit_cleanup(ref=weakref.ref(_last_tracer)):  # noqa: B008
         maybe_tracer = ref()
         if maybe_tracer is not None:
             maybe_tracer.stop()
@@ -537,14 +532,15 @@ def wrap(function_to_trace=None, **trace_options):
 
 def load_config(*args, **kwargs):
     global _default_trace_args
-    try:
-        if args or kwargs:
-            _default_trace_args = _prepare_config(*args, **kwargs)
-        else:
-            _default_trace_args = eval('_prepare_config({})'.format(os.environ.get('PYTHONHUNTERCONFIG', '')))
-    except Exception as exc:
-        sys.stderr.write('Failed to load hunter config from PYTHONHUNTERCONFIG {[PYTHONHUNTERCONFIG]!r}: {!r}\n'.format(os.environ, exc))
-        _default_trace_args = (), ()
+    if args or kwargs:
+        _default_trace_args = _prepare_config(*args, **kwargs)
+    else:
+        config = os.environ.get('PYTHONHUNTERCONFIG', '')
+        try:
+            _default_trace_args = eval(f'_prepare_config({config})')
+        except Exception as exc:
+            sys.stderr.write(f'Failed to load hunter config from PYTHONHUNTERCONFIG {config!r}: {exc!r}\n')
+            _default_trace_args = (), ()
 
 
 load_config()

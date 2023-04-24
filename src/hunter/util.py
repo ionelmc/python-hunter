@@ -48,7 +48,7 @@ for name, group in [
     ('back', Back),
 ]:
     for key in dir(group):
-        OTHER_COLORS['{}({})'.format(name, key) if name else key] = getattr(group, key)
+        OTHER_COLORS[f'{name}({key})' if name else key] = getattr(group, key)
 CALL_COLORS = {
     'call': Style.BRIGHT + Fore.BLUE,
     'line': Fore.RESET,
@@ -160,34 +160,34 @@ def safe_repr(obj, maxdepth=5):
     # only represent exact builtins
     # (subclasses can have side-effects due to __class__ as a property, __instancecheck__, __subclasscheck__ etc)
     if obj_type is dict:
-        return '{%s}' % ', '.join('%s: %s' % (safe_repr(k, maxdepth), safe_repr(v, newdepth)) for k, v in obj.items())
+        return '{%s}' % ', '.join(f'{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}' for k, v in obj.items())
     elif obj_type is list:
         return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
     elif obj_type is tuple:
-        return '(%s%s)' % (
+        return '(%s%s)' % (  # noqa: UP031
             ', '.join(safe_repr(i, newdepth) for i in obj),
             ',' if len(obj) == 1 else '',
         )
     elif obj_type is set:
         return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
     elif obj_type is frozenset:
-        return '%s({%s})' % (
+        return '%s({%s})' % (  # noqa: UP031
             obj_type.__name__,
             ', '.join(safe_repr(i, newdepth) for i in obj),
         )
     elif obj_type is deque:
-        return '%s([%s])' % (
+        return '{}([{}])'.format(
             obj_type.__name__,
             ', '.join(safe_repr(i, newdepth) for i in obj),
         )
     elif obj_type in (Counter, OrderedDict, defaultdict):
-        return '%s({%s})' % (
+        return '%s({%s})' % (  # noqa: UP031
             obj_type.__name__,
-            ', '.join('%s: %s' % (safe_repr(k, maxdepth), safe_repr(v, newdepth)) for k, v in obj.items()),
+            ', '.join(f'{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}' for k, v in obj.items()),
         )
     elif obj_type is Pattern:
         if obj.flags:
-            return 're.compile(%s, flags=%s)' % (
+            return 're.compile(%s, flags=%s)' % (  # noqa: UP031
                 safe_repr(obj.pattern),
                 RegexFlag(obj.flags),
             )
@@ -216,23 +216,16 @@ def safe_repr(obj, maxdepth=5):
             obj.second,
             obj.microsecond,
             safe_repr(obj.tzinfo),
-            ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
+            f', fold={safe_repr(obj.fold)}' if hasattr(obj, 'fold') else '',
         )
     elif obj_type is types.MethodType:  # noqa
         self = obj.__self__
         name = getattr(obj, '__qualname__', None)
         if name is None:
             name = obj.__name__
-        return '<%sbound method %s of %s>' % (
-            'un' if self is None else '',
-            name,
-            safe_repr(self, newdepth),
-        )
+        return f'<{"un" if self is None else ""}bound method {name} of {safe_repr(self, newdepth)}>'
     elif obj_type_type is type and BaseException in obj_type.__mro__:
-        return '%s(%s)' % (
-            obj_type.__name__,
-            ', '.join(safe_repr(i, newdepth) for i in obj.args),
-        )
+        return f'{obj_type.__name__}({", ".join(safe_repr(i, newdepth) for i in obj.args)})'
     elif obj_type_type is type and obj_type is not InstanceType and obj_type.__module__ in (builtins.__name__, 'io', 'socket', '_socket'):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)

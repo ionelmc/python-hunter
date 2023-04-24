@@ -31,7 +31,6 @@ select = [
     "PLC", # pylint convention
     "PLE", # pylint errors
     "PT", # flake8-pytest-style
-    "PTH", # flake8-use-pathlib
     "Q", # flake8-quotes
     "RSE", # flake8-raise
     "RUF", # ruff-specific rules
@@ -47,6 +46,7 @@ fixture-parentheses = false
 mark-parentheses = false
 
 [tool.ruff.isort]
+extra-standard-library = ["opcode"]
 forced-separate = ["conftest"]
 force-single-line = true
 

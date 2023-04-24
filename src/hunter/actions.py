@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-
+# ruff: noqa: B008
 import collections
 import opcode
 import os
@@ -40,7 +39,7 @@ BUILTIN_REPR_FUNCS = {'repr': repr, 'safe_repr': safe_repr}
 
 class Action:
     def __call__(self, event):
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class LazyImportPdb:
@@ -201,7 +200,7 @@ class ColorStreamAction(Action):
         elif value in BUILTIN_REPR_FUNCS:
             self._repr_func = BUILTIN_REPR_FUNCS[value]
         else:
-            raise TypeError('Expected a callable or either "repr" or "safe_repr" strings, not {!r}.'.format(value))
+            raise TypeError(f'Expected a callable or either "repr" or "safe_repr" strings, not {value!r}.')
 
     def try_str(self, obj):
         """
@@ -273,7 +272,7 @@ class ColorStreamAction(Action):
             lineno = '{COLON}:{LINENO}{:<5}'.format(event.lineno, **self.other_colors)
 
             if len(filename) > self.filename_alignment:
-                filename = '[...]{}'.format(filename[5 - self.filename_alignment :])
+                filename = f'[...]{filename[5 - self.filename_alignment :]}'
             return '{:>{}}{} '.format(filename, self.filename_alignment, lineno, **self.other_colors)
         else:
             return '{:>{}}       '.format('', self.filename_alignment)
@@ -284,7 +283,7 @@ class ColorStreamAction(Action):
         """
         pid = getpid()
         if self.force_pid or self.seen_pid != pid:
-            pid = '[{}]'.format(pid)
+            pid = f'[{pid}]'
             pid_align = self.pid_alignment
         else:
             pid = pid_align = ''
@@ -439,7 +438,7 @@ class CallPrinter(CodePrinter):
         cls.locals = defaultdict(list)
 
     def __init__(self, *args, **kwargs):
-        super(CallPrinter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __call__(self, event):
         """
@@ -577,7 +576,7 @@ class VarsPrinter(ColorStreamAction):
         if not names:
             raise TypeError('VarsPrinter requires at least one variable name/expression.')
         self.names = {name: set(iter_symbols(name)) for name in names}
-        super(VarsPrinter, self).__init__(**options)
+        super().__init__(**options)
 
     def __call__(self, event):
         """
@@ -647,7 +646,7 @@ class VarsSnooper(ColorStreamAction):
     """
 
     def __init__(self, **options):
-        super(VarsSnooper, self).__init__(**options)
+        super().__init__(**options)
         self.stored_reprs = defaultdict(dict)
 
     def __call__(self, event):
@@ -763,7 +762,7 @@ class ErrorSnooper(CodePrinter):
         self.max_depth = kwargs.pop('max_depth', 0)
         self.origin = None
         self.events = None
-        super(ErrorSnooper, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __call__(self, event):
         if self.max_backlog:
@@ -814,7 +813,7 @@ class ErrorSnooper(CodePrinter):
             self.origin.arg,
         )
         for event in self.events:
-            super(ErrorSnooper, self).__call__(event)
+            super().__call__(event)
         self.origin = None
         self.events = None
 
@@ -837,7 +836,7 @@ class StackPrinter(ColorStreamAction):
     def __init__(self, depth=15, limit=2, **options):
         self.limit = limit
         self.depth = depth
-        super(StackPrinter, self).__init__(**options)
+        super().__init__(**options)
 
     def __call__(self, event):
         """
@@ -849,11 +848,10 @@ class StackPrinter(ColorStreamAction):
         sep = os.path.sep
 
         if event.frame and event.frame.f_back:
-            template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<={RESET} %s' % (
+            template = '{{}}{{}}{{}}{{CONT}}:{{BRIGHT}}{{fore(BLUE)}}{} {{KIND}}<={{RESET}} {}'.format(
                 event.function,
                 ' {KIND}<={RESET} '.join(
-                    '%s{CONT}:{RESET}%s{CONT}:{BRIGHT}{fore(BLUE)}%s'
-                    % (
+                    '{}{{CONT}}:{{RESET}}{}{{CONT}}:{{BRIGHT}}{{fore(BLUE)}}{}'.format(
                         '/'.join(frame.f_code.co_filename.split(sep)[-self.limit :]),
                         frame.f_lineno,
                         frame.f_code.co_name,
@@ -862,7 +860,7 @@ class StackPrinter(ColorStreamAction):
                 ),
             )
         else:
-            template = '{}{}{}{CONT}:{BRIGHT}{fore(BLUE)}%s {KIND}<= {BRIGHT}{fore(YELLOW)}no frames available {NORMAL}(detached=%s)' % (
+            template = '{{}}{{}}{{}}{{CONT}}:{{BRIGHT}}{{fore(BLUE)}}{} {{KIND}}<= {{BRIGHT}}{{fore(YELLOW)}}no frames available {{NORMAL}}(detached={})'.format(
                 event.function,
                 event.detached,
             )

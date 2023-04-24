@@ -142,21 +142,21 @@ cdef class Query:
             parts = [p for p in key.split('_') if p]
             count = len(parts)
             if count > 2:
-                raise TypeError('Unexpected argument %r. Must be one of %s with optional operators like: %s' % (
-                    key, ALLOWED_KEYS, ALLOWED_OPERATORS
-                ))
+                raise TypeError(
+                    f'Unexpected argument {key!r}. Must be one of {ALLOWED_KEYS} with optional operators like: {ALLOWED_OPERATORS}'
+                )
             elif count == 2:
                 prefix, operator = parts
                 if operator in ('startswith', 'sw'):
                     if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(f'Value {value!r} for {key!r} is invalid. Must be a string, list, tuple or set.')
                         value = tuple(value)
                     mapping = query_startswith
                 elif operator in ('endswith', 'ew'):
                     if not isinstance(value, basestring):
                         if not isinstance(value, (list, set, tuple)):
-                            raise ValueError('Value %r for %r is invalid. Must be a string, list, tuple or set.' % (value, key))
+                            raise ValueError(f'Value {value!r} for {key!r} is invalid. Must be a string, list, tuple or set.')
                         value = tuple(value)
                     mapping = query_endswith
                 elif operator == 'in':
@@ -175,13 +175,13 @@ cdef class Query:
                 elif operator == 'gte':
                     mapping = query_gte
                 else:
-                    raise TypeError('Unexpected operator %r. Must be one of %s.' % (operator, ALLOWED_OPERATORS))
+                    raise TypeError(f'Unexpected operator {operator!r}. Must be one of {ALLOWED_OPERATORS}.')
             else:
                 mapping = query_eq
                 prefix = key
 
             if prefix not in ALLOWED_KEYS:
-                raise TypeError('Unexpected argument %r. Must be one of %s.' % (key, ALLOWED_KEYS))
+                raise TypeError(f'Unexpected argument {key!r}. Must be one of {ALLOWED_KEYS}.')
 
             mapping[prefix] = QueryEntry(value, prefix)
 
@@ -200,7 +200,7 @@ cdef class Query:
     def __str__(self):
         return 'Query(%s)' % (
             ', '.join([
-                ', '.join([f'{key}{kind}={value!r}' for key, value in mapping])
+                ', '.join(f'{key}{kind}={value!r}' for key, value in mapping)
                 for kind, mapping in [
                     ('', self.query_eq),
                     ('_in', self.query_in),
@@ -645,7 +645,7 @@ cdef class Backlog:
         from hunter import _merge
 
         if self._filter is not None:
-            predicates = (self._filter,) + predicates
+            predicates = (self._filter, *predicates)
 
         return Backlog(
             self.condition,
