@@ -196,10 +196,11 @@ cdef class Query:
         self.query_gt = tuple(sorted(query_gt.items()))
         self.query_gte = tuple(sorted(query_gte.items()))
 
+
     def __str__(self):
         return 'Query(%s)' % (
-            ', '.join(
-                ', '.join('%s%s=%r' % (key, kind, value) for key, value in mapping)
+            ', '.join([
+                ', '.join([f'{key}{kind}={value!r}' for key, value in mapping])
                 for kind, mapping in [
                     ('', self.query_eq),
                     ('_in', self.query_in),
@@ -211,13 +212,15 @@ cdef class Query:
                     ('_lte', self.query_lte),
                     ('_gt', self.query_gt),
                     ('_gte', self.query_gte),
-                ] if mapping
-            )
+                ]
+                if mapping
+            ])
         )
 
     def __repr__(self):
-        return '<hunter._predicates.Query: %s>' % ' '.join(
-            fmt % (mapping,) for fmt, mapping in [
+        return '<hunter.predicates.Query: %s>' % ' '.join([
+            fmt % (mapping,)
+            for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
                 ('query_in=%r', self.query_in),
                 ('query_contains=%r', self.query_contains),
@@ -228,9 +231,9 @@ cdef class Query:
                 ('query_lte=%r', self.query_lte),
                 ('query_gt=%r', self.query_gt),
                 ('query_gte=%r', self.query_gte),
-
-            ] if mapping
-        )
+            ]
+            if mapping
+        ])
 
     def __eq__(self, other):
         return (
