@@ -90,18 +90,20 @@ _Py_SET_REFCNT(PyObject *ob, Py_ssize_t refcnt)
 // Py_SETREF() and Py_XSETREF() were added to Python 3.5.2.
 // It is excluded from the limited C API.
 #if (PY_VERSION_HEX < 0x03050200 && !defined(Py_SETREF)) && !defined(Py_LIMITED_API)
-#define Py_SETREF(op, op2)                      \
-    do {                                        \
-        PyObject *_py_tmp = _PyObject_CAST(op); \
-        (op) = (op2);                           \
-        Py_DECREF(_py_tmp);                     \
+#define Py_SETREF(dst, src)                                     \
+    do {                                                        \
+        PyObject **_tmp_dst_ptr = _Py_CAST(PyObject**, &(dst)); \
+        PyObject *_tmp_dst = (*_tmp_dst_ptr);                   \
+        *_tmp_dst_ptr = _PyObject_CAST(src);                    \
+        Py_DECREF(_tmp_dst);                                    \
     } while (0)
 
-#define Py_XSETREF(op, op2)                     \
-    do {                                        \
-        PyObject *_py_tmp = _PyObject_CAST(op); \
-        (op) = (op2);                           \
-        Py_XDECREF(_py_tmp);                    \
+#define Py_XSETREF(dst, src)                                    \
+    do {                                                        \
+        PyObject **_tmp_dst_ptr = _Py_CAST(PyObject**, &(dst)); \
+        PyObject *_tmp_dst = (*_tmp_dst_ptr);                   \
+        *_tmp_dst_ptr = _PyObject_CAST(src);                    \
+        Py_XDECREF(_tmp_dst);                                   \
     } while (0)
 #endif
 
@@ -145,7 +147,7 @@ _Py_SET_SIZE(PyVarObject *ob, Py_ssize_t size)
 
 
 // bpo-40421 added PyFrame_GetCode() to Python 3.9.0b1
-#if PY_VERSION_HEX < 0x030900B1
+#if PY_VERSION_HEX < 0x030900B1 || defined(PYPY_VERSION)
 PYCAPI_COMPAT_STATIC_INLINE(PyCodeObject*)
 PyFrame_GetCode(PyFrameObject *frame)
 {
@@ -242,8 +244,59 @@ PyFrame_GetLasti(PyFrameObject *frame)
 #endif
 
 
+// gh-91248 added PyFrame_GetVar() to Python 3.12.0a2
+#if PY_VERSION_HEX < 0x030C00A2 && !defined(PYPY_VERSION)
+PYCAPI_COMPAT_STATIC_INLINE(PyObject*)
+PyFrame_GetVar(PyFrameObject *frame, PyObject *name)
+{
+    PyObject *locals, *value;
+
+    locals = PyFrame_GetLocals(frame);
+    if (locals == NULL) {
+        return NULL;
+    }
+#if PY_VERSION_HEX >= 0x03000000
+    value = PyDict_GetItemWithError(locals, name);
+#else
+    value = PyDict_GetItem(locals, name);
+#endif
+    Py_DECREF(locals);
+
+    if (value == NULL) {
+        if (PyErr_Occurred()) {
+            return NULL;
+        }
+#if PY_VERSION_HEX >= 0x03000000
+        PyErr_Format(PyExc_NameError, "variable %R does not exist", name);
+#else
+        PyErr_SetString(PyExc_NameError, "variable does not exist");
+#endif
+        return NULL;
+    }
+    return Py_NewRef(value);
+}
+#endif
+
+
+// gh-91248 added PyFrame_GetVarString() to Python 3.12.0a2
+#if PY_VERSION_HEX < 0x030C00A2 && !defined(PYPY_VERSION)
+PYCAPI_COMPAT_STATIC_INLINE(PyObject*)
+PyFrame_GetVarString(PyFrameObject *frame, const char *name)
+{
+    PyObject *name_obj, *value;
+    name_obj = PyUnicode_FromString(name);
+    if (name_obj == NULL) {
+        return NULL;
+    }
+    value = PyFrame_GetVar(frame, name_obj);
+    Py_DECREF(name_obj);
+    return value;
+}
+#endif
+
+
 // bpo-39947 added PyThreadState_GetInterpreter() to Python 3.9.0a5
-#if PY_VERSION_HEX < 0x030900A5
+#if PY_VERSION_HEX < 0x030900A5 || defined(PYPY_VERSION)
 PYCAPI_COMPAT_STATIC_INLINE(PyInterpreterState *)
 PyThreadState_GetInterpreter(PyThreadState *tstate)
 {
@@ -275,7 +328,7 @@ _PyThreadState_GetFrameBorrow(PyThreadState *tstate)
 
 
 // bpo-39947 added PyInterpreterState_Get() to Python 3.9.0a5
-#if PY_VERSION_HEX < 0x030900A5
+#if PY_VERSION_HEX < 0x030900A5 || defined(PYPY_VERSION)
 PYCAPI_COMPAT_STATIC_INLINE(PyInterpreterState*)
 PyInterpreterState_Get(void)
 {
@@ -337,7 +390,7 @@ PyThreadState_LeaveTracing(PyThreadState *tstate)
 
 
 // bpo-37194 added PyObject_CallNoArgs() to Python 3.9.0a1
-#if PY_VERSION_HEX < 0x030900A1
+#if PY_VERSION_HEX < 0x030900A1 || defined(PYPY_VERSION)
 PYCAPI_COMPAT_STATIC_INLINE(PyObject*)
 PyObject_CallNoArgs(PyObject *func)
 {
@@ -348,7 +401,7 @@ PyObject_CallNoArgs(PyObject *func)
 
 // bpo-39245 made PyObject_CallOneArg() public (previously called
 // _PyObject_CallOneArg) in Python 3.9.0a4
-#if PY_VERSION_HEX < 0x030900A4
+#if PY_VERSION_HEX < 0x030900A4 || defined(PYPY_VERSION)
 PYCAPI_COMPAT_STATIC_INLINE(PyObject*)
 PyObject_CallOneArg(PyObject *func, PyObject *arg)
 {
