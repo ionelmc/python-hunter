@@ -13,6 +13,7 @@ from socket import _socket
 from socket import socket
 
 import py
+import pytest
 import six
 
 from hunter.util import safe_repr
@@ -140,6 +141,14 @@ def test_safe_repr():
     s1.close()
     s2.close()
     assert safe_repr(py.io).startswith('<py._vendored_packages.apipkg.ApiModule object at 0x')
+
+
+def test_safe_repr_zoneinfo():
+    zoneinfo = pytest.importorskip("zoneinfo")
+    assert (
+        safe_repr(datetime(2000, 2, 2, tzinfo=zoneinfo.ZoneInfo('Europe/Bucharest')))
+        == "datetime(2000, 2, 2, 0, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Europe/Bucharest'), fold=0)"
+    )
 
 
 def test_reliable_primitives():
