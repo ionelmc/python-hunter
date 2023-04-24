@@ -5,44 +5,54 @@ requires = [
     "setuptools_scm>=3.3.1,!=4.0.0",
 ]
 
+[tool.ruff.per-file-ignores]
+"ci/*" = ["S"]
+
+[tool.ruff]
+extend-exclude = ["static", "ci/templates"]
+ignore = [
+    "RUF001", # ruff-specific rules ambiguous-unicode-character-string
+    "S101", # flake8-bandit assert
+    "S308", # flake8-bandit suspicious-mark-safe-usage
+    "E501", # pycodestyle line-too-long
+]
+line-length = 140
+select = [
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "E", # pycodestyle errors
+    "EXE", # flake8-executable
+    "F", # pyflakes
+    "I", # isort
+    "INT", # flake8-gettext
+    "PIE", # flake8-pie
+    "PLC", # pylint convention
+    "PLE", # pylint errors
+    "PT", # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RUF", # ruff-specific rules
+    "S", # flake8-bandit
+    "UP", # pyupgrade
+    "W", # pycodestyle warnings
+]
+src = ["src", "tests"]
+target-version = "py37"
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.isort]
+forced-separate = ["conftest"]
+force-single-line = true
+
 [tool.black]
 line-length = 140
-target-version = ['py37']
+target-version = ["py37"]
 skip-string-normalization = true
 
-[tool.ipdb]
-
-[tool.tbump]
-github_url = "https://github.com/ionelmc/python-hunter/"
-
-[tool.tbump.version]
-current = "3.3.3"
-regex = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
-
-[tool.tbump.git]
-message_template = "Bump to {new_version}"
-tag_template = "v{new_version}"
-
-[[tool.tbump.file]]
-src = "setup.py"
-search = "'fallback_version': '{current_version}'"
-
-[[tool.tbump.file]]
-src = "README.rst"
-search = "/v{current_version}.svg"
-
-[[tool.tbump.file]]
-src = "README.rst"
-search = "/v{current_version}...master"
-
-[[tool.tbump.file]]
-src = "docs/conf.py"
-search = "version = release = '{current_version}'"
-
-[[tool.tbump.file]]
-src = "src/hunter/__init__.py"
-search = "__version__ = '{current_version}'"
-
-[[tool.tbump.before_commit]]
-name = "check changelog"
-cmd = "grep -q {new_version} CHANGELOG.rst"
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"

@@ -10,7 +10,7 @@ Overview
     * - docs
       - |docs|
     * - tests
-      - | |github-actions| |requires|
+      - | |github-actions|
         | |codecov|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
@@ -22,10 +22,6 @@ Overview
 .. |github-actions| image:: https://github.com/ionelmc/python-hunter/actions/workflows/github-actions.yml/badge.svg
     :alt: GitHub Actions Build Status
     :target: https://github.com/ionelmc/python-hunter/actions
-
-.. |requires| image:: https://requires.io/github/ionelmc/python-hunter/requirements.svg?branch=master
-    :alt: Requirements Status
-    :target: https://requires.io/github/ionelmc/python-hunter/requirements/?branch=master
 
 .. |codecov| image:: https://codecov.io/gh/ionelmc/python-hunter/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage Status

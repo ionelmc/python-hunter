@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 import traceback
 
@@ -23,9 +20,9 @@ extensions = [
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'Hunter'
-year = '2015-2021'
+year = '2015-2023'
 author = 'Ionel Cristian Mărieș'
-copyright = '{0}, {1}'.format(year, author)
+copyright = f'{year}, {author}'
 try:
     from pkg_resources import get_distribution
 
@@ -42,7 +39,9 @@ extlinks = {
 }
 html_theme = 'sphinx_py3doc_enhanced_theme'
 html_theme_path = [sphinx_py3doc_enhanced_theme.get_html_theme_path()]
-html_theme_options = {'githuburl': 'https://github.com/ionelmc/python-hunter/'}
+html_theme_options = {
+    'githuburl': 'https://github.com/ionelmc/python-hunter/',
+}
 
 html_use_smartypants = True
 html_last_updated_fmt = '%b %d, %Y'
@@ -50,7 +49,7 @@ html_split_index = False
 html_sidebars = {
     '**': ['searchbox.html', 'globaltoc.html', 'sourcelink.html'],
 }
-html_short_title = '%s-%s' % (project, version)
+html_short_title = f'{project}-{version}'
 
 napoleon_use_ivar = True
 napoleon_use_rtype = False

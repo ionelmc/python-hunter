@@ -1,18 +1,10 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-
-import io
 import os
 import re
 import sys
 from distutils.command.build import build
-from glob import glob
 from itertools import chain
-from os.path import basename
-from os.path import dirname
-from os.path import join
-from os.path import relpath
-from os.path import splitext
+from pathlib import Path
 
 from setuptools import Extension
 from setuptools import find_packages
@@ -30,37 +22,35 @@ try:
 except ImportError:
     Cython = None
 
-
-def read(*names, **kwargs):
-    with io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8'),
-    ) as fh:
-        return fh.read()
+# Enable code coverage for C code: we cannot use CFLAGS=-coverage in tox.ini, since that may mess with compiling
+# dependencies (e.g. numpy). Therefore we set SETUPPY_CFLAGS=-coverage in tox.ini and copy it to CFLAGS here (after
+# deps have been safely installed).
+if 'TOX_ENV_NAME' in os.environ and os.environ.get('SETUPPY_EXT_COVERAGE') == 'yes':
+    CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_TRACE=1'
+    LFLAGS = os.environ['LFLAGS'] = ''
+else:
+    CFLAGS = ''
+    LFLAGS = ''
+pth_file = str(Path(__file__).parent.joinpath('src', 'hunter.pth'))
 
 
 class BuildWithPTH(build):
     def run(self):
         super().run()
-        path = join(dirname(__file__), 'src', 'hunter.pth')
-        dest = join(self.build_lib, basename(path))
-        self.copy_file(path, dest)
+        self.copy_file(pth_file, str(Path(self.build_lib, 'hunter.pth')))
 
 
 class EasyInstallWithPTH(easy_install):
     def run(self, *args, **kwargs):
         super().run(*args, **kwargs)
-        path = join(dirname(__file__), 'src', 'hunter.pth')
-        dest = join(self.install_dir, basename(path))
-        self.copy_file(path, dest)
+        self.copy_file(pth_file, str(Path(self.install_dir, 'hunter.pth')))
 
 
 class InstallLibWithPTH(install_lib):
     def run(self):
         super().run()
-        path = join(dirname(__file__), 'src', 'hunter.pth')
-        dest = join(self.install_dir, basename(path))
-        self.copy_file(path, dest)
+        dest = str(Path(self.install_dir, 'hunter.pth'))
+        self.copy_file(pth_file, dest)
         self.outputs = [dest]
 
     def get_outputs(self):
@@ -70,13 +60,13 @@ class InstallLibWithPTH(install_lib):
 class DevelopWithPTH(develop):
     def run(self):
         super().run()
-        path = join(dirname(__file__), 'src', 'hunter.pth')
-        dest = join(self.install_dir, basename(path))
-        self.copy_file(path, dest)
+        self.copy_file(pth_file, str(Path(self.install_dir, 'hunter.pth')))
 
 
 class OptionalBuildExt(build_ext):
-    """Allow the building of C extensions to fail."""
+    """
+    Allow the building of C extensions to fail.
+    """
 
     def run(self):
         try:
@@ -95,7 +85,7 @@ class OptionalBuildExt(build_ext):
     An optional code optimization (C extension) could not be compiled.
 
     Optimizations for this package will not be available!
-        """
+            """
         )
 
         print('CAUSE:')
@@ -105,10 +95,17 @@ class OptionalBuildExt(build_ext):
 
 
 class BinaryDistribution(Distribution):
-    """Distribution which almost always forces a binary package with platform name"""
+    """
+    Distribution which almost always forces a binary package with platform name
+    """
 
     def has_ext_modules(self):
         return super().has_ext_modules() or not os.environ.get('SETUPPY_ALLOW_PURE')
+
+
+def read(*names, **kwargs):
+    with Path(__file__).parent.joinpath(*names).open(encoding=kwargs.get('encoding', 'utf8')) as fh:
+        return fh.read()
 
 
 setup(
@@ -120,8 +117,7 @@ setup(
     },
     license='BSD-2-Clause',
     description='Hunter is a flexible code tracing toolkit.',
-    long_description='%s\n%s'
-    % (
+    long_description='{}\n{}'.format(
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst')),
     ),
@@ -130,7 +126,7 @@ setup(
     url='https://github.com/ionelmc/python-hunter',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    py_modules=[path.stem for path in Path('src').glob('*.py')],
     zip_safe=False,
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -196,13 +192,13 @@ setup(
     if hasattr(sys, 'pypy_version_info')
     else [
         Extension(
-            splitext(relpath(path, 'src').replace(os.sep, '.'))[0],
-            sources=[path],
-            extra_compile_args=os.environ.get('SETUPPY_CFLAGS', '').split(),
-            include_dirs=[dirname(path)],
+            str(path.relative_to('src').with_suffix('')).replace(os.sep, '.'),
+            sources=[str(path)],
+            extra_compile_args=CFLAGS.split(),
+            extra_link_args=LFLAGS.split(),
+            include_dirs=[str(path.parent)],
         )
-        for root, _, _ in os.walk('src')
-        for path in glob(join(root, '*.pyx' if Cython else '*.c'))
+        for path in Path('src').glob('**/*.pyx' if Cython else '**/*.c')
     ],
     distclass=BinaryDistribution,
 )
