@@ -7,6 +7,7 @@ requires = [
 
 [tool.ruff.per-file-ignores]
 "ci/*" = ["S"]
+"tests/*" = ["ALL"]
 
 [tool.ruff]
 extend-exclude = ["static", "ci/templates"]

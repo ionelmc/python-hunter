@@ -1483,7 +1483,7 @@ def test_debugger(LineMatcher):
 
         foo()
     print(out.getvalue())
-    assert calls == [2, 'foo' if trace.is_pure else None]
+    assert calls == [2, 'foo']
     lm = LineMatcher(out.getvalue().splitlines())
     pprint(lm.lines)
     lm.fnmatch_lines_random(
