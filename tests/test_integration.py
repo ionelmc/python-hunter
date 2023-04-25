@@ -250,7 +250,7 @@ def test_tracing_reinstall(LineMatcher):
 
 def test_tracer_autostop():
     with trace(lambda: garbage) as tracer:
-        if os.environ.get('SETUPPY_CFLAGS') == '-DCYTHON_TRACE=1':
+        if os.environ.get('SETUPPY_EXT_COVERAGE') == 'yes':
             assert sys.gettrace() is not tracer
         else:
             assert sys.gettrace() is None

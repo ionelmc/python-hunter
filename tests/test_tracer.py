@@ -813,7 +813,7 @@ def test_wraps_coroutine_local(LineMatcher):
         assert 'tracer.stop()' not in call
 
 
-@pytest.mark.skipif('os.environ.get("SETUPPY_CFLAGS") == "-DCYTHON_TRACE=1"')
+@pytest.mark.skipif('os.environ.get("SETUPPY_EXT_COVERAGE") == "yes"')
 def test_depth():
     calls = []
     tracer = hunter.trace(action=lambda event: calls.append((event.kind, event.module, event.function, event.depth)))
