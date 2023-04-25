@@ -151,6 +151,10 @@ def test_safe_repr_zoneinfo():
     )
 
 
+def test_safe_repr_decimal():
+    assert safe_repr(Decimal('1.23456')) == "Decimal('1.23456')"
+
+
 def test_reliable_primitives():
     # establish a baseline for primitives that cannot be messed with descriptors and metaclasses
     side_effects = []

@@ -229,7 +229,7 @@ def safe_repr(obj, maxdepth=5):
     elif (
         obj_type_type is type
         and obj_type is not InstanceType
-        and obj_type.__module__ in (builtins.__name__, 'io', 'socket', '_socket', 'zoneinfo')
+        and obj_type.__module__ in (builtins.__name__, 'io', 'socket', '_socket', 'zoneinfo', 'decimal')
     ):
         # hardcoded list of safe things. note that isinstance ain't used
         # (we don't trust subclasses to do the right thing in __repr__)
