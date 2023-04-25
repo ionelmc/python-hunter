@@ -2,6 +2,18 @@
 Changelog
 =========
 
+3.6.0 (2023-04-25)
+------------------
+
+* Added C extension support for Python 3.11. This may come with up to 10% performance hit (depending on use-case) for all Pythons.
+  Unfortunately some `compat shims <https://raw.githubusercontent.com/python/pythoncapi_compat/master/pythoncapi_compat.h>`_ are
+  now used for getting frame details. This is necessary to be able to work with Python 3.11's opaque frame objects.
+* Added safe repr support for ZoneInfo objects.
+* C extensions are now prebuild with Cython 3.0b2.
+* Replaced the flake8/isort pre-commit hooks with ruff.
+* Disabled editable wheels (`PEP-0662 <https://peps.python.org/pep-0662/>`_) as they don't include the `hunter.pth` file.
+  There may be a way to do it but I haven't figured out a way to customize the `editable_wheel` command without a very brittle solution glued to setuptools' internals.
+
 3.5.1 (2022-09-27)
 ------------------
 
