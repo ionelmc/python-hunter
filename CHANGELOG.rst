@@ -2,6 +2,11 @@
 Changelog
 =========
 
+3.6.1 (2023-04-26)
+------------------
+
+* Added safe repr support for Decimal objects.
+
 3.6.0 (2023-04-25)
 ------------------
 
