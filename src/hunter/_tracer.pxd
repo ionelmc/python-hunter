@@ -31,6 +31,7 @@ cdef extern from "pystate.h":
         Py_tracefunc c_tracefunc
         Py_tracefunc c_profilefunc
 
+
 @cython.final
 cdef class Tracer:
     cdef:

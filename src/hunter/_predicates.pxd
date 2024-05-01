@@ -18,26 +18,31 @@ cdef class Query:
         readonly tuple query_regex
         readonly tuple query_startswith
 
+
 @cython.final
 cdef class And:
     cdef:
         readonly tuple predicates
+
 
 @cython.final
 cdef class Or:
     cdef:
         readonly tuple predicates
 
+
 @cython.final
 cdef class Not:
     cdef:
         readonly object predicate
+
 
 @cython.final
 cdef class When:
     cdef:
         readonly object condition
         readonly tuple actions
+
 
 @cython.final
 cdef class From:
@@ -47,6 +52,7 @@ cdef class From:
         readonly int watermark
         readonly int origin_depth
         readonly int origin_calls
+
 
 @cython.final
 cdef class Backlog:

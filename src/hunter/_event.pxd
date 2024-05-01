@@ -8,6 +8,7 @@ cdef extern from *:
     void PyFrame_FastToLocals(FrameType)
     int PyFrame_GetLineNumber(FrameType)
 
+
 @cython.final
 cdef class Event:
     cdef:

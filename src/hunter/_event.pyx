@@ -249,9 +249,9 @@ cdef class Event:
             elif filename.endswith(('.pyc', '.pyo')):
                 filename = filename[:-1]
             elif filename.endswith(('.so', '.pyd')):
-                basename = CYTHON_SUFFIX_RE.sub('', filename)
+                cybasename = CYTHON_SUFFIX_RE.sub('', filename)
                 for ext in ('.pyx', '.py'):
-                    cyfilename = basename + ext
+                    cyfilename = cybasename + ext
                     if exists(cyfilename):
                         filename = cyfilename
                         break

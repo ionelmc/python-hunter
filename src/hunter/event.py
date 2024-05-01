@@ -116,12 +116,8 @@ class Event:
         self.detached = False
 
     def __repr__(self):
-        return '<Event kind={!r} function={!r} module={!r} filename={!r} lineno={}>'.format(
-            self.kind,
-            self.function,
-            self.module,
-            self.filename,
-            self.lineno,
+        return (
+            f'<Event kind={self.kind!r} function={self.function!r} module={self.module!r} filename={self.filename!r} lineno={self.lineno}>'
         )
 
     def __eq__(self, other):

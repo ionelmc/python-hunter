@@ -73,6 +73,7 @@ cdef Event_getter_typedef[17] Event_getters = [
     Event_get_builtin,
 ]
 
+
 @cython.final
 cdef class QueryEntry:
     cdef Event_getter_typedef getter
@@ -93,6 +94,7 @@ cdef class QueryEntry:
             and self.value == (<QueryEntry> other).value
             and self.getter_index == (<QueryEntry> other).getter_index
         )
+
 
 @cython.final
 cdef class Query:
@@ -125,8 +127,6 @@ cdef class Query:
                 ``threadid``,
                 ``threadname``.
         """
-        cdef void* prefix_getter_pointer
-
         query_eq = {}
         query_startswith = {}
         query_endswith = {}
@@ -195,7 +195,6 @@ cdef class Query:
         self.query_lte = tuple(sorted(query_lte.items()))
         self.query_gt = tuple(sorted(query_gt.items()))
         self.query_gte = tuple(sorted(query_gte.items()))
-
 
     def __str__(self):
         return 'Query(%s)' % (

@@ -139,7 +139,7 @@ class Query:
         self.query_gte = tuple(sorted(query_gte.items()))
 
     def __str__(self):
-        return 'Query(%s)' % (
+        return 'Query(%s)' % (  # noqa: UP031
             ', '.join(
                 ', '.join(f'{key}{kind}={value!r}' for key, value in mapping)
                 for kind, mapping in [
@@ -159,7 +159,7 @@ class Query:
         )
 
     def __repr__(self):
-        return '<hunter.predicates.Query: %s>' % ' '.join(
+        return '<hunter.predicates.Query: %s>' % ' '.join(  # noqa: UP031
             fmt % (mapping,)
             for fmt, mapping in [
                 ('query_eq=%r', self.query_eq),
@@ -289,10 +289,7 @@ class When:
         )
 
     def __repr__(self):
-        return '<hunter.predicates.When: condition={!r}, actions={!r}>'.format(
-            self.condition,
-            self.actions,
-        )
+        return f'<hunter.predicates.When: condition={self.condition!r}, actions={self.actions!r}>'
 
     def __eq__(self, other):
         return isinstance(other, When) and self.condition == other.condition and self.actions == other.actions
@@ -367,11 +364,7 @@ class From:
         self._origin_calls = None
 
     def __str__(self):
-        return 'From({}, {}, watermark={})'.format(
-            self.condition,
-            self.predicate,
-            self.watermark,
-        )
+        return f'From({self.condition}, {self.predicate}, watermark={self.watermark})'
 
     def __repr__(self):
         return f'<hunter.predicates.From: condition={self.condition!r}, predicate={self.predicate!r}, watermark={self.watermark!r}>'
@@ -444,7 +437,7 @@ class And:
         self.predicates = predicates
 
     def __str__(self):
-        return 'And(%s)' % ', '.join(str(p) for p in self.predicates)
+        return f'And({", ".join(str(p) for p in self.predicates)})'
 
     def __repr__(self):
         return f'<hunter.predicates.And: predicates={self.predicates!r}>'
@@ -507,7 +500,7 @@ class Or:
         self.predicates = predicates
 
     def __str__(self):
-        return 'Or(%s)' % ', '.join(str(p) for p in self.predicates)
+        return f'Or({", ".join(str(p) for p in self.predicates)})'
 
     def __repr__(self):
         return f'<hunter.predicates.Or: predicates={self.predicates!r}>'
@@ -570,10 +563,10 @@ class Not:
         self.predicate = predicate
 
     def __str__(self):
-        return 'Not(%s)' % self.predicate
+        return f'Not({self.predicate})'
 
     def __repr__(self):
-        return '<hunter.predicates.Not: predicate=%r>' % self.predicate
+        return f'<hunter.predicates.Not: predicate={self.predicate!r}>'
 
     def __eq__(self, other):
         return isinstance(other, Not) and self.predicate == other.predicate
@@ -669,7 +662,7 @@ class Backlog:
     ):
         self.action = action() if inspect.isclass(action) and issubclass(action, Action) else action
         if not isinstance(self.action, ColorStreamAction):
-            raise TypeError('Action %r must be a ColorStreamAction.' % self.action)
+            raise TypeError(f'Action {self.action!r} must be a ColorStreamAction.')
         self.condition = condition
         self.queue = collections.deque(maxlen=size)
         self.size = size
@@ -744,24 +737,10 @@ class Backlog:
         return result
 
     def __str__(self):
-        return 'Backlog({}, size={}, stack={}, vars={}, action={}, filter={})'.format(
-            self.condition,
-            self.size,
-            self.stack,
-            self.vars,
-            self.action,
-            self._filter,
-        )
+        return f'Backlog({self.condition}, size={self.size}, stack={self.stack}, vars={self.vars}, action={self.action}, filter={self._filter})'
 
     def __repr__(self):
-        return '<hunter.predicates.Backlog: condition={!r}, size={!r}, stack={!r}, vars={!r}, action={!r}, filter={!r}>'.format(
-            self.condition,
-            self.size,
-            self.stack,
-            self.vars,
-            self.action,
-            self._filter,
-        )
+        return f'<hunter.predicates.Backlog: condition={self.condition!r}, size={self.size!r}, stack={self.stack!r}, vars={self.vars!r}, action={self.action!r}, filter={self._filter!r}>'
 
     def __eq__(self, other):
         return (

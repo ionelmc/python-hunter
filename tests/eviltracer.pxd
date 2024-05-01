@@ -14,6 +14,7 @@ cdef extern from "vendor/_compat.h":
     ctypedef class types.FrameType[object PyFrameObject, check_size ignore]:
         pass
 
+
 @cython.final
 cdef class EvilTracer:
     cdef readonly object _calls

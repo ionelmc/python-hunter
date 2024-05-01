@@ -6,6 +6,7 @@ import threading
 from collections import defaultdict
 from itertools import islice
 from os import getpid
+from typing import ClassVar
 
 from . import config
 from .util import BUILTIN_SYMBOLS
@@ -67,10 +68,10 @@ class Debugger(Action):
         return type(self) is type(other) and self.klass == other.klass and self.kwargs == other.kwargs
 
     def __str__(self):
-        return '{0.__class__.__name__}(klass={0.klass}, kwargs={0.kwargs})'.format(self)
+        return f'{self.__class__.__name__}(klass={self.klass}, kwargs={self.kwargs})'
 
     def __repr__(self):
-        return '{0.__class__.__name__}(klass={0.klass!r}, kwargs={0.kwargs!r})'.format(self)
+        return f'{self.__class__.__name__}(klass={self.klass!r}, kwargs={self.kwargs!r})'
 
     def __call__(self, event):
         """
@@ -87,10 +88,10 @@ class Manhole(Action):
         return type(self) is type(other) and self.options == other.options
 
     def __str__(self):
-        return '{0.__class__.__name__}(options={0.options})'.format(self)
+        return f'{self.__class__.__name__}(options={self.options})'
 
     def __repr__(self):
-        return '{0.__class__.__name__}(options={0.options!r})'.format(self)
+        return f'{self.__class__.__name__}(options={self.options!r})'
 
     def __call__(self, event):
         import manhole
@@ -104,7 +105,7 @@ class ColorStreamAction(Action):
     Baseclass for your custom action. Just implement your own ``__call__``.
     """
 
-    _stream_cache = {}
+    _stream_cache: ClassVar = {}
     _stream = None
     _tty = None
     _repr_func = None
@@ -151,18 +152,18 @@ class ColorStreamAction(Action):
 
     def __str__(self):
         return (
-            '{0.__class__.__name__}(stream={0.stream}, force_colors={0.force_colors}, '
-            'filename_alignment={0.filename_alignment}, thread_alignment={0.thread_alignment}, '
-            'pid_alignment={0.pid_alignment} repr_limit={0.repr_limit}, '
-            'repr_func={0.repr_func})'.format(self)
+            f'{self.__class__.__name__}(stream={self.stream}, force_colors={self.force_colors}, '
+            f'filename_alignment={self.filename_alignment}, thread_alignment={self.thread_alignment}, '
+            f'pid_alignment={self.pid_alignment} repr_limit={self.repr_limit}, '
+            f'repr_func={self.repr_func})'
         )
 
     def __repr__(self):
         return (
-            '{0.__class__.__name__}(stream={0.stream!r}, force_colors={0.force_colors!r}, '
-            'filename_alignment={0.filename_alignment!r}, thread_alignment={0.thread_alignment!r}, '
-            'pid_alignment={0.pid_alignment!r} repr_limit={0.repr_limit!r}, '
-            'repr_func={0.repr_func!r})'.format(self)
+            f'{self.__class__.__name__}(stream={self.stream!r}, force_colors={self.force_colors!r}, '
+            f'filename_alignment={self.filename_alignment!r}, thread_alignment={self.thread_alignment!r}, '
+            f'pid_alignment={self.pid_alignment!r} repr_limit={self.repr_limit!r}, '
+            f'repr_func={self.repr_func!r})'
         )
 
     @property
@@ -275,7 +276,7 @@ class ColorStreamAction(Action):
                 filename = f'[...]{filename[5 - self.filename_alignment :]}'
             return '{:>{}}{} '.format(filename, self.filename_alignment, lineno, **self.other_colors)
         else:
-            return '{:>{}}       '.format('', self.filename_alignment)
+            return f'{"":>{self.filename_alignment}}       '
 
     def pid_prefix(self):
         """
@@ -287,7 +288,7 @@ class ColorStreamAction(Action):
             pid_align = self.pid_alignment
         else:
             pid = pid_align = ''
-        return '{:{}}'.format(pid, pid_align)
+        return f'{pid:{pid_align}}'
 
     def thread_prefix(self, event):
         """
@@ -302,7 +303,7 @@ class ColorStreamAction(Action):
             threading_support = len(self.seen_threads) > 1
         thread_name = threading.current_thread().name if threading_support else ''
         thread_align = self.thread_alignment if threading_support else ''
-        return '{:{}}'.format(thread_name, thread_align)
+        return f'{thread_name:{thread_align}}'
 
     def output(self, format_str, *args, **kwargs):
         """
@@ -431,7 +432,7 @@ class CallPrinter(CodePrinter):
 
     EVENT_COLORS = CALL_COLORS
 
-    locals = defaultdict(list)
+    locals: ClassVar = defaultdict(list)
 
     @classmethod
     def cleanup(cls):
@@ -483,9 +484,11 @@ class CallPrinter(CodePrinter):
                         '{VARS}{0}{VARS-NAME}{1}{VARS}={RESET}{2}'.format(
                             prefix,
                             var_display,
-                            self.try_str(event.locals.get(var_lookup, MISSING))
-                            if event.detached
-                            else self.try_repr(event.locals.get(var_lookup, MISSING)),
+                            (
+                                self.try_str(event.locals.get(var_lookup, MISSING))
+                                if event.detached
+                                else self.try_repr(event.locals.get(var_lookup, MISSING))
+                            ),
                             **self.other_colors,
                         )
                         for prefix, var_lookup, var_display in get_arguments(code)
@@ -860,10 +863,7 @@ class StackPrinter(ColorStreamAction):
                 ),
             )
         else:
-            template = '{{}}{{}}{{}}{{CONT}}:{{BRIGHT}}{{fore(BLUE)}}{} {{KIND}}<= {{BRIGHT}}{{fore(YELLOW)}}no frames available {{NORMAL}}(detached={})'.format(
-                event.function,
-                event.detached,
-            )
+            template = f'{{}}{{}}{{}}{{CONT}}:{{BRIGHT}}{{fore(BLUE)}}{event.function} {{KIND}}<= {{BRIGHT}}{{fore(YELLOW)}}no frames available {{NORMAL}}(detached={event.detached})'
         template += '{RESET}\n'
         self.output(
             template,

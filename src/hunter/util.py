@@ -91,8 +91,7 @@ def get_arguments(code):
 def flatten(something):
     if isinstance(something, (list, tuple)):
         for element in something:
-            for subelement in flatten(element):
-                yield subelement
+            yield from flatten(element)
     else:
         yield something
 
@@ -158,67 +157,39 @@ def safe_repr(obj, maxdepth=5):
     newdepth = maxdepth - 1
 
     # only represent exact builtins
-    # (subclasses can have side-effects due to __class__ as a property, __instancecheck__, __subclasscheck__ etc)
+    # (subclasses can have side effects due to __class__ as a property, __instancecheck__, __subclasscheck__ etc.)
     if obj_type is dict:
-        return '{%s}' % ', '.join(f'{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}' for k, v in obj.items())
+        return f'{{{", ".join(f"{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}" for k, v in obj.items())}}}'
     elif obj_type is list:
-        return '[%s]' % ', '.join(safe_repr(i, newdepth) for i in obj)
+        return f'[{", ".join(safe_repr(i, newdepth) for i in obj)}]'
     elif obj_type is tuple:
-        return '(%s%s)' % (  # noqa: UP031
-            ', '.join(safe_repr(i, newdepth) for i in obj),
-            ',' if len(obj) == 1 else '',
-        )
+        return f'({", ".join(safe_repr(i, newdepth) for i in obj)}{"," if len(obj) == 1 else ""})'
     elif obj_type is set:
-        return '{%s}' % ', '.join(safe_repr(i, newdepth) for i in obj)
+        return f'{{{", ".join(safe_repr(i, newdepth) for i in obj)}}}'
     elif obj_type is frozenset:
-        return '%s({%s})' % (  # noqa: UP031
-            obj_type.__name__,
-            ', '.join(safe_repr(i, newdepth) for i in obj),
-        )
+        return f'{obj_type.__name__}({{{", ".join(safe_repr(i, newdepth) for i in obj)}}})'
     elif obj_type is deque:
-        return '{}([{}])'.format(
-            obj_type.__name__,
-            ', '.join(safe_repr(i, newdepth) for i in obj),
-        )
+        return f'{obj_type.__name__}([{", ".join(safe_repr(i, newdepth) for i in obj)}])'
     elif obj_type in (Counter, OrderedDict, defaultdict):
-        return '%s({%s})' % (  # noqa: UP031
-            obj_type.__name__,
-            ', '.join(f'{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}' for k, v in obj.items()),
-        )
+        return f'{obj_type.__name__}({{{", ".join(f"{safe_repr(k, maxdepth)}: {safe_repr(v, newdepth)}" for k, v in obj.items())}}})'
     elif obj_type is Pattern:
         if obj.flags:
-            return 're.compile(%s, flags=%s)' % (  # noqa: UP031
-                safe_repr(obj.pattern),
-                RegexFlag(obj.flags),
-            )
+            return f're.compile({safe_repr(obj.pattern)}, flags={RegexFlag(obj.flags)})'
         else:
-            return 're.compile(%s)' % safe_repr(obj.pattern)
+            return f're.compile({safe_repr(obj.pattern)})'
     elif obj_type in (date, timedelta):
         return repr(obj)
     elif obj_type is datetime:
-        return '%s(%d, %d, %d, %d, %d, %d, %d, tzinfo=%s%s)' % (
-            obj_type.__name__,
-            obj.year,
-            obj.month,
-            obj.day,
-            obj.hour,
-            obj.minute,
-            obj.second,
-            obj.microsecond,
-            safe_repr(obj.tzinfo),
-            ', fold=%s' % safe_repr(obj.fold) if hasattr(obj, 'fold') else '',
+        return (
+            f'{obj_type.__name__}({obj.year}, {obj.month}, {obj.day}, {obj.hour}, {obj.minute}, {obj.second}, {obj.microsecond}, '
+            f'tzinfo={safe_repr(obj.tzinfo)}{f", fold={safe_repr(obj.fold)}" if hasattr(obj, "fold") else ""})'
         )
     elif obj_type is time:
-        return '%s(%d, %d, %d, %d, tzinfo=%s%s)' % (
-            obj_type.__name__,
-            obj.hour,
-            obj.minute,
-            obj.second,
-            obj.microsecond,
-            safe_repr(obj.tzinfo),
-            f', fold={safe_repr(obj.fold)}' if hasattr(obj, 'fold') else '',
+        return (
+            f'{obj_type.__name__}({obj.hour}, {obj.minute}, {obj.second}, {obj.microsecond}, '
+            f'tzinfo={safe_repr(obj.tzinfo)}{f", fold={safe_repr(obj.fold)}" if hasattr(obj, "fold") else ""})'
         )
-    elif obj_type is types.MethodType:  # noqa
+    elif obj_type is types.MethodType:
         self = obj.__self__
         name = getattr(obj, '__qualname__', None)
         if name is None:
@@ -236,7 +207,7 @@ def safe_repr(obj, maxdepth=5):
         return repr(obj)
     else:
         # if the object has a __dict__ then it's probably an instance of a pure python class, assume bad things
-        #  with side-effects will be going on in __repr__ - use the default instead (object.__repr__)
+        #  with side effects will be going on in __repr__ - use the default instead (object.__repr__)
         return object.__repr__(obj)
 
 
