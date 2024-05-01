@@ -842,7 +842,10 @@ def test_depth():
     assert ('return', __name__, 'foo', 0) in calls
 
 
-@pytest.mark.xfail(reason="TODO: Check what's going on with Cython 3.0")
+@pytest.mark.xfail(
+    sys.version_info.major == 3 and sys.version_info.minor == 12,
+    reason="broken on 3.12, see https://github.com/cython/cython/issues/5470",
+)
 def test_source_cython(LineMatcher):
     pytest.importorskip('sample5')
     calls = []
@@ -884,6 +887,10 @@ def test_fullsource(LineMatcher):
     )
 
 
+@pytest.mark.xfail(
+    sys.version_info.major == 3 and sys.version_info.minor == 12,
+    reason="broken on 3.12, see https://github.com/cython/cython/issues/5470",
+)
 def test_fullsource_cython(LineMatcher):
     pytest.importorskip('sample5')
     calls = []
