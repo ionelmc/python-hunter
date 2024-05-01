@@ -73,7 +73,7 @@ def test_manhole_clean_exit():
                 'line         time.sleep(1)',
                 'return    <= stuff: None',
             )
-            target.reset()
+            target.buff.reset()
             tracer.proc.send_signal(signal.SIGINT)
         wait_for_strings(
             target.read,
@@ -120,6 +120,6 @@ def test_gdb_clean_exit():
                 'line         time.sleep(1)',
                 'return    <= stuff: None',
             )
-            target.reset()
+            target.buff.reset()
             tracer.proc.send_signal(signal.SIGINT)
         wait_for_strings(target.read, TIMEOUT, 'Doing stuff', 'Doing stuff', 'Doing stuff')
