@@ -2,6 +2,15 @@
 Changelog
 =========
 
+3.7.0 (2024-05-01)
+------------------
+
+* Drop support for Python 3.7.
+* Upgrade linters and refactor various string formatting and other cleanups.
+* Upgrade Cython to latest release (3.0.10).
+* Linux wheels should be back now.
+* Switched docs theme to furo.
+
 3.6.1 (2023-04-26)
 ------------------
 
