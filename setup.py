@@ -2,13 +2,13 @@
 import os
 import re
 import sys
-from distutils.command.build import build
 from itertools import chain
 from pathlib import Path
 
 from setuptools import Extension
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.build import build
 from setuptools.command.build_ext import build_ext
 from setuptools.command.develop import develop
 from setuptools.command.easy_install import easy_install
@@ -139,11 +139,11 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Utilities',
@@ -163,19 +163,21 @@ setup(
         'code',
         'source',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[],
     extras_require={
         ':platform_system != "Windows"': ['manhole >= 1.5'],
     },
-    setup_requires=[
-        'setuptools_scm>=3.3.1,!=4.0.0',
-        'cython',
-    ]
-    if Cython
-    else [
-        'setuptools_scm>=3.3.1,!=4.0.0',
-    ],
+    setup_requires=(
+        [
+            'setuptools_scm>=3.3.1,!=4.0.0',
+            'cython',
+        ]
+        if Cython
+        else [
+            'setuptools_scm>=3.3.1,!=4.0.0',
+        ]
+    ),
     entry_points={
         'console_scripts': [
             'hunter-trace = hunter.remote:main',
@@ -188,17 +190,19 @@ setup(
         'develop': DevelopWithPTH,
         'build_ext': OptionalBuildExt,
     },
-    ext_modules=[]
-    if hasattr(sys, 'pypy_version_info')
-    else [
-        Extension(
-            str(path.relative_to('src').with_suffix('')).replace(os.sep, '.'),
-            sources=[str(path)],
-            extra_compile_args=CFLAGS.split(),
-            extra_link_args=LFLAGS.split(),
-            include_dirs=[str(path.parent)],
-        )
-        for path in Path('src').glob('**/*.pyx' if Cython else '**/*.c')
-    ],
+    ext_modules=(
+        []
+        if hasattr(sys, 'pypy_version_info')
+        else [
+            Extension(
+                str(path.relative_to('src').with_suffix('')).replace(os.sep, '.'),
+                sources=[str(path)],
+                extra_compile_args=CFLAGS.split(),
+                extra_link_args=LFLAGS.split(),
+                include_dirs=[str(path.parent)],
+            )
+            for path in Path('src').glob('**/*.pyx' if Cython else '**/*.c')
+        ]
+    ),
     distclass=BinaryDistribution,
 )

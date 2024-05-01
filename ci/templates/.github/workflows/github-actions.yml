@@ -1,5 +1,5 @@
 name: build
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 jobs:
   test:
     name: {{ '${{ matrix.name }}' }}
@@ -22,9 +22,9 @@ jobs:
 {% for env in tox_environments %}
 {% set prefix = env.split('-')[0] -%}
 {% if prefix.startswith('pypy') %}
-{% set python %}pypy-{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
+{% set python %}pypy-{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
-{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5] }}{% endset %}
+{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
@@ -46,7 +46,10 @@ jobs:
             python: '{{ python }}'
             toxpython: '{{ toxpython }}'
             python_arch: '{{ python_arch }}'
-            tox_env: '{{ env }}{% if 'cover' in env %},codecov{% endif %}'
+            tox_env: '{{ env }}'
+{% if 'cover' in env %}
+            cover: true
+{% endif %}
             cibw_arch: '{{ cibw_arch }}'
 {% if env.endswith('cython-nocov') and not prefix.startswith('pypy') %}
             cibw_build: '{{ cpython }}-{{ wheel_arch }}'
@@ -58,14 +61,14 @@ jobs:
 {% endfor %}
 {% endfor %}
     steps:
-    - uses: docker/setup-qemu-action@v2
+    - uses: docker/setup-qemu-action@v3
       if: matrix.cibw_arch == 'aarch64'
       with:
         platforms: arm64
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: {{ '${{ matrix.python }}' }}
         architecture: {{ '${{ matrix.python_arch }}' }}
@@ -105,6 +108,11 @@ jobs:
         !matrix.cibw_build
       run: >
         tox -e {{ '${{ matrix.tox_env }}' }} -v
+    - uses: codecov/codecov-action@v3
+      if: matrix.cover
+      with:
+        verbose: true
+        flags: {{ '${{ matrix.tox_env }}' }}
     - name: check wheel
       if: matrix.cibw_build
       run: twine check wheelhouse/*.whl
@@ -113,3 +121,11 @@ jobs:
       if: matrix.cibw_build
       with:
         path: wheelhouse/*.whl
+  finish:
+    needs: test
+    if: {{ '${{ always() }}' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: codecov/codecov-action@v3
+      with:
+        CODECOV_TOKEN: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}

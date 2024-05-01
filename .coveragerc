@@ -1,6 +1,11 @@
+[paths]
+source = src
+
 [run]
 branch = true
-source = src
+source =
+    src
+    tests
 parallel = true
 plugins = Cython.Coverage
 

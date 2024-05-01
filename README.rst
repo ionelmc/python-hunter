@@ -10,13 +10,11 @@ Overview
     * - docs
       - |docs|
     * - tests
-      - | |github-actions|
-        | |codecov|
+      - |github-actions| |codecov|
     * - package
-      - | |version| |wheel| |supported-versions| |supported-implementations|
-        | |commits-since|
+      - |version| |wheel| |supported-versions| |supported-implementations| |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-hunter/badge/?style=flat
-    :target: https://python-hunter.readthedocs.io/
+    :target: https://readthedocs.org/projects/python-hunter/
     :alt: Documentation Status
 
 .. |github-actions| image:: https://github.com/ionelmc/python-hunter/actions/workflows/github-actions.yml/badge.svg
@@ -25,7 +23,7 @@ Overview
 
 .. |codecov| image:: https://codecov.io/gh/ionelmc/python-hunter/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage Status
-    :target: https://codecov.io/github/ionelmc/python-hunter
+    :target: https://app.codecov.io/github/ionelmc/python-hunter
 
 .. |version| image:: https://img.shields.io/pypi/v/hunter.svg
     :alt: PyPI Package latest release

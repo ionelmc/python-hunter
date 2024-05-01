@@ -25,21 +25,25 @@ if __name__ == '__main__':
     setup(
         package_dir={'': 'tests'},
         zip_safe=False,
-        setup_requires=[
-            'cython',
-        ]
-        if Cython
-        else [],
-        ext_modules=[]
-        if hasattr(sys, 'pypy_version_info')
-        else [
-            Extension(
-                splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
-                sources=[path],
-                include_dirs=[dirname(path), 'src', 'src/hunter'],
-                define_macros=[('CYTHON_TRACE', '1')],
-            )
-            for root, _, _ in os.walk('tests')
-            for path in glob(join(root, '*.pyx' if Cython else '*.c'))
-        ],
+        setup_requires=(
+            [
+                'cython',
+            ]
+            if Cython
+            else []
+        ),
+        ext_modules=(
+            []
+            if hasattr(sys, 'pypy_version_info')
+            else [
+                Extension(
+                    splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
+                    sources=[path],
+                    include_dirs=[dirname(path), 'src', 'src/hunter'],
+                    define_macros=[('CYTHON_TRACE', '1')],
+                )
+                for root, _, _ in os.walk('tests')
+                for path in glob(join(root, '*.pyx' if Cython else '*.c'))
+            ]
+        ),
     )
