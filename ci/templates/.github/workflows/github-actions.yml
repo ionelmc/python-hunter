@@ -37,7 +37,7 @@ jobs:
     ['ubuntu', 'x64', 'aarch64', '*musllinux*', False],
     ['windows', 'x64', 'AMD64', '*', True],
     ['windows', 'x86', 'x86', '*', False],
-    ['macos', 'x64', 'x86_64', '*', True],
+    ['macos', 'x64', 'arm64', '*', True],
 ] %}
 {% if include_cover or (env.endswith('cython-nocov') and not prefix.startswith('pypy')) %}
 {% set wheel_suffix = env.endswith('cython-nocov') and wheel_arch.strip('*') %}

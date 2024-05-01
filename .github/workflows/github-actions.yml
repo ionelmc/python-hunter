@@ -37,13 +37,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py38-pure-cover (macos/x86_64)'
+          - name: 'py38-pure-cover (macos/arm64)'
             python: '3.8'
             toxpython: 'python3.8'
             python_arch: 'x64'
             tox_env: 'py38-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py38-pure-nocov (ubuntu/x86_64)'
@@ -62,12 +62,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py38-pure-nocov (macos/x86_64)'
+          - name: 'py38-pure-nocov (macos/arm64)'
             python: '3.8'
             toxpython: 'python3.8'
             python_arch: 'x64'
             tox_env: 'py38-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py38-cython-cover (ubuntu/x86_64)'
@@ -88,13 +88,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py38-cython-cover (macos/x86_64)'
+          - name: 'py38-cython-cover (macos/arm64)'
             python: '3.8'
             toxpython: 'python3.8'
             python_arch: 'x64'
             tox_env: 'py38-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py38-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -145,12 +145,12 @@ jobs:
             cibw_arch: 'x86'
             cibw_build: 'cp38-*'
             os: 'windows-latest'
-          - name: 'py38-cython-nocov (macos/x86_64)'
+          - name: 'py38-cython-nocov (macos/arm64)'
             python: '3.8'
             toxpython: 'python3.8'
             python_arch: 'x64'
             tox_env: 'py38-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: 'cp38-*'
             os: 'macos-latest'
           - name: 'py39-pure-cover (ubuntu/x86_64)'
@@ -171,13 +171,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py39-pure-cover (macos/x86_64)'
+          - name: 'py39-pure-cover (macos/arm64)'
             python: '3.9'
             toxpython: 'python3.9'
             python_arch: 'x64'
             tox_env: 'py39-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py39-pure-nocov (ubuntu/x86_64)'
@@ -196,12 +196,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py39-pure-nocov (macos/x86_64)'
+          - name: 'py39-pure-nocov (macos/arm64)'
             python: '3.9'
             toxpython: 'python3.9'
             python_arch: 'x64'
             tox_env: 'py39-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py39-cython-cover (ubuntu/x86_64)'
@@ -222,13 +222,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py39-cython-cover (macos/x86_64)'
+          - name: 'py39-cython-cover (macos/arm64)'
             python: '3.9'
             toxpython: 'python3.9'
             python_arch: 'x64'
             tox_env: 'py39-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py39-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -279,12 +279,12 @@ jobs:
             cibw_arch: 'x86'
             cibw_build: 'cp39-*'
             os: 'windows-latest'
-          - name: 'py39-cython-nocov (macos/x86_64)'
+          - name: 'py39-cython-nocov (macos/arm64)'
             python: '3.9'
             toxpython: 'python3.9'
             python_arch: 'x64'
             tox_env: 'py39-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: 'cp39-*'
             os: 'macos-latest'
           - name: 'py310-pure-cover (ubuntu/x86_64)'
@@ -305,13 +305,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py310-pure-cover (macos/x86_64)'
+          - name: 'py310-pure-cover (macos/arm64)'
             python: '3.10'
             toxpython: 'python3.10'
             python_arch: 'x64'
             tox_env: 'py310-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py310-pure-nocov (ubuntu/x86_64)'
@@ -330,12 +330,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py310-pure-nocov (macos/x86_64)'
+          - name: 'py310-pure-nocov (macos/arm64)'
             python: '3.10'
             toxpython: 'python3.10'
             python_arch: 'x64'
             tox_env: 'py310-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py310-cython-cover (ubuntu/x86_64)'
@@ -356,13 +356,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py310-cython-cover (macos/x86_64)'
+          - name: 'py310-cython-cover (macos/arm64)'
             python: '3.10'
             toxpython: 'python3.10'
             python_arch: 'x64'
             tox_env: 'py310-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py310-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -413,12 +413,12 @@ jobs:
             cibw_arch: 'x86'
             cibw_build: 'cp310-*'
             os: 'windows-latest'
-          - name: 'py310-cython-nocov (macos/x86_64)'
+          - name: 'py310-cython-nocov (macos/arm64)'
             python: '3.10'
             toxpython: 'python3.10'
             python_arch: 'x64'
             tox_env: 'py310-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: 'cp310-*'
             os: 'macos-latest'
           - name: 'py311-pure-cover (ubuntu/x86_64)'
@@ -439,13 +439,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py311-pure-cover (macos/x86_64)'
+          - name: 'py311-pure-cover (macos/arm64)'
             python: '3.11'
             toxpython: 'python3.11'
             python_arch: 'x64'
             tox_env: 'py311-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py311-pure-nocov (ubuntu/x86_64)'
@@ -464,12 +464,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py311-pure-nocov (macos/x86_64)'
+          - name: 'py311-pure-nocov (macos/arm64)'
             python: '3.11'
             toxpython: 'python3.11'
             python_arch: 'x64'
             tox_env: 'py311-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py311-cython-cover (ubuntu/x86_64)'
@@ -490,13 +490,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py311-cython-cover (macos/x86_64)'
+          - name: 'py311-cython-cover (macos/arm64)'
             python: '3.11'
             toxpython: 'python3.11'
             python_arch: 'x64'
             tox_env: 'py311-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py311-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -547,12 +547,12 @@ jobs:
             cibw_arch: 'x86'
             cibw_build: 'cp311-*'
             os: 'windows-latest'
-          - name: 'py311-cython-nocov (macos/x86_64)'
+          - name: 'py311-cython-nocov (macos/arm64)'
             python: '3.11'
             toxpython: 'python3.11'
             python_arch: 'x64'
             tox_env: 'py311-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: 'cp311-*'
             os: 'macos-latest'
           - name: 'py312-pure-cover (ubuntu/x86_64)'
@@ -573,13 +573,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py312-pure-cover (macos/x86_64)'
+          - name: 'py312-pure-cover (macos/arm64)'
             python: '3.12'
             toxpython: 'python3.12'
             python_arch: 'x64'
             tox_env: 'py312-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py312-pure-nocov (ubuntu/x86_64)'
@@ -598,12 +598,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py312-pure-nocov (macos/x86_64)'
+          - name: 'py312-pure-nocov (macos/arm64)'
             python: '3.12'
             toxpython: 'python3.12'
             python_arch: 'x64'
             tox_env: 'py312-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py312-cython-cover (ubuntu/x86_64)'
@@ -624,13 +624,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'py312-cython-cover (macos/x86_64)'
+          - name: 'py312-cython-cover (macos/arm64)'
             python: '3.12'
             toxpython: 'python3.12'
             python_arch: 'x64'
             tox_env: 'py312-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'py312-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -681,12 +681,12 @@ jobs:
             cibw_arch: 'x86'
             cibw_build: 'cp312-*'
             os: 'windows-latest'
-          - name: 'py312-cython-nocov (macos/x86_64)'
+          - name: 'py312-cython-nocov (macos/arm64)'
             python: '3.12'
             toxpython: 'python3.12'
             python_arch: 'x64'
             tox_env: 'py312-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: 'cp312-*'
             os: 'macos-latest'
           - name: 'pypy38-pure-cover (ubuntu/x86_64)'
@@ -707,13 +707,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy38-pure-cover (macos/x86_64)'
+          - name: 'pypy38-pure-cover (macos/arm64)'
             python: 'pypy-3.8'
             toxpython: 'pypy3.8'
             python_arch: 'x64'
             tox_env: 'pypy38-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy38-pure-nocov (ubuntu/x86_64)'
@@ -732,12 +732,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy38-pure-nocov (macos/x86_64)'
+          - name: 'pypy38-pure-nocov (macos/arm64)'
             python: 'pypy-3.8'
             toxpython: 'pypy3.8'
             python_arch: 'x64'
             tox_env: 'pypy38-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy38-cython-cover (ubuntu/x86_64)'
@@ -758,13 +758,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy38-cython-cover (macos/x86_64)'
+          - name: 'pypy38-cython-cover (macos/arm64)'
             python: 'pypy-3.8'
             toxpython: 'pypy3.8'
             python_arch: 'x64'
             tox_env: 'pypy38-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy38-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -783,12 +783,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy38-cython-nocov (macos/x86_64)'
+          - name: 'pypy38-cython-nocov (macos/arm64)'
             python: 'pypy-3.8'
             toxpython: 'pypy3.8'
             python_arch: 'x64'
             tox_env: 'pypy38-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy39-pure-cover (ubuntu/x86_64)'
@@ -809,13 +809,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy39-pure-cover (macos/x86_64)'
+          - name: 'pypy39-pure-cover (macos/arm64)'
             python: 'pypy-3.9'
             toxpython: 'pypy3.9'
             python_arch: 'x64'
             tox_env: 'pypy39-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy39-pure-nocov (ubuntu/x86_64)'
@@ -834,12 +834,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy39-pure-nocov (macos/x86_64)'
+          - name: 'pypy39-pure-nocov (macos/arm64)'
             python: 'pypy-3.9'
             toxpython: 'pypy3.9'
             python_arch: 'x64'
             tox_env: 'pypy39-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy39-cython-cover (ubuntu/x86_64)'
@@ -860,13 +860,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy39-cython-cover (macos/x86_64)'
+          - name: 'pypy39-cython-cover (macos/arm64)'
             python: 'pypy-3.9'
             toxpython: 'pypy3.9'
             python_arch: 'x64'
             tox_env: 'pypy39-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy39-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -885,12 +885,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy39-cython-nocov (macos/x86_64)'
+          - name: 'pypy39-cython-nocov (macos/arm64)'
             python: 'pypy-3.9'
             toxpython: 'pypy3.9'
             python_arch: 'x64'
             tox_env: 'pypy39-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy310-pure-cover (ubuntu/x86_64)'
@@ -911,13 +911,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy310-pure-cover (macos/x86_64)'
+          - name: 'pypy310-pure-cover (macos/arm64)'
             python: 'pypy-3.10'
             toxpython: 'pypy3.10'
             python_arch: 'x64'
             tox_env: 'pypy310-pure-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy310-pure-nocov (ubuntu/x86_64)'
@@ -936,12 +936,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy310-pure-nocov (macos/x86_64)'
+          - name: 'pypy310-pure-nocov (macos/arm64)'
             python: 'pypy-3.10'
             toxpython: 'pypy3.10'
             python_arch: 'x64'
             tox_env: 'pypy310-pure-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy310-cython-cover (ubuntu/x86_64)'
@@ -962,13 +962,13 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy310-cython-cover (macos/x86_64)'
+          - name: 'pypy310-cython-cover (macos/arm64)'
             python: 'pypy-3.10'
             toxpython: 'pypy3.10'
             python_arch: 'x64'
             tox_env: 'pypy310-cython-cover'
             cover: true
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
           - name: 'pypy310-cython-nocov (ubuntu/x86_64/manylinux)'
@@ -987,12 +987,12 @@ jobs:
             cibw_arch: 'AMD64'
             cibw_build: false
             os: 'windows-latest'
-          - name: 'pypy310-cython-nocov (macos/x86_64)'
+          - name: 'pypy310-cython-nocov (macos/arm64)'
             python: 'pypy-3.10'
             toxpython: 'pypy3.10'
             python_arch: 'x64'
             tox_env: 'pypy310-cython-nocov'
-            cibw_arch: 'x86_64'
+            cibw_arch: 'arm64'
             cibw_build: false
             os: 'macos-latest'
     steps:
