@@ -61,7 +61,7 @@ def main():
         # invokes this bootstrap.py itself.
         for line in subprocess.check_output([sys.executable, '-m', 'tox', '--listenvs'], universal_newlines=True).splitlines()
     ]
-    tox_environments = [line for line in tox_environments if line.startswith(('cpy', 'pypy'))]
+    tox_environments = [line for line in tox_environments if line.startswith('py')]
     for template in templates_path.rglob('*'):
         if template.is_file():
             template_path = template.relative_to(templates_path).as_posix()
