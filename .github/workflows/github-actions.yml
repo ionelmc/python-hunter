@@ -1052,7 +1052,7 @@ jobs:
       if: matrix.cibw_build
       run: twine check wheelhouse/*.whl
     - name: upload wheel
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.cibw_build
       with:
         path: wheelhouse/*.whl
