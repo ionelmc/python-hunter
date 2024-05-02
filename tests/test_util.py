@@ -147,7 +147,7 @@ def test_safe_repr_zoneinfo():
     zoneinfo = pytest.importorskip("zoneinfo")
     assert (
         safe_repr(datetime(2000, 2, 2, tzinfo=zoneinfo.ZoneInfo('Europe/Bucharest')))
-        == "datetime(2000, 2, 2, 0, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Europe/Bucharest'), fold=0)"
+        == f"datetime(2000, 2, 2, 0, 0, 0, 0, tzinfo={repr(zoneinfo.ZoneInfo('Europe/Bucharest'))}, fold=0)"
     )
 
 
