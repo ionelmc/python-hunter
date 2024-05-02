@@ -26,9 +26,9 @@ jobs:
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
 {% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% else %}
-{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
-{% set cpython %}cp{{ prefix[2:] }}{% endset %}
-{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
+{% set python %}{{ prefix[3] }}.{{ prefix[4:] }}{% endset %}
+{% set cpython %}cp{{ prefix[3:] }}{% endset %}
+{% set toxpython %}python{{ prefix[3] }}.{{ prefix[4:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'x86_64', '*manylinux*', True],
