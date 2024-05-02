@@ -409,10 +409,10 @@ Behold, a `ProfileAction` that works in any mode:
                         # exception was discarded
                         self.output(
                             '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',
-                            function, event.arg, delta
+                            function, safe_repr(event.arg), delta
                         )
                     else:
                         self.output(
                             '{fore(RED)}{} raised exception: {}. Duration: {:.4f}s{RESET}\n',
-                            function, exception, delta
+                            function, safe_repr(exception), delta
                         )
