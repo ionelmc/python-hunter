@@ -1055,6 +1055,9 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.cibw_build
       with:
+        name: 'wheel-${{ matrix.cibw_build }}-${{ matrix.cibw_arch }}'
+        if-no-files-found: error
+        compression-level: 0
         path: wheelhouse/*.whl
   finish:
     needs: test
