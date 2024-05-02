@@ -28,7 +28,7 @@ except Exception:
     import traceback
 
     traceback.print_exc()
-    version = release = '3.6.1'
+    version = release = '3.7.0'
 
 pygments_style = 'trac'
 templates_path = ['.']
