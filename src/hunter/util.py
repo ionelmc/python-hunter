@@ -181,12 +181,23 @@ def safe_repr(obj, maxdepth=5):
         return repr(obj)
     elif obj_type is datetime:
         return (
-            f'{obj_type.__name__}({obj.year}, {obj.month}, {obj.day}, {obj.hour}, {obj.minute}, {obj.second}, {obj.microsecond}, '
+            f'{obj_type.__name__}('
+            f'{obj.year:d}, '
+            f'{obj.month:d}, '
+            f'{obj.day:d}, '
+            f'{obj.hour:d}, '
+            f'{obj.minute:d}, '
+            f'{obj.second:d}, '
+            f'{obj.microsecond:d}, '
             f'tzinfo={safe_repr(obj.tzinfo)}{f", fold={safe_repr(obj.fold)}" if hasattr(obj, "fold") else ""})'
         )
     elif obj_type is time:
         return (
-            f'{obj_type.__name__}({obj.hour}, {obj.minute}, {obj.second}, {obj.microsecond}, '
+            f'{obj_type.__name__}('
+            f'{obj.hour:d}, '
+            f'{obj.minute:d}, '
+            f'{obj.second:d}, '
+            f'{obj.microsecond:d}, '
             f'tzinfo={safe_repr(obj.tzinfo)}{f", fold={safe_repr(obj.fold)}" if hasattr(obj, "fold") else ""})'
         )
     elif obj_type is types.MethodType:
