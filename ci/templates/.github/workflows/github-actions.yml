@@ -53,7 +53,7 @@ jobs:
             cibw_arch: '{{ cibw_arch }}'
 {% if env.endswith('cython-nocov') and not prefix.startswith('pypy') %}
             cibw_build: '{{ cpython }}-{{ wheel_arch }}'
-            artifact: '{{ os }}-{{ cibw_arch }}-{{ wheel_arch.strip("*") or "default" }}'
+            artifact: '{{ os }}-{{ cpython }}-{{ cibw_arch }}-{{ wheel_arch.strip("*") or "default" }}'
 {% else %}
             cibw_build: false
 {% endif %}
