@@ -1,8 +1,12 @@
 # cython: linetrace=True, language_level=3
-foo = bar = lambda x: x
+a = b = lambda x: x
 
 
-@foo
-@bar
+@a
+@b
 def foo():
     return 1
+
+
+def bar():
+    foo()

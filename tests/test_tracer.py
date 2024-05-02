@@ -849,15 +849,15 @@ def test_depth():
 def test_source_cython(LineMatcher):
     pytest.importorskip('sample5')
     calls = []
-    from sample5 import foo
+    from sample5 import bar
 
     with trace(action=lambda event: calls.extend(event.source.splitlines())):
-        foo()
+        bar()
 
     lm = LineMatcher(calls)
     lm.fnmatch_lines(
         [
-            'def foo():',
+            'def bar():',
             '    return 1',
         ]
     )
