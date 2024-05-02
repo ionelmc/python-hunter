@@ -53,6 +53,7 @@ jobs:
             cibw_arch: '{{ cibw_arch }}'
 {% if env.endswith('cython-nocov') and not prefix.startswith('pypy') %}
             cibw_build: '{{ cpython }}-{{ wheel_arch }}'
+            artifact: '{{ os }}-{{ cibw_arch }}-{{ wheel_arch.strip("*") or "default" }}'
 {% else %}
             cibw_build: false
 {% endif %}
@@ -120,7 +121,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.cibw_build
       with:
-        name: '{{ 'wheel-${{ matrix.cibw_build }}-${{ matrix.cibw_arch }}' }}'
+        name: '{{ '${{ matrix.artifact }}' }}'
         if-no-files-found: error
         compression-level: 0
         path: wheelhouse/*.whl
