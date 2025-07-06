@@ -438,7 +438,7 @@ def test_varssnooper(LineMatcher):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, fixme",
+    reason='broken on 3.12, fixme',
 )
 def test_errorsnooper(LineMatcher):
     lines = StringIO()
@@ -556,7 +556,7 @@ def test_errorsnooper(LineMatcher):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, fixme",
+    reason='broken on 3.12, fixme',
 )
 def test_errorsnooper_fastmode(LineMatcher):
     lines = StringIO()
@@ -807,14 +807,17 @@ def test_backlog_subprocess(LineMatcher):
 )
 @pytest.mark.parametrize('mode', ['postmortem', 'settrace', 'debugger'])
 def test_pdb(LineMatcher, pdb, mode):
-    with TestProcess(
-        sys.executable,
-        '-msamplepdb',
-        pdb,
-        mode,
-        bufsize=0,
-        stdin=subprocess.PIPE,
-    ) as target, dump_on_error(target.read):
+    with (
+        TestProcess(
+            sys.executable,
+            '-msamplepdb',
+            pdb,
+            mode,
+            bufsize=0,
+            stdin=subprocess.PIPE,
+        ) as target,
+        dump_on_error(target.read),
+    ):
         wait_for_strings(target.read, TIMEOUT, '-> ')
         target.proc.stdin.write('c\n')
     output = target.read()

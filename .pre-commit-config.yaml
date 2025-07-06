@@ -6,16 +6,13 @@ exclude: '^(.tox/|ci/templates/|src/hunter.(pth|embed)$|src/hunter/vendor/|.bump
 # Note the order is intentional to avoid multiple passes of the hooks
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.2
+    rev: v0.12.2
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix, --show-fixes, --unsafe-fixes]
-  - repo: https://github.com/psf/black
-    rev: 24.4.2
-    hooks:
-      - id: black
+        args: [--fix, --exit-non-zero-on-fix, --show-fixes]
+      - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
         exclude_types:
@@ -28,6 +25,6 @@ repos:
       - id: debug-statements
         exclude: '^tests/sample*|src/hunter/actions.py'
   - repo: https://github.com/MarcoGorelli/cython-lint
-    rev: v0.16.2
+    rev: v0.16.7
     hooks:
       - id: cython-lint

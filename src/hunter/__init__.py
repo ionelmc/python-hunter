@@ -341,7 +341,7 @@ def Backlog(*conditions, **kwargs):
     vars = kwargs.pop('vars', False)
     if not conditions and not kwargs:
         raise TypeError(
-            'Backlog needs at least 1 condition ' "(it doesn't have any effect without one besides making everything incredibly slow)."
+            "Backlog needs at least 1 condition (it doesn't have any effect without one besides making everything incredibly slow)."
         )
     return _Backlog(
         _merge(*conditions, **kwargs),

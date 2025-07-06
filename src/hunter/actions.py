@@ -28,10 +28,10 @@ except ImportError:
 
 __all__ = [
     'Action',
+    'CallPrinter',
+    'CodePrinter',
     'Debugger',
     'Manhole',
-    'CodePrinter',
-    'CallPrinter',
     'VarsPrinter',
 ]
 
@@ -187,8 +187,8 @@ class ColorStreamAction(Action):
         else:
             self._tty = False
             self._stream = value
-            self.event_colors = {key: '' for key in self.EVENT_COLORS}
-            self.other_colors = {key: '' for key in self.OTHER_COLORS}
+            self.event_colors = dict.fromkeys(self.EVENT_COLORS, '')
+            self.other_colors = dict.fromkeys(self.OTHER_COLORS, '')
 
     @property
     def repr_func(self):

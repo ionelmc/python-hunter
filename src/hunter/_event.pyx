@@ -115,7 +115,7 @@ cdef class Event:
         cdef int position
 
         if self._instruction is UNSET:
-            position = PyFrame_GetLasti(self.frame)
+            position = PyFrame_GetLasti(<PyFrameObject*> self.frame)
             co_code = PyCode_GetCode(self.code_getter())
             if co_code and position >= 0:
                 self._instruction = co_code[position]
@@ -159,8 +159,7 @@ cdef class Event:
             if self.builtin:
                 self._locals = {}
             else:
-                PyFrame_FastToLocals(self.frame)
-                self._locals = PyFrame_GetLocals(self.frame)
+                self._locals = PyFrame_GetLocals(<PyFrameObject*> self.frame)
         return self._locals
 
     @property
@@ -172,7 +171,7 @@ cdef class Event:
             if self.builtin:
                 self._locals = {}
             else:
-                self._globals = PyFrame_GetGlobals(self.frame)
+                self._globals = PyFrame_GetGlobals(<PyFrameObject*> self.frame)
         return self._globals
 
     @property
@@ -265,7 +264,7 @@ cdef class Event:
 
     cdef inline lineno_getter(self):
         if self._lineno is UNSET:
-            self._lineno = PyFrame_GetLineNumber(self.frame)
+            self._lineno = PyFrame_GetLineNumber(<PyFrameObject*> self.frame)
         return self._lineno
 
     @property
@@ -274,7 +273,7 @@ cdef class Event:
 
     cdef inline CodeType code_getter(self):
         if self._code is UNSET:
-            return PyFrame_GetCode(self.frame)
+            return PyFrame_GetCode(<PyFrameObject*> self.frame)
         else:
             return self._code
 

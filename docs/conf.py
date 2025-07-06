@@ -17,7 +17,7 @@ extensions = [
 source_suffix = '.rst'
 master_doc = 'index'
 project = 'Hunter'
-year = '2015-2024'
+year = '2015-2025'
 author = 'Ionel Cristian Mărieș'
 copyright = f'{year}, {author}'
 try:
@@ -50,7 +50,3 @@ html_short_title = f'{project}-{version}'
 napoleon_use_ivar = True
 napoleon_use_rtype = False
 napoleon_use_param = False
-
-autosummary_generate = True
-
-autosectionlabel_prefix_document = True

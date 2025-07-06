@@ -844,7 +844,7 @@ def test_depth():
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, see https://github.com/cython/cython/issues/5470",
+    reason='broken on 3.12, see https://github.com/cython/cython/issues/5470',
 )
 def test_source_cython(LineMatcher):
     pytest.importorskip('sample5')
@@ -889,7 +889,7 @@ def test_fullsource(LineMatcher):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, see https://github.com/cython/cython/issues/5470",
+    reason='broken on 3.12, see https://github.com/cython/cython/issues/5470',
 )
 def test_fullsource_cython(LineMatcher):
     pytest.importorskip('sample5')
@@ -1541,7 +1541,7 @@ def test_varssnooper(LineMatcher):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, fixme",
+    reason='broken on 3.12, fixme',
 )
 def test_errorsnooper(LineMatcher):
     lines = StringIO()
@@ -1658,7 +1658,7 @@ def test_errorsnooper(LineMatcher):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, fixme",
+    reason='broken on 3.12, fixme',
 )
 def test_errorsnooper_fastmode(LineMatcher):
     lines = StringIO()

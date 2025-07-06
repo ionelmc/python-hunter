@@ -109,7 +109,7 @@ jobs:
         !matrix.cibw_build
       run: >
         tox -e {{ '${{ matrix.tox_env }}' }} -v
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v5
       if: matrix.cover
       with:
         verbose: true
@@ -130,7 +130,10 @@ jobs:
     if: {{ '${{ always() }}' }}
     runs-on: ubuntu-latest
     steps:
-    - uses: codecov/codecov-action@v3
+    - uses: actions/upload-artifact/merge@v4
+      with:
+        name: all-wheels
+    - uses: codecov/codecov-action@v5
       with:
         CODECOV_TOKEN: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
 {{ '' }}

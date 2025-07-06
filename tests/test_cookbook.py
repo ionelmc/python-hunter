@@ -136,7 +136,7 @@ class ProfileAction(ColorStreamAction):
 
 @pytest.mark.xfail(
     sys.version_info.major == 3 and sys.version_info.minor == 12,
-    reason="broken on 3.12, fixme",
+    reason='broken on 3.12, fixme',
 )
 @pytest.mark.parametrize(
     'options',
@@ -170,7 +170,7 @@ def test_profile(LineMatcher, options):
                 'sample8errors.error raised exception: None. Duration: ?.????s',
                 'sample8errors.silenced1 returned: None. Duration: ?.????s',
                 'sample8errors.error raised exception: None. Duration: ?.????s',
-                'sample8errors.silenced3 returned: \'mwhahaha\'. Duration: ?.????s',
+                "sample8errors.silenced3 returned: 'mwhahaha'. Duration: ?.????s",
                 'sample8errors.error raised exception: None. Duration: ?.????s',
                 '<builtin>.repr raised exception: None. Duration: ?.????s',
                 'sample8errors.silenced4 returned: None. Duration: ?.????s',
@@ -184,7 +184,7 @@ def test_profile(LineMatcher, options):
                 'sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s',
                 'sample8errors.silenced1 returned: None. Duration: ?.????s',
                 'sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s',
-                'sample8errors.silenced3 returned: \'mwhahaha\'. Duration: ?.????s',
+                "sample8errors.silenced3 returned: 'mwhahaha'. Duration: ?.????s",
                 'sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s',
                 'sample8errors.silenced4 returned: None. Duration: ?.????s',
                 'sample8errors.error raised exception: (*RuntimeError*, *). Duration: ?.????s',

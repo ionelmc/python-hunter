@@ -11,7 +11,8 @@ backend-path = ["build_backend"]
 extend-exclude = ["static", "ci/templates"]
 line-length = 140
 src = ["src", "tests"]
-target-version = "py38"
+target-version = "py39"
+
 [tool.cython-lint]
 max-line-length = 140
 
@@ -26,6 +27,7 @@ ignore = [
     "S307",
     "S308", # flake8-bandit suspicious-mark-safe-usage
     "E501", # pycodestyle line-too-long
+    "PLC0415", # import-outside-top-level
 ]
 select = [
     "B", # flake8-bugbear
@@ -40,7 +42,6 @@ select = [
     "PLC", # pylint convention
     "PLE", # pylint errors
     "PT", # flake8-pytest-style
-    "Q", # flake8-quotes
     "RSE", # flake8-raise
     "RUF", # ruff-specific rules
     "S", # flake8-bandit
@@ -52,15 +53,10 @@ select = [
 fixture-parentheses = false
 mark-parentheses = false
 
-[tool.ruff.lint.flake8-quotes]
-inline-quotes = "single"
-
 [tool.ruff.lint.isort]
 extra-standard-library = ["opcode"]
 forced-separate = ["conftest"]
 force-single-line = true
 
-[tool.black]
-line-length = 140
-target-version = ["py38"]
-skip-string-normalization = true
+[tool.ruff.format]
+quote-style = "single"

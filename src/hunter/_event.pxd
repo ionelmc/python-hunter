@@ -5,8 +5,7 @@ from ._tracer cimport *
 
 
 cdef extern from *:
-    void PyFrame_FastToLocals(FrameType)
-    int PyFrame_GetLineNumber(FrameType)
+    int PyFrame_GetLineNumber(PyFrameObject *frame)
 
 
 @cython.final
