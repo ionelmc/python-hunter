@@ -5,6 +5,7 @@ cimport cython
 cdef extern from "vendor/_compat.h":
     """
     #if PY_VERSION_HEX >= 0x030B00A7
+    #define Py_BUILD_CORE
     #include "internal/pycore_frame.h"
     #endif
     """

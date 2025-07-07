@@ -4,8 +4,11 @@ requires = [
     "wheel",
     "setuptools_scm>=3.3.1,!=4.0.0",
 ]
-build-backend = "backend"
-backend-path = ["build_backend"]
+build-backend = "setuptools.build_meta"
+#build-backend = "backend"
+#backend-path = ["build_backend"]
+
+[tool.setuptools_scm]
 
 [tool.ruff]
 extend-exclude = ["static", "ci/templates"]
