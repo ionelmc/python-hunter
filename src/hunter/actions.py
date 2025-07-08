@@ -721,7 +721,9 @@ class VarsSnooper(ColorStreamAction):
                 del self.stored_reprs[scope_key]
 
 
-RETURN_VALUE = opcode.opmap['RETURN_VALUE']
+RETURN_OPCODES = (opcode.opmap['RETURN_VALUE'],)
+if 'RETURN_CONST' in opcode.opmap:
+    RETURN_OPCODES += (opcode.opmap['RETURN_CONST'],)
 
 
 class ErrorSnooper(CodePrinter):
@@ -790,7 +792,7 @@ class ErrorSnooper(CodePrinter):
                     detached_event = event.detach(self.try_repr)
                 self.events.append(detached_event)
                 if event.depth == self.origin.depth - 1:  # stop if the same function returned (depth is -1)
-                    if event.instruction == RETURN_VALUE:
+                    if event.instruction in RETURN_OPCODES:
                         self.dump_events()
                         self.output(
                             '{BRIGHT}{fore(BLACK)}{} function exit{RESET}\n',

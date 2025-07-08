@@ -9,7 +9,7 @@ import aspectlib
 import pytest
 
 import hunter
-from hunter.actions import RETURN_VALUE
+from hunter.actions import RETURN_OPCODES
 from hunter.actions import ColorStreamAction
 from hunter.util import safe_repr
 
@@ -117,7 +117,7 @@ class ProfileAction(ColorStreamAction):
                 self.timings[frame_id] = start_time, event.arg
             elif event.kind == 'return':
                 delta = current_time - start_time
-                if event.instruction == RETURN_VALUE:
+                if event.instruction in RETURN_OPCODES:
                     # exception was discarded
                     self.output(
                         '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',

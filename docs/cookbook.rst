@@ -255,7 +255,7 @@ If you can't simply review all the sourcecode then runtime analysis is one way t
                 elif event.depth < self.depth and event.kind == 'return':  # stop if function returned
                     op = event.instruction
                     op = op if isinstance(op, int) else ord(op)
-                    if op == RETURN_VALUE:
+                    if op in RETURN_OPCODES:
                         self.output("{BRIGHT}{fore(BLUE)}{} tracing {} on {}{RESET}\n",
                                     ">" * 46, event.function, self.exc)
                         for event in self.events:
@@ -285,7 +285,7 @@ The most basic implementation that only measures timings looks like this:
 .. code-block:: python
 
     from hunter.actions import Action
-    from hunter.actions import RETURN_VALUE
+    from hunter.actions import RETURN_OPCODES
 
     class ProfileAction(Action):
         def __init__(self):
@@ -321,7 +321,7 @@ This means that we have to store the exception for a little while, and do the ch
 .. code-block:: python
 
     from hunter.actions import Action
-    from hunter.actions import RETURN_VALUE
+    from hunter.actions import RETURN_OPCODES
 
     class ProfileAction(Action):
         def __init__(self):
@@ -342,7 +342,7 @@ This means that we have to store the exception for a little while, and do the ch
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
-                    if event.instruction == RETURN_VALUE:
+                    if event.instruction in RETURN_OPCODES:
                         # exception was discarded
                         print(f'{event.function} returned: {event.arg}. Duration: {delta:.4f}s\n')
                     else:
@@ -362,7 +362,7 @@ Behold, a `ProfileAction` that works in any mode:
 .. code-block:: python
 
     from hunter.actions import ColorStreamAction
-    from hunter.actions import RETURN_VALUE
+    from hunter.actions import RETURN_OPCODES
 
     class ProfileAction(ColorStreamAction):
         # using ColorStreamAction brings this more in line with the other actions
@@ -405,7 +405,7 @@ Behold, a `ProfileAction` that works in any mode:
                     self.timings[frame_id] = start_time, event.arg
                 elif event.kind == 'return':
                     delta = current_time - start_time
-                    if event.instruction == RETURN_VALUE:
+                    if event.instruction in RETURN_OPCODES:
                         # exception was discarded
                         self.output(
                             '{fore(BLUE)}{} returned: {}. Duration: {:.4f}s{RESET}\n',
