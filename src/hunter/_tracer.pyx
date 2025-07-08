@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3str
+# cython: linetrace=True, language_level=3str, freethreading_compatible=True
 import threading
 import traceback
 

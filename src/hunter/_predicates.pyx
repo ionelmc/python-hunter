@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3str, c_api_binop_methods=True
+# cython: linetrace=True, language_level=3str, c_api_binop_methods=True, freethreading_compatible=True
 from __future__ import absolute_import
 
 from collections import deque
