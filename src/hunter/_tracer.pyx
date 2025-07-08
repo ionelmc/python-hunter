@@ -23,7 +23,9 @@ cdef dict KIND_INTS = {
 
 cdef int trace_func(PyObject* tracer, PyFrameObject* frame, int kind, PyObject* arg) noexcept:
     cdef Tracer self = <Tracer?> tracer
+    cdef FrameType frame_object = <FrameType> frame
 
+    frame_object.f_trace = self
     handler = self.handler
 
     if handler is None:  # the tracer was stopped
