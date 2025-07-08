@@ -10,12 +10,10 @@ from tokenize import TokenError
 from tokenize import generate_tokens
 
 from cpython.pythread cimport PyThread_get_thread_ident
-from cpython.ref cimport Py_XINCREF
 from cpython.ref cimport PyObject
 from cython cimport auto_pickle
 
 from ._tracer cimport Tracer
-from .vendor._cymem.cymem cimport Pool
 
 from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
@@ -30,17 +28,21 @@ __all__ = 'Event',
 
 cdef object UNSET = object()
 
-cdef Pool mem = Pool()
-cdef PyObject** KIND_NAMES = make_kind_names(['call', 'exception', 'line', 'return', 'call', 'exception', 'return'])
 
-cdef inline PyObject** make_kind_names(list strings):
-    cdef PyObject** array = <PyObject**>mem.alloc(len(strings), sizeof(PyObject*))
-    cdef object name
-    for i, string in enumerate(strings):
-        name = intern(string)
-        Py_XINCREF(<PyObject*> name)
-        array[i] = <PyObject*> name
-    return <PyObject**>array
+cdef str CALL = 'call'
+cdef str EXCEPTION = 'exception'
+cdef str LINE = 'line'
+cdef str RETURN = 'return'
+
+cdef const PyObject** KIND_NAMES = [
+    <PyObject*>CALL,
+    <PyObject*>EXCEPTION,
+    <PyObject*>LINE,
+    <PyObject*>RETURN,
+    <PyObject*>CALL,
+    <PyObject*>EXCEPTION,
+    <PyObject*>RETURN,
+]
 
 
 @auto_pickle(False)
