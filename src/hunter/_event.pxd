@@ -1,4 +1,3 @@
-# cython: language_level=3str
 cimport cython
 
 from ._tracer cimport *
@@ -9,6 +8,7 @@ cdef extern from *:
 
 
 @cython.final
+@cython.auto_pickle(False)
 cdef class Event:
     cdef:
         readonly FrameType frame
