@@ -3,6 +3,7 @@ import threading
 import traceback
 
 from cpython.pystate cimport PyThreadState_Get
+from cpython.pystate cimport PyFrameObject
 from ._event cimport Event
 from ._predicates cimport fast_call
 
@@ -20,7 +21,7 @@ cdef dict KIND_INTS = {
     'c_return': 6,
 }
 
-cdef inline int trace_func(PyObject* tracer, PyFrameObject* frame, int kind, PyObject* arg) noexcept:
+cdef int trace_func(PyObject* tracer, PyFrameObject* frame, int kind, PyObject* arg) noexcept:
     cdef Tracer self = <Tracer?> tracer
 
     handler = self.handler

@@ -22,11 +22,12 @@ try:
 except ImportError:
     Cython = None
 
+
 # Enable code coverage for C code: we cannot use CFLAGS=-coverage in tox.ini, since that may mess with compiling
 # dependencies (e.g. numpy). Therefore, we set SETUPPY_CFLAGS=-coverage in tox.ini and copy it to CFLAGS here (after
 # deps have been safely installed).
 if 'TOX_ENV_NAME' in os.environ and os.environ.get('SETUPPY_EXT_COVERAGE') == 'yes':
-    CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_TRACE=1'
+    CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_TRACE=1 -DCYTHON_USE_SYS_MONITORING=0'
     LFLAGS = os.environ['LFLAGS'] = ''
 else:
     CFLAGS = ''

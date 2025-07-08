@@ -1,10 +1,39 @@
 cimport cython
 
-from ._tracer cimport *
 
+ctypedef extern FrameType
 
 cdef extern from *:
-    int PyFrame_GetLineNumber(PyFrameObject *frame)
+    ctypedef extern class types.CodeType[object PyCodeObject, check_size ignore]:
+        cdef object co_filename
+        cdef object co_name
+        cdef int co_argcount
+
+cdef extern from "vendor/_compat.h":
+    """
+    static inline PyCodeObject* Hunter_PyFrame_GetCode(PyObject* frame) {
+        return PyFrame_GetCode((PyFrameObject*) frame);
+    }
+    static inline int Hunter_PyFrame_GetLasti(PyObject* frame) {
+        return PyFrame_GetLasti((PyFrameObject*) frame);
+    }
+    static inline int Hunter_PyFrame_GetLineNumber(PyObject* frame) {
+        return PyFrame_GetLineNumber((PyFrameObject*) frame);
+    }
+    static inline PyObject* Hunter_PyFrame_GetGlobals(PyObject* frame) {
+        return PyFrame_GetGlobals((PyFrameObject*) frame);
+    }
+    static inline PyObject* Hunter_PyFrame_GetLocals(PyObject* frame) {
+        return PyFrame_GetLocals((PyFrameObject*) frame);
+    }
+    """
+    object PyCode_GetCode(CodeType)
+    object PyCode_GetVarnames(CodeType)
+    CodeType Hunter_PyFrame_GetCode(FrameType frame)
+    int Hunter_PyFrame_GetLasti(FrameType frame)
+    int Hunter_PyFrame_GetLineNumber(FrameType frame)
+    object Hunter_PyFrame_GetGlobals(FrameType frame)
+    object Hunter_PyFrame_GetLocals(FrameType frame)
 
 
 @cython.final
