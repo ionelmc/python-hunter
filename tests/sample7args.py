@@ -47,7 +47,7 @@ if __name__ == '__main__':
         Backlog(
             stack=15,
             vars=True,
-            action=DebugCallPrinter(' [' 'backlog' ']'),
+            action=DebugCallPrinter(' [' + 'backlog' + ']'),
             function='five',
         ).filter(~Q(function='six')),
         action=DebugCallPrinter,

@@ -1769,7 +1769,9 @@ def test_backlog_specific(LineMatcher, size, stack, vars, condition, filter):
     from sample7args import one
 
     with trace(
-        Backlog(size=size, stack=stack, vars=vars, action=DebugCallPrinter(' [' 'backlog' ']', stream=buff), filter=filter, **condition),
+        Backlog(
+            size=size, stack=stack, vars=vars, action=DebugCallPrinter(' [' + 'backlog' + ']', stream=buff), filter=filter, **condition
+        ),
         action=DebugCallPrinter(stream=buff),
     ):
         one()

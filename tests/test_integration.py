@@ -36,6 +36,7 @@ except ImportError:
 pytest_plugins = ('pytester',)
 
 
+@pytest.mark.xfail('cover' in os.getenv('TOX_ENV_NAME', ''), reason='develop envs are incomplete')
 def test_pth_activation():
     module_name = os.path.__name__
     expected_module = '{0}'.format(module_name)
@@ -53,6 +54,7 @@ def test_pth_activation():
     assert expected_call.encode() in output
 
 
+@pytest.mark.xfail('cover' in os.getenv('TOX_ENV_NAME', ''), reason='develop envs are incomplete')
 def test_pth_sample4():
     env = dict(os.environ, PYTHONHUNTER='CodePrinter')
     env.pop('COVERAGE_PROCESS_START', None)
@@ -68,6 +70,7 @@ def test_pth_sample4():
     assert output
 
 
+@pytest.mark.xfail('cover' in os.getenv('TOX_ENV_NAME', ''), reason='develop envs are incomplete')
 def test_pth_sample2(LineMatcher):
     env = dict(os.environ, PYTHONHUNTER="module='__main__',action=CodePrinter")
     env.pop('COVERAGE_PROCESS_START', None)
@@ -370,6 +373,7 @@ def test_depth_limit(LineMatcher, depth):
         assert 'five' not in output
 
 
+@pytest.mark.xfail('cover' in os.getenv('TOX_ENV_NAME', ''), reason='develop envs are incomplete')
 @pytest.mark.parametrize('depth', [2, 3, 4], ids='depth_lt={}'.format)
 def test_depth_limit_subprocess(LineMatcher, depth):
     hunter_env = "action=CallPrinter,depth_lt={!r},kind_in=['call','return'],stdlib=0".format(depth + 1)
@@ -664,7 +668,7 @@ def test_backlog(LineMatcher, stack):
             size=19,
             stack=stack,
             vars=False,
-            action=DebugCallPrinter(' [' 'backlog' ']', stream=buff),
+            action=DebugCallPrinter(' [' + 'backlog' + ']', stream=buff),
         ).filter(~Q(function='six')),
         action=DebugCallPrinter(stream=buff),
     ):
