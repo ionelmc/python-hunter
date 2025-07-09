@@ -6,6 +6,9 @@
         "depends": [
             "src/hunter/vendor/_compat.h"
         ],
+        "extra_compile_args": [
+            "-DCYTHON_USE_SYS_MONITORING=0"
+        ],
         "include_dirs": [
             "src/hunter"
         ],
@@ -14301,7 +14304,7 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
   (void)__Pyx_modinit_variable_import_code(__pyx_mstate);
   (void)__Pyx_modinit_function_import_code(__pyx_mstate);
   /*--- Execution code ---*/
-  __Pyx_TraceStartFunc("PyInit__event", __pyx_f[0], 1, 1, 0, 0, __PYX_ERR(0, 1, __pyx_L1_error));
+  __Pyx_TraceStartFunc("PyInit__event", __pyx_f[0], 1, 2, 0, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
   /* "hunter/_event.pyx":2
  * # cython: linetrace=True, language_level=3str, c_string_encoding=ascii, freethreading_compatible=True
@@ -14872,7 +14875,7 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,2,0,__PYX_ERR(2, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,1,0,__PYX_ERR(2, 1, __pyx_L1_error))
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_6_event_5Event_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Event___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__event, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[41])); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_6_event_Event, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(2, 1, __pyx_L1_error)
@@ -14884,7 +14887,7 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Event__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,37,0,__PYX_ERR(2, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,36,0,__PYX_ERR(2, 16, __pyx_L1_error))
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_6_event_5Event_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Event___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__event, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[42])); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_6_event_Event, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(2, 16, __pyx_L1_error)
@@ -14950,12 +14953,12 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
  * from functools import partial
  * from linecache import getline
 */
-  __Pyx_TraceLine(1,1,0,__PYX_ERR(0, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,2,0,__PYX_ERR(0, 1, __pyx_L1_error))
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_TraceReturnValue(Py_None, 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
+  __Pyx_TraceReturnValue(Py_None, 2, 0, __PYX_ERR(0, 1, __pyx_L1_error));
   __Pyx_PyMonitoring_ExitScope(0);
 
   /*--- Wrapped vars code ---*/
@@ -14966,7 +14969,7 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_TraceException(__pyx_lineno, 0, 0);
-  __Pyx_TraceExceptionUnwind(1, 0);
+  __Pyx_TraceExceptionUnwind(2, 0);
   if (__pyx_m) {
     if (__pyx_mstate->__pyx_d && stringtab_initialized) {
       __Pyx_AddTraceback("init hunter._event", __pyx_clineno, __pyx_lineno, __pyx_filename);

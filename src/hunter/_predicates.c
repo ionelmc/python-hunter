@@ -6,6 +6,9 @@
         "depends": [
             "src/hunter/vendor/_compat.h"
         ],
+        "extra_compile_args": [
+            "-DCYTHON_USE_SYS_MONITORING=0"
+        ],
         "include_dirs": [
             "src/hunter"
         ],
@@ -32426,7 +32429,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
   (void)__Pyx_modinit_variable_import_code(__pyx_mstate);
   if (unlikely((__Pyx_modinit_function_import_code(__pyx_mstate) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Execution code ---*/
-  __Pyx_TraceStartFunc("PyInit__predicates", __pyx_f[0], 1, 14, 0, 0, __PYX_ERR(0, 1, __pyx_L1_error));
+  __Pyx_TraceStartFunc("PyInit__predicates", __pyx_f[0], 1, 2, 0, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
   /* "cfunc.to_py":65
  * 
@@ -32771,7 +32774,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     raise TypeError, "self.getter cannot be converted to a Python object for pickling"
  * def __setstate_cython__(self, __pyx_state):
 */
-  __Pyx_TraceLine(1,5,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,0,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_10QueryEntry_7__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_QueryEntry___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[22])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32806,7 +32809,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Query__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,53,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,48,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_5Query_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Query___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[44])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Query, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -32827,7 +32830,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,13,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,6,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_4When_17__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_When___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[58])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_When, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32839,7 +32842,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_When__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,54,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,49,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_4When_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_When___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[59])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_When, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -32860,7 +32863,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,4,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,5,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_4From_17__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_From___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[74])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_From, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32872,7 +32875,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_From__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,49,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,50,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_4From_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_From___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[75])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_From, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -32893,7 +32896,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,0,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,1,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_3And_17__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_And___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[87])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_And, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32905,7 +32908,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_And__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,48,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,53,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_3And_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_And___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[88])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_And, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -32926,7 +32929,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,2,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,10,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_2Or_17__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Or___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[100])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Or, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32938,7 +32941,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Or__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,50,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,51,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_2Or_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Or___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[101])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Or, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -32959,7 +32962,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,11,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,14,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_3Not_17__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Not___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[112])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Not, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -32971,7 +32974,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Not__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,52,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,47,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_3Not_19__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Not___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[113])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Not, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -33015,7 +33018,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef tuple state
  *     cdef object _dict
 */
-  __Pyx_TraceLine(1,1,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,9,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_7Backlog_19__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Backlog___reduce_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[134])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Backlog, __pyx_mstate_global->__pyx_n_u_reduce_cython, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33027,7 +33030,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Backlog__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,47,0,__PYX_ERR(1, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,54,0,__PYX_ERR(1, 16, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_7Backlog_21__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Backlog___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[135])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_11_predicates_Backlog, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -33048,7 +33051,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,12,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,13,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_1__pyx_unpickle_Query, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Query, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[137])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Query, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33061,7 +33064,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.query_contains = __pyx_state[0]; __pyx_result.query_endswith = __pyx_state[1]; __pyx_result.query_eq = __pyx_state[2]; __pyx_result.query_gt = __pyx_state[3]; __pyx_result.query_gte = __pyx_state[4]; __pyx_result.query_in = __pyx_state[5]; __pyx_result.query_lt = __pyx_state[6]; __pyx_result.query_lte = __pyx_state[7]; __pyx_result.query_regex = __pyx_state[8]; __pyx_result.query_startswith = __pyx_state[9]
  *     if len(__pyx_state) > 10 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,36,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,31,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33069,7 +33072,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,3,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,11,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_3__pyx_unpickle_When, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_When, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[139])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_When, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33082,7 +33085,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.actions = __pyx_state[0]; __pyx_result.condition = __pyx_state[1]
  *     if len(__pyx_state) > 2 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,34,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,32,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33090,7 +33093,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,6,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,3,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_5__pyx_unpickle_From, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_From, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[141])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_From, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33103,7 +33106,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.condition = __pyx_state[0]; __pyx_result.origin_calls = __pyx_state[1]; __pyx_result.origin_depth = __pyx_state[2]; __pyx_result.predicate = __pyx_state[3]; __pyx_result.watermark = __pyx_state[4]
  *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,32,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,33,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33111,7 +33114,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,15,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,12,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_7__pyx_unpickle_And, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_And, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[143])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_And, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33124,7 +33127,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.predicates = __pyx_state[0]
  *     if len(__pyx_state) > 1 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,31,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,34,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33132,7 +33135,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,9,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,15,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_9__pyx_unpickle_Or, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Or, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[145])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Or, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33145,7 +33148,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.predicates = __pyx_state[0]
  *     if len(__pyx_state) > 1 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,33,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,29,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33166,7 +33169,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result.predicate = __pyx_state[0]
  *     if len(__pyx_state) > 1 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,35,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,36,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "(tree fragment)":1
@@ -33174,7 +33177,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
 */
-  __Pyx_TraceLine(1,10,0,__PYX_ERR(1, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,4,0,__PYX_ERR(1, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_11_predicates_13__pyx_unpickle_Backlog, 0, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Backlog, NULL, __pyx_mstate_global->__pyx_n_u_hunter__predicates, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[149])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Backlog, __pyx_t_3) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
@@ -33187,7 +33190,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  *     __pyx_result._filter = __pyx_state[0]; __pyx_result._try_repr = __pyx_state[1]; __pyx_result.action = __pyx_state[2]; __pyx_result.condition = __pyx_state[3]; __pyx_result.queue = __pyx_state[4]; __pyx_result.size = __pyx_state[5]; __pyx_result.stack = __pyx_state[6]; __pyx_result.strip = __pyx_state[7]; __pyx_result.vars = __pyx_state[8]
  *     if len(__pyx_state) > 9 and hasattr(__pyx_result, '__dict__'):
 */
-  __Pyx_TraceLine(11,30,0,__PYX_ERR(1, 11, __pyx_L1_error))
+  __Pyx_TraceLine(11,35,0,__PYX_ERR(1, 11, __pyx_L1_error))
 
 
   /* "hunter/_predicates.pyx":1
@@ -33195,12 +33198,12 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
  * from __future__ import absolute_import
  * 
 */
-  __Pyx_TraceLine(1,14,0,__PYX_ERR(0, 1, __pyx_L1_error))
+  __Pyx_TraceLine(1,2,0,__PYX_ERR(0, 1, __pyx_L1_error))
   __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_test, __pyx_t_3) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_TraceReturnValue(Py_None, 14, 0, __PYX_ERR(0, 1, __pyx_L1_error));
+  __Pyx_TraceReturnValue(Py_None, 2, 0, __PYX_ERR(0, 1, __pyx_L1_error));
   __Pyx_PyMonitoring_ExitScope(0);
 
   /*--- Wrapped vars code ---*/
@@ -33210,7 +33213,7 @@ __Pyx_RefNannySetupContext("PyInit__predicates", 0);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_TraceException(__pyx_lineno, 0, 0);
-  __Pyx_TraceExceptionUnwind(14, 0);
+  __Pyx_TraceExceptionUnwind(2, 0);
   if (__pyx_m) {
     if (__pyx_mstate->__pyx_d && stringtab_initialized) {
       __Pyx_AddTraceback("init hunter._predicates", __pyx_clineno, __pyx_lineno, __pyx_filename);

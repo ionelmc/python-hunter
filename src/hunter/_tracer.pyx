@@ -39,7 +39,7 @@ cdef int trace_func(PyObject* tracer, PyFrameObject* frame, int kind, PyObject* 
     if kind == 3 and self.depth > 0:
         self.depth -= 1
 
-    cdef Event event = Event(<FrameType> frame, kind, None, self.depth, self.calls, self.threading_support)
+    cdef Event event = Event(<FrameType> frame, kind, None if arg is NULL else <object> arg, self.depth, self.calls, self.threading_support)
     try:
         fast_call(handler, event)
     except Exception as exc:
