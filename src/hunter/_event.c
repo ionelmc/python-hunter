@@ -14879,7 +14879,7 @@ __Pyx_RefNannySetupContext("PyInit__event", 0);
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Event__set_state(self, __pyx_state)
 */
-  __Pyx_TraceLine(16,36,0,__PYX_ERR(2, 16, __pyx_L1_error))
+  __Pyx_TraceLine(16,37,0,__PYX_ERR(2, 16, __pyx_L1_error))
   __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_6hunter_6_event_5Event_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_mstate_global->__pyx_n_u_Event___setstate_cython, NULL, __pyx_mstate_global->__pyx_n_u_hunter__event, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[42])); if (unlikely(!__pyx_t_2)) __PYX_ERR(2, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__Pyx_SetItemOnTypeDict(__pyx_mstate_global->__pyx_ptype_6hunter_6_event_Event, __pyx_mstate_global->__pyx_n_u_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(2, 16, __pyx_L1_error)
