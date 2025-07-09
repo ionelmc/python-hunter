@@ -1,4 +1,6 @@
 # cython: linetrace=True, language_level=3str, c_string_encoding=ascii, freethreading_compatible=True
+cimport cython
+
 from functools import partial
 from linecache import getline
 from linecache import getlines
@@ -41,6 +43,7 @@ cdef const PyObject** KIND_NAMES = [
 ]
 
 
+@cython.auto_pickle(False)
 cdef class Event:
     """
     A wrapper object for Frame objects. Instances of this are passed to your custom functions or predicates.

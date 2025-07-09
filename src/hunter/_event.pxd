@@ -37,7 +37,6 @@ cdef extern from "vendor/_compat.h":
 
 
 @cython.final
-@cython.auto_pickle(False)
 cdef class Event:
     cdef:
         readonly FrameType frame
