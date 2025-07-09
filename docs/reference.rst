@@ -3,7 +3,7 @@ Reference
 
 .. _helpers-summary:
 
-.. highlights:: :ref:`reference:Helpers`
+.. highlights:: :ref:`Helpers`
 
 .. autosummary::
 
@@ -17,7 +17,7 @@ Reference
     hunter.Or
     hunter.Q
 
-.. highlights:: :ref:`reference:Actions`
+.. highlights:: :ref:`Actions`
 
 .. autosummary::
 
@@ -36,7 +36,7 @@ Reference
     The following (Predicates and Internals) have Cython implementations in modules prefixed with "_".
     They should be imported from the ``hunter`` module, not ``hunter.something`` to be sure you get the best available implementation.
 
-.. highlights:: :ref:`reference:Predicates`
+.. highlights:: :ref:`Predicates`
 
 .. autosummary::
 
@@ -48,7 +48,7 @@ Reference
     hunter.predicates.Query
     hunter.predicates.When
 
-.. highlights:: :ref:`reference:Internals`
+.. highlights:: :ref:`Internals`
 
 .. autosummary::
 

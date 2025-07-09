@@ -21,9 +21,9 @@ year = '2015-2025'
 author = 'Ionel Cristian Mărieș'
 copyright = f'{year}, {author}'
 try:
-    from pkg_resources import get_distribution
+    from importlib import metadata
 
-    version = release = get_distribution('hunter').version
+    version = release = metadata.version('hunter')
 except Exception:
     import traceback
 
