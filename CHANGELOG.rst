@@ -2,6 +2,14 @@
 Changelog
 =========
 
+3.8.0 (2025-07-10)
+------------------
+
+* Drop support for Python 3.8.
+* Added support for Python 3.13.
+* Fixed issues with latest Cython release (3.1.2).
+* Simplified the `Event.__init__` so doesn't require a Tracer instance anymore.
+
 3.7.0 (2024-05-02)
 ------------------
 
