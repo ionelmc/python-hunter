@@ -50,7 +50,9 @@ def mockevent():
         sys._getframe(0),
         2 if '_event' in hunter.Event.__module__ else 'line',
         None,
-        hunter.Tracer(),
+        0,
+        0,
+        False,
     )
 
 

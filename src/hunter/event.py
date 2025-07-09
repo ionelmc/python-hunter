@@ -11,7 +11,6 @@ from .const import SITE_PACKAGES_PATHS
 from .const import SYS_PREFIX_PATHS
 from .util import CYTHON_SUFFIX_RE
 from .util import LEADING_WHITESPACE_RE
-from .util import MISSING
 from .util import cached_property
 from .util import get_func_in_mro
 from .util import get_main_thread
@@ -47,23 +46,10 @@ class Event:
         frame,
         kind,
         arg,
-        tracer=None,
-        depth=None,
-        calls=None,
-        threading_support=MISSING,
+        depth,
+        calls,
+        threading_support,
     ):
-        if tracer is None:
-            if depth is None:
-                raise TypeError('Missing argument: depth (required because tracer was not given).')
-            if calls is None:
-                raise TypeError('Missing argument: calls (required because tracer was not given).')
-            if threading_support is MISSING:
-                raise TypeError('Missing argument: threading_support (required because tracer was not given).')
-        else:
-            depth = tracer.depth
-            calls = tracer.calls
-            threading_support = tracer.threading_support
-
         #: The original Frame object.
         #:
         #: .. note::

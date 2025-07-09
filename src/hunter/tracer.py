@@ -78,7 +78,7 @@ class Tracer:
         if self._handler is not None:
             if kind == 'return' and self.depth > 0:
                 self.depth -= 1
-            event = Event(frame, kind, arg, self)
+            event = Event(frame, kind, arg, self.depth, self.calls, self.threading_support)
             try:
                 self._handler(event)
             except Exception as exc:
