@@ -1213,6 +1213,7 @@ jobs:
         !matrix.cibw_build && matrix.os == 'ubuntu'
       run: >
         sudo apt-get install gdb
+        echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
     - name: cibw build and test
       if: matrix.cibw_build
       run: cibuildwheel
