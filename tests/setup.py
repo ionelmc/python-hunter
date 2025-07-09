@@ -40,7 +40,7 @@ if __name__ == '__main__':
                     splitext(relpath(path, 'tests').replace(os.sep, '.'))[0],
                     sources=[path],
                     include_dirs=[dirname(path), 'src', 'src/hunter'],
-                    define_macros=[('CYTHON_TRACE', '1')],
+                    define_macros=[('CYTHON_TRACE', '1'), ('CYTHON_USE_SYS_MONITORING', '0')],
                 )
                 for root, _, _ in os.walk('tests')
                 for path in glob(join(root, '*.pyx' if Cython else '*.c'))

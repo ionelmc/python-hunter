@@ -1,4 +1,4 @@
-# cython: linetrace=True, language_level=3
+# cython: linetrace=True, language_level=3str, freethreading_compatible=True
 a = b = lambda x: x
 
 

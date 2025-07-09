@@ -193,7 +193,7 @@ class Event:
 
         :type: int or single char string or None
         """
-        if self.frame.f_lasti >= 0 and self.frame.f_code.co_code:
+        if self.frame.f_code.co_code and len(self.frame.f_code.co_code) > self.frame.f_lasti >= 0:
             return self.frame.f_code.co_code[self.frame.f_lasti]
 
     @cached_property

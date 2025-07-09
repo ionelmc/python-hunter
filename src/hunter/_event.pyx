@@ -99,7 +99,7 @@ cdef class Event:
         if self._instruction is UNSET:
             position = Hunter_PyFrame_GetLasti(self.frame)
             co_code = PyCode_GetCode(self.code_getter())
-            if co_code and position >= 0:
+            if co_code and len(co_code) > position >= 0:
                 self._instruction = co_code[position]
             else:
                 self._instruction = None

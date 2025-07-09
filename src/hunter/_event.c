@@ -3397,7 +3397,6 @@ static const char __pyx_k_A_4y_1_t1_T_XT_a_wc_1_t1[] = "\200A\330\010\013\2104\2
 static const char __pyx_k_hk_A_1_S_S_U_U_V_5_7_q_a_1[] = "\200\001\360\006\000\005\010\200\220h\230k\250\033\260A\330\010\r\210^\2301\330\010\016\320\016!\360\000\000\"S\005\360\000\000S\005U\005\360\000\000U\005V\005\330\004\023\2205\230\010\240\001\240\021\330\004\007\200|\2207\230!\330\010'\240q\250\010\260\016\270a\330\004\013\2101";
 static const char __pyx_k_NO_SOURCE_not_reading_binary[] = "\077\077? NO SOURCE: not reading binary ";
 static const char __pyx_k_pyx_unpickle_Event__set_state[] = "__pyx_unpickle_Event__set_state";
-static const char __pyx_k_A_4_S_at1_nAT_Q_xt9Cq_G1A_A_t1[] = "\200A\360\006\000\t\014\2104\210~\230S\240\001\330\014\027\320\027.\250a\250t\2601\330\014\026\220n\240A\240T\250\034\260Q\330\014\017\210x\220t\2309\240C\240q\330\020\024\320\024$\240G\2501\250A\340\020\024\320\024$\240A\330\010\017\210t\2201";
 static const char __pyx_k_HE_A_D_a_a_Q_a_Q_d_a_d_A_T_d_T[] = "\200\001\330\004\014\210H\220E\230\030\240\021\240!\330\004\t\210\027\220\004\220A\330\004\t\210\033\220D\230\001\330\004\t\210\031\220$\220a\330\004\t\210\031\220$\220a\330\004\t\210\034\220Q\330\004\t\210\031\220$\220a\330\004\t\210\030\220\024\220Q\330\004\t\320\t\036\230d\240!\330\004\t\210\031\220$\220a\330\004\t\210\035\220d\230!\330\004\t\210\037\230\004\230A\330\004\t\320\t\035\230T\240\021\330\004\t\210\035\220d\230!\330\004\t\210\034\220T\230\021\330\004\t\210\033\220D\230\001\330\004\t\210\033\220D\230\001\330\004\t\210\033\220D\230\001\330\004\t\210\033\220D\230\001\330\004\t\210\033\220D\230\001\330\004\t\210\036\220t\2301\330\004\t\210\037\230\004\230A\330\004\t\210\033\220D\230\001\330\004\t\320\t\031\230\024\230Q\330\004\013\2101";
 static const char __pyx_k_HE_l_d_a_T_d_D_a_D_a_D_a_D_a_t[] = "\200\001\330\004\014\210H\220E\230\030\240\021\240!\340\004\t\210\031\220$\220l\240!\330\004\t\210\035\220d\320\032*\250!\330\004\t\210\037\230\004\320\034.\250a\330\004\t\320\t\035\230T\240\021\330\004\t\210\035\220d\320\032*\250!\330\004\t\210\033\220D\230\016\240a\330\004\t\210\033\220D\230\016\240a\330\004\t\210\033\220D\230\016\240a\330\004\t\210\033\220D\230\016\240a\330\004\t\210\036\220t\320\033+\2501\330\004\t\210\037\230\004\320\034.\250a\330\004\t\320\t\031\230\024\320\0350\260\001\340\004\007\200q\330\010\r\210\\\230\021\230%\230|\2501\250G\2604\260u\270I\300T\310\030\320QW\320WX\330\010\r\210[\230\001\230\025\230l\250!\2507\260$\260e\2709\300D\310\007\310v\320UV\330\010\r\210W\220L\240\001\240\024\240Q\340\010\r\210\\\230\021\330\010\r\210[\230\001\330\010\r\210W\220A\340\004\t\210\033\220D\230\001\330\004\t\210\031\220$\220a\330\004\t\210\031\220$\220a\330\004\t\210\034\220Q\330\004\t\210\030\220\024\220Q\330\004\t\320\t\036\230d\240!\340\004\013\2101";
 static const char __pyx_k_AT_QdR_mmxxyy_J_J_W_W_b_b_c_c_g[] = "\200\001\330\004\020\220\t\230\033\240A\240T\250\034\260]\300+\310Q\310d\320R^\320^m\320mx\320xy\320y}\360\000\000~\001J\002\360\000\000J\002W\002\360\000\000W\002b\002\360\000\000b\002c\002\360\000\000c\002g\002\360\000\000g\002s\002\360\000\000s\002G\003\360\000\000G\003R\003\360\000\000R\003S\003\360\000\000S\003W\003\360\000\000W\003c\003\360\000\000c\003o\003\360\000\000o\003z\003\360\000\000z\003{\003\360\000\000{\003\003\360\000\000\003K\004\360\000\000K\004[\004\360\000\000[\004f\004\360\000\000f\004g\004\360\000\000g\004k\004\360\000\000k\004w\004\360\000\000w\004B\005\360\000\000B\005M\005\360\000\000M\005N\005\360\000\000N\005R\005\360\000\000R\005^\005\360\000\000^\005i\005\360\000\000i\005t\005\360\000\000t\005u\005\360\000\000u\005y\005\360\000\000y\005E\006\360\000\000E\006P\006\360\000\000P\006[\006\360\000\000[\006\\\006\360\000\000\\\006`\006\360\000\000`\006l\006\360\000\000l\006w\006\360\000\000w\006B\007\360\000\000B\007C\007\360\000\000C\007H\007\360\000\000H\007T\007\360\000\000T\007_\007\360\000\000_\007j\007\360\000\000j\007k\007\360\000\000k\007p\007\360\000\000p\007|\007\360\000\000|\007G\010\360\000\000G\010R\010\360\000\000R\010S\010\360\000\000S\010X\010\360\000\000X\010d\010\360\000\000d\010r\010\360\000\000r\010}\010\360\000\000}\010~\010\360\000\000~\010C\t\360\000\000C\tO\t\360\000\000O\t^\t\360\000\000^\ti\t\360\000\000i\tj\t\360\000\000j\to\t\360\000\000o\t{\t\360\000\000{\tB\n\360\000\000B\nM\n\360\000\000M\nN\n\360\000\000N\nS\n\360\000\000S\n_\n\360\000\000_\nj\n\360\000\000j\nu\n\360\000\000u\nv\n\360\000\000v\n{\n\360\000\000{\nG\013\360\000\000G\013P\013\360\000\000P\013[\013\360\000\000[\013\\\013\360\000\000\\\013a\013\360\000\000a\013m\013\360\000\000m\013v\013\360\000\000v\013A\014\360\000\000A\014B\014\360\000\000B\014G\014\360\000\000G\014S\014\360\000\000S\014_\014\360\000\000_\014j\014\360\000\000j\014k\014\360\000\000k\014p\014\360\000\000p\014|\014\360\000\000|\014E\r\360\000\000E\rP\r\360\000\000P\rQ\r\360\000""\000Q\rV\r\360\000\000V\rb\r\360\000\000b\rj\r\360\000\000j\ru\r\360\000\000u\rv\r\360\000\000v\r{\r\360\000\000{\rG\016\360\000\000G\016\\\016\360\000\000\\\016g\016\360\000\000g\016h\016\360\000\000h\016i\016\330\004\007\200s\210!\210=\230\002\230#\230T\240\027\250\001\250\036\260q\330\010\024\220I\230W\240A\240[\260\001\260\021";
@@ -3407,6 +3406,7 @@ static const char __pyx_k_A_4y_1_t9IRwa_Kr_GxqPXXYY_hhiij[] = "\200A\330\010\013
 static const char __pyx_k_A_G1_IQ_HF_AQ_IQ_IQ_L_KuBa_IQ_M[] = "\200A\330\010\014\210G\2201\330\010\014\210I\220Q\330\010\014\210H\220F\230*\240A\240Q\330\010\014\210I\220Q\330\010\014\210I\220Q\330\010\014\320\014!\240\021\330\010\014\210L\230\001\330\010\014\210K\220u\230B\230a\340\010\014\210I\220Q\330\010\014\210M\230\021\330\010\014\210O\2301\330\010\014\320\014 \240\001\330\010\014\210M\230\021\330\010\014\210L\230\001\330\010\014\210K\220q\330\010\014\210K\220q\330\010\014\210K\220q\330\010\014\210K\220q\330\010\014\210K\220q\330\010\014\210N\230!\330\010\014\210O\2301\330\010\014\210K\220q\330\010\014\320\014\034\230A";
 static const char __pyx_k_T_4_4Obbffqqu_v_E_E_I_I_S_S_W_W[] = "\200\001\360\010\000\005\016\210T\220\030\230\024\230\\\250\024\250^\2704\270|\3104\320Ob\320bf\320fq\320qu\360\000\000v\001E\002\360\000\000E\002I\002\360\000\000I\002S\002\360\000\000S\002W\002\360\000\000W\002a\002\360\000\000a\002e\002\360\000\000e\002o\002\360\000\000o\002s\002\360\000\000s\002}\002\360\000\000}\002A\003\360\000\000A\003K\003\360\000\000K\003O\003\360\000\000O\003Y\003\360\000\000Y\003]\003\360\000\000]\003j\003\360\000\000j\003n\003\360\000\000n\003|\003\360\000\000|\003@\004\360\000\000@\004F\004\360\000\000F\004J\004\360\000\000J\004T\004\360\000\000T\004X\004\360\000\000X\004`\004\360\000\000`\004d\004\360\000\000d\004l\004\360\000\000l\004p\004\360\000\000p\004{\004\360\000\000{\004\004\360\000\000\004G\005\360\000\000G\005K\005\360\000\000K\005R\005\360\000\000R\005V\005\360\000\000V\005W\005\330\004\014\210G\2201\220F\230,\240a\330\004\007\200v\210W\220A\330\010\022\220!\330\010\027\220q\340\010\027\220t\2307\240'\250\025\250c\260\024\260[\300\007\300u\310C\310t\320S`\320`g\320gl\320lo\320os\320s~\360\000\000\001F\002\360\000\000F\002K\002\360\000\000K\002N\002\360\000\000N\002R\002\360\000\000R\002d\002\360\000\000d\002k\002\360\000\000k\002p\002\360\000\000p\002s\002\360\000\000s\002w\002\360\000\000w\002A\003\360\000\000A\003H\003\360\000\000H\003M\003\360\000\000M\003P\003\360\000\000P\003T\003\360\000\000T\003b\003\360\000\000b\003i\003\360\000\000i\003n\003\360\000\000n\003q\003\360\000\000q\003u\003\360\000\000u\003~\003\360\000\000~\003E\004\360\000\000E\004J\004\360\000\000J\004M\004\360\000\000M\004Q\004\360\000\000Q\004Z\004\360\000\000Z\004a\004\360\000\000a\004f\004\360\000\000f\004i\004\360\000\000i\004m\004\360\000\000m\004v\004\360\000\000v\004}\004\360\000\000}\004B\005\360\000\000B\005E\005\360\000\000E\005I\005\360\000\000I\005R\005\360\000\000R\005Y\005\360\000\000Y\005^\005\360\000\000^\005a\005\360\000\000a\005e\005\360\000\000e\005n\005\360\000\000n\005u\005\360\000\000u\005z\005\360\000\000z\005}\005\360\000""\000}\005A\006\360\000\000A\006J\006\360\000\000J\006Q\006\360\000\000Q\006V\006\360\000\000V\006Y\006\360\000\000Y\006]\006\360\000\000]\006i\006\360\000\000i\006p\006\360\000\000p\006u\006\360\000\000u\006x\006\360\000\000x\006|\006\360\000\000|\006I\007\360\000\000I\007P\007\360\000\000P\007U\007\360\000\000U\007X\007\360\000\000X\007\\\007\360\000\000\\\007a\007\360\000\000a\007h\007\360\000\000h\007m\007\360\000\000m\007p\007\360\000\000p\007t\007\360\000\000t\007}\007\360\000\000}\007D\010\360\000\000D\010I\010\360\000\000I\010L\010\360\000\000L\010P\010\360\000\000P\010W\010\360\000\000W\010^\010\360\000\000^\010c\010\360\000\000c\010f\010\360\000\000f\010j\010\360\000\000j\010p\010\360\000\000p\010w\010\360\000\000w\010x\010\330\004\007\200q\330\010\017\320\017&\240d\250!\2507\260+\270W\300A\340\010\017\320\017&\240d\250!\2507\260+\270Q";
 static const char __pyx_k_A_4_Q_4_1_t1_t1_4xt1A_t1_1_HA_83[] = "\200A\340\010\013\2104\210{\230#\230Q\330\014\023\2204\220|\2401\330\014\027\220t\2301\330\014\017\210t\2201\330\020\033\2304\230x\240t\2501\250A\330\014\017\210t\2201\330\020\033\2301\330\021\031\230\031\240\"\240H\250A\330\020\033\2308\2403\240a\330\021\031\230\031\240\"\240G\2501\330\020\035\320\035-\250T\260\021\260$\260a\330\020\024\220G\2301\230H\240A\330\024!\240\033\250B\250a\330\024\027\220v\230Q\230a\330\030#\2401\330\030\031\340\014\020\220\r\230Q\330\010\017\210t\2201";
+static const char __pyx_k_A_4_S_at1_nAT_Q_xt3ay_a_G1A_A_t1[] = "\200A\360\006\000\t\014\2104\210~\230S\240\001\330\014\027\320\027.\250a\250t\2601\330\014\026\220n\240A\240T\250\034\260Q\330\014\017\210x\220t\2303\230a\230y\250\002\250,\260a\330\020\024\320\024$\240G\2501\250A\340\020\024\320\024$\240A\330\010\017\210t\2201";
 static const char __pyx_k_A_4y_1_4wfAQ_s_Kq_Zs_U_g_X___ggj[] = "\200A\330\010\013\2104\210y\230\003\2301\330\014\033\2304\230w\240f\250A\250Q\330\014\017\320\017\037\230s\240!\340\020\024\220K\230q\330\021\025\220Z\230s\240+\250U\260$\260g\270[\310\001\310\037\320X[\320[_\320_g\320gj\320jk\340\020\024\220K\230q\330\021\025\220Y\230k\250\021\250!\340\020\024\220K\230q\330\021\025\220Y\230k\250\021\250!\330\020\024\220K\230q\340\020\024\220K\230q\330\010\017\210t\2201";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0x95dcba2, 0x623b824, 0xe024db4) = (_code, _filename, _fullsource, _function, _function_object, _globals, _instruction, _lineno, _locals, _module, _source, _stdlib, _thread, _threadidn, _threadname, arg, builtin, calls, depth, detached, frame, kind, threading_support))";
 static const char __pyx_k_Note_that_Cython_is_deliberately[] = "Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.";
@@ -4780,6 +4780,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
+  Py_ssize_t __pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4803,7 +4804,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         if self._instruction is UNSET:
  *             position = Hunter_PyFrame_GetLasti(self.frame)             # <<<<<<<<<<<<<<
  *             co_code = PyCode_GetCode(self.code_getter())
- *             if co_code and position >= 0:
+ *             if co_code and len(co_code) > position >= 0:
 */
     __Pyx_TraceLine(100,10,0,__PYX_ERR(0, 100, __pyx_L1_error))
     __pyx_t_2 = ((PyObject *)__pyx_v_self->frame);
@@ -4815,7 +4816,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         if self._instruction is UNSET:
  *             position = Hunter_PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())             # <<<<<<<<<<<<<<
- *             if co_code and position >= 0:
+ *             if co_code and len(co_code) > position >= 0:
  *                 self._instruction = co_code[position]
 */
     __Pyx_TraceLine(101,16,0,__PYX_ERR(0, 101, __pyx_L1_error))
@@ -4830,7 +4831,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
     /* "hunter/_event.pyx":102
  *             position = Hunter_PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
- *             if co_code and position >= 0:             # <<<<<<<<<<<<<<
+ *             if co_code and len(co_code) > position >= 0:             # <<<<<<<<<<<<<<
  *                 self._instruction = co_code[position]
  *             else:
 */
@@ -4841,19 +4842,23 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
       __pyx_t_1 = __pyx_t_4;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_4 = (__pyx_v_position >= 0);
+    __pyx_t_5 = PyObject_Length(__pyx_v_co_code); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_4 = (__pyx_t_5 > __pyx_v_position);
+    if (__pyx_t_4) {
+      __pyx_t_4 = (__pyx_v_position >= 0);
+    }
     __pyx_t_1 = __pyx_t_4;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_1) {
 
       /* "hunter/_event.pyx":103
  *             co_code = PyCode_GetCode(self.code_getter())
- *             if co_code and position >= 0:
+ *             if co_code and len(co_code) > position >= 0:
  *                 self._instruction = co_code[position]             # <<<<<<<<<<<<<<
  *             else:
  *                 self._instruction = None
 */
-      __Pyx_TraceLine(103,26,0,__PYX_ERR(0, 103, __pyx_L1_error))
+      __Pyx_TraceLine(103,29,0,__PYX_ERR(0, 103, __pyx_L1_error))
       __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_co_code, __pyx_v_position, int, 1, __Pyx_PyLong_From_int, 0, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
@@ -4865,7 +4870,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
       /* "hunter/_event.pyx":102
  *             position = Hunter_PyFrame_GetLasti(self.frame)
  *             co_code = PyCode_GetCode(self.code_getter())
- *             if co_code and position >= 0:             # <<<<<<<<<<<<<<
+ *             if co_code and len(co_code) > position >= 0:             # <<<<<<<<<<<<<<
  *                 self._instruction = co_code[position]
  *             else:
 */
@@ -4879,7 +4884,7 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  *         return self._instruction
  * 
 */
-    __Pyx_TraceLine(105,30,0,__PYX_ERR(0, 105, __pyx_L1_error))
+    __Pyx_TraceLine(105,33,0,__PYX_ERR(0, 105, __pyx_L1_error))
     /*else*/ {
       __Pyx_INCREF(Py_None);
       __Pyx_GIVEREF(Py_None);
@@ -4905,11 +4910,11 @@ static PyObject *__pyx_f_6hunter_6_event_5Event_instruction_getter(struct __pyx_
  * 
  *     @property
 */
-  __Pyx_TraceLine(106,31,0,__PYX_ERR(0, 106, __pyx_L1_error))
+  __Pyx_TraceLine(106,34,0,__PYX_ERR(0, 106, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_self->_instruction);
   __pyx_r = __pyx_v_self->_instruction;
-  __Pyx_TraceReturnValue(__pyx_r, 31, 0, __PYX_ERR(0, 106, __pyx_L1_error));
+  __Pyx_TraceReturnValue(__pyx_r, 34, 0, __PYX_ERR(0, 106, __pyx_L1_error));
   goto __pyx_L0;
 
   /* "hunter/_event.pyx":96
@@ -15402,9 +15407,9 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
     __pyx_mstate_global->__pyx_codeobj_tab[4] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_src_hunter__event_pyx, __pyx_mstate->__pyx_n_u_clone, __pyx_k_A_z, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[4])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 24, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 96, 80};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 24, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 96, 86};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_self, __pyx_mstate->__pyx_n_u_frame, __pyx_mstate->__pyx_n_u_kind, __pyx_mstate->__pyx_n_u_arg, __pyx_mstate->__pyx_n_u_depth, __pyx_mstate->__pyx_n_u_calls, __pyx_mstate->__pyx_n_u_threading_support, __pyx_mstate->__pyx_n_u_detached, __pyx_mstate->__pyx_n_u_builtin, __pyx_mstate->__pyx_n_u_code, __pyx_mstate->__pyx_n_u_filename_3, __pyx_mstate->__pyx_n_u_fullsource, __pyx_mstate->__pyx_n_u_function_3, __pyx_mstate->__pyx_n_u_function_object, __pyx_mstate->__pyx_n_u_globals_2, __pyx_mstate->__pyx_n_u_lineno_3, __pyx_mstate->__pyx_n_u_locals_2, __pyx_mstate->__pyx_n_u_module_5, __pyx_mstate->__pyx_n_u_source, __pyx_mstate->__pyx_n_u_stdlib, __pyx_mstate->__pyx_n_u_thread, __pyx_mstate->__pyx_n_u_threadidn, __pyx_mstate->__pyx_n_u_threadname, __pyx_mstate->__pyx_n_u_instruction};
-    __pyx_mstate_global->__pyx_codeobj_tab[5] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_src_hunter__event_pyx, __pyx_mstate->__pyx_n_u_instruction_getter, __pyx_k_A_4_S_at1_nAT_Q_xt9Cq_G1A_A_t1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[5])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[5] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_src_hunter__event_pyx, __pyx_mstate->__pyx_n_u_instruction_getter, __pyx_k_A_4_S_at1_nAT_Q_xt3ay_a_G1A_A_t1, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[5])) goto bad;
   }
   {
     const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 108, 12};
