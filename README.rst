@@ -221,6 +221,24 @@ In a terminal it would look like:
 
 -----
 
+Action ``UI`` provide interactive visualizer for tracked result:
+
+.. sourcecode:: python
+
+    import hunter
+    hunter.trace(action=hunter.UI)
+
+    import os
+    os.path.join('a', 'b')
+    hunter.stop()
+    hunter.UI.start()
+
+That would result in:
+
+.. image:: https://raw.githubusercontent.com/seniorsolt/python-hunter/master/docs/UI.png
+
+-----
+
 You can give it a tree-like configuration where you can optionally configure specific actions for parts of the
 tree (like dumping variables or a pdb set_trace):
 

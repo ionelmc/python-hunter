@@ -2,14 +2,17 @@
 import collections
 import opcode
 import os
+import sys
 import threading
 from collections import defaultdict
 from itertools import islice
 from os import getpid
 from typing import ClassVar
 
+from PyQt5.QtWidgets import QApplication
+
 from . import config
-from .util import BUILTIN_SYMBOLS
+from .util import BUILTIN_SYMBOLS, TracebackVisualizer
 from .util import CALL_COLORS
 from .util import CODE_COLORS
 from .util import MISSING
@@ -33,6 +36,7 @@ __all__ = [
     'Debugger',
     'Manhole',
     'VarsPrinter',
+    'UI'
 ]
 
 BUILTIN_REPR_FUNCS = {'repr': repr, 'safe_repr': safe_repr}
@@ -873,3 +877,81 @@ class StackPrinter(ColorStreamAction):
             thread_prefix,
             filename_prefix,
         )
+
+
+class UI(ColorStreamAction):
+    """track events and show the result with UI. To open one should use UI.start() after tracking finished"""
+    events = []
+    counter = 0
+
+    @classmethod
+    def cleanup(cls):
+        cls.locals = defaultdict(list)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.locals = defaultdict(list)
+
+    def __call__(self, event):
+        ident = (event.module, event.function)
+        thread = threading.current_thread()
+        stack = self.locals[thread.ident]
+        self.counter += 1
+        pid_prefix = ""
+        thread_prefix = thread.name
+        filename_prefix = f"{event.filename}:{event.lineno}"
+
+        if event.kind == 'call':
+            code = event.code
+            stack.append(ident)
+            args = {var_display: self.try_repr(event.locals.get(var_lookup, None))
+                    for _, var_lookup, var_display in get_arguments(code)}
+            initial_args = {var_display: event.locals.get(var_lookup, None)
+                            for _, var_lookup, var_display in get_arguments(code)}
+
+            event_data = {
+                "pid_prefix": pid_prefix,
+                "thread_prefix": thread_prefix,
+                "filename_prefix": filename_prefix,
+                "kind": event.kind,
+                "depth": len(stack) - 1,
+                "function": event.function,
+                "args": {"repr_args": f"'{args}'", "initial_args": initial_args},
+                "color": self.event_colors.get(event.kind, ""),
+                "counter": self.counter
+            }
+
+        elif event.kind in ('return', 'exception'):
+            if stack and stack[-1] == ident:
+                stack.pop()
+            event_data = {
+                "pid_prefix": pid_prefix,
+                "thread_prefix": thread_prefix,
+                "filename_prefix": filename_prefix,
+                "kind": event.kind,
+                "depth": len(stack),
+                "function": event.function,
+                "args": {"repr_args": self.try_repr(event.arg), "initial_args": event.arg},
+                "color": self.event_colors.get(event.kind, ""),
+                "counter": self.counter
+            }
+        else:
+            event_data = {
+                "pid_prefix": pid_prefix,
+                "thread_prefix": thread_prefix,
+                "filename_prefix": filename_prefix,
+                "kind": event.kind,
+                "depth": len(stack),
+                "function": event.function,
+                "args": {"repr_args": self.try_source(event).strip(), "initial_args": self.try_source(event).strip()},
+                "color": self.event_colors.get(event.kind, ""),
+                "counter": self.counter
+            }
+        UI.events.append(event_data)
+
+    @classmethod
+    def start(cls):
+        app = QApplication(sys.argv)
+        ui = TracebackVisualizer(cls.events)
+        ui.show()
+        sys.exit(app.exec_())
