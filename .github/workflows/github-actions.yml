@@ -1223,6 +1223,7 @@ jobs:
         CIBW_BUILD: '${{ matrix.cibw_build }}'
         CIBW_FREE_THREADED_SUPPORT: '${{ matrix.cibw_ft }}'
         CIBW_CONTAINER_ENGINE: "docker; create_args: --cap-add=SYS_PTRACE"
+        CIBW_ENABLE: cpython-freethreading
         CIBW_BUILD_VERBOSITY: '3'
         CIBW_TEST_REQUIRES: >
           tox
