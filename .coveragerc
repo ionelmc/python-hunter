@@ -7,7 +7,7 @@ source =
     src
     tests
 parallel = true
-plugins = Cython.Coverage
+plugins = ${COVERAGE_PLUGIN}
 
 [report]
 show_missing = true
