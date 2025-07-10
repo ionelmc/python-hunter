@@ -85,7 +85,7 @@ jobs:
     - name: install dependencies (gdb)
       if: >
         !matrix.cibw_build && matrix.os == 'ubuntu'
-      run: >
+      run: |
         sudo apt-get install gdb
         echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
     - name: cibw build and test
@@ -122,7 +122,9 @@ jobs:
     - name: check wheel
       if: >
         !matrix.cibw_ft && matrix.cibw_build
-      run: twine check wheelhouse/*.whl
+      run: |
+        python -mpip install --progress-bar=off twine
+        twine check wheelhouse/*.whl
     - name: upload wheel
       uses: actions/upload-artifact@v4
       if: matrix.cibw_build
