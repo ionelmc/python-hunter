@@ -21,15 +21,15 @@ jobs:
             os: 'ubuntu-latest'
 {% for env in tox_environments %}
 {% set prefix = env.split('-')[0] -%}
-{% set nogil = 'ft' in env %}
+{% set freethreaded = prefix.endswith('t') %}
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
-{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5:] }}{{ 't' if nogil else '' }}{% endset %}
+{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% else %}
-{% set python %}{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
+{% set python %}{{ prefix[2] }}.{{ prefix[3:].rstrip('t') }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
-{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{{ 't' if nogil else '' }}{% endset %}
+{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'x86_64', '*manylinux*', True],
@@ -47,15 +47,15 @@ jobs:
             artifact: '{{ env.rsplit('-', 1)[0] }}-{{ os }}-{{ cibw_arch }}{{ name_suffix.replace('/', '-') }}'
             python: '{{ python }}'
             toxpython: '{{ toxpython }}'
-            python_arch: '{{ python_arch }}{% if nogil %}-freethreaded{% endif %}'
+            python_arch: '{{ python_arch }}{% if freethreaded %}-freethreaded{% endif %}'
             tox_env: '{{ env }}'
 {% if 'cover' in env %}
             cover: true
 {% endif %}
             cibw_arch: '{{ cibw_arch }}'
 {% if env.endswith('cython-nocov') and not prefix.startswith('pypy') %}
-            cibw_build: '{{ cpython }}{% if nogil %}t{% endif %}-{{ wheel_arch }}'
-            cibw_ft: '{% if nogil %}true{% else %}false{% endif %}'
+            cibw_build: '{{ cpython }}-{{ wheel_arch }}'
+            cibw_ft: '{% if freethreaded %}true{% else %}false{% endif %}'
 {% else %}
             cibw_build: false
 {% endif %}
