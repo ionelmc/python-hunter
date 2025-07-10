@@ -10,13 +10,13 @@ jobs:
       matrix:
         include:
           - name: 'check'
-            python: '3.11'
-            toxpython: 'python3.11'
+            python: '3.13'
+            toxpython: 'python3.13'
             tox_env: 'check'
             os: 'ubuntu-latest'
           - name: 'docs'
-            python: '3.11'
-            toxpython: 'python3.11'
+            python: '3.13'
+            toxpython: 'python3.13'
             tox_env: 'docs'
             os: 'ubuntu-latest'
 {% for env in tox_environments %}
@@ -25,11 +25,9 @@ jobs:
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
-{% set toxpython %}pypy{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:].rstrip('t') }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
-{% set toxpython %}python{{ prefix[2] }}.{{ prefix[3:] }}{% endset %}
 {% endif %}
 {% for os, python_arch, cibw_arch, wheel_arch, include_cover in [
     ['ubuntu', 'x64', 'x86_64', '*manylinux*', True],
@@ -46,7 +44,6 @@ jobs:
           - name: '{{ env }} ({{ os }}/{{ cibw_arch }}{{ name_suffix }})'
             artifact: '{{ env.rsplit('-', 1)[0] }}-{{ os }}-{{ cibw_arch }}{{ name_suffix.replace('/', '-') }}'
             python: '{{ python }}'
-            toxpython: '{{ toxpython }}'
             python_arch: '{{ python_arch }}{% if freethreaded %}-freethreaded{% endif %}'
             tox_env: '{{ env }}'
 {% if 'cover' in env %}
@@ -92,7 +89,6 @@ jobs:
       if: matrix.cibw_build
       run: cibuildwheel
       env:
-        TOXPYTHON: '{{ '${{ matrix.toxpython }}' }}'
         CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
         CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
         CIBW_FREE_THREADED_SUPPORT: '{{ '${{ matrix.cibw_ft }}' }}'
@@ -109,8 +105,6 @@ jobs:
           cd /d {project} &&
           tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v
     - name: regular build and test
-      env:
-        TOXPYTHON: '{{ '${{ matrix.toxpython }}' }}'
       if: >
         !matrix.cibw_build
       run: >
