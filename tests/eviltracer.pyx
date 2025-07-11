@@ -1,4 +1,4 @@
-# cython: language_level=3str, c_string_encoding=ascii
+# cython: language_level=3str, c_string_encoding=ascii, freethreading_compatible=True
 import hunter
 
 from hunter._event cimport Event
