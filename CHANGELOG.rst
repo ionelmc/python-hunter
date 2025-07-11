@@ -2,13 +2,15 @@
 Changelog
 =========
 
-3.8.0 (2025-07-10)
+3.8.0 (2025-07-11)
 ------------------
 
 * Drop support for Python 3.8.
-* Added support for Python 3.13.
+* Added support for Python 3.13, including freethreading variant (but not really tested, as most of the test suite is singlethreaded).
 * Fixed issues with latest Cython release (3.1.2).
-* Simplified the `Event.__init__` so doesn't require a Tracer instance anymore.
+* Simplified the `Event.__init__` so doesn't require or accept a Tracer instance anymore to fill in some options.
+* Fixed hardcoded python executable in tests.
+  Contributed by Steve Kowalik in `#126 <https://github.com/ionelmc/python-hunter/pull/126>`.
 
 3.7.0 (2024-05-02)
 ------------------
