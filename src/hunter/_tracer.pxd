@@ -1,4 +1,3 @@
-# cython: language_level=3str
 cimport cython
 from cpython.pystate cimport Py_tracefunc
 from cpython.ref cimport PyObject
