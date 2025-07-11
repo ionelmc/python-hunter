@@ -54,7 +54,7 @@ default_context:
     sphinx_theme: "furo"
     test_matrix_separate_coverage: "yes"
     tests_inside_package: "no"
-    version: "3.7.0"
+    version: 3.8.0
     version_manager: "bump2version"
     website: "https://blog.ionelmc.ro"
     year_from: "2015"
