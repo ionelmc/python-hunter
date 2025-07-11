@@ -100,15 +100,15 @@ jobs:
           tox-direct
         CIBW_TEST_COMMAND: >
           cd {project} &&
-          tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v
+          tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -vv
         CIBW_TEST_COMMAND_WINDOWS: >
           cd /d {project} &&
-          tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -v
+          tox --skip-pkg-install --direct-yolo -e {{ '${{ matrix.tox_env }}' }} -vv
     - name: regular build and test
       if: >
         !matrix.cibw_build
       run: >
-        tox -e {{ '${{ matrix.tox_env }}' }} -v
+        tox -e {{ '${{ matrix.tox_env }}' }} -vv
     - uses: codecov/codecov-action@v5
       if: matrix.cover
       with:
