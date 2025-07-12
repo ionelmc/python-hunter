@@ -11,12 +11,10 @@ jobs:
         include:
           - name: 'check'
             python: '3.13'
-            toxpython: 'python3.13'
             tox_env: 'check'
             os: 'ubuntu-latest'
           - name: 'docs'
             python: '3.13'
-            toxpython: 'python3.13'
             tox_env: 'docs'
             os: 'ubuntu-latest'
           - name: 'py39-pure-cover (ubuntu/x86_64)'

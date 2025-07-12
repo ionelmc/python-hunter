@@ -30,7 +30,7 @@ if 'TOX_ENV_NAME' in os.environ and os.environ.get('SETUPPY_EXT_COVERAGE') == 'y
     CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_TRACE=1 -DCYTHON_USE_SYS_MONITORING=0'
     LFLAGS = os.environ['LFLAGS'] = ''
 else:
-    CFLAGS = '-DCYTHON_USE_SYS_MONITORING=0'
+    CFLAGS = ''
     LFLAGS = ''
 
 allow_extensions = True
@@ -117,81 +117,16 @@ def read(*names, **kwargs):
 
 
 setup(
-    name='hunter',
-    use_scm_version={
-        'local_scheme': 'dirty-tag',
-        'write_to': 'src/hunter/_version.py',
-        'fallback_version': '3.8.0',
-    },
-    license='BSD-2-Clause',
-    description='Hunter is a flexible code tracing toolkit.',
     long_description='{}\n{}'.format(
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst')),
     ),
     long_description_content_type='text/x-rst',
-    author='Ionel Cristian Mărieș',
-    author_email='contact@ionelmc.ro',
-    url='https://github.com/ionelmc/python-hunter',
     packages=find_namespace_packages('src'),
     package_dir={'': 'src'},
     py_modules=[path.stem for path in Path('src').glob('*.py')],
     include_package_data=True,
     zip_safe=False,
-    classifiers=[
-        # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'Operating System :: Unix',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Utilities',
-        'Topic :: Software Development :: Debuggers',
-    ],
-    project_urls={
-        'Documentation': 'https://python-hunter.readthedocs.io/',
-        'Changelog': 'https://python-hunter.readthedocs.io/en/latest/changelog.html',
-        'Issue Tracker': 'https://github.com/ionelmc/python-hunter/issues',
-    },
-    keywords=[
-        'trace',
-        'tracer',
-        'settrace',
-        'debugger',
-        'debugging',
-        'code',
-        'source',
-    ],
-    python_requires='>=3.9',
-    install_requires=[],
-    extras_require={
-        ':platform_system != "Windows"': ['manhole >= 1.5'],
-    },
-    setup_requires=(
-        [
-            'setuptools_scm>=3.3.1,!=4.0.0',
-            'cython',
-        ]
-        if Cython
-        else [
-            'setuptools_scm>=3.3.1,!=4.0.0',
-        ]
-    ),
-    entry_points={
-        'console_scripts': [
-            'hunter-trace = hunter.remote:main',
-        ]
-    },
     cmdclass={
         'build': BuildWithPTH,
         'easy_install': EasyInstallWithPTH,

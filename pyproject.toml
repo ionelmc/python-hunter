@@ -1,12 +1,72 @@
 [build-system]
 requires = [
-    "setuptools>=64.0.0",
-    "wheel",
-    "setuptools_scm>=3.3.1,!=4.0.0",
+    "setuptools>=69",
+    "setuptools_scm>=8",
 ]
 build-backend = "setuptools.build_meta"
 
+[project]
+dynamic = [
+    "readme",
+    "version",
+]
+name = "hunter"
+license = "BSD-2-Clause"
+license-files = ["LICENSE"]
+description = "Hunter is a flexible code tracing toolkit."
+authors = [
+    { name = "Ionel Cristian Mărieș", email = "contact@ionelmc.ro" },
+]
+classifiers = [
+    # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Debuggers"
+]
+keywords = [
+    "trace",
+    "tracer",
+    "settrace",
+    "debugger",
+    "debugging",
+    "code",
+    "source",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "manhole>=1.5; platform_system!='Windows'",
+]
+
+[project.optional-dependencies]
+# rst = ["docutils>=0.11"]
+
+[project.scripts]
+hunter-trace = "hunter.remote:main"
+
+[project.urls]
+"Sources" = "https://github.com/ionelmc/python-hunter"
+"Documentation" = "https://python-hunter.readthedocs.io/"
+"Changelog" = "https://python-hunter.readthedocs.io/en/latest/changelog.html"
+"Issue Tracker" = "https://github.com/ionelmc/python-hunter/issues"
+
 [tool.setuptools_scm]
+local_scheme = "dirty-tag"
+write_to = "src/hunter/_version.py"
+fallback_version = "3.8.0"
 
 [tool.ruff]
 extend-exclude = ["static", "ci/templates"]
