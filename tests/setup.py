@@ -23,6 +23,7 @@ except ImportError:
 
 if __name__ == '__main__':
     setup(
+        long_description='',
         package_dir={'': 'tests'},
         zip_safe=False,
         setup_requires=(
