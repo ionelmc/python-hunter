@@ -24,7 +24,7 @@ jobs:
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
 {% elif prefix.startswith('py314') %}
-{% set python %}3.14.0-rc{% endset %}
+{% set python %}3.14.0-rc.2{% endset %}
 {% set cpython %}cp314{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:].rstrip('t') }}{% endset %}
