@@ -35,7 +35,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Utilities",
-    "Topic :: Software Development :: Debuggers"
+    "Topic :: Software Development :: Debuggers",
 ]
 keywords = [
     "trace",
@@ -83,31 +83,31 @@ max-line-length = 140
 
 [tool.ruff.lint]
 ignore = [
-    "RUF001", # ruff-specific rules ambiguous-unicode-character-string
-    "S101", # flake8-bandit assert
+    "RUF001",  # ruff-specific rules ambiguous-unicode-character-string
+    "S101",    # flake8-bandit assert
     "S307",
-    "S308", # flake8-bandit suspicious-mark-safe-usage
-    "E501", # pycodestyle line-too-long
+    "S308",    # flake8-bandit suspicious-mark-safe-usage
+    "E501",    # pycodestyle line-too-long
     "PLC0415", # import-outside-top-level
 ]
 select = [
-    "B", # flake8-bugbear
-    "C4", # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
     "DTZ", # flake8-datetimez
-    "E", # pycodestyle errors
+    "E",   # pycodestyle errors
     "EXE", # flake8-executable
-    "F", # pyflakes
-    "I", # isort
+    "F",   # pyflakes
+    "I",   # isort
     "INT", # flake8-gettext
     "PIE", # flake8-pie
     "PLC", # pylint convention
     "PLE", # pylint errors
-    "PT", # flake8-pytest-style
+    "PT",  # flake8-pytest-style
     "RSE", # flake8-raise
     "RUF", # ruff-specific rules
-    "S", # flake8-bandit
-    "UP", # pyupgrade
-    "W", # pycodestyle warnings
+    "S",   # flake8-bandit
+    "UP",  # pyupgrade
+    "W",   # pycodestyle warnings
 ]
 
 [tool.ruff.lint.flake8-pytest-style]

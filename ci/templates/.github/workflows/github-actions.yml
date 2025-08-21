@@ -23,6 +23,9 @@ jobs:
 {% if prefix.startswith('pypy') %}
 {% set python %}pypy-{{ prefix[4] }}.{{ prefix[5:] }}{% endset %}
 {% set cpython %}pp{{ prefix[4:5] }}{% endset %}
+{% elif prefix.startswith('py314') %}
+{% set python %}3.14.0-rc{% endset %}
+{% set cpython %}cp314{% endset %}
 {% else %}
 {% set python %}{{ prefix[2] }}.{{ prefix[3:].rstrip('t') }}{% endset %}
 {% set cpython %}cp{{ prefix[2:] }}{% endset %}
@@ -89,7 +92,6 @@ jobs:
       env:
         CIBW_ARCHS: '{{ '${{ matrix.cibw_arch }}' }}'
         CIBW_BUILD: '{{ '${{ matrix.cibw_build }}' }}'
-        CIBW_FREE_THREADED_SUPPORT: '{{ '${{ matrix.cibw_ft }}' }}'
         CIBW_CONTAINER_ENGINE: "docker; create_args: --cap-add=SYS_PTRACE"
         CIBW_ENABLE: cpython-freethreading
         CIBW_BUILD_VERBOSITY: '3'
