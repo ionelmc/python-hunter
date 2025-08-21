@@ -30,7 +30,7 @@ if 'TOX_ENV_NAME' in os.environ and os.environ.get('SETUPPY_EXT_COVERAGE') == 'y
     CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_TRACE=1 -DCYTHON_USE_SYS_MONITORING=0'
     LFLAGS = os.environ['LFLAGS'] = ''
 else:
-    CFLAGS = ''
+    CFLAGS = os.environ['CFLAGS'] = '-DCYTHON_USE_SYS_MONITORING=0'
     LFLAGS = ''
 
 allow_extensions = True
