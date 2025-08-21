@@ -31,7 +31,7 @@ def silenced2():
 def silenced3():
     try:
         error()
-    finally:
+    except:
         return 'mwhahaha'
 
 
