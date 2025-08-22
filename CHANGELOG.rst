@@ -2,6 +2,12 @@
 Changelog
 =========
 
+3.9.0 (2025-08-22)
+------------------
+
+* Added support and wheels for Python 3.14.
+* Modernized packaging to have metadata in ``pyproject.toml``.
+
 3.8.0 (2025-07-11)
 ------------------
 
