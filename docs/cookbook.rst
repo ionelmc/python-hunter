@@ -141,7 +141,7 @@ Say you want to stop tracing after 1000 events, you'd do this:
 "Probe" - lightweight tracing
 =============================
 
-Based on Robert Brewer's `FunctionProbe <https://github.com/ionelmc/python-hunter/issues/45#issuecomment-453754832>`_
+Based on Robert Brewer's `FunctionProbe <https://github.com/ionelmc/python-hunter/issues/45>`_
 example.
 
 The use-case is that you'd like to trace a huge application and running a tracer (even a cython one) would have a too
