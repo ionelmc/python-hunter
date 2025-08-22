@@ -136,5 +136,6 @@ jobs:
         name: all-wheels
     - uses: codecov/codecov-action@v5
       with:
-        CODECOV_TOKEN: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
+        verbose: true
+        token: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
 {{ '' }}
